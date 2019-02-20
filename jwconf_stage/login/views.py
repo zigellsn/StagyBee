@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, render
+import importlib
 
-from picker.models import Credential
+picker = importlib.import_module('picker.models')
 
 
 def login(request, congregation):
-    credentials = get_object_or_404(Credential, congregation=congregation)
+    credentials = get_object_or_404(picker.Credential, congregation=congregation)
     context = {
         'congregation': credentials.congregation,
         'username': credentials.username,

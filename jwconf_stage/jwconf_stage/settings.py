@@ -53,20 +53,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-LANGUAGES = (
-    ('en', lazy('English')),
-    ('de', lazy('Deutsch')),
-    ('it', lazy('Italiano')),
-    ('fr', lazy('Francais')),
-    ('ru', lazy('Russian')),
-)
-
-LANGUAGE_CODE = 'de'
-
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
-
 ROOT_URLCONF = 'jwconf_stage.urls'
 
 TEMPLATES = [
@@ -121,7 +107,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = (
+    ('en-us', lazy('English')),
+    ('de-de', lazy('Deutsch')),
+    ('it-it', lazy('Italiano')),
+    ('fr-fr', lazy('Francais')),
+    ('ru-ru', lazy('Russian')),
+)
+
+LANGUAGE_CODE = 'de-de'
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 TIME_ZONE = 'CET'
 
