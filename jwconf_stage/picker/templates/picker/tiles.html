@@ -13,8 +13,25 @@
     <title>JWConf Stage Login</title>
   </head>
   <body class="bg-dark fg-white h-vh-100 m4-cloak">
+
     <div class="container-fluid picker-screen h-100">
-        <h1 class="picker-screen-title">JWConf Stage Login</h1>
+      <div data-role="appbar bg-dark fg-white" data-expand-point="md">
+        <ul class="app-bar-menu">
+	  {% get_current_language as LANGUAGE_CODE %}
+          {% get_available_languages as LANGUAGES %}
+          {% get_language_info_list for LANGUAGES as languages %}
+          <li>
+              <a href="#" class="dropdown-toggle">Sprachen</a>
+              <ul class="d-menu" data-role="dropdown">
+	  	{% for language in languages %}
+	  	<li><a href="#">{{ language.name_local }}</a></li>
+	  	{% endfor %}
+              </ul>
+          </li>
+      </ul>
+    </div>
+    
+    <h1 class="picker-screen-title">JWConf Stage Login</h1>
         <div class="tiles-area clear">
 		{% trans "Versammlung waehlen" as chose_congregation %}
 		<div class="tiles-grid tiles-group size-2" data-group-title="{{ chose_congregation }}">
