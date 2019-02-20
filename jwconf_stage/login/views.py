@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from picker.models import Credential
 
 
-def index(request, congregation):
+def login(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     context = {
         'congregation': credentials.congregation,

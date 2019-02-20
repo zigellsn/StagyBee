@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
+from .models import Credential
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the picker index.")
+def picker(request):
+    credentials = Credential.objects.order_by('-congregation')
+    context = {'credentials': credentials}
+    return render(request, "picker/tiles.html", context)
