@@ -1,5 +1,14 @@
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+
+from picker.models import Credential
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+def index(request, congregation):
+    credentials = get_object_or_404(Credential, congregation=congregation)
+    context = {
+        'congregation': credentials.congregation,
+        'username': credentials.username,
+        'password': credentials.password,
+    }
+    # TODO: Turn touch on or off
+    return render(request, 'login/login.html', context)
