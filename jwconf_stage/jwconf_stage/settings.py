@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from django.utils.translation import ugettext_lazy as lazy
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -108,11 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGES = (
-    ('en-us', lazy('English')),
-    ('de-de', lazy('Deutsch')),
-    ('it-it', lazy('Italiano')),
-    ('fr-fr', lazy('Francais')),
-    ('ru-ru', lazy('Russian')),
+    ('en-us', _('English')),
+    ('de', _('Deutsch')),
+    ('it', _('Italiano')),
+    ('fr', _('Francais')),
+    ('ru', _('Russian')),
 )
 
 LANGUAGE_CODE = 'de-de'
