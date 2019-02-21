@@ -20,7 +20,7 @@
         {% get_current_language as LANGUAGE_CODE %}
         {% get_available_languages as LANGUAGES %}
         {% get_language_info_list for LANGUAGES as languages %}
-        <a href="{% url 'picker' %}" class="brand no-hover fg-white-hover order-1"><h1>JWConf Stage Login</h1></a>
+        <a href="{% url 'picker:picker' %}" class="brand no-hover fg-white-hover order-1"><h1>JWConf Stage Login</h1></a>
 
         <div class="app-bar-container ml-auto order-2 order-md-2">
             <ul class="app-bar-menu">
@@ -42,7 +42,7 @@
         {% trans "Versammlung wählen" as choose_congregation %}
         <div class="tiles-grid tiles-group size-4" data-group-title="{{ choose_congregation }}">
             {% for credential in credentials %}
-            <a href="{% url 'login' credential.congregation %}" data-role="tile" class="bg-indigo fg-white">
+            <a href="{% url 'login:login' credential.congregation %}" data-role="tile" class="bg-indigo fg-white">
                 <span class="pos-absolute pos-center">{{ credential.congregation }}</span>
             </a>
             {% endfor %}
