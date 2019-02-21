@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
-{% load i18n %}
+{% load i18n utils %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -27,8 +27,8 @@
                 <li>
 		    <a href="#" class="app-bar-item dropdown-toggle marker-light">{% trans "Sprache" %}</a>
                     <ul class="d-menu place-right bg-dark fg-white" data-role="dropdown">
-                        {% for language in languages %}
-			<li><a href="{% url 'picker:picker' %}">{{ language.name_local }}</a></li>
+                        {% for lang_code, lang_name in LANGUAGES %}
+			<li><a href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
