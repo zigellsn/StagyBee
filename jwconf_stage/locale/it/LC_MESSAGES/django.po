@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-04 15:37+0100\n"
+"POT-Creation-Date: 2019-03-04 17:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,14 +38,30 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
-#: .\picker\templates\picker\tiles.html:28
+#: .\picker\templates\picker\base.html:34
+msgid "Herunterfahren"
+msgstr ""
+
+#: .\picker\templates\picker\base.html:41
 msgid "Sprache"
 msgstr ""
 
-#: .\picker\templates\picker\tiles.html:42
+#: .\picker\templates\picker\shutdown.html:9
+msgid "Wirklich herunterfahren?"
+msgstr ""
+
+#: .\picker\templates\picker\shutdown.html:10
+msgid "Ja"
+msgstr ""
+
+#: .\picker\templates\picker\shutdown.html:11
+msgid "Nein"
+msgstr ""
+
+#: .\picker\templates\picker\tiles.html:9
 msgid "Versammlung wählen"
 msgstr "Scegli la riunione"
 
-#: .\picker\templates\picker\tiles.html:51
+#: .\picker\templates\picker\tiles.html:17
 msgid "JWConf Login Seite"
 msgstr "JWConf pagina di accesso"

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load i18n utils %}
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="JWConf Stage Login">
+    <meta name="keywords" content="JWConf, Login">
+    {% load static %}
+    <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
+    <link href="{% static 'picker/tiles.css' %}" rel="stylesheet" type="text/css">
+    <title>JWConf Stage Login</title>
+</head>
+<body class="bg-dark fg-white h-vh-100">
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="pos-fixed fixed-top app-bar-wrapper z-top">
+    <header class="container pos-relative bg-dark fg-white" data-role="appbar" data-expand="true"
+            data-expand-point="md">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <a href="{% url 'picker:picker' %}" class="brand no-hover fg-white-hover order-1"><h1>JWConf Stage Login</h1></a>
+
+	<ul class="app-bar-menu order-4 order-md-3">
+        	{% trans "Herunterfahren" as shutdown %}
+		<li><a href="{% url 'picker:confirm_shutdown' %}" class="fg-white-hover">{{ shutdown }}</a></li>
+	</ul>
+
+        <div class="app-bar-container ml-auto order-2 order-md-2">
+            <ul class="app-bar-menu">
+                <li>
+		    <a href="#" class="app-bar-item dropdown-toggle marker-light">{% trans "Sprache" %}</a>
+                    <ul class="d-menu place-right bg-dark fg-white" data-role="dropdown">
+                        {% for lang_code, lang_name in LANGUAGES %}
+			<li><a href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+</body>
+</html>
+
+
+
