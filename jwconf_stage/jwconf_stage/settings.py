@@ -108,14 +108,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGES = (
-    ('en-us', _('English')),
-    ('de', _('Deutsch')),
-    ('it', _('Italiano')),
-    ('fr', _('Francais')),
+    ('en', _('English')),
+    ('de', _('German')),
+    ('it', _('Italian')),
+    ('fr', _('French')),
     ('ru', _('Russian')),
 )
 
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'de'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),

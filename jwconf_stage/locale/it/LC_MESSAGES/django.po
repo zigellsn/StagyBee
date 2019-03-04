@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 19:25+0100\n"
+"POT-Creation-Date: 2019-03-04 15:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: jwconf_stage/settings.py:111
+#: .\jwconf_stage\settings.py:111
 msgid "English"
 msgstr ""
 
-#: jwconf_stage/settings.py:112
-msgid "Deutsch"
+#: .\jwconf_stage\settings.py:112
+msgid "German"
 msgstr ""
 
-#: jwconf_stage/settings.py:113
-msgid "Italiano"
+#: .\jwconf_stage\settings.py:113
+msgid "Italian"
 msgstr ""
 
-#: jwconf_stage/settings.py:114
-msgid "Francais"
+#: .\jwconf_stage\settings.py:114
+msgid "French"
 msgstr ""
 
-#: jwconf_stage/settings.py:115
+#: .\jwconf_stage\settings.py:115
 msgid "Russian"
 msgstr ""
 
-#: picker/templates/picker/tiles.html:28
+#: .\picker\templates\picker\tiles.html:28
 msgid "Sprache"
 msgstr ""
 
-#: picker/templates/picker/tiles.html:42
+#: .\picker\templates\picker\tiles.html:42
 msgid "Versammlung wählen"
-msgstr ""
+msgstr "Scegli la riunione"
 
-#: picker/templates/picker/tiles.html:51
+#: .\picker\templates\picker\tiles.html:51
 msgid "JWConf Login Seite"
-msgstr ""
+msgstr "JWConf pagina di accesso"
