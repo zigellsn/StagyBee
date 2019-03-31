@@ -5,7 +5,7 @@ from .models import Credential
 class CredentialForm(ModelForm):
     class Meta:
         model = Credential
-        fields = ['congregation', 'username', 'password', 'touch']
+        fields = ['congregation', 'autologin', 'username', 'password', 'touch']
         widgets = { 
             'password': PasswordInput(),
         }

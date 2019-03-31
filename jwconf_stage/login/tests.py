@@ -12,7 +12,7 @@ class LoginViewTests(TestCase):
         self.assertEqual(response.status_code, 404) 
 
     def test_one_congregation(self):
-        credential = picker_tests.create_credential('LE', 'abc', 'abc', False)
+        credential = picker_tests.create_credential('LE', 'abc', 'abc', 'abc', False)
         response = self.client.get(reverse('login:login', args=["LE"]))        
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, credential.congregation)
