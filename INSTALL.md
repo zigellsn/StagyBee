@@ -9,7 +9,7 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cd jwconf_stage
-python manage.py migrate
+python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py compilemessages
 python manage.py runserver
@@ -18,4 +18,7 @@ python manage.py runserver
 Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
 Create the required credential data sets.
 
-Open [http://127.0.0.1:8000/picker/](http://127.0.0.1:8000/picker/)
+Open [http://127.0.0.1:8000/picker/](http://127.0.0.1:8000/picker/). E.g.:
+```bash
+chromium-browser --incognito --kiosk http://127.0.0.1:8000/picker/
+```
