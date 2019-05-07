@@ -1,24 +1,15 @@
-<html>
-<head>
-    <title>JWConf Auto-Login Page</title>
-    <meta name="author" content="Simon Zigelli">
-    <meta name="description" content="JWConf Stage Login">
-    <meta name="keywords" content="JWConf, Login">
-    {% load static %}
-    <link href="{% static 'login/login.css' %}" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-<form action="https://jwconf.org/login.php?source=index.php&" name="form" method="post">
-    <input type="hidden" name="loginstatus" value="auth">
-    <input type="text" name="congregation" value="{{ congregation }}">
-    <input type="text" name="username" value="{{ username }}">
-    <input type="password" name="password" value="{{ password }}">
-    <input type="submit" id="login" value="Anmelden">
-</form>
-<script>
-    document.form.submit();
-</script>
-</body>
-
-</html>
+<!DOCTYPE html>
+{% extends 'login/base.html' %}
+{% load i18n utils %}
+{% block content %}
+{% if autologin %}
+    <iframe name="frame" src="https://jwconf.org/?key={{ autologin }}"
+            style="position:relative;top:0; left:0; bottom:0; right:0; width:100%; height:100%;border:none;">
+    </iframe>
+{% else %}
+    <!-- https://jwconf.org/login.php?source=index.php& -->
+    <iframe name="frame" src="{% url 'login:login_form' congregation %}"
+            style="position:relative;top:0; left:0; bottom:0; right:0; width:100%; height:100%;border:none;">
+    </iframe>
+{% endif %}
+{% endblock %}

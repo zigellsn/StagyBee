@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from pynput.keyboard import Key, Controller
 import importlib
 
 picker = importlib.import_module('picker.models')
@@ -12,6 +13,18 @@ def login(request, congregation):
         'congregation': credentials.congregation,
         'username': credentials.username,
         'password': credentials.password,
+        'autologin': credentials.autologin,
     }
     # TODO: Turn touch on or off
     return render(request, 'login/login.html', context)
+
+
+def login_form(request, congregation):
+    credentials = get_object_or_404(picker.Credential, congregation=congregation)
+    context = {
+        'congregation': credentials.congregation,
+        'username': credentials.username,
+        'password': credentials.password,
+        'autologin': credentials.autologin,
+    }
+    return render(request, 'login/login_form.html', context)

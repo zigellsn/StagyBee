@@ -13,7 +13,6 @@
     <title>JWConf Stage Login</title>
 </head>
 <body class="bg-dark fg-white h-vh-100">
-
 {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -21,7 +20,6 @@
     {% endfor %}
   </ul>
 {% endif %}
-
 <div class="pos-fixed fixed-top app-bar-wrapper z-top">
     <header class="container pos-relative bg-dark fg-white" data-role="appbar" data-expand="true"
             data-expand-point="md">
@@ -49,10 +47,8 @@
         </div>
     </header>
 </div>
-
 {% block content %}
 {% endblock %}
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 </body>
