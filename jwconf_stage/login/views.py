@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from pynput.keyboard import Key, Controller
 import importlib
 
 picker = importlib.import_module('picker.models')
