@@ -12,7 +12,7 @@
     <link href="{% static 'picker/tiles.css' %}" rel="stylesheet" type="text/css">
     <title>JWConf Stage Login</title>
 </head>
-<body class="bg-dark fg-white h-vh-100">
+<body class="bg-dark fg-white h-vh-100" onload="startTime()">
 {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -32,7 +32,7 @@
         	{% trans "Herunterfahren" as shutdown %}
 		<li><a href="{% url 'picker:confirm_shutdown' %}" class="fg-white-hover">{{ shutdown }}</a></li>
 	</ul>
-
+        <div id="currentTime" class="app-bar-item order-5 order-md-4"></div>
         <div class="app-bar-container ml-auto order-2 order-md-2">
             <ul class="app-bar-menu">
                 <li>
@@ -49,6 +49,10 @@
 </div>
 {% block content %}
 {% endblock %}
+<div class="pos-fixed fixed-bottom z-top text-small text-right p-3">
+Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
+</div>
+<script src="{% static 'picker/time.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 </body>
