@@ -21,6 +21,7 @@ urlpatterns = []
 urlpatterns += i18n_patterns(
     path('login/', include('login.urls')),
     path('picker/', include('picker.urls')),
+    path('receiver/', include('receiver.urls')),
     path('admin/', admin.site.urls),
     prefix_default_language=False
 )

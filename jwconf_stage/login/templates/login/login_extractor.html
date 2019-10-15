@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>JWConf Auto-Login Page</title>
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="JWConf Stage Login">
+    <meta name="keywords" content="JWConf, Login">
+    {% load static %}
+    <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
+    <link href="{% static 'login/login.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-dark fg-white h-vh-100">
+    <div id="listeners"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script>
+    let loc = window.location;
+    let protocol = 'ws://';
+    if (loc.protocol === 'https:') {
+        protocol = 'wss://'
+    }
+
+    console.log(`${protocol}${window.location.host}/ws/extractor/`);
+    let mySocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/extractor/`);
+
+    mySocket.onmessage = function(e) {
+        let listeners = $("#listeners");
+        console.log(e.data);
+        let data = JSON.parse(e.data);
+        let names = '';
+        let speak = '';
+        data.names.forEach(function(element) {
+            if (element.request_to_speak === "true") {
+                speak = 'fg-blue';
+            } else {
+                speak = 'fg-white';
+            }
+            names = `${names}<div class="${speak}">${element.name}</div>`;
+        });
+        listeners.replaceWith(`<div id="listeners">${names}</div>`)
+    };
+
+    mySocket.onclose = function(e) {
+        console.error('Socket closed unexpectedly');
+    };
+
+</script>
+</html>

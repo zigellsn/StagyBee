@@ -153,6 +153,7 @@ dmypy.json
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
+.idea/**/dataSources.xml
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
@@ -261,6 +262,7 @@ fabric.properties
 # SageMath parsed files
 
 # Environments
+*.env
 
 # Spyder project settings
 

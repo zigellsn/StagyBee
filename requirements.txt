@@ -1,2 +1,7 @@
+asgiref
+requests
+python-decouple
 django
+channels
+channels-redis
 markdown
