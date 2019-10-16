@@ -7,14 +7,14 @@ from django.views.decorators.http import require_POST
 
 @require_POST
 @csrf_exempt
-def receiver(request):
+def receiver(request, session_id):
     event = request.META.get('HTTP_X_JWCONFEXTRACTOR_ACTION', 'listeners')
 
     if event == 'listeners':
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             "extractor",
-            {"type": "extractor.listeners", "message": request.body.decode("utf-8")},
+            {"type": "extractor.listeners", "message": request.body.decode("utf-8"), "session": session_id},
         )
         return HttpResponse('success')
     elif event == 'meta':

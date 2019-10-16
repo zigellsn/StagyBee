@@ -41,7 +41,10 @@ class LoginExtractorView(View):
             'password': credentials.password,
             'autologin': credentials.autologin,
         }
-        url = "http://127.0.0.1:8000/receiver/"
+        if not request.session.session_key:
+            request.session.create()
+        print(request.session.session_key)
+        url = "http://127.0.0.1:8000/receiver/%s" % request.session.session_key
         if credentials.autologin is not None:
             payload = {"id": credentials.autologin, "url": url}
         else:
