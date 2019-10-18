@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 import importlib
 import urllib.parse
-# import requests
 
 picker = importlib.import_module('picker.models')
 
@@ -44,16 +43,4 @@ class LoginExtractorView(View):
             'autologin': credentials.autologin,
             'congregation_ws': urllib.parse.quote(credentials.congregation)
         }
-
-        url = "http://127.0.0.1:8000/receiver/%s/" % congregation_ws
-        if credentials.autologin is not None:
-            payload = {"id": credentials.autologin, "url": url}
-        else:
-            payload = {"congregation": credentials.congregation,
-                       "username": credentials.username,
-                       "password": credentials.password,
-                       "url": url}
-        # response = requests.post(credentials.extractor_url,
-        #                          json=payload)
-        # result = response.json()
         return render(request, 'login/login_extractor.html', context)

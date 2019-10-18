@@ -1,3 +1,5 @@
+from tabnanny import verbose
+
 from django.db import models
 
 
@@ -13,7 +15,8 @@ class Credential(models.Model):
     autologin = models.CharField(max_length=128, default="", blank=True)
     username = models.CharField(max_length=200, default="", blank=True)
     password = models.CharField(max_length=200, default="", blank=True)
-    extractor_url = models.CharField(max_length=200, default="http://localhost:5000/api/subscribe", blank=True)
+    extractor_url = models.CharField(max_length=200, default="http://localhost:5000/", blank=True,
+                                     verbose_name="Extractor URL")
     touch = models.BooleanField(default=True)
 
     objects = CredentialManager()

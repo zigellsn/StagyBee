@@ -2,19 +2,17 @@
 {% extends 'picker/base.html' %}
 {% load i18n utils %}
 {% block content %}
-	<div class="container-fluid picker-screen pt-20">
-		<div class="tiles-area clear">
-			{% trans "Versammlung wählen" as choose_congregation %}
-		        <div class="tiles-grid tiles-group size-4" data-group-title="{{ choose_congregation }}">
-				{% for credential in credentials %}
-					<a href="{% url 'login:login' credential.congregation %}" data-role="tile" class="bg-indigo fg-white">
-						<span class="pos-absolute pos-center">{{ credential.congregation }}</span>
-					</a>
-				{% endfor %}
-				<a href="https://jwconf.org/login.php?source=index.php&" data-role="tile" class="bg-orange fg-white col-3" data-size="wide">
-					<span class="pos-absolute pos-center">{% trans "JWConf Login Seite"  %}</span>
-				</a>
-			</div>
+	<div class="container-fluid pt-20">
+        {% trans "Versammlung wählen" as choose_congregation %}
+            <div class="tiles-grid tiles-group size-4" data-group-title="{{ choose_congregation }}">
+            {% for credential in credentials %}
+                <a href="{% url 'login:login' credential.congregation %}" data-role="tile" class="bg-indigo fg-white">
+                    <span class="pos-absolute pos-center">{{ credential.congregation }}</span>
+                </a>
+            {% endfor %}
+            <a href="https://jwconf.org/login.php?source=index.php&" data-role="tile" class="bg-orange fg-white col-3" data-size="wide">
+                <span class="pos-absolute pos-center">{% trans "JWConf Login Seite"  %}</span>
+            </a>
 		</div>
 	</div>
 {% endblock %}
