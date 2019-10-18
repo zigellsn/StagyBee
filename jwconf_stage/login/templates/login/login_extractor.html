@@ -12,34 +12,36 @@
 </head>
 
 <body class="bg-dark fg-white h-vh-100">
-    <div id="listeners"></div>
+    <div id="listeners">
+    </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script>
+    let congregation_ws = "{{ congregation_ws }}";
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
         protocol = 'wss://'
     }
 
-    console.log(`${protocol}${window.location.host}/ws/extractor/`);
-    let mySocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/extractor/`);
+    console.log(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`);
+    let mySocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/extractor/${congregation_ws}/`);
 
     mySocket.onmessage = function(e) {
         let listeners = $("#listeners");
-        console.log(e.data);
         let data = JSON.parse(e.data);
         let names = '';
         let speak = '';
         data.names.forEach(function(element) {
+            let name = element.name.split("\n");
             if (element.request_to_speak === "true") {
-                speak = 'fg-blue';
+                speak = 'bg-blue';
             } else {
-                speak = 'fg-white';
+                speak = 'bg-gray';
             }
-            names = `${names}<div class="${speak}">${element.name}</div>`;
+            names = `${names}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${name[0]} ${name[1]}</span><span class="badge inline">${name[2]}</span></div>`;
         });
         listeners.replaceWith(`<div id="listeners">${names}</div>`)
     };

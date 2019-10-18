@@ -4,5 +4,5 @@ from . import views
 
 app_name = 'receiver'
 urlpatterns = [
-    path('<str:session_id>', views.receiver, name='receiver'),
+    path('<str:congregation>/', views.receiver, name='receiver'),
 ]
