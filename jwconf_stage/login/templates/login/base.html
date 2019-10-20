@@ -16,6 +16,11 @@
             document.getElementById(element).setAttribute("src", url);
         }
     </script>
+    <style>
+        .app-bar-menu li {
+            list-style: none !important;
+        }
+    </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()">
 <header class="bg-dark fg-white d-flex flex-justify-between app-bar">
@@ -34,7 +39,7 @@
         </div>
     </div>
     <div class="app-bar-container ml-auto">
-        <div class="app-bar-item place-right"><span class="text-leader" id="currentTime"></span></div>
+        <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp></div>
     </div>
 </header>
 {% block content %}

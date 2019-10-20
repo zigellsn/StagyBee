@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container-fluid pt-20">
         {% trans "Versammlung wählen" as choose_congregation %}
-        <div class="tiles-grid tiles-group size-4" data-group-title="{{ choose_congregation }}">
+        <div class="tiles-grid tiles-group size-4 pos-top-center" data-group-title="{{ choose_congregation }}">
             {% for credential in credentials %}
                 <a href="{% url 'login:login' credential.congregation %}" data-role="tile" class="bg-indigo fg-white">
                     <span class="pos-absolute pos-center">{{ credential.congregation }}</span>

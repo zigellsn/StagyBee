@@ -11,8 +11,13 @@
     <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
     <link href="{% static 'picker/tiles.css' %}" rel="stylesheet" type="text/css">
     <title>JWConf Stage Login</title>
+    <style>
+        .app-bar-menu li {
+            list-style: none !important;
+        }
+    </style>
 </head>
-<body class="bg-dark fg-white h-vh-100" onload="startTime()">
+<body class="bg-dark fg-white" onload="startTime()">
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -20,34 +25,39 @@
         {% endfor %}
     </ul>
 {% endif %}
-<div class="pos-fixed fixed-top app-bar-wrapper z-top">
-    <header class="container pos-relative bg-dark fg-white" data-role="appbar" data-expand="true"
-            data-expand-point="md">
-        {% get_current_language as LANGUAGE_CODE %}
-        {% get_available_languages as LANGUAGES %}
-        {% get_language_info_list for LANGUAGES as languages %}
-        <a href="{% url 'picker:picker' %}" class="brand no-hover fg-white-hover order-1"><h1>JWConf Stage Login</h1>
-        </a>
-
-        <ul class="app-bar-menu order-4 order-md-3">
+<header class="bg-dark fg-white d-flex flex-justify-between app-bar">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
+    <div class="app-bar-container float-none">
+        <div class="app-bar-item pl-4 pr-4">
+            <a href="{% url 'picker:picker' %}" class="brand"><span class="display1">JWConf Stage Login</span></a>
+        </div>
+    </div>
+    <div class="app-bar-container ml-auto">
+        {% if shutdown_icon %}
             {% trans "Herunterfahren" as shutdown %}
-            <li><a href="{% url 'picker:confirm_shutdown' %}" class="fg-white-hover">{{ shutdown }}</a></li>
-        </ul>
-        <div id="currentTime" class="app-bar-item order-5 order-md-4"></div>
-        <div class="app-bar-container ml-auto order-2 order-md-2">
-            <ul class="app-bar-menu">
-                <li>
-                    <a href="#" class="app-bar-item dropdown-toggle marker-light">{% trans "Sprache" %}</a>
-                    <ul class="d-menu place-right bg-dark fg-white" data-role="dropdown">
-                        {% for lang_code, lang_name in LANGUAGES %}
-                            <li><a href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
+            <a class="app-bar-item" href="{% url 'picker:confirm_shutdown' %}">
+                <div class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
+                     data-hint-position="bottom">
+                </div>
+            </a>
+        {% endif %}
+        <div class="app-bar-container float-left">
+            <a href="#" class="app-bar-item dropdown-toggle marker-light">
+                <div class="mif-language mif-3x" data-role="hint" data-hint-text="{% trans "Sprache" %}"
+                     data-hint-position="bottom"></div>
+            </a>
+            <ul class="d-menu place-right bg-dark fg-white" data-role="dropdown">
+                {% for lang_code, lang_name in LANGUAGES %}
+                    <li><a href="{% translate_url lang_code %}"><span class="">{{ lang_name }}</span></a></li>
+                {% endfor %}
             </ul>
         </div>
-    </header>
-</div>
+        <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp></div>
+    </div>
+</header>
+
 {% block content %}
 {% endblock %}
 <div class="pos-fixed fixed-bottom z-top text-small text-right p-3">
