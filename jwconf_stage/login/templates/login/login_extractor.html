@@ -1,64 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>JWConf Auto-Login Page</title>
-    <meta name="author" content="Simon Zigelli">
-    <meta name="description" content="JWConf Stage Login">
-    <meta name="keywords" content="JWConf, Login">
-    {% load static %}
-    <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
-    <link href="{% static 'login/login.css' %}" rel="stylesheet" type="text/css">
-</head>
-
-<body class="bg-dark fg-white h-vh-100">
-    <div id="listeners">
+{% extends 'login/base.html' %}
+{% load i18n utils %}
+{% block content %}
+    <div class="container-fluid pt-20" id="listeners">
     </div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
-<script>
-    let congregation_ws = '{{ congregation_ws }}';
-    let loc = window.location;
-    let protocol = 'ws://';
-    if (loc.protocol === 'https:') {
-        protocol = 'wss://'
-    }
-
-    let mySocket = new ReconnectingWebSocket(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`, '', '');
-    let listeners = document.getElementById('listeners');
-
-    mySocket.onmessage = function(e) {
-        let data = JSON.parse(e.data);
-        let names = '';
-        for (const element of data.names) {
-            let speak = '';
-            let fullName = '';
-            if (element.givenName === '' && element.familyName === '')
-                continue;
-            else if (element.givenName === '') {
-                fullName = element.familyName;
-            } else if (element.familyName === '') {
-                fullName = element.givenName;
-            } else {
-                fullName = `${element.givenName} ${element.familyName}`
-            }
-            if (element.requestToSpeak === true) {
-                speak = 'bg-blue';
-            } else {
-                speak = 'bg-gray';
-            }
-            names = `${names}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}</span>&nbsp;<span class="badge inline">${element.listenerCount}</span></div>`;
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script>
+        let congregation_ws = '{{ congregation_ws }}';
+        let loc = window.location;
+        let protocol = 'ws://';
+        if (loc.protocol === 'https:') {
+            protocol = 'wss://'
         }
-        let new_element = document.createElement('div');
-        new_element.innerHTML = names;
-        listeners.innerHTML = '';
-        listeners.appendChild(new_element);
-    };
 
-    mySocket.onclose = function(_) {
-        console.error('Socket closed unexpectedly');
-    };
+        let mySocket = new ReconnectingWebSocket(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`, '', '');
+        let listeners = document.getElementById('listeners');
 
-</script>
-</html>
+        mySocket.onmessage = function (e) {
+            let data = JSON.parse(e.data);
+            let namesHtml = '';
+            for (const element of data.names) {
+                let speak = '';
+                let fullName = '';
+                if (element.givenName === '' && element.familyName === '')
+                    continue;
+                else if (element.givenName === '') {
+                    fullName = element.familyName;
+                } else if (element.familyName === '') {
+                    fullName = element.givenName;
+                } else {
+                    fullName = `${element.givenName} ${element.familyName}`
+                }
+                if (element.requestToSpeak === true) {
+                    speak = 'bg-blue';
+                } else {
+                    speak = 'bg-gray';
+                }
+                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}</span>&nbsp;<span class="badge inline">${element.listenerCount}</span></div>`;
+            }
+            let new_element = document.createElement('div');
+            new_element.innerHTML = namesHtml;
+            listeners.innerHTML = '';
+            listeners.appendChild(new_element);
+        };
+
+        mySocket.onclose = function (_) {
+            console.error('Socket closed unexpectedly');
+        };
+
+    </script>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .forms import CredentialForm
 
+from .forms import CredentialForm
 from .models import Credential
 
 

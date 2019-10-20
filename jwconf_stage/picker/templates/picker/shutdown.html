@@ -4,19 +4,19 @@
 {% load i18n utils %}
 
 {% block content %}
-	<div class="container-fluid picker-screen pt-20">
-		<div class="tiles-area clear">
-			{% trans "Wirklich herunterfahren?" as shutdown %}
-			{% trans "Ja" as yes %}
-			{% trans "Nein" as no %}
-		        <div class="tiles-grid tiles-group size-2" data-group-title="{{ shutdown }}">
-			        	<a href="{% url 'picker:picker' %}" data-role="tile" class="bg-red fg-white">
-				        	<span class="pos-absolute pos-center">{{ no }}</span>
-			        	</a>
-			        	<a href="{% url 'picker:shutdown' %}" data-role="tile" class="bg-blue fg-white">
-				        	<span class="pos-absolute pos-center">{{ yes }}</span>
-			        	</a>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid picker-screen pt-20">
+        <div class="tiles-area clear">
+            {% trans "Wirklich herunterfahren?" as shutdown %}
+            {% trans "Ja" as yes %}
+            {% trans "Nein" as no %}
+            <div class="tiles-grid tiles-group size-2" data-group-title="{{ shutdown }}">
+                <a href="{% url 'picker:picker' %}" data-role="tile" class="bg-red fg-white">
+                    <span class="pos-absolute pos-center">{{ no }}</span>
+                </a>
+                <a href="{% url 'picker:shutdown' %}" data-role="tile" class="bg-blue fg-white">
+                    <span class="pos-absolute pos-center">{{ yes }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

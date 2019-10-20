@@ -1,4 +1,5 @@
 import importlib
+import json
 
 import requests
 from channels.db import database_sync_to_async
@@ -26,6 +27,25 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         await self.connect_to_extractor()
         await self.accept()
 
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.congregation_group_name,
+            self.channel_name
+        )
+        await self.disconnect_from_extractor()
+
+    async def extractor_listeners(self, event):
+        await self.send_json(event["message"])
+
+    async def encode_json(self, content):
+        if type(content) == bytes:
+            new_content = json.loads(content)
+            if type(new_content) == dict:
+                return json.dumps(new_content)
+            return new_content
+        else:
+            return await super().encode_json(content=content)
+
     async def connect_to_extractor(self):
         self.credentials = await database_sync_to_async(get_object_or_404)(picker.Credential,
                                                                            congregation=self.congregation)
@@ -47,15 +67,8 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             print(e)
         else:
             success = response.json()["success"]
-            if success == "true":
+            if success:
                 self.sessionId = response.json()["sessionId"]
-
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.congregation_group_name,
-            self.channel_name
-        )
-        await self.disconnect_from_extractor()
 
     async def disconnect_from_extractor(self):
         if self.sessionId is not None:
@@ -65,8 +78,5 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                 print(e)
             else:
                 success = response.json()["success"]
-                if success == "true":
+                if success:
                     self.sessionId = None
-
-    async def extractor_listeners(self, event):
-        await self.send_json(event["message"])

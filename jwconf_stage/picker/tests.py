@@ -1,6 +1,7 @@
+import importlib
+
 from django.test import TestCase
 from django.urls import reverse
-import importlib
 
 picker = importlib.import_module('picker.models')
 

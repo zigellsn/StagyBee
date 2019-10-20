@@ -11,16 +11,16 @@
 </head>
 
 <body>
-    <form action="https://jwconf.org/login.php?source=index.php&" target="frame" name="form" method="post">
-        <input type="hidden" name="loginstatus" value="auth">
-        <input type="hidden" name="congregation" value="{{ congregation }}">
-        <input type="hidden" name="username" value="{{ username }}">
-        <input type="hidden" name="password" value="{{ password }}">
-        <input type="hidden" id="login" value="Anmelden">
-    </form>
-    <script>
-        document.form.submit();
-    </script>
+<form action="https://jwconf.org/login.php?source=index.php&" target="frame" name="form" method="post">
+    <input type="hidden" name="loginstatus" value="auth">
+    <input type="hidden" name="congregation" value="{{ congregation }}">
+    <input type="hidden" name="username" value="{{ username }}">
+    <input type="hidden" name="password" value="{{ password }}">
+    <input type="hidden" id="login" value="Anmelden">
+</form>
+<script>
+    document.form.submit();
+</script>
 </body>
 
 </html>

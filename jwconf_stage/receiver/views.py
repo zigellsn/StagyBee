@@ -1,9 +1,8 @@
-from django.http import HttpResponse
-from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-import json
 
 
 @require_POST
@@ -15,7 +14,7 @@ def receiver(request, congregation):
         congregation_group_name = 'congregation_%s' % congregation
         async_to_sync(channel_layer.group_send)(
             congregation_group_name,
-            {"type": "extractor_listeners", "message": json.loads(request.body)},
+            {"type": "extractor_listeners", "message": request.body},
         )
         return HttpResponse('success')
     elif event == 'meta':

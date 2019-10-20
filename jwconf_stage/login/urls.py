@@ -6,5 +6,4 @@ app_name = 'login'
 urlpatterns = [
     path('<str:congregation>', views.login, name='login'),
     path('form/<str:congregation>', views.login_form, name='login_form'),
-    path('extractor/<str:congregation>', views.LoginExtractorView.as_view(), name='login_extractor'),
-    ]
+]
