@@ -1,7 +1,17 @@
 function startTime() {
     let now = new Date();
-    document.getElementById('currentTime').innerHTML =
-        `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    let element = document.getElementById('currentTime');
+    if (element != null)
+        element.innerHTML = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    element = document.getElementById('currentHour');
+    if (element != null)
+        element.innerHTML = `${pad(now.getHours())}`;
+    element = document.getElementById('currentMinute');
+    if (element != null)
+        element.innerHTML = `${pad(now.getMinutes())}`;
+    element = document.getElementById('currentSecond');
+    if (element != null)
+        element.innerHTML = `${pad(now.getSeconds())}`;
     setTimeout(startTime, 500);
 }
 

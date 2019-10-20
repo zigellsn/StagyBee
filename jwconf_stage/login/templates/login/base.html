@@ -17,24 +17,30 @@
         }
     </script>
 </head>
-<body class="bg-dark fg-white h-vh-100">
-<div class="pos-fixed fixed-top app-bar-wrapper z-top">
-    <header class="container bg-dark fg-white" data-role="appbar" data-expand="true"
-            data-expand-point="md">
-        {% if touch %}
-            <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')" href="{% url 'picker:picker' %}">
-                <span class="mif-arrow-left mif-4x fg-white place-left" style="margin-left: 10px;"></span>
-            </a>
-        {% else %}
-            <a href="{% url 'picker:picker' %}">
-                <span class="mif-arrow-left mif-4x fg-white place-left" style="margin-left: 10px;"></span>
-            </a>
-        {% endif %}
-    </header>
-</div>
+<body class="bg-dark fg-white" onload="startTime()">
+<header class="bg-dark fg-white d-flex flex-justify-between app-bar">
+    <div class="app-bar-container float-none">
+        <div class="app-bar-item pl-4 pr-4 pt-2">
+            {% if touch %}
+                <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
+                   href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% else %}
+                <a href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="app-bar-container ml-auto">
+        <div class="app-bar-item place-right"><span class="text-leader" id="currentTime"></span></div>
+    </div>
+</header>
 {% block content %}
 {% endblock %}
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script src="{% static 'picker/time.js' %}"></script>
 </body>
 </html>
 
