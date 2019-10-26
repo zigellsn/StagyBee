@@ -29,28 +29,36 @@
     {% get_current_language as LANGUAGE_CODE %}
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}
+    {% trans "Neu starten" as reboot %}
+    {% trans "Herunterfahren" as shutdown %}
+    {% trans "Bist du sicher?" as confirm %}
+
     <div class="app-bar-container float-none">
         <div class="app-bar-item pl-4 pr-4">
             <a href="{% url 'picker:picker' %}" class="brand"><span class="display1">JWConf Stage Login</span></a>
         </div>
     </div>
-    <div class="app-bar-container ml-auto">
+    <div class="app-bar-container mega ml-auto">
         {% if shutdown_icon %}
-            {% trans "Herunterfahren" as shutdown %}
-            <a class="app-bar-item" href="{% url 'picker:confirm_shutdown' %}">
+            <a href="#" class="app-bar-item dropdown-toggle marker-light">
                 <div class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
                      data-hint-position="bottom">
                 </div>
             </a>
+            <ul class="d-menu p-2 bg-dark fg-white" data-role="dropdown">
+                <li class="bg-blue-hover"><a href="#" onclick="openDemoDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a></li>
+                <li class="bg-blue-hover"><a href="#" onclick="openDemoDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a></li>
+            </ul>
         {% endif %}
         <div class="app-bar-container float-left">
             <a href="#" class="app-bar-item dropdown-toggle marker-light">
                 <div class="mif-language mif-3x" data-role="hint" data-hint-text="{% trans "Sprache" %}"
                      data-hint-position="bottom"></div>
             </a>
-            <ul class="d-menu place-right bg-dark fg-white" data-role="dropdown">
+            <ul class="d-menu p-2 bg-dark fg-white" data-role="dropdown">
                 {% for lang_code, lang_name in LANGUAGES %}
-                    <li><a href="{% translate_url lang_code %}"><span class="">{{ lang_name }}</span></a></li>
+                    <li class="bg-blue-hover"><a href="{% translate_url lang_code %}"><span
+                            class="">{{ lang_name }}</span></a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -65,5 +73,26 @@
 </div>
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script>
+    function openDemoDialogActions(dialogTitle, target){
+        Metro.dialog.create({
+            title: dialogTitle,
+            content: "<div>{{ confirm }}</div>",
+            actions: [
+                {
+                    caption: "{% trans "Nein" %}",
+                    cls: "js-dialog-close alert"
+                },
+                {
+                    caption: "{% trans "Ja" %}",
+                    cls: "js-dialog-close",
+                    onclick: function(){
+                        window.location.href = target;
+                    }
+                }
+            ]
+        });
+    }
+</script>
 </body>
 </html>
