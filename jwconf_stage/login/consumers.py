@@ -6,6 +6,8 @@ from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.shortcuts import get_object_or_404
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 picker = importlib.import_module('picker.models')
 
@@ -64,8 +66,11 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "password": self.credentials.password,
                        "url": url}
         try:
-            response = requests.post(self.extractor_url + "api/subscribe",
-                                     json=payload)
+            s = requests.Session()
+            retries = Retry(total=5, backoff_factor=0.2)
+            s.mount('http://', HTTPAdapter(max_retries=retries))
+            response = s.post(self.extractor_url + "api/subscribe",
+                              json=payload)
         except requests.exceptions.RequestException as e:
             await self.send_json("connection_error")
         else:
@@ -80,7 +85,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             try:
                 response = requests.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId)
             except requests.exceptions.RequestException as e:
-                print(e)
+                await self.send_json("extractor_not_available")
             else:
                 success = response.json()["success"]
                 if success:

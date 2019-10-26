@@ -9,6 +9,7 @@
     </div>
     {% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." as error_message %}
     <div class="pos-fixed pos-center" id="errorMessage" style="display:none">
+        <span class="pos-center mif-cancel mif-5x fg-red"></span>
         <div>{{ error_message }}</div>
     </div>
     <div class="container-fluid pt-20" id="listeners">
@@ -31,6 +32,8 @@
 
         mySocket.onopen = function (_) {
             console.log("WebSocket CONNECT successful")
+            activity.style.display = '';
+            errorMessage.style.display = 'none';
         };
 
         mySocket.onmessage = function (e) {
