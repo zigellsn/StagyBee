@@ -1,13 +1,12 @@
 import importlib
 import json
+import aiohttp
+import backoff
 
-import requests
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.shortcuts import get_object_or_404
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 picker = importlib.import_module('picker.models')
 
@@ -21,6 +20,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
+        self.session = aiohttp.ClientSession()
 
     async def connect(self):
         await self.channel_layer.group_add(
@@ -66,28 +66,33 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "password": self.credentials.password,
                        "url": url}
         try:
-            s = requests.Session()
-            retries = Retry(total=5, backoff_factor=0.2)
-            s.mount('http://', HTTPAdapter(max_retries=retries))
-            response = s.post(self.extractor_url + "api/subscribe",
-                              json=payload)
-        except requests.exceptions.RequestException as e:
-            await self.send_json("connection_error")
-        else:
-            success = response.json()["success"]
-            if success:
-                self.sessionId = response.json()["sessionId"]
-                await self.send_json("subscribed_to_extractor")
-        await self.send_json("extractor_not_available")
+            await self.post_request(self.extractor_url + "api/subscribe", payload)
+        except aiohttp.ClientError as e:
+            await self.send_json("extractor_not_available")
+            await self.session.close()
 
     async def disconnect_from_extractor(self):
+        if not self.session.closed:
+            await self.session.close()
         if self.sessionId is not None:
             try:
-                response = requests.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId)
-            except requests.exceptions.RequestException as e:
+                async with self.session.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId) as response:
+                    resp = await response.json()
+            except aiohttp.ClientError as e:
                 await self.send_json("extractor_not_available")
             else:
-                success = response.json()["success"]
+                success = resp["success"]
                 if success:
                     await self.send_json("unsubscribed_from_extractor")
                     self.sessionId = None
+                await self.session.close()
+
+    @backoff.on_exception(backoff.expo, aiohttp.ClientError, max_time=3)
+    async def post_request(self, url, payload):
+        async with self.session.post(url,
+                                     json=payload) as response:
+            resp = await response.json()
+            success = resp["success"]
+            if success:
+                self.sessionId = resp["sessionId"]
+                await self.send_json("subscribed_to_extractor")
