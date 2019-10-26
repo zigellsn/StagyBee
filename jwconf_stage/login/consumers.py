@@ -3,6 +3,7 @@ import json
 
 import requests
 from channels.db import database_sync_to_async
+from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.shortcuts import get_object_or_404
 
@@ -16,7 +17,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         self.congregation = self.scope['url_route']['kwargs']['congregation']
         self.congregation_group_name = 'congregation_%s' % self.congregation
         self.credentials = None
-        self.sessionId = ""
+        self.sessionId = None
         self.extractor_url = ""
 
     async def connect(self):
@@ -24,8 +25,8 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             self.congregation_group_name,
             self.channel_name
         )
-        await self.connect_to_extractor()
         await self.accept()
+        await self.connect_to_extractor()
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -33,9 +34,11 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.disconnect_from_extractor()
+        raise StopConsumer()
 
     async def extractor_listeners(self, event):
-        await self.send_json(event["message"])
+        await self.send_json("subscribed_to_extractor")
+        await self.send_json(event["listeners"])
 
     async def encode_json(self, content):
         if type(content) == bytes:
@@ -64,11 +67,13 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             response = requests.post(self.extractor_url + "api/subscribe",
                                      json=payload)
         except requests.exceptions.RequestException as e:
-            print(e)
+            await self.send_json("connection_error")
         else:
             success = response.json()["success"]
             if success:
                 self.sessionId = response.json()["sessionId"]
+                await self.send_json("subscribed_to_extractor")
+        await self.send_json("extractor_not_available")
 
     async def disconnect_from_extractor(self):
         if self.sessionId is not None:
@@ -79,4 +84,5 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             else:
                 success = response.json()["success"]
                 if success:
+                    await self.send_json("unsubscribed_from_extractor")
                     self.sessionId = None

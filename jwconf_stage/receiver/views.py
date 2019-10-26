@@ -14,7 +14,7 @@ def receiver(request, congregation):
         congregation_group_name = 'congregation_%s' % congregation
         async_to_sync(channel_layer.group_send)(
             congregation_group_name,
-            {"type": "extractor_listeners", "message": request.body},
+            {"type": "extractor_listeners", "listeners": request.body},
         )
         return HttpResponse('success')
     elif event == 'meta':

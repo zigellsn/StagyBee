@@ -2,10 +2,23 @@
 {% extends 'login/base.html' %}
 {% load i18n utils %}
 {% block content %}
+    {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." as connect %}
+    <div class="pos-fixed pos-center" id="activity">
+        <div class="pos-center" data-role="activity" data-type="ring" ></div>
+        <div>{{ connect }}</div>
+    </div>
+    {% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." as error_message %}
+    <div class="pos-fixed pos-center" id="errorMessage" style="display:none">
+        <div>{{ error_message }}</div>
+    </div>
     <div class="container-fluid pt-20" id="listeners">
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script>
+        let listeners = document.getElementById('listeners');
+        let activity = document.getElementById('activity');
+        let errorMessage = document.getElementById('errorMessage');
+
         let congregation_ws = '{{ congregation_ws }}';
         let loc = window.location;
         let protocol = 'ws://';
@@ -13,30 +26,45 @@
             protocol = 'wss://'
         }
 
-        let mySocket = new ReconnectingWebSocket(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`, '', '');
-        let listeners = document.getElementById('listeners');
+        let mySocket = new ReconnectingWebSocket(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`,
+            null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+
+        mySocket.onopen = function (_) {
+            console.log("WebSocket CONNECT successful")
+        };
 
         mySocket.onmessage = function (e) {
             let data = JSON.parse(e.data);
             let namesHtml = '';
-            for (const element of data.names) {
+            if (data === 'connection_error')
+                return;
+            if (data === 'extractor_not_available') {
+                activity.style.display = 'none';
+                errorMessage.style.display = '';
+                return;
+            }
+
+            activity.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            for (const element of data['names']) {
                 let speak = '';
                 let fullName = '';
-                if (element.givenName === '' && element.familyName === '')
+                if (element['givenName'] === '' && element['familyName'] === '')
                     continue;
-                else if (element.givenName === '') {
-                    fullName = element.familyName;
-                } else if (element.familyName === '') {
-                    fullName = element.givenName;
+                else if (element['givenName'] === '') {
+                    fullName = element['familyName'];
+                } else if (element['familyName'] === '') {
+                    fullName = element['givenName'];
                 } else {
-                    fullName = `${element.givenName} ${element.familyName}`
+                    fullName = `${element['givenName']} ${element['familyName']}`
                 }
-                if (element.requestToSpeak === true) {
+                if (element['requestToSpeak'] === true) {
                     speak = 'bg-blue';
                 } else {
                     speak = 'bg-gray';
                 }
-                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}</span>&nbsp;<span class="badge inline">${element.listenerCount}</span></div>`;
+                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}</span>&nbsp;<span class="badge inline">${element['listenerCount']}</span></div>`;
             }
             let new_element = document.createElement('div');
             new_element.innerHTML = namesHtml;
