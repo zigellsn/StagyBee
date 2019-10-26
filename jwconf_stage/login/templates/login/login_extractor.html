@@ -60,8 +60,10 @@
                 } else {
                     fullName = `${element['givenName']} ${element['familyName']}`
                 }
-                if (element['requestToSpeak'] === true) {
+                if (element['requestToSpeak'] === true && element['speaking'] === false) {
                     speak = 'bg-blue';
+                } else if (element['speaking'] === true) {
+                    speak = 'bg-green';
                 } else {
                     speak = 'bg-gray';
                 }

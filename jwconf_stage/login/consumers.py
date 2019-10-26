@@ -20,7 +20,6 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
-        self.session = aiohttp.ClientSession()
 
     async def connect(self):
         await self.channel_layer.group_add(
@@ -67,32 +66,30 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "url": url}
         try:
             await self.post_request(self.extractor_url + "api/subscribe", payload)
-        except aiohttp.ClientError as e:
+        except aiohttp.ClientError:
             await self.send_json("extractor_not_available")
-            await self.session.close()
 
     async def disconnect_from_extractor(self):
-        if not self.session.closed:
-            await self.session.close()
         if self.sessionId is not None:
             try:
-                async with self.session.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId) as response:
-                    resp = await response.json()
-            except aiohttp.ClientError as e:
+                async with aiohttp.ClientSession() as session:
+                    async with session.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId) as response:
+                        resp = await response.json()
+            except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")
             else:
                 success = resp["success"]
                 if success:
                     await self.send_json("unsubscribed_from_extractor")
                     self.sessionId = None
-                await self.session.close()
 
-    @backoff.on_exception(backoff.expo, aiohttp.ClientError, max_time=3)
+    @backoff.on_exception(backoff.expo, aiohttp.ClientError, max_time=10)
     async def post_request(self, url, payload):
-        async with self.session.post(url,
-                                     json=payload) as response:
-            resp = await response.json()
-            success = resp["success"]
-            if success:
-                self.sessionId = resp["sessionId"]
-                await self.send_json("subscribed_to_extractor")
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url,
+                                    json=payload) as response:
+                resp = await response.json()
+                success = resp["success"]
+                if success:
+                    self.sessionId = resp["sessionId"]
+                    await self.send_json("subscribed_to_extractor")
