@@ -1,8 +1,9 @@
+import socket
 from subprocess import call
+from sys import platform
 
 from django.http import HttpResponse
 from django.shortcuts import render
-import socket
 
 from .models import Credential
 
@@ -29,12 +30,20 @@ def picker(request):
 
 
 def shutdown(request):
-    call(['shutdown', '-h', 'now'], shell=False)
+    if platform.startswith('freebsd') or platform.startswith('linux') or platform.startswith(
+            'aix') or platform.startswith('cygwin'):
+        call(['sh shutdown.sh', '-h', 'now'], shell=False)
+    elif platform.startswith('win32'):
+        call(['shutdown.bat', '-h'], shell=False)
     return HttpResponse("Shutdown in progress")
 
 
 def reboot(request):
-    call(['shutdown', '-r', 'now'], shell=False)
+    if platform.startswith('freebsd') or platform.startswith('linux') or platform.startswith(
+            'aix') or platform.startswith('cygwin'):
+        call(['sh shutdown.sh', '-r'], shell=False)
+    elif platform.startswith('win32'):
+        call(['shutdown.bat', '-r'], shell=False)
     return HttpResponse("Reboot in progress")
 
 
