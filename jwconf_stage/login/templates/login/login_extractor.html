@@ -4,7 +4,7 @@
 {% block content %}
     {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." as connect %}
     <div class="pos-fixed pos-center" id="activity">
-        <div class="pos-center" data-role="activity" data-type="ring" ></div>
+        <div class="pos-center" data-role="activity" data-type="ring"></div>
         <div>{{ connect }}</div>
     </div>
     {% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." as error_message %}
@@ -12,11 +12,16 @@
         <span class="pos-center mif-cancel mif-5x fg-red"></span>
         <div>{{ error_message }}</div>
     </div>
-    <div class="container-fluid pt-20" id="listeners">
+    {% trans "Zuhörerer gesamt:" as sum_listeners %}
+    <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
+                                                                                        id="sumListenersNumber"></span>
     </div>
+    <div id="listeners"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script>
         let listeners = document.getElementById('listeners');
+        let sumListenersContainer = document.getElementById('sumListeners');
+        let sumListenersNumber = document.getElementById('sumListenersNumber');
         let activity = document.getElementById('activity');
         let errorMessage = document.getElementById('errorMessage');
 
@@ -31,9 +36,10 @@
             null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
         mySocket.onopen = function (_) {
-            console.log("WebSocket CONNECT successful")
+            console.log("WebSocket CONNECT successful");
             activity.style.display = '';
             errorMessage.style.display = 'none';
+            sumListenersContainer.style.display = 'none';
         };
 
         mySocket.onmessage = function (e) {
@@ -42,13 +48,28 @@
             if (data === 'extractor_not_available') {
                 activity.style.display = 'none';
                 errorMessage.style.display = '';
+                sumListenersContainer.display = 'none';
                 return;
             }
 
             activity.style.display = 'none';
             errorMessage.style.display = 'none';
+            sumListenersContainer.style.display = '';
 
-            for (const element of data['names']) {
+            let sumListeners = 0;
+            let names = data['names'];
+            names.sort(function (a, b) {
+                if (a['familyName'] < b['familyName'])
+                    return -1;
+                if (a['familyName'] > b['familyName'])
+                    return 1;
+                if (a['givenName'] < b['givenName'])
+                    return -1;
+                if (a['givenName'] > b['givenName'])
+                    return 1;
+                return 0;
+            });
+            for (const element of names) {
                 let speak = '';
                 let fullName = '';
                 if (element['givenName'] === '' && element['familyName'] === '')
@@ -67,12 +88,14 @@
                 } else {
                     speak = 'bg-gray';
                 }
-                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}</span>&nbsp;<span class="badge inline">${element['listenerCount']}</span></div>`;
+                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
+                sumListeners += element['listenerCount'];
             }
             let new_element = document.createElement('div');
             new_element.innerHTML = namesHtml;
             listeners.innerHTML = '';
             listeners.appendChild(new_element);
+            sumListenersNumber.textContent = sumListeners.toString();
         };
 
         mySocket.onclose = function (_) {
