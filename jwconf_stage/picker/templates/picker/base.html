@@ -9,7 +9,7 @@
     <meta name="keywords" content="JWConf, Login">
     {% load static %}
     <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
-    <link href="{% static 'picker/tiles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'picker/picker.css' %}" rel="stylesheet" type="text/css">
     <title>JWConf Stage Login</title>
     <style>
         .app-bar-menu li {
@@ -18,13 +18,6 @@
     </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()">
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
 <header class="bg-dark fg-white d-flex flex-justify-between app-bar">
     {% get_current_language as LANGUAGE_CODE %}
     {% get_available_languages as LANGUAGES %}
@@ -46,8 +39,12 @@
                 </div>
             </a>
             <ul class="d-menu p-2 bg-dark fg-white" data-role="dropdown">
-                <li class="bg-blue-hover"><a href="#" onclick="openDemoDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a></li>
-                <li class="bg-blue-hover"><a href="#" onclick="openDemoDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a></li>
+                <li class="bg-blue-hover"><a href="#"
+                                             onclick="openDemoDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
+                </li>
+                <li class="bg-blue-hover"><a href="#"
+                                             onclick="openDemoDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
+                </li>
             </ul>
         {% endif %}
         <div class="app-bar-container float-left">
@@ -65,16 +62,28 @@
         <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp></div>
     </div>
 </header>
-
-{% block content %}
-{% endblock %}
+<div class="notify-container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <main class="pr-1-sx pl-1-sx pr-1-md pl-1-md">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
 <div class="pos-fixed fixed-bottom z-top text-small text-right p-3">
     Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
 </div>
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script>
-    function openDemoDialogActions(dialogTitle, target){
+    function openDemoDialogActions(dialogTitle, target) {
         Metro.dialog.create({
             title: dialogTitle,
             content: "<div>{{ confirm }}</div>",
@@ -86,7 +95,7 @@
                 {
                     caption: "{% trans "Ja" %}",
                     cls: "js-dialog-close",
-                    onclick: function(){
+                    onclick: function () {
                         window.location.href = target;
                     }
                 }

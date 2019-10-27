@@ -23,7 +23,7 @@
     </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()">
-<header class="bg-dark fg-white d-flex flex-justify-between app-bar">
+<header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
     <div class="app-bar-container float-none">
         <div class="app-bar-item pl-4 pr-4 pt-2">
             {% if touch %}
@@ -38,12 +38,28 @@
             {% endif %}
         </div>
     </div>
-    <div class="app-bar-container ml-auto">
-        <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp></div>
-    </div>
+    {% if not touch %}
+        <div class="app-bar-container ml-auto">
+            <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp>
+            </div>
+        </div>
+    {% endif %}
 </header>
-{% block content %}
-{% endblock %}
+<div class="notify-container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <main class="pr-1-sx pl-1-sx pr-1-md pl-1-md">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script src="{% static 'picker/time.js' %}"></script>
 </body>

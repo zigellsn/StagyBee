@@ -1,7 +1,7 @@
 from subprocess import call
 
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import socket
 
 from .models import Credential
@@ -9,12 +9,17 @@ from .models import Credential
 
 def picker(request):
     credentials = Credential.objects.order_by('congregation')
-    if credentials.count() == 1:
-        return redirect('login:login', congregation=credentials[0].congregation)
     host_ip, host_name = get_address()
-    if credentials.count() <= 2:
+
+    if credentials.count() == 1:
+        size = 2
+        col = 0
+    elif credentials.count() == 2:
+        size = 2
+        col = 0
+    elif credentials.count() == 3:
         size = 3
-        col = 1
+        col = 2
     else:
         size = 4
         col = 3
