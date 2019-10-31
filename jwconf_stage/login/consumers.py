@@ -1,25 +1,30 @@
+import asyncio
 import importlib
 import json
-import aiohttp
-import backoff
+from contextlib import suppress
 
+import aiohttp
+import aioredis
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from django.conf import settings
 from django.shortcuts import get_object_or_404
+from tenacity import retry, stop_after_attempt, retry_if_exception_type, RetryError
 
-picker = importlib.import_module('picker.models')
+picker = importlib.import_module("picker.models")
 
 
 class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.congregation = self.scope['url_route']['kwargs']['congregation']
-        self.congregation_group_name = 'congregation_%s' % self.congregation
+        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        self.congregation_group_name = "congregation.%s" % self.congregation
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
+        self.task = None
 
     async def connect(self):
         await self.channel_layer.group_add(
@@ -30,6 +35,10 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         await self.connect_to_extractor()
 
     async def disconnect(self, close_code):
+        if self.task is not None and not self.task.done():
+            self.task.cancel()
+            with suppress(asyncio.CancelledError):
+                await self.task
         await self.channel_layer.group_discard(
             self.congregation_group_name,
             self.channel_name
@@ -65,31 +74,63 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "password": self.credentials.password,
                        "url": url}
         try:
-            await self.post_request(self.extractor_url + "api/subscribe", payload)
+            self.task = asyncio.create_task(self.post_request(self.extractor_url + "api/subscribe", payload))
+            await self.task
         except aiohttp.ClientError:
             await self.send_json("extractor_not_available")
+        except RetryError:
+            await self.send_json("extractor_not_available")
+        else:
+            success = self.task.result().resp["success"]
+            if success:
+                self.sessionId = self.task.result().resp["sessionId"]
+                await self.send_json("subscribed_to_extractor")
+        await self.connect_uri(self.congregation_group_name)
 
     async def disconnect_from_extractor(self):
         if self.sessionId is not None:
+            count = await self.disconnect_uri(self.congregation_group_name)
+            if count != 0:
+                return
             try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.delete(self.extractor_url + "api/unsubscribe/%s" % self.sessionId) as response:
-                        resp = await response.json()
+                self.task = asyncio.create_task(
+                    self.delete_request(self.extractor_url + "api/unsubscribe/%s" % self.sessionId))
+                await self.task
             except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")
+            except RetryError:
+                await self.send_json("extractor_not_available")
             else:
-                success = resp["success"]
+                success = self.task.result()["success"]
                 if success:
                     await self.send_json("unsubscribed_from_extractor")
                     self.sessionId = None
 
-    @backoff.on_exception(backoff.expo, aiohttp.ClientError, max_time=10)
+    @retry(retry=retry_if_exception_type(aiohttp.ClientError), stop=stop_after_attempt(7))
     async def post_request(self, url, payload):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url,
-                                    json=payload) as response:
-                resp = await response.json()
-                success = resp["success"]
-                if success:
-                    self.sessionId = resp["sessionId"]
-                    await self.send_json("subscribed_to_extractor")
+            async with session.post(url, json=payload) as response:
+                return await response.json()
+
+    @retry(retry=retry_if_exception_type(aiohttp.ClientError), stop=stop_after_attempt(7))
+    async def delete_request(self, url):
+        async with aiohttp.ClientSession() as session:
+            async with session.delete(url) as response:
+                return await response.json()
+
+    async def connect_uri(self, group):
+        host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+        redis = await aioredis.create_redis(host)
+        await redis.sadd(group, self.channel_name)
+        await redis.expire(group, 43200)
+        redis.close()
+        await redis.wait_closed()
+
+    async def disconnect_uri(self, group):
+        host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+        redis = await aioredis.create_redis(host)
+        await redis.srem(group, self.channel_name)
+        count = await redis.llen(group)
+        redis.close()
+        await redis.wait_closed()
+        return count

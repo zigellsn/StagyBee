@@ -3,6 +3,7 @@ python-decouple
 django
 channels
 channels-redis
+aioredis
 markdown
 aiohttp
-backoff
+tenacity
