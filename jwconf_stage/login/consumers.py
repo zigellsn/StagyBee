@@ -81,9 +81,9 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         except RetryError:
             await self.send_json("extractor_not_available")
         else:
-            success = self.task.result().resp["success"]
+            success = self.task.result().response["success"]
             if success:
-                self.sessionId = self.task.result().resp["sessionId"]
+                self.sessionId = self.task.result().response["sessionId"]
                 await self.send_json("subscribed_to_extractor")
         await self.connect_uri(self.congregation_group_name)
 
