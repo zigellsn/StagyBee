@@ -8,6 +8,7 @@ import aioredis
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from decouple import config
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
@@ -66,7 +67,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         self.extractor_url = self.credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
-        url = "http://localhost:8000/receiver/%s/" % self.congregation
+        url = "http://%s:%s/receiver/%s/" % (self.scope["server"][0], self.scope["server"][1], self.congregation)
         if self.credentials.autologin is not None:
             payload = {"id": self.credentials.autologin, "url": url}
         else:
@@ -75,7 +76,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "password": self.credentials.password,
                        "url": url}
         try:
-            self.task = asyncio.create_task(self.post_request(self.extractor_url + "api/subscribe", payload))
+            self.task = asyncio.create_task(self.post_request(self.extractor_url + "api/subscribe/", payload))
             await self.task
         except aiohttp.ClientError:
             await self.send_json("extractor_not_available")
@@ -95,7 +96,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                 return
             try:
                 self.task = asyncio.create_task(
-                    self.delete_request(self.extractor_url + "api/unsubscribe/%s" % self.sessionId))
+                    self.delete_request(self.extractor_url + "api/unsubscribe/%s/" % self.sessionId))
                 await self.task
             except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")
@@ -125,7 +126,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
         redis = await aioredis.create_redis(host)
         await redis.sadd(group, self.channel_name)
-        await redis.expire(group, 43200)
+        await redis.expire(group, config("REDIS_EXPIRATION", default=21600))
         redis.close()
         await redis.wait_closed()
 
