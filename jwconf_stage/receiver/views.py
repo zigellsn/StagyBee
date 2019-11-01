@@ -11,7 +11,7 @@ def receiver(request, congregation):
     event = request.META.get('HTTP_X_JWCONFEXTRACTOR_EVENT')
     if event == 'listeners':
         channel_layer = get_channel_layer()
-        congregation_group_name = 'congregation_%s' % congregation
+        congregation_group_name = 'congregation.%s' % congregation
         async_to_sync(channel_layer.group_send)(
             congregation_group_name,
             {"type": "extractor_listeners", "listeners": request.body},
