@@ -58,6 +58,8 @@
 
             let sumListeners = 0;
             let names = data['names'];
+            if (names === undefined)
+                return;
             names.sort(function (a, b) {
                 if (a['familyName'] < b['familyName'])
                     return -1;
