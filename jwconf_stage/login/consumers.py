@@ -21,6 +21,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
         self.congregation_group_name = "congregation.%s" % self.congregation
+        self.redis_key = "jwconfstage:session:%s" % self.congregation_group_name
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
@@ -85,11 +86,11 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             if success:
                 self.sessionId = self.task.result()["sessionId"]
                 await self.send_json("subscribed_to_extractor")
-        await self.connect_uri(self.congregation_group_name)
+        await self.connect_uri(self.redis_key)
 
     async def disconnect_from_extractor(self):
         if self.sessionId is not None:
-            count = await self.disconnect_uri(self.congregation_group_name)
+            count = await self.disconnect_uri(self.redis_key)
             if count != 0:
                 return
             try:
