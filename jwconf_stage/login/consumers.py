@@ -10,7 +10,7 @@ from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from tenacity import retry, stop_after_attempt, retry_if_exception_type, RetryError
+from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 picker = importlib.import_module("picker.models")
 
@@ -107,13 +107,15 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                     await self.send_json("unsubscribed_from_extractor")
                     self.sessionId = None
 
-    @retry(retry=retry_if_exception_type(aiohttp.ClientError), stop=stop_after_attempt(7))
+    @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
+           stop=stop_after_delay(15))
     async def post_request(self, url, payload):
         async with aiohttp.ClientSession() as session:
             async with session.post(url, json=payload) as response:
                 return await response.json()
 
-    @retry(retry=retry_if_exception_type(aiohttp.ClientError), stop=stop_after_attempt(7))
+    @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
+           stop=stop_after_delay(15))
     async def delete_request(self, url):
         async with aiohttp.ClientSession() as session:
             async with session.delete(url) as response:
