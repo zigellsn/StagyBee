@@ -12,18 +12,7 @@ def picker(request):
     credentials = Credential.objects.order_by('congregation')
     host_ip, host_name = get_address()
 
-    if credentials.count() == 1:
-        size = 2
-        col = 0
-    elif credentials.count() == 2:
-        size = 2
-        col = 0
-    elif credentials.count() == 3:
-        size = 3
-        col = 2
-    else:
-        size = 4
-        col = 3
+    col, size = get_tiles_configuration(credentials)
     context = {'credentials': credentials, 'ip': host_ip, 'port': request.get_port(), 'hostname': host_name,
                'shutdown_icon': True, 'size': size, 'col': col}
     return render(request, "picker/tiles.html", context)
@@ -55,3 +44,19 @@ def get_address():
     except socket.error:
         print("Unable to get Hostname and IP")
     return host_ip, host_name
+
+
+def get_tiles_configuration(credentials):
+    if credentials.count() == 1:
+        size = 2
+        col = 0
+    elif credentials.count() == 2:
+        size = 2
+        col = 0
+    elif credentials.count() == 3:
+        size = 3
+        col = 2
+    else:
+        size = 4
+        col = 3
+    return col, size
