@@ -130,7 +130,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
         redis = await aioredis.create_redis(host)
         await redis.srem(group, self.channel_name)
-        count = await redis.llen(group)
+        count = await redis.scard(group)
         redis.close()
         await redis.wait_closed()
         return count
