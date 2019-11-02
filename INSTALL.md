@@ -4,14 +4,13 @@ Download and extract [this repository](https://github.com/zigellsn/JWConfStage/a
 ``` bash
 git clone https://github.com/zigellsn/JWConfStage.git
 ```
-Install [Python](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
+Install [Python 3.7](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Change into the extracted directory.
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-cd jwconf_stage
 python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py compilemessages

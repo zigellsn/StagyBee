@@ -67,7 +67,9 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         self.extractor_url = self.credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
-        url = "http://%s:%s/receiver/%s/" % (self.scope["server"][0], self.scope["server"][1], self.congregation)
+        url = "http://%s:%s/receiver/%s/" % (config("RECEIVER_HOST", default=self.scope["server"][0]),
+                                             config("RECEIVER_PORT", default=self.scope["server"][1]),
+                                             self.congregation)
         if self.credentials.autologin is not None:
             payload = {"id": self.credentials.autologin, "url": url}
         else:
