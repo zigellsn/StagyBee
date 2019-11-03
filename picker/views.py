@@ -13,6 +13,9 @@ def picker(request):
     host_ip, host_name = get_address()
 
     col, size = get_tiles_configuration(credentials)
+    for cred in credentials:
+        if not cred.display_name:
+            cred.display_name = cred.congregation
     context = {'credentials': credentials, 'ip': host_ip, 'port': request.get_port(), 'hostname': host_name,
                'shutdown_icon': True, 'size': size, 'col': col}
     return render(request, "picker/tiles.html", context)

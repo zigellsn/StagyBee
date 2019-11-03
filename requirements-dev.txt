@@ -1,0 +1,11 @@
+asgiref
+python-decouple
+django
+channels
+channels-redis
+aioredis
+markdown
+aiohttp
+tenacity
+pytest-django
+pytest-asyncio

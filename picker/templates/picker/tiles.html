@@ -8,7 +8,7 @@
         {% for credential in credentials %}
             <a href="{% url 'login:login' credential.congregation %}" data-role="tile"
                class="bg-indigo fg-white">
-                <span class="pos-absolute pos-center">{{ credential.congregation }}</span>
+                <span class="pos-absolute pos-center">{{ credential.display_name }}</span>
             </a>
         {% endfor %}
         <a href="https://jwconf.org/login.php?source=index.php&" data-role="tile"
