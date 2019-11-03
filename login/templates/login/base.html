@@ -16,7 +16,7 @@
     <title>JWConf Auto-Login Page</title>
     <script>
         function RedirectPage(element, url) {
-            document.getElementById(element).setAttribute("src", url);
+            window.frames[element].location = url;
         }
     </script>
     <style>
