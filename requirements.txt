@@ -7,3 +7,6 @@ aioredis
 markdown
 aiohttp
 tenacity
+pytest-django
+pytest-asyncio
+pytest

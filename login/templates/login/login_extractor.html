@@ -12,7 +12,7 @@
         <span class="pos-center mif-cancel mif-5x fg-red"></span>
         <div>{{ error_message }}</div>
     </div>
-    {% trans "Zuhörerer gesamt:" as sum_listeners %}
+    {% trans "Zuhörer gesamt:" as sum_listeners %}
     <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
                                                                                         id="sumListenersNumber"></span>
     </div>
@@ -91,7 +91,10 @@
                     speak = 'bg-gray';
                 }
                 namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
-                sumListeners += element['listenerCount'];
+                if (typeof element['listenerCount'] === 'string')
+                    sumListeners += parseInt(element['listenerCount']);
+                else
+                    sumListeners += parseInt(element['listenerCount']);
             }
             let new_element = document.createElement('div');
             new_element.innerHTML = namesHtml;

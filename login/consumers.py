@@ -1,6 +1,6 @@
 import asyncio
-import importlib
 import json
+import re
 from contextlib import suppress
 
 import aiohttp
@@ -13,7 +13,11 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
-picker = importlib.import_module("picker.models")
+from picker.models import Credential
+
+
+def generate_channel_group_name(congregation):
+    return "congregation.%s" % re.sub(r'[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]', '_', congregation)
 
 
 class ExtractorConsumer(AsyncJsonWebsocketConsumer):
@@ -21,8 +25,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.congregation_group_name = "congregation.%s" % self.congregation
-        self.redis_key = "jwconfstage:session:%s" % self.congregation_group_name
+        self.redis_key = "jwconfstage:session:%s" % generate_channel_group_name(self.congregation)
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
@@ -30,7 +33,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         await self.channel_layer.group_add(
-            self.congregation_group_name,
+            generate_channel_group_name(self.congregation),
             self.channel_name
         )
         await self.accept()
@@ -42,7 +45,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             with suppress(asyncio.CancelledError):
                 await self.task
         await self.channel_layer.group_discard(
-            self.congregation_group_name,
+            generate_channel_group_name(self.congregation),
             self.channel_name
         )
         await self.disconnect_from_extractor()
@@ -62,7 +65,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             return await super().encode_json(content=content)
 
     async def connect_to_extractor(self):
-        self.credentials = await database_sync_to_async(get_object_or_404)(picker.Credential,
+        self.credentials = await database_sync_to_async(get_object_or_404)(Credential,
                                                                            congregation=self.congregation)
         self.extractor_url = self.credentials.extractor_url
         if not self.extractor_url.endswith("/"):

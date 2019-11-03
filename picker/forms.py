@@ -8,5 +8,5 @@ class CredentialForm(ModelForm):
         model = Credential
         fields = ['congregation', 'autologin', 'username', 'password', 'display_name', 'extractor_url', 'touch']
         widgets = {
-            'password': PasswordInput(),
+            'password': PasswordInput(render_value=True),
         }

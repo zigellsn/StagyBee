@@ -1,9 +1,7 @@
-import importlib
-
 from django.urls import re_path
 
-consumers = importlib.import_module("login.consumers")
+from login.consumers import ExtractorConsumer
 
 websocket_urlpatterns = [
-    re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", consumers.ExtractorConsumer),
+    re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer),
 ]

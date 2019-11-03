@@ -1,14 +1,14 @@
-from django.shortcuts import get_object_or_404, render, redirect
-import importlib
 import urllib.parse
 
-picker = importlib.import_module('picker.models')
+from django.shortcuts import get_object_or_404, render, redirect
+
+from picker.models import Credential
 
 
 def login(request, congregation):
     if 'HTTP_REFERER' in request.META and "picker" not in request.META['HTTP_REFERER']:
         return redirect('picker')
-    credentials = get_object_or_404(picker.Credential, congregation=congregation)
+    credentials = get_object_or_404(Credential, congregation=congregation)
     congregation_ws = urllib.parse.quote(congregation)
     context = {
         'congregation': credentials.congregation,
@@ -25,7 +25,7 @@ def login(request, congregation):
 
 
 def login_form(request, congregation):
-    credentials = get_object_or_404(picker.Credential, congregation=congregation)
+    credentials = get_object_or_404(Credential, congregation=congregation)
     context = {
         'congregation': credentials.congregation,
         'username': credentials.username,

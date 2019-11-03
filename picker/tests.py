@@ -1,15 +1,13 @@
-import importlib
-
 from django.test import TestCase
 from django.urls import reverse
 
-picker = importlib.import_module('picker.models')
+from picker.models import Credential
 
 
 def create_credential(congregation, autologin, username, password, display_name, extractor_url, touch):
-    return picker.Credential.objects.create(congregation=congregation, autologin=autologin,
-                                            username=username, password=password, display_name=display_name,
-                                            extractor_url=extractor_url, touch=touch)
+    return Credential.objects.create(congregation=congregation, autologin=autologin,
+                                     username=username, password=password, display_name=display_name,
+                                     extractor_url=extractor_url, touch=touch)
 
 
 class PickerViewTests(TestCase):
