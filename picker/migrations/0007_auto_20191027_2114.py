@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('picker', '0006_auto_20191017_1653'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='credential',
             name='extractor_url',
-            field=models.CharField(blank=True, default='http://localhost:5000/', max_length=200, verbose_name='Extractor URL'),
+            field=models.CharField(blank=True, default='http://localhost:5000/', max_length=200,
+                                   verbose_name='Extractor URL'),
         ),
     ]
