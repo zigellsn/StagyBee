@@ -1,4 +1,3 @@
-
 #  Copyright 2019 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +12,13 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.conf.urls.i18n import i18n_patterns
-from django.contrib import admin
-from django.urls import include, path
+from django.test import TestCase
 
-from .views import redirect_root
+from stage.consumers import generate_channel_group_name
 
-urlpatterns = []
-urlpatterns += i18n_patterns(
-    path('', include('django.contrib.auth.urls')),
-    path('', redirect_root),
-    path('stage/', include('stage.urls')),
-    path('picker/', include('picker.urls')),
-    path('receiver/', include('receiver.urls')),
-    path('console/', include('console.urls')),
-    path('admin/', admin.site.urls),
-    prefix_default_language=False
-)
+
+class ExtractorUtilitiesTests(TestCase):
+    def test_generate_channel_group_name(self):
+        self.assertEqual("congregation.testAZaz", generate_channel_group_name("testAZaz"))
+        self.assertEqual("congregation.T.e_s-t", generate_channel_group_name("T.e_s-t"))
+        self.assertEqual("congregation.t_est_", generate_channel_group_name("t%est%"))

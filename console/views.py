@@ -1,4 +1,3 @@
-
 #  Copyright 2019 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from django.shortcuts import render
 
-from django.conf.urls.i18n import i18n_patterns
-from django.contrib import admin
-from django.urls import include, path
 
-from .views import redirect_root
-
-urlpatterns = []
-urlpatterns += i18n_patterns(
-    path('', include('django.contrib.auth.urls')),
-    path('', redirect_root),
-    path('stage/', include('stage.urls')),
-    path('picker/', include('picker.urls')),
-    path('receiver/', include('receiver.urls')),
-    path('console/', include('console.urls')),
-    path('admin/', admin.site.urls),
-    prefix_default_language=False
-)
+def console(request):
+    return render(request, 'console/console.html')

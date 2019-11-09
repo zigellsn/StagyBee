@@ -1,4 +1,3 @@
-
 #  Copyright 2019 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.conf.urls.i18n import i18n_patterns
-from django.contrib import admin
-from django.urls import include, path
+from django.urls import re_path
 
-from .views import redirect_root
+from stage.consumers import ExtractorConsumer
 
-urlpatterns = []
-urlpatterns += i18n_patterns(
-    path('', include('django.contrib.auth.urls')),
-    path('', redirect_root),
-    path('stage/', include('stage.urls')),
-    path('picker/', include('picker.urls')),
-    path('receiver/', include('receiver.urls')),
-    path('console/', include('console.urls')),
-    path('admin/', admin.site.urls),
-    prefix_default_language=False
-)
+websocket_urlpatterns = [
+    re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer),
+]

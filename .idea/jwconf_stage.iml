@@ -15,10 +15,11 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/jwconf_stage_" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/login" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/stage" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/picker" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/receiver" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jwconf_stage" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/console" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv38" />
       <excludeFolder url="file://$MODULE_DIR$/venv_dev" />
@@ -33,5 +34,16 @@
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/stage/templates" />
+        <option value="$MODULE_DIR$/picker/templates" />
+        <option value="$MODULE_DIR$/stage/templates/stage" />
+        <option value="$MODULE_DIR$/console/templates" />
+        <option value="$MODULE_DIR$/console/templates/registration" />
+        <option value="$MODULE_DIR$/console/templates/console" />
+        <option value="$MODULE_DIR$/picker/templates/picker" />
+      </list>
+    </option>
   </component>
 </module>

@@ -1,4 +1,3 @@
-
 #  Copyright 2019 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.conf.urls.i18n import i18n_patterns
-from django.contrib import admin
-from django.urls import include, path
+import pytest
+from channels.testing import WebsocketCommunicator
 
-from .views import redirect_root
+from stage.consumers import ExtractorConsumer
 
-urlpatterns = []
-urlpatterns += i18n_patterns(
-    path('', include('django.contrib.auth.urls')),
-    path('', redirect_root),
-    path('stage/', include('stage.urls')),
-    path('picker/', include('picker.urls')),
-    path('receiver/', include('receiver.urls')),
-    path('console/', include('console.urls')),
-    path('admin/', admin.site.urls),
-    prefix_default_language=False
-)
+
+@pytest.mark.asyncio
+async def test_extractor_consumer():
+    # TODO: Write tests...
+    communicator = WebsocketCommunicator(ExtractorConsumer, "/ws/extractor/")
+    connected, subprotocol = await communicator.connect()
+    assert connected
+    await communicator.send_to(text_data="hello")
+    response = await communicator.receive_from()
+    assert response == "hello"
+    await communicator.disconnect()

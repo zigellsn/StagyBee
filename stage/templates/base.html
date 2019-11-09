@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load i18n utils %}
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="JWConf Stage Login">
+    <meta name="keywords" content="JWConf, Login">
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'picker/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'picker/favicon.ico' %}" type="image/x-icon">
+
+    <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
+    <link href="{% static 'stage/stage.css' %}" rel="stylesheet" type="text/css">
+    <title>JWConf Auto-Login Page</title>
+    <script>
+        function RedirectPage(element, url) {
+            window.frames[element].location = url;
+        }
+    </script>
+    <style>
+        .app-bar-menu li {
+            list-style: none !important;
+        }
+    </style>
+</head>
+<body class="bg-dark fg-white" onload="startTime()">
+<header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
+    <div class="app-bar-container float-none">
+        <div class="app-bar-item pl-4 pr-4 pt-2">
+            {% if touch %}
+                <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
+                   href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% else %}
+                <a href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% if not touch %}
+        <div class="app-bar-container ml-auto">
+            <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp>
+            </div>
+        </div>
+    {% endif %}
+</header>
+<div class="notify-container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <main class="pr-1-sx pl-1-sx pr-1-md pl-1-md">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
+<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script src="{% static 'picker/time.js' %}"></script>
+</body>
+</html>
+
+
+

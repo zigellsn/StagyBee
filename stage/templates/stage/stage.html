@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-{% extends 'login/base.html' %}
+{% extends 'base.html' %}
 {% load i18n utils %}
 {% block content %}
     <div class="embed-container">
         {% if autologin %}
             <iframe name="frame" src="https://jwconf.org/?key={{ autologin }}"></iframe>
         {% else %}
-            <iframe name="frame" src="{% url 'login:login_form' congregation %}"></iframe>
+            <iframe name="frame" src="{% url 'stage:stage_form' congregation %}"></iframe>
         {% endif %}
     </div>
 {% endblock %}

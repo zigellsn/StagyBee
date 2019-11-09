@@ -1,3 +1,17 @@
+#  Copyright 2019 Simon Zigelli
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import urllib.parse
 
 from django.shortcuts import get_object_or_404, render, redirect
@@ -5,7 +19,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from picker.models import Credential
 
 
-def login(request, congregation):
+def stage(request, congregation):
     if 'HTTP_REFERER' in request.META and "picker" not in request.META['HTTP_REFERER']:
         return redirect('picker')
     credentials = get_object_or_404(Credential, congregation=congregation)
@@ -19,12 +33,12 @@ def login(request, congregation):
         'congregation_ws': congregation_ws
     }
     if credentials.touch:
-        return render(request, 'login/login.html', context)
+        return render(request, 'stage/stage.html', context)
     else:
-        return render(request, 'login/login_extractor.html', context)
+        return render(request, 'stage/stage_extractor.html', context)
 
 
-def login_form(request, congregation):
+def stage_form(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     context = {
         'congregation': credentials.congregation,
@@ -32,4 +46,4 @@ def login_form(request, congregation):
         'password': credentials.password,
         'autologin': credentials.autologin,
     }
-    return render(request, 'login/login_form.html', context)
+    return render(request, 'stage/stage_form.html', context)
