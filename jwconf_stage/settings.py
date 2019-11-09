@@ -62,6 +62,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'jwconf_stage.urls'
 LOGIN_REDIRECT_URL = '/console/'
+LOGOUT_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {
