@@ -12,13 +12,17 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.urls import path
+from django import forms
+from django.forms import ModelChoiceField
 
-from . import views
+from picker.models import Credential
 
-app_name = 'console'
 
-urlpatterns = [
-    path('', views.choose_console, name='chose_console'),
-    path('<str:congregation>', views.console, name='console'),
-]
+class CongregationForm(forms.ModelForm):
+    class Meta:
+        model = Credential
+        fields = ["congregation"]
+
+    congregation = ModelChoiceField(queryset=Credential.objects.all(), empty_label=None,
+                                    to_field_name="congregation")
+    congregation.widget.attrs.update({"data-role": "select"})

@@ -52,40 +52,6 @@
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script src="{% static 'picker/time.js' %}"></script>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-<script>
-    let congregation_ws = '{{ congregation_ws }}';
-    let submitButton = document.getElementById('submit');
-    let loc = window.location;
-    let protocol = 'ws://';
-    if (loc.protocol === 'https:') {
-        protocol = 'wss://'
-    }
-
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console/${congregation_ws}/`,
-        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
-
-    mySocket.onopen = function (_) {
-        console.log("WebSocket CONNECT successful");
-    };
-
-    mySocket.onmessage = function (e) {
-        let data = JSON.parse(e.data);
-        let message = data['message'];
-        console.log(message);
-    };
-
-    mySocket.onclose = function (_) {
-        console.error('Socket closed unexpectedly');
-    };
-
-    submitButton.onclick = function (_) {
-        let time = $('#time').data('timepicker').time();
-        mySocket.send(JSON.stringify({
-            'message': time
-        }));
-    };
-</script>
 </html>
 
 

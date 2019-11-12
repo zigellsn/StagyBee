@@ -9,13 +9,10 @@ from .models import Credential
 
 
 def picker(request):
-    credentials = Credential.objects.order_by("congregation")
+    credentials = Credential.objects.all()
     host_ip, host_name = __get_address(request.get_port())
 
     col, size = __get_tiles_configuration(credentials)
-    for cred in credentials:
-        if not cred.display_name:
-            cred.display_name = cred.congregation
     context = {"credentials": credentials, "ip": host_ip, "port": request.get_port(),
                "hostname": host_name, "shutdown_icon": True, "size": size, "col": col}
     return render(request, "picker/tiles.html", context)

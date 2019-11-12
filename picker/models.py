@@ -9,6 +9,9 @@ class CredentialManager(models.Manager):
 
 
 class Credential(models.Model):
+    class Meta:
+        ordering = ["display_name", "congregation"]
+
     congregation = models.CharField(max_length=200, primary_key=True)
     autologin = models.CharField(max_length=128, default="", blank=True)
     username = models.CharField(max_length=200, default="", blank=True)
@@ -21,4 +24,7 @@ class Credential(models.Model):
     objects = CredentialManager()
 
     def __str__(self):
-        return self.congregation
+        if not self.display_name:
+            return self.congregation
+        else:
+            return self.display_name

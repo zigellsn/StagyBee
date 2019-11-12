@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% extends 'console/base.html' %}
+{% load i18n utils %}
+{% block content %}
+    <div>
+        <form action="/console/" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div class="pt-4"><input class="button primary" type="submit" value="Zur Console..."></div>
+        </form>
+    </div>
+{% endblock %}

@@ -12,13 +12,23 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import json
-
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
+from .forms import CongregationForm
 
-def console(request):
-    return render(request, "console/console.html", {
-        "congregation_ws": mark_safe(json.dumps("test"))
-    })
+
+def choose_console(request):
+    if request.method == 'POST':
+        form = CongregationForm(request.POST)
+        if form.is_valid():
+            congregation = form.cleaned_data["congregation"].congregation
+            return HttpResponseRedirect("/console/%s" % congregation)
+    else:
+        form = CongregationForm()
+    return render(request, "console/choose_console.html", {"form": form})
+
+
+def console(request, congregation):
+    return render(request, "console/console.html", {"congregation_ws": mark_safe(congregation)})
