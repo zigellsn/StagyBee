@@ -12,17 +12,17 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.exceptions import StopConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from console import routing as console_routing
-from stage import routing as stage_routing
 
-urlpatterns = stage_routing.websocket_urlpatterns
-urlpatterns += console_routing.websocket_urlpatterns
+class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
-application = ProtocolTypeRouter({
-    "websocket": AuthMiddlewareStack(
-        URLRouter(urlpatterns)
-    ),
-})
+    async def connect(self):
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        raise StopConsumer()
+
+    async def receive_json(self, text_data, **kwargs):
+        print(text_data)

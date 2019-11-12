@@ -2,5 +2,13 @@
 {% extends 'console/base.html' %}
 {% load i18n utils %}
 {% block content %}
-    <div>Console!</div>
+    <div>
+        <button class="button primary" id="submit">Start countdown</button>
+    </div>
+    <div>
+        <label>
+            <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
+                   id="time"/>
+        </label>
+    </div>
 {% endblock %}

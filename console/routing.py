@@ -12,17 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
+from django.urls import re_path
 
-from console import routing as console_routing
-from stage import routing as stage_routing
+from console.consumers import ConsoleConsumer
 
-urlpatterns = stage_routing.websocket_urlpatterns
-urlpatterns += console_routing.websocket_urlpatterns
-
-application = ProtocolTypeRouter({
-    "websocket": AuthMiddlewareStack(
-        URLRouter(urlpatterns)
-    ),
-})
+websocket_urlpatterns = [
+    re_path(r"^ws/console/(?P<congregation>[^/]+)/$", ConsoleConsumer),
+]

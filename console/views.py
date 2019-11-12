@@ -11,8 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
+import json
+
 from django.shortcuts import render
+from django.utils.safestring import mark_safe
 
 
 def console(request):
-    return render(request, 'console/console.html')
+    return render(request, "console/console.html", {
+        "congregation_ws": mark_safe(json.dumps("test"))
+    })
