@@ -36,24 +36,7 @@ function extractor_ws(congregation_ws) {
         sumListenersContainer.style.display = 'none';
     };
 
-    mySocket.onmessage = function (e) {
-        let data = JSON.parse(e.data);
-        let namesHtml = '';
-        if (data === 'extractor_not_available') {
-            activity.style.display = 'none';
-            errorMessage.style.display = '';
-            sumListenersContainer.display = 'none';
-            return;
-        }
-
-        activity.style.display = 'none';
-        errorMessage.style.display = 'none';
-        sumListenersContainer.style.display = '';
-
-        let sumListeners = 0;
-        let names = data['names'];
-        if (names === undefined)
-            return;
+    function parseNames(names, namesHtml, sumListeners) {
         names.sort(function (a, b) {
             if (a['familyName'] < b['familyName'])
                 return -1;
@@ -95,6 +78,35 @@ function extractor_ws(congregation_ws) {
         listeners.innerHTML = '';
         listeners.appendChild(new_element);
         sumListenersNumber.textContent = sumListeners.toString();
+    }
+
+    function showAlert(alert) {
+        console.log(alert);
+    }
+
+    mySocket.onmessage = function (e) {
+        let data = JSON.parse(e.data);
+        let namesHtml = '';
+        if (data === 'extractor_not_available') {
+            activity.style.display = 'none';
+            errorMessage.style.display = '';
+            sumListenersContainer.display = 'none';
+            return;
+        }
+
+        activity.style.display = 'none';
+        errorMessage.style.display = 'none';
+        sumListenersContainer.style.display = '';
+
+        let sumListeners = 0;
+        let alert = data['alert'];
+        if(alert !== undefined) {
+            showAlert(alert);
+            return;
+        }
+        let names = data['names'];
+        if (names !== undefined)
+            parseNames(names, namesHtml, sumListeners);
     };
 
     mySocket.onclose = function (_) {

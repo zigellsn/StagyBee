@@ -15,6 +15,8 @@
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from consumers import generate_channel_group_name
+
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
@@ -26,3 +28,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, text_data, **kwargs):
         print(text_data)
+        congregation_group_name = generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"])
+        await self.channel_layer.group_send(
+            congregation_group_name,
+            {"type": "alert", "alert": text_data})

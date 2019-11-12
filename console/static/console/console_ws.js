@@ -41,7 +41,7 @@ function console_ws(congregation_ws) {
     submitButton.onclick = function (_) {
         let time = $('#time').data('timepicker').time();
         mySocket.send(JSON.stringify({
-            'message': time
+            'alert': time
         }));
     };
 }
