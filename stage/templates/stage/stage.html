@@ -2,6 +2,7 @@
 {% extends 'stage/base.html' %}
 {% load i18n utils %}
 {% block content %}
+    {% load static %}
     <div class="embed-container">
         {% if autologin %}
             <iframe name="frame" src="https://jwconf.org/?key={{ autologin }}"></iframe>
@@ -9,4 +10,9 @@
             <iframe name="frame" src="{% url 'stage:stage_form' congregation %}"></iframe>
         {% endif %}
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script src="{% static 'stage/stage_ws.js' %}"></script>
+    <script>
+        stage_ws('{{ congregation_ws }}');
+    </script>
 {% endblock %}

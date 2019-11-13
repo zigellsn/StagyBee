@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function extractor_ws(congregation_ws) {
+function stage_ws(congregation_ws) {
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
     let sumListenersNumber = document.getElementById('sumListenersNumber');
@@ -26,14 +26,21 @@ function extractor_ws(congregation_ws) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${window.location.host}/ws/extractor/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/extractor/${congregation_ws}/`,
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+
+    function setElements(activityVisibility, errorMessageVisibility, sumListenersContainerVisibility) {
+        if (activity !== null)
+            activity.style.display = activityVisibility;
+        if (errorMessage !== null)
+            errorMessage.style.display = errorMessageVisibility;
+        if (sumListenersContainer !== null)
+            sumListenersContainer.style.display = sumListenersContainerVisibility;
+    }
 
     mySocket.onopen = function (_) {
         console.log("WebSocket CONNECT successful");
-        activity.style.display = '';
-        errorMessage.style.display = 'none';
-        sumListenersContainer.style.display = 'none';
+        setElements('', 'none', 'none');
     };
 
     function parseNames(names, namesHtml, sumListeners) {
@@ -81,29 +88,33 @@ function extractor_ws(congregation_ws) {
     }
 
     function showAlert(alert) {
-        console.log(alert);
+        if (alert['alert'] === 'time')
+            $('#body').removeClass('clockAlert').addClass('timeAlert');
+        else if (alert['alert'] === 'clock')
+            $('#body').removeClass('timeAlert').addClass('clockAlert');
+        else if (alert['alert'] === 'stop')
+            $('#body').removeClass('timeAlert').removeClass('clockAlert');
+        else if (alert['alert'] === 'message')
+            Metro.infobox.create(`<p>${alert['value']}</p>`, "default");
     }
 
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
         let namesHtml = '';
         if (data === 'extractor_not_available') {
-            activity.style.display = 'none';
-            errorMessage.style.display = '';
-            sumListenersContainer.display = 'none';
+            setElements('none', '', 'none');
             return;
         }
 
-        activity.style.display = 'none';
-        errorMessage.style.display = 'none';
-        sumListenersContainer.style.display = '';
-
-        let sumListeners = 0;
         let alert = data['alert'];
-        if(alert !== undefined) {
+        if (alert !== undefined) {
             showAlert(alert);
             return;
         }
+
+        setElements('none', 'none', '');
+
+        let sumListeners = 0;
         let names = data['names'];
         if (names !== undefined)
             parseNames(names, namesHtml, sumListeners);

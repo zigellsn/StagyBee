@@ -33,3 +33,29 @@ body {
         padding-top: 64px;
     }
 }
+
+@keyframes ctime {
+    0% {
+        background-color: #1d1d1d;
+    }
+    100% {
+        background-color: #ff0000;
+    }
+}
+
+@keyframes clock {
+    0% {
+        background-color: #1d1d1d;
+    }
+    100% {
+        background-color: #ffff00;
+    }
+}
+
+.timeAlert {
+    animation: ctime 1s infinite alternate;
+}
+
+.clockAlert {
+    animation: clock 1s infinite alternate;
+}

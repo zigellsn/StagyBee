@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 function console_ws(congregation_ws) {
-    let submitButton = document.getElementById('submit');
+    let submitTime = document.getElementById('submit_time');
+    let submitClock = document.getElementById('submit_clock');
+    let submitStop = document.getElementById('submit_stop');
+    let submitText = document.getElementById('submit_text');
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
@@ -38,10 +41,33 @@ function console_ws(congregation_ws) {
         console.error('Socket closed unexpectedly');
     };
 
-    submitButton.onclick = function (_) {
+    submitTime.onclick = function (_) {
         let time = $('#time').data('timepicker').time();
         mySocket.send(JSON.stringify({
-            'alert': time
+            'alert': 'time',
+            'value': time
+        }));
+    };
+
+    submitClock.onclick = function (_) {
+        let time = $('#clock').data('timepicker').time();
+        mySocket.send(JSON.stringify({
+            'alert': 'clock',
+            'value': time
+        }));
+    };
+
+    submitStop.onclick = function (_) {
+        mySocket.send(JSON.stringify({
+            'alert': 'stop'
+        }));
+    };
+
+    submitText.onclick = function (_) {
+        let message = document.getElementById("text_message").value;
+        mySocket.send(JSON.stringify({
+            'alert': 'message',
+            'value': message
         }));
     };
 }

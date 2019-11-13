@@ -4,12 +4,27 @@
 {% block content %}
     {% load static %}
     <div class="pt-4">
-        <label for="time" class="pt-4">Zeit</label>
+        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
         <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
                id="time" class="bg-dark fg-white"/>
     </div>
     <div class="pt-4">
-        <button class="button primary" id="submit">Start countdown</button>
+        <button class="button primary" id="submit_time">{% trans "Starte Stoppuhr" %}</button>
+    </div>
+    <div class="pt-4">
+        <label for="clock" class="pt-4">{% trans "Uhrzeit" %}</label>
+        <input type="text" data-role="timepicker" data-size="280" id="clock" class="bg-dark fg-white"/>
+    </div>
+    <div class="pt-4">
+        <button class="button primary" id="submit_clock">{% trans "Sende Uhrzeit" %}</button>
+    </div>
+    <div class="pt-4">
+        <button class="button primary" id="submit_stop">{% trans "Stoppe alle Timer" %}</button>
+    </div>
+    <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
+    <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>
+    <div class="pt-4">
+        <button class="button primary" id="submit_text">{% trans "Sende Nachricht" %}</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="{% static 'console/console_ws.js' %}"></script>

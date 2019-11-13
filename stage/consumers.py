@@ -70,7 +70,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(event["listeners"])
 
     async def alert(self, event):
-        await self.send_json(event["alert"])
+        await self.send_json(event)
 
     async def encode_json(self, content):
         if type(content) == bytes:
@@ -84,6 +84,8 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
     async def connect_to_extractor(self):
         self.credentials = await database_sync_to_async(get_object_or_404)(Credential,
                                                                            congregation=self.congregation)
+        if self.credentials.touch:
+            return
         self.extractor_url = self.credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
@@ -112,6 +114,8 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         await self.connect_uri(self.redis_key)
 
     async def disconnect_from_extractor(self):
+        if self.credentials.touch:
+            return
         if self.sessionId is not None:
             count = await self.disconnect_uri(self.redis_key)
             if count != 0:
