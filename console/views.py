@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
@@ -19,6 +19,7 @@ from django.utils.safestring import mark_safe
 from .forms import CongregationForm
 
 
+@login_required
 def choose_console(request):
     if request.method == 'POST':
         form = CongregationForm(request.POST)
@@ -30,5 +31,6 @@ def choose_console(request):
     return render(request, "console/choose_console.html", {"form": form})
 
 
+@login_required
 def console(request, congregation):
     return render(request, "console/console.html", {"congregation_ws": mark_safe(congregation)})
