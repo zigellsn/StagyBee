@@ -39,7 +39,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "jwconfstage:session:%s" % generate_channel_group_name(self.congregation)
+        self.redis_key = "stagybee:session:%s" % generate_channel_group_name(self.congregation)
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""

@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'jwconf_stage.urls'
+ROOT_URLCONF = 'stagy_bee.urls'
 LOGIN_REDIRECT_URL = '/console/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
@@ -81,9 +81,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'jwconf_stage.wsgi.application'
+WSGI_APPLICATION = 'stagy_bee.wsgi.application'
 
-ASGI_APPLICATION = "jwconf_stage.routing.application"
+ASGI_APPLICATION = "stagy_bee.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {

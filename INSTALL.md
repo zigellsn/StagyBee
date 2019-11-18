@@ -1,8 +1,8 @@
 # Installation
 
-Download and extract [this repository](https://github.com/zigellsn/JWConfStage/archive/master.zip) or use
+Download and extract [this repository](https://github.com/zigellsn/StagyBee/archive/master.zip) or use
 ``` bash
-git clone https://github.com/zigellsn/JWConfStage.git
+git clone https://github.com/zigellsn/StagyBee.git
 ```
 Install [Python 3.7](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Change into the extracted directory.

@@ -1,5 +1,5 @@
 """
-WSGI config for jwconf_stage project.
+WSGI config for stagy_bee project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jwconf_stage.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stagy_bee.settings')
 
 application = get_wsgi_application()

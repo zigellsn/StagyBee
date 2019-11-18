@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\jwconf_stage\settings.py:111
+#: .\stagy_bee\settings.py:111
 msgid "English"
 msgstr ""
 
-#: .\jwconf_stage\settings.py:112
+#: .\stagy_bee\settings.py:112
 msgid "German"
 msgstr ""
 
-#: .\jwconf_stage\settings.py:113
+#: .\stagy_bee\settings.py:113
 msgid "Italian"
 msgstr ""
 
-#: .\jwconf_stage\settings.py:114
+#: .\stagy_bee\settings.py:114
 msgid "French"
 msgstr ""
 
-#: .\jwconf_stage\settings.py:115
+#: .\stagy_bee\settings.py:115
 msgid "Russian"
 msgstr ""
 

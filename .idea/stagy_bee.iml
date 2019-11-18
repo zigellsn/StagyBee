@@ -18,7 +18,7 @@
       <sourceFolder url="file://$MODULE_DIR$/stage" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/picker" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/receiver" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jwconf_stage" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/stagy_bee" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/console" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv38" />
