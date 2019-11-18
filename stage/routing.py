@@ -14,8 +14,9 @@
 
 from django.urls import re_path
 
-from stage.consumers import ExtractorConsumer
+from stage.consumers import ExtractorConsumer, ConsoleClientConsumer
 
 websocket_urlpatterns = [
     re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer),
+    re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer),
 ]

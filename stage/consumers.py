@@ -69,9 +69,6 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json("subscribed_to_extractor")
         await self.send_json(event["listeners"])
 
-    async def alert(self, event):
-        await self.send_json(event)
-
     async def encode_json(self, content):
         if type(content) == bytes:
             new_content = json.loads(content)
@@ -164,3 +161,23 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         redis.close()
         await redis.wait_closed()
         return count
+
+
+class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
+
+    async def connect(self):
+        await self.channel_layer.group_add(
+            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
+            self.channel_name
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
+            self.channel_name
+        )
+        raise StopConsumer()
+
+    async def alert(self, event):
+        await self.send_json(event)

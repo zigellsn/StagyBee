@@ -39,7 +39,7 @@ function stage_ws(congregation_ws) {
     }
 
     mySocket.onopen = function (_) {
-        console.log("WebSocket CONNECT successful");
+        console.log("Stage WebSocket CONNECT successful");
         setElements('', 'none', 'none');
     };
 
@@ -87,6 +87,38 @@ function stage_ws(congregation_ws) {
         sumListenersNumber.textContent = sumListeners.toString();
     }
 
+    mySocket.onmessage = function (e) {
+        let data = JSON.parse(e.data);
+        let namesHtml = '';
+        if (data === 'extractor_not_available') {
+            setElements('none', '', 'none');
+            return;
+        }
+
+        setElements('none', 'none', '');
+
+        let sumListeners = 0;
+        let names = data['names'];
+        if (names !== undefined)
+            parseNames(names, namesHtml, sumListeners);
+    };
+
+    mySocket.onclose = function (_) {
+        console.error('Stage Socket closed unexpectedly');
+    };
+}
+
+function console_client_ws(congregation_ws) {
+
+    let loc = window.location;
+    let protocol = 'ws://';
+    if (loc.protocol === 'https:') {
+        protocol = 'wss://'
+    }
+
+    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console_client/${congregation_ws}/`,
+        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+
     function showAlert(alert) {
         if (alert['alert'] === 'time')
             $('#body').removeClass('clockAlert').addClass('timeAlert');
@@ -100,27 +132,18 @@ function stage_ws(congregation_ws) {
 
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
-        let namesHtml = '';
-        if (data === 'extractor_not_available') {
-            setElements('none', '', 'none');
-            return;
-        }
 
         let alert = data['alert'];
         if (alert !== undefined) {
             showAlert(alert);
-            return;
         }
+    };
 
-        setElements('none', 'none', '');
-
-        let sumListeners = 0;
-        let names = data['names'];
-        if (names !== undefined)
-            parseNames(names, namesHtml, sumListeners);
+    mySocket.onopen = function (_) {
+        console.log("Console Client WebSocket CONNECT successful");
     };
 
     mySocket.onclose = function (_) {
-        console.error('Socket closed unexpectedly');
+        console.error('Console Client Socket closed unexpectedly');
     };
 }
