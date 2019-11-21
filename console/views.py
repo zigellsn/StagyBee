@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -28,6 +29,10 @@ def choose_console(request):
             return HttpResponseRedirect("/console/%s" % congregation)
     else:
         form = CongregationForm()
+        if len(form.congregation_set) < 10:
+            return render(request, "console/choose_console_cards.html", {"congregations": form.congregation_set})
+        else:
+            return render(request, "console/choose_console.html", {"form": form})
     return render(request, "console/choose_console.html", {"form": form})
 
 

@@ -39,7 +39,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee:session:%s" % generate_channel_group_name(self.congregation)
+        self.redis_key = "stagybee::session:%s" % generate_channel_group_name(self.congregation)
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
@@ -151,7 +151,7 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee:console:%s" % generate_channel_group_name(self.congregation)
+        self.redis_key = "stagybee::console:%s" % generate_channel_group_name(self.congregation)
 
     async def connect(self):
         await self.channel_layer.group_add(
@@ -162,11 +162,11 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
-            self.channel_name
-        )
-        await disconnect_uri(self.redis_key, self.channel_name)
+        congregation_channel_group = generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"])
+        count = await disconnect_uri(self.redis_key, self.channel_name)
+        if count == 0:
+            await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
+        await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
         raise StopConsumer()
 
     async def alert(self, event):

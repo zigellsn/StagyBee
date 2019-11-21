@@ -21,10 +21,13 @@ from django.forms import ModelChoiceField
 from picker.models import Credential
 
 
+REDIS_KEY = "stagybee::console:congregation."
+
+
 async def get_redis_congregations():
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
-    congregations = await redis.keys('stagybee:console:*')
+    congregations = await redis.keys(REDIS_KEY + "*")
     redis.close()
     await redis.wait_closed()
     return congregations
@@ -34,7 +37,7 @@ async def get_active_congregations():
     congregation_filter = await get_redis_congregations()
     in_filter = []
     for congregation in congregation_filter:
-        in_filter += [congregation.decode()[30:len(congregation)]]
+        in_filter += [congregation.decode()[len(REDIS_KEY):len(congregation)]]
     return Credential.objects.filter(congregation__in=in_filter)
 
 
@@ -43,14 +46,13 @@ class CongregationForm(forms.ModelForm):
         model = Credential
         fields = ["congregation"]
 
-    congregation_set = None
-    congregation = ModelChoiceField(queryset=congregation_set, empty_label=None,
+    congregation = ModelChoiceField(queryset=None, empty_label=None,
                                     to_field_name="congregation")
     congregation.widget.attrs.update({"data-role": "select"})
 
     def __init__(self, *args, **kwargs):
+        super(CongregationForm, self).__init__(*args, **kwargs)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         self.congregation_set = loop.run_until_complete(get_active_congregations())
-        super(CongregationForm, self).__init__(*args, **kwargs)
         self.fields["congregation"].queryset = self.congregation_set
