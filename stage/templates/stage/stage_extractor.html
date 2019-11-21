@@ -18,10 +18,8 @@
                                                                                         id="sumListenersNumber"></span>
     </div>
     <div id="listeners"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="{% static 'stage/stage_ws.js' %}"></script>
     <script>
         stage_ws('{{ congregation_ws }}');
-        console_client_ws('{{ congregation_ws }}');
     </script>
 {% endblock %}

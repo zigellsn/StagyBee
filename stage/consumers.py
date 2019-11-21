@@ -108,13 +108,13 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             if success:
                 self.sessionId = self.task.result()["sessionId"]
                 await self.send_json("subscribed_to_extractor")
-        await self.connect_uri(self.redis_key)
+        await connect_uri(self.redis_key, self.channel_name)
 
     async def disconnect_from_extractor(self):
         if self.credentials.touch:
             return
         if self.sessionId is not None:
-            count = await self.disconnect_uri(self.redis_key)
+            count = await disconnect_uri(self.redis_key, self.channel_name)
             if count != 0:
                 return
             try:
@@ -145,31 +145,20 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             async with session.delete(url) as response:
                 return await response.json()
 
-    async def connect_uri(self, group):
-        host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-        redis = await aioredis.create_redis(host)
-        await redis.sadd(group, self.channel_name)
-        await redis.expire(group, config("REDIS_EXPIRATION", default=21600))
-        redis.close()
-        await redis.wait_closed()
-
-    async def disconnect_uri(self, group):
-        host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-        redis = await aioredis.create_redis(host)
-        await redis.srem(group, self.channel_name)
-        count = await redis.scard(group)
-        redis.close()
-        await redis.wait_closed()
-        return count
-
 
 class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        self.redis_key = "stagybee:console:%s" % generate_channel_group_name(self.congregation)
 
     async def connect(self):
         await self.channel_layer.group_add(
             generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
+        await connect_uri(self.redis_key, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -177,7 +166,27 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
             generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
+        await disconnect_uri(self.redis_key, self.channel_name)
         raise StopConsumer()
 
     async def alert(self, event):
         await self.send_json(event)
+
+
+async def connect_uri(group, channel_name):
+    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+    redis = await aioredis.create_redis(host)
+    await redis.sadd(group, channel_name)
+    await redis.expire(group, config("REDIS_EXPIRATION", default=21600))
+    redis.close()
+    await redis.wait_closed()
+
+
+async def disconnect_uri(group, channel_name):
+    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+    redis = await aioredis.create_redis(host)
+    await redis.srem(group, channel_name)
+    count = await redis.scard(group)
+    redis.close()
+    await redis.wait_closed()
+    return count
