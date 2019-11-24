@@ -87,7 +87,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
         url = "http://%s:%s/receiver/%s/" % (config("RECEIVER_HOST", default=self.scope["server"][0]),
-                                             config("RECEIVER_PORT", default=self.scope["server"][1]),
+                                             config("RECEIVER_PORT", default=self.scope["server"][1], cast=int),
                                              self.congregation)
         if self.credentials.autologin is not None:
             payload = {"id": self.credentials.autologin, "url": url}
@@ -177,7 +177,7 @@ async def connect_uri(group, channel_name):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
     await redis.sadd(group, channel_name)
-    await redis.expire(group, config("REDIS_EXPIRATION", default=21600))
+    await redis.expire(group, config("REDIS_EXPIRATION", default=21600, cast=int))
     redis.close()
     await redis.wait_closed()
 
