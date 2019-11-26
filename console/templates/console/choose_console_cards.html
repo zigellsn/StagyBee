@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 {% extends 'console/base.html' %}
 {% load i18n utils %}
+{% load guardian_tags %}
 {% block content %}
     <div>
         <div class="row mt-2">
 
             {% for congregation in congregations %}
-                <div class="cell-md-6">
-                    <div class="more-info-box bg-green fg-white">
-                        <div class="content">
-                            <h3 class="text-bold mb-0">{{ congregation.display_name }}</h3>
-                            <div>Since...</div>
-                        </div>
-                        <div class="icon">
-                            <span class="mif-star-full"></span>
-                        </div>
-                        <a href="{% url 'console:console' congregation.congregation %}" class="more"> Zur Console ...
-                            <span class="mif-arrow-right"></span></a>
+                {% get_obj_perms request.user for congregation as "congregation_perms" %}
+                {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms %}
+                    <div class="cell-md-6">
+                        <div class="more-info-box bg-green fg-white">
+                            <div class="content">
+                                <h3 class="text-bold mb-0">{{ congregation.display_name }}</h3>
+                                <div>Since...</div>
+                            </div>
+                            <div class="icon">
+                                <span class="mif-star-full"></span>
+                            </div>
+                            {% if "access_console" in congregation_perms %}
+                                <a href="{% url 'console:console' congregation.congregation %}" class="more">
+                                    {% trans "Zur Console..." %}
+                                    <span class="mif-arrow-right"></span></a>
+                            {% endif %}
+                            {% if "access_stopwatch" in congregation_perms %}
+                                <a href="{% url 'console:console' congregation.congregation %}" class="more">
+                                    {% trans "Zur Stoppuhr..." %}
+                                    <span class="mif-arrow-right"></span></a>
+                                </div>
+                            {% endif %}
                     </div>
-                </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

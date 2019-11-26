@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
     'channels',
+    'guardian',
     'stage.apps.StageConfig',
     'picker.apps.PickerConfig',
     'receiver.apps.ReceiverConfig',
@@ -57,6 +58,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 ROOT_URLCONF = 'stagy_bee.urls'
 LOGIN_REDIRECT_URL = '/console/'

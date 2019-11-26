@@ -13,6 +13,8 @@
 #  limitations under the License.
 
 import asyncio
+import logging
+
 import aioredis
 from django import forms
 from django.conf import settings
@@ -20,8 +22,8 @@ from django.forms import ModelChoiceField
 
 from picker.models import Credential
 
-
 REDIS_KEY = "stagybee::console:congregation."
+logger = logging.getLogger(__name__)
 
 
 async def get_redis_congregations():
@@ -34,11 +36,17 @@ async def get_redis_congregations():
 
 
 async def get_active_congregations():
-    congregation_filter = await get_redis_congregations()
-    in_filter = []
-    for congregation in congregation_filter:
-        in_filter += [congregation.decode()[len(REDIS_KEY):len(congregation)]]
-    return Credential.objects.filter(congregation__in=in_filter)
+    congregation_filter = []
+    try:
+        congregation_filter = await get_redis_congregations()
+    except():
+        logger.error("Redis Server not available")
+    finally:
+        in_filter = []
+        for congregation in congregation_filter:
+            congregation_key = congregation.decode()[len(REDIS_KEY):len(congregation)]
+            in_filter += [congregation_key]
+        return Credential.objects.filter(congregation__in=in_filter)
 
 
 class CongregationForm(forms.ModelForm):

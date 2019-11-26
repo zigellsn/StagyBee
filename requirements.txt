@@ -4,6 +4,7 @@ django
 channels
 channels-redis
 aioredis
+django-guardian
 markdown
 aiohttp
 tenacity
