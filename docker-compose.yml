@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - type: volume
+        source: static_data
+        target: /data
+        volume:
+          nocopy: true
+    networks:
+      - stagybee-net
+      - stagybee-net-back
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - DAPHNE_HOST=daphne
+      - DAPHEN_PORT=8000
+    depends_on:
+      - daphne
+    links:
+      - daphne
+  redis:
+    image: redis:alpine
+    networks:
+      - stagybee-net-back
+    ports:
+      - "6379:6379"
+  daphne:
+    build: .
+    image: "stagybee:latest"
+    command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+    networks:
+      - stagybee-net
+      - stagybee-net-back
+    depends_on:
+      - redis
+    links:
+      - redis
+    volumes:
+      - static_data:/home/pyuser/static
+
+networks:
+  stagybee-net:
+    name: "stagybee-net"
+    driver: bridge
+  stagybee-net-back:
+    name: "stagybee-net-back"
+    driver: bridge
+
+volumes:
+  static_data:

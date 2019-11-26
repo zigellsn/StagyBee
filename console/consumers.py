@@ -15,7 +15,7 @@
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from consumers import generate_channel_group_name
+from stage.consumers import generate_channel_group_name
 
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
