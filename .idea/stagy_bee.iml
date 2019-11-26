@@ -21,7 +21,7 @@
       <sourceFolder url="file://$MODULE_DIR$/console" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (StagyBee)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="reconnecting-websocket-iife" level="application" />
     <orderEntry type="library" name="reconnecting-websocket" level="application" />
