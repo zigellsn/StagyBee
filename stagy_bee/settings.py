@@ -16,7 +16,7 @@ import os
 import sys
 
 from decouple import config
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 # Needed for now when using Python 3.8 on Windows
 if sys.platform == 'win32':

@@ -5,4 +5,4 @@ from django.urls import reverse
 class ReceiverViewTests(TestCase):
     def test_no_event(self):
         response = self.client.post(reverse('receiver:receiver', args=("Test",)))
-        self.assertEquals(response.status_code, 204)
+        self.assertEqual(response.status_code, 204)
