@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function stage_ws(congregation_ws) {
+function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
     let sumListenersNumber = document.getElementById('sumListenersNumber');
@@ -74,7 +74,8 @@ function stage_ws(congregation_ws) {
             } else {
                 speak = 'bg-gray';
             }
-            namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
+            if ((showOnlyRequestToSpeak && element['requestToSpeak'] === true) || !showOnlyRequestToSpeak)
+                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
             if (typeof element['listenerCount'] === 'string')
                 sumListeners += parseInt(element['listenerCount']);
             else

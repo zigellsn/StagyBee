@@ -15,10 +15,12 @@
 import urllib.parse
 
 from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from picker.models import Credential
 
 
+@xframe_options_exempt
 def stage(request, congregation):
     if 'HTTP_REFERER' in request.META and "picker" not in request.META['HTTP_REFERER']:
         return redirect('picker')
@@ -30,6 +32,7 @@ def stage(request, congregation):
         'password': credentials.password,
         'autologin': credentials.autologin,
         'touch': credentials.touch,
+        'show_only_request_to_speak': credentials.show_only_request_to_speak,
         'congregation_ws': congregation_ws
     }
     if credentials.touch:
@@ -38,6 +41,7 @@ def stage(request, congregation):
         return render(request, 'stage/stage_extractor.html', context)
 
 
+@xframe_options_exempt
 def stage_form(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     context = {

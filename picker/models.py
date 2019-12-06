@@ -17,9 +17,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CredentialManager(models.Manager):
-    def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch):
+    def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch,
+                          show_only_request_to_speak):
         credential = self.create(congregation=congregation, autologin=autologin, username=username, password=password,
-                                 display_name=display_name, extractor_url=extractor_url, touch=touch)
+                                 display_name=display_name, extractor_url=extractor_url, touch=touch,
+                                 show_only_request_to_speak=show_only_request_to_speak)
         return credential
 
 
@@ -39,6 +41,7 @@ class Credential(models.Model):
     extractor_url = models.CharField(max_length=200, default="http://localhost:5000/", blank=True,
                                      verbose_name="Extractor URL")
     touch = models.BooleanField(default=True)
+    show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
 
     objects = CredentialManager()
 
