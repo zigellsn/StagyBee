@@ -34,6 +34,8 @@ SECRET_KEY = config("SECRET_KEY", default='abc_change_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True)
 
+VERSION = "0.1.0-alpha"
+
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # Application definition
