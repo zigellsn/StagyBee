@@ -122,11 +122,13 @@ function console_client_ws(congregation_ws) {
 
     function showAlert(alert) {
         if (alert['alert'] === 'time')
-            $('#body').removeClass('clockAlert').addClass('timeAlert');
+            $('#body').addClass('timeAlert');
         else if (alert['alert'] === 'clock')
-            $('#body').removeClass('timeAlert').addClass('clockAlert');
-        else if (alert['alert'] === 'stop')
-            $('#body').removeClass('timeAlert').removeClass('clockAlert');
+            $('#clock').addClass('clockAlert');
+        else if (alert['alert'] === 'stop') {
+            $('#body').removeClass('timeAlert');
+            $('#clock').removeClass('clockAlert');
+        }
         else if (alert['alert'] === 'message')
             Metro.infobox.create(`<p>${alert['value']}</p>`, "default");
     }

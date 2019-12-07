@@ -19,6 +19,6 @@ from stage.consumers import generate_channel_group_name
 
 class ExtractorUtilitiesTests(TestCase):
     def test_generate_channel_group_name(self):
-        self.assertEqual("congregation.testAZaz", generate_channel_group_name("testAZaz"))
-        self.assertEqual("congregation.T.e_s-t", generate_channel_group_name("T.e_s-t"))
-        self.assertEqual("congregation.t_est_", generate_channel_group_name("t%est%"))
+        self.assertEqual("congregation.console.testAZaz", generate_channel_group_name("console", "testAZaz"))
+        self.assertEqual("congregation.console.T.e_s-t", generate_channel_group_name("console", "T.e_s-t"))
+        self.assertEqual("congregation.console.t_est_", generate_channel_group_name("console", "t%est%"))

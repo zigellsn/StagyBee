@@ -22,21 +22,25 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         await self.channel_layer.group_add(
-            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
+            generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
         await self.accept()
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
-            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
+            generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
         raise StopConsumer()
 
     async def receive_json(self, text_data, **kwargs):
-        congregation_group_name = generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"])
+        congregation_group_name = generate_channel_group_name("console",
+                                                              self.scope["url_route"]["kwargs"]["congregation"])
         await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
 
     async def exit(self, event):
+        await self.send_json(event)
+
+    async def alert(self, event):
         await self.send_json(event)

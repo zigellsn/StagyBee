@@ -30,8 +30,8 @@ from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_
 from picker.models import Credential
 
 
-def generate_channel_group_name(congregation):
-    return "congregation.%s" % re.sub(r'[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]', '_', congregation)
+def generate_channel_group_name(function, congregation):
+    return "congregation.%s.%s" % (function, re.sub(r'[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]', '_', congregation))
 
 
 class ExtractorConsumer(AsyncJsonWebsocketConsumer):
@@ -39,7 +39,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee::session:%s" % generate_channel_group_name(self.congregation)
+        self.redis_key = "stagybee::session:%s" % generate_channel_group_name("stage", self.congregation)
         self.credentials = None
         self.sessionId = None
         self.extractor_url = ""
@@ -47,7 +47,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         await self.channel_layer.group_add(
-            generate_channel_group_name(self.congregation),
+            generate_channel_group_name("stage", self.congregation),
             self.channel_name
         )
         await self.accept()
@@ -59,7 +59,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             with suppress(asyncio.CancelledError):
                 await self.task
         await self.channel_layer.group_discard(
-            generate_channel_group_name(self.congregation),
+            generate_channel_group_name("stage", self.congregation),
             self.channel_name
         )
         await self.disconnect_from_extractor()
@@ -151,18 +151,19 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee::console:%s" % generate_channel_group_name(self.congregation)
+        self.redis_key = "stagybee::console:%s" % generate_channel_group_name("console", self.congregation)
 
     async def connect(self):
         await self.channel_layer.group_add(
-            generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"]),
+            generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
         await connect_uri(self.redis_key, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
-        congregation_channel_group = generate_channel_group_name(self.scope["url_route"]["kwargs"]["congregation"])
+        congregation_channel_group = generate_channel_group_name("console",
+                                                                 self.scope["url_route"]["kwargs"]["congregation"])
         count = await disconnect_uri(self.redis_key, self.channel_name)
         if count == 0:
             await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
