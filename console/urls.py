@@ -21,4 +21,5 @@ app_name = 'console'
 urlpatterns = [
     path('', views.choose_console, name='chose_console'),
     path('<str:congregation>', views.console, name='console'),
+    path('timer/<str:congregation>', views.timer, name='timer'),
 ]

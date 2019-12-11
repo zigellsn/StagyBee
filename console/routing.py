@@ -18,4 +18,5 @@ from console.consumers import ConsoleConsumer
 
 websocket_urlpatterns = [
     re_path(r"^ws/console/(?P<congregation>[^/]+)/$", ConsoleConsumer),
+    re_path(r"^ws/timer/(?P<congregation>[^/]+)/$", ConsoleConsumer),
 ]

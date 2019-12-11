@@ -13,10 +13,13 @@
 #  limitations under the License.
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.utils.safestring import mark_safe
+from guardian.shortcuts import get_perms
+from django.utils.translation import gettext_lazy as _
 
+from picker.models import Credential
 from .forms import CongregationForm
 
 
@@ -38,4 +41,17 @@ def choose_console(request):
 
 @login_required
 def console(request, congregation):
-    return render(request, "console/console.html", {"congregation_ws": mark_safe(congregation)})
+    credentials = get_object_or_404(Credential, congregation=congregation)
+    if 'access_console' in get_perms(request.user, credentials):
+        return render(request, "console/console.html", {"congregation_ws": mark_safe(congregation)})
+    else:
+        return HttpResponse(_("Nicht berechtigt"))
+
+
+@login_required
+def timer(request, congregation):
+    credentials = get_object_or_404(Credential, congregation=congregation)
+    if 'access_stopwatch' in get_perms(request.user, credentials):
+        return render(request, "console/timer.html", {"congregation_ws": mark_safe(congregation)})
+    else:
+        return HttpResponse(_("Nicht berechtigt"))
