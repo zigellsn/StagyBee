@@ -4,7 +4,7 @@ Download and extract [this repository](https://github.com/zigellsn/StagyBee/arch
 ``` bash
 git clone https://github.com/zigellsn/StagyBee.git
 ```
-Install [Python 3.7](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
+Install [Python 3.8](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Change into the extracted directory.
 
 ```bash
@@ -14,6 +14,7 @@ pip install -r requirements.txt
 python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py compilemessages
+python manage.py collectstatic
 python manage.py runserver
 ```
 
