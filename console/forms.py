@@ -22,7 +22,7 @@ from django.forms import ModelChoiceField
 
 from picker.models import Credential
 
-REDIS_KEY = "stagybee::console:congregation."
+REDIS_KEY = "stagybee::console:congregation.console."
 logger = logging.getLogger(__name__)
 
 
