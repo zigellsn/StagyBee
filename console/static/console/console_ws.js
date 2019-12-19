@@ -45,6 +45,7 @@ function console_ws(congregation_ws) {
         let time = $('#time').data('timepicker').time();
         mySocket.send(JSON.stringify({
             'alert': 'time',
+            'start': new Date(),
             'value': time
         }));
     };
