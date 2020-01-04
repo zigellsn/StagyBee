@@ -3,6 +3,8 @@ FROM stagybee/python-base:slim
 ENV PYTHONUNBUFFERED 1
 
 ENV DEPENDENCIES="gcc \
+    libffi-dev \
+    libssl-dev \
     libc-dev"
 
 ADD requirements.txt $TMP
