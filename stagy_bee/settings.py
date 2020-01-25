@@ -15,7 +15,7 @@ import asyncio
 import os
 import sys
 
-from decouple import config
+from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 
 # Needed for now when using Python 3.8 on Windows
@@ -36,7 +36,7 @@ DEBUG = config("DEBUG", default=True)
 
 VERSION = "0.1.0-alpha"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Application definition
 

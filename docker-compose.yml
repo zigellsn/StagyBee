@@ -1,5 +1,9 @@
 version: '3.7'
 services:
+  python-base:
+    image: stagybee/python-base:slim
+    build:
+      context: python-base/
   web:
     image: nginx:alpine
     volumes:
@@ -30,7 +34,7 @@ services:
       - "6379:6379"
   daphne:
     build: .
-    image: "stagybee:latest"
+    image: "stagybee/frontend:latest"
     command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
     ports:
       - "8000:8000"
@@ -46,10 +50,6 @@ services:
     volumes:
       - static_data:/home/pyuser/static
       - "/var/run/shutdown_signal:/shutdown_signal"
-  python-base:
-    image: stagybee/python-base:slim
-    build:
-      context: python-base/
 
 networks:
   stagybee-net:
