@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [ "$1" = "-r" ] then
+if [ "$1" = "-r" ]; then
   shutdown -r
 fi
-if [ "$1" = "-h" ] then
+if [ "$1" = "-h" ]; then
   shutdown -h now
 fi

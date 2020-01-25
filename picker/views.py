@@ -16,6 +16,7 @@ import socket
 from subprocess import call
 from sys import platform
 
+from decouple import config
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -36,7 +37,10 @@ def picker(request):
 def shutdown(request):
     if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
             "aix") or platform.startswith("cygwin"):
-        call(["sh shutdown.sh", "-h", "now"], shell=False)
+        if config("RUN_IN_CONTAINER", default=False):
+            call(["sh shutdown.sh", "-h", "now"], shell=False)
+        else:
+            __write_signal_file("/shutdown_signal", "shutdown")
     elif platform.startswith("win32"):
         call(["shutdown.bat", "-h"], shell=False)
     return HttpResponse("Shutdown in progress")
@@ -45,10 +49,19 @@ def shutdown(request):
 def reboot(request):
     if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
             "aix") or platform.startswith("cygwin"):
-        call(["sh shutdown.sh", "-r"], shell=False)
+        if config("RUN_IN_CONTAINER", default=False):
+            call(["sh shutdown.sh", "-r"], shell=False)
+        else:
+            __write_signal_file("/shutdown_signal", "reboot")
     elif platform.startswith("win32"):
         call(["shutdown.bat", "-r"], shell=False)
     return HttpResponse("Reboot in progress")
+
+
+def __write_signal_file(filename, mode):
+    f = open(filename, "w")
+    f.write(mode)
+    f.close()
 
 
 # Origin: https://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib by Jamieson Becker,
