@@ -45,6 +45,7 @@ services:
       - redis
     volumes:
       - static_data:/home/pyuser/static
+      - "/var/run/shutdown_signal:/shutdown_signal"
   python-base:
     image: stagybee/python-base:slim
     build:
