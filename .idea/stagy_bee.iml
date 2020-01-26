@@ -4,8 +4,8 @@
     <facet type="django" name="Django">
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$" />
-        <option name="settingsModule" value="stagy_bee/settings.py" />
-        <option name="manageScript" value="manage.py" />
+        <option name="settingsModule" value="app/stagy_bee/settings.py" />
+        <option name="manageScript" value="app/manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
         <option name="doNotUseTestRunner" value="false" />
         <option name="trackFilePattern" value="" />
@@ -14,11 +14,11 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/stage" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/picker" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/receiver" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/stagy_bee" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/console" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/stage" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/picker" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/receiver" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/stagy_bee" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/console" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />

@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  nginx:
+    build:
+      context: nginx/
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+    links:
+      - web
+    volumes:
+      - static_data:/home/app/web/staticfiles
+  web:
+    build: .
+      dockerfile: app/Dockerfile.prod
+      context: app/
+    image: "stagybee/frontend:latest"
+    command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+    networks:
+      - stagybee-net
+      - stagybee-net-back
+    depends_on:
+      - redis
+      - db
+    links:
+      - redis
+    volumes:
+      - static_data:/home/pyuser/static
+      - "/var/run/shutdown_signal:/shutdown_signal"
+
+volumes:
+  static_data:

@@ -4,38 +4,25 @@ services:
     image: stagybee/python-base:slim
     build:
       context: python-base/
-  web:
-    image: nginx:alpine
+  db:
+    image: postgres:12.1-alpine
     volumes:
-      - type: volume
-        source: static_data
-        target: /data
-        volume:
-          nocopy: true
-    networks:
-      - stagybee-net
-      - stagybee-net-back
-    ports:
-      - "80:80"
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
-      - DAPHNE_HOST=daphne
-      - DAPHEN_PORT=8000
-    depends_on:
-      - daphne
-    links:
-      - daphne
+      - POSTGRES_USER=stagybee
+      - POSTGRES_PASSWORD=stagybee
+      - POSTGRES_DB=stagybee_dev
   redis:
     image: redis:alpine
     networks:
       - stagybee-net-back
     ports:
       - "6379:6379"
-  daphne:
-    build: .
+  web:
+    build:
+      context: app/
     image: "stagybee/frontend:latest"
-    command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     environment:
@@ -45,10 +32,10 @@ services:
       - stagybee-net-back
     depends_on:
       - redis
+      - db
     links:
       - redis
     volumes:
-      - static_data:/home/pyuser/static
       - "/var/run/shutdown_signal:/shutdown_signal"
 
 networks:
@@ -60,4 +47,4 @@ networks:
     driver: bridge
 
 volumes:
-  static_data:
+  postgres_data:

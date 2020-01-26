@@ -36,7 +36,7 @@ DEBUG = config("DEBUG", default=True)
 
 VERSION = "0.1.0-alpha"
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
 
 # Application definition
 
@@ -110,8 +110,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        "ENGINE": config("SQL_ENGINE", default="django.db.backends.sqlite3"),
+        "NAME": config("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": config("SQL_USER", default="user"),
+        "PASSWORD": config("SQL_PASSWORD", default="password"),
+        "HOST": config("SQL_HOST", default="localhost"),
+        "PORT": config("SQL_PORT", default="5432"),
     }
 }
 
@@ -147,7 +151,7 @@ LANGUAGES = (
 LANGUAGE_CODE = 'de'
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'app/locale'),
 )
 
 TIME_ZONE = 'CET'
@@ -162,4 +166,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
