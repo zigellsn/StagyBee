@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 ENV DEPENDENCIES="gcc \
     libffi-dev \
     libssl-dev \
-    postgresql-dev \
+    libpq-dev \
     libc-dev"
 
 ADD requirements.txt $TMP
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gettext $DEPEND
 
 USER pyuser
 
-ADD --chown=pyuser:users .. .
+ADD --chown=pyuser:users . .
 ADD entrypoint.sh .
 
 ENTRYPOINT ["/home/pyuser/entrypoint.sh"]

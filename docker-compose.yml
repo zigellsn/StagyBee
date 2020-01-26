@@ -7,17 +7,15 @@ services:
   db:
     image: postgres:12.1-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - type: bind
+        source: ./data
+        target: /var/lib/postgresql/data
     environment:
       - POSTGRES_USER=stagybee
       - POSTGRES_PASSWORD=stagybee
       - POSTGRES_DB=stagybee_dev
   redis:
     image: redis:alpine
-    networks:
-      - stagybee-net-back
-    ports:
-      - "6379:6379"
   web:
     build:
       context: app/
@@ -28,23 +26,9 @@ services:
     environment:
       - REDIS_HOST=redis
     networks:
-      - stagybee-net
       - stagybee-net-back
     depends_on:
       - redis
       - db
-    links:
-      - redis
     volumes:
       - "/var/run/shutdown_signal:/shutdown_signal"
-
-networks:
-  stagybee-net:
-    name: "stagybee-net"
-    driver: bridge
-  stagybee-net-back:
-    name: "stagybee-net-back"
-    driver: bridge
-
-volumes:
-  postgres_data:
