@@ -1,15 +1,20 @@
 version: '3.7'
 services:
+  db:
+    restart: always
+  redis:
+    restart: always
   nginx:
     build:
       context: nginx/
+    restart: always
     ports:
-      - 1337:80
+      - 80:80
     depends_on:
       - web
     volumes:
-      - type: volume
-        source: static_data
+      - type: bind
+        source: ./static
         target: /home/pyuser/static
   web:
     build:
@@ -17,18 +22,11 @@ services:
       dockerfile: Dockerfile.prod
     image: "stagybee/frontend:latest"
     command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
-    environment:
-      - REDIS_HOST=redis
-    depends_on:
-      - redis
-      - db
+    restart: always
     expose:
       - 8000
     volumes:
-      - type: volume
-        source: static_data
+      - type: bind
+        source: ./static
         target: /home/pyuser/static
       - "/var/run/shutdown_signal:/shutdown_signal"
-
-volumes:
-  static_data:

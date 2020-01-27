@@ -16,6 +16,14 @@ services:
       - POSTGRES_DB=stagybee_dev
   redis:
     image: redis:alpine
+  #extractor:
+  #  build:
+  #    context: ../extractor/   # change accordingly
+  #    dockerfile: Dockerfile
+  #  image: "stagybee/extractor:latest"
+  #  restart: always
+  #  expose:
+  #    - 5000
   web:
     build:
       context: app/
@@ -23,12 +31,9 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-    environment:
-      - REDIS_HOST=redis
-    networks:
-      - stagybee-net-back
     depends_on:
       - redis
       - db
+  #   - extractor
     volumes:
       - "/var/run/shutdown_signal:/shutdown_signal"
