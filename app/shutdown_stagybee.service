@@ -1,0 +1,9 @@
+[Unit]
+Description=StagyBee shutdown daemon
+
+[Service]
+ExecStart=shutdown_interface.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

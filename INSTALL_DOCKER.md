@@ -82,4 +82,15 @@ chromium-browser --incognito --kiosk http://127.0.0.1:8000/picker/
 ```
 
 ## Use shutdown and reboot scripts
-TODO...
+Install inotify-tools if necessary.
+
+Set variable SHUTDOWN_SIGNAL in app/shutdown_interface.sh to the full path of the file app/shutdown_signal.
+
+Then run
+``` bash
+chmod +x app/shutdown_interface.sh
+sudo cp app/shutdown_interface.sh /usr/bin/
+sudo cp app/shutdown_stagybee.service /etc/systemd/system/
+sudo systemctl start shutdown_stagybee.service
+sudo systemctl enable shutdown_stagybee.service
+```

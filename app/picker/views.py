@@ -38,9 +38,9 @@ def shutdown(request):
     if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
             "aix") or platform.startswith("cygwin"):
         if config("RUN_IN_CONTAINER", default=False):
-            call(["sh shutdown.sh", "-h", "now"], shell=False)
+            __write_signal_file("shutdown_signal", "shutdown")
         else:
-            __write_signal_file("/shutdown_signal", "shutdown")
+            call(["sh shutdown.sh", "-h", "now"], shell=False)
     elif platform.startswith("win32"):
         call(["shutdown.bat", "-h"], shell=False)
     return HttpResponse("Shutdown in progress")
@@ -50,9 +50,9 @@ def reboot(request):
     if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
             "aix") or platform.startswith("cygwin"):
         if config("RUN_IN_CONTAINER", default=False):
-            call(["sh shutdown.sh", "-r"], shell=False)
+            __write_signal_file("shutdown_signal", "reboot")
         else:
-            __write_signal_file("/shutdown_signal", "reboot")
+            call(["sh shutdown.sh", "-r"], shell=False)
     elif platform.startswith("win32"):
         call(["shutdown.bat", "-r"], shell=False)
     return HttpResponse("Reboot in progress")

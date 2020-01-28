@@ -29,4 +29,3 @@ services:
       - type: bind
         source: ./static
         target: /home/pyuser/static
-      - "/var/run/shutdown_signal:/shutdown_signal"

@@ -36,4 +36,6 @@ services:
       - db
   #   - extractor
     volumes:
-      - "/var/run/shutdown_signal:/shutdown_signal"
+      - type: bind
+        source: ./app/shutdown_signal
+        target: /home/pyuser/shutdown_signal
