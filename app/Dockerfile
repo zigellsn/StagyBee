@@ -11,7 +11,7 @@ ENV DEPENDENCIES="gcc \
 
 ADD requirements.txt $TMP
 
-RUN apt-get update && apt-get install -y --no-install-recommends gettext $DEPENDENCIES && \
+RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
     pip install --no-cache-dir -r $TMP/requirements.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
