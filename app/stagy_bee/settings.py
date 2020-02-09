@@ -151,7 +151,7 @@ LANGUAGES = (
 LANGUAGE_CODE = 'de'
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'app/locale'),
+    os.path.join(BASE_DIR, 'static/locale'),
 )
 
 TIME_ZONE = 'CET'
@@ -165,5 +165,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/assets/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')

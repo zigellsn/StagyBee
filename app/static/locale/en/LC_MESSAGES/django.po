@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-09 17:26+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\console\templates\console\choose_console_cards.html:23
+msgid "Zur Console..."
+msgstr "Proceed to console..."
+
+#: .\console\templates\console\choose_console_cards.html:28
+msgid "Zur Stoppuhr..."
+msgstr "Proceed to stopwatch..."
+
+#: .\console\templates\console\console.html:7
+#: .\console\templates\console\timer.html:7
+msgid "Stoppuhr"
+msgstr "Stopwatch"
+
+#: .\console\templates\console\console.html:12
+msgid "Starte Stoppuhr"
+msgstr "Initiate stopwatch"
+
+#: .\console\templates\console\console.html:15
+msgid "Uhrzeit"
+msgstr "Time"
+
+#: .\console\templates\console\console.html:19
+msgid "Sende Uhrzeit"
+msgstr "Send time"
+
+#: .\console\templates\console\console.html:22
+msgid "Stoppe alle Timer"
+msgstr "Stop all timers"
+
+#: .\console\templates\console\console.html:24
+msgid "Textnachricht"
+msgstr "Text message"
+
+#: .\console\templates\console\console.html:27
+msgid "Sende Nachricht"
+msgstr "Send message"
+
+#: .\console\views.py:48 .\console\views.py:57
+msgid "Nicht berechtigt"
+msgstr "Not authorized"
+
+#: .\picker\models.py:32
+msgid "Zugriff auf Management Console"
+msgstr "Access Management Console"
+
+#: .\picker\models.py:33
+msgid "Zugriff auf Stoppuhr"
+msgstr "Access stopwatch"
+
+#: .\picker\models.py:44
+msgid "Zeige nur Meldungen"
+msgstr "Show requests to speak only"
+
+#: .\picker\templates\picker\base.html:28
+msgid "Neu starten"
+msgstr "Restart"
+
+#: .\picker\templates\picker\base.html:29
+msgid "Herunterfahren"
+msgstr "Shutdown"
+
+#: .\picker\templates\picker\base.html:30
+msgid "Bist du sicher?"
+msgstr "Are you sure?"
+
+#: .\picker\templates\picker\base.html:55
+msgid "Sprache"
+msgstr "Language"
+
+#: .\picker\templates\picker\base.html:95
+msgid "Nein"
+msgstr "No"
+
+#: .\picker\templates\picker\base.html:99
+msgid "Ja"
+msgstr "Yes"
+
+#: .\picker\templates\picker\tiles.html:5
+msgid "Versammlung wählen"
+msgstr "Choose Congregation"
+
+#: .\picker\templates\picker\tiles.html:16
+msgid "JWConf Login Seite"
+msgstr "JWConf Login Page"
+
+#: .\stage\templates\stage\stage_extractor.html:6
+msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
+msgstr "Establishing connetion to extractor service..."
+
+#: .\stage\templates\stage\stage_extractor.html:11
+msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
+msgstr "Extractor service not running or not reachable"
+
+#: .\stage\templates\stage\stage_extractor.html:16
+msgid "Zuhörer gesamt:"
+msgstr "Listeners total:"
+
+#: .\stagy_bee\settings.py:144
+msgid "English"
+msgstr ""
+
+#: .\stagy_bee\settings.py:145
+msgid "German"
+msgstr ""
+
+#: .\stagy_bee\settings.py:146
+msgid "Italian"
+msgstr ""
+
+#: .\stagy_bee\settings.py:147
+msgid "French"
+msgstr ""
+
+#: .\stagy_bee\settings.py:148
+msgid "Russian"
+msgstr ""
+
+#~ msgid "Wirklich herunterfahren?"
+#~ msgstr "Are you sure?"
