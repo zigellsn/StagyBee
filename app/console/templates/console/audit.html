@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'console/base.html' %}
+{% load i18n utils %}
+{% block content %}
+    <div>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Nachricht</th>
+                <th>Sendezeit</th>
+            </tr>
+            {% for log_entry in log %}
+                <tr>
+                    <td>
+                        <div>{{ log_entry.username }}</div>
+                    </td>
+                    <td>
+                        <div>{{ log_entry.message }}</div>
+                    </td>
+                    <td>
+                        <div>{{ log_entry.send_time }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
