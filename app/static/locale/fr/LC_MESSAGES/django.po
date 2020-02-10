@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-09 17:26+0100\n"
+"POT-Creation-Date: 2020-02-10 18:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\console\templates\console\choose_console_cards.html:23
+#: .\console\models.py:30
+msgid "username"
+msgstr ""
+
+#: .\console\templates\console\audit.html:9
+msgid "Username"
+msgstr ""
+
+#: .\console\templates\console\audit.html:10
+msgid "Nachricht"
+msgstr ""
+
+#: .\console\templates\console\audit.html:11
+msgid "Sendezeit"
+msgstr ""
+
+#: .\console\templates\console\base.html:34
+msgid "Willkommen, "
+msgstr ""
+
+#: .\console\templates\console\choose_console_cards.html:12
+msgid "Zum Audit-Log..."
+msgstr ""
+
+#: .\console\templates\console\choose_console_cards.html:33
 msgid "Zur Console..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:28
+#: .\console\templates\console\choose_console_cards.html:38
 msgid "Zur Stoppuhr..."
 msgstr ""
 
@@ -55,7 +79,7 @@ msgstr ""
 msgid "Sende Nachricht"
 msgstr ""
 
-#: .\console\views.py:48 .\console\views.py:57
+#: .\console\views.py:51 .\console\views.py:60 .\console\views.py:72
 msgid "Nicht berechtigt"
 msgstr ""
 
@@ -67,7 +91,11 @@ msgstr ""
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:44
+#: .\picker\models.py:34
+msgid "Zugriff auf Audit-Log"
+msgstr ""
+
+#: .\picker\models.py:45
 msgid "Zeige nur Meldungen"
 msgstr ""
 

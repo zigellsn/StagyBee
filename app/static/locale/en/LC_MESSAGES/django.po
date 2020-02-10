@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-09 17:26+0100\n"
+"POT-Creation-Date: 2020-02-10 18:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\console\templates\console\choose_console_cards.html:23
+#: .\console\models.py:30
+msgid "username"
+msgstr "username"
+
+#: .\console\templates\console\audit.html:9
+msgid "Username"
+msgstr "User name"
+
+#: .\console\templates\console\audit.html:10
+#, fuzzy
+#| msgid "Sende Nachricht"
+msgid "Nachricht"
+msgstr "Send message"
+
+#: .\console\templates\console\audit.html:11
+#, fuzzy
+#| msgid "Sende Uhrzeit"
+msgid "Sendezeit"
+msgstr "Send time"
+
+#: .\console\templates\console\base.html:34
+msgid "Willkommen, "
+msgstr "Welcome, "
+
+#: .\console\templates\console\choose_console_cards.html:12
+msgid "Zum Audit-Log..."
+msgstr "Proceed to audit log..."
+
+#: .\console\templates\console\choose_console_cards.html:33
 msgid "Zur Console..."
 msgstr "Proceed to console..."
 
-#: .\console\templates\console\choose_console_cards.html:28
+#: .\console\templates\console\choose_console_cards.html:38
 msgid "Zur Stoppuhr..."
 msgstr "Proceed to stopwatch..."
 
@@ -54,7 +82,7 @@ msgstr "Text message"
 msgid "Sende Nachricht"
 msgstr "Send message"
 
-#: .\console\views.py:48 .\console\views.py:57
+#: .\console\views.py:51 .\console\views.py:60 .\console\views.py:72
 msgid "Nicht berechtigt"
 msgstr "Not authorized"
 
@@ -66,7 +94,13 @@ msgstr "Access Management Console"
 msgid "Zugriff auf Stoppuhr"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:44
+#: .\picker\models.py:34
+#, fuzzy
+#| msgid "Zugriff auf Stoppuhr"
+msgid "Zugriff auf Audit-Log"
+msgstr "Access stopwatch"
+
+#: .\picker\models.py:45
 msgid "Zeige nur Meldungen"
 msgstr "Show requests to speak only"
 

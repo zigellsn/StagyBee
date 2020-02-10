@@ -3,12 +3,15 @@
 {% load i18n utils %}
 {% block content %}
     <div>
-        <table>
+        <table class="table">
+            <thead>
             <tr>
-                <th>Username</th>
-                <th>Nachricht</th>
-                <th>Sendezeit</th>
+                <th class="fg-white">{% trans "Username" %}</th>
+                <th class="fg-white">{% trans "Nachricht" %}</th>
+                <th class="fg-white">{% trans "Sendezeit" %}</th>
             </tr>
+            </thead>
+            <tbody>
             {% for log_entry in log %}
                 <tr>
                     <td>
@@ -22,6 +25,7 @@
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
 {% endblock %}

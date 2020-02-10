@@ -11,6 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from calendar import month
+from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -62,6 +64,8 @@ def timer(request, congregation):
 def audit(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     if 'access_audit_log' in get_perms(request.user, credentials):
+        date = datetime.now() - timedelta(days=180)
+        Audit.objects.filter(send_time__lt=date).delete()
         log = Audit.objects.filter(congregation__exact=congregation)
         return render(request, "console/audit.html", {"log": log})
     else:
