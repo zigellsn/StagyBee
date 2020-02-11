@@ -4,44 +4,57 @@
 {% load guardian_tags %}
 {% block content %}
     <div>
-        {% if perms.console.view_audit %}
-            {% for congregation in congregations %}
-                {% get_obj_perms request.user for congregation as "congregation_perms" %}
-                {% if "access_audit_log" in congregation_perms %}
-                    <a href="{% url 'console:audit' congregation.congregation %}" class="more">
-                        {% trans "Zum Audit-Log..." %}{{ congregation.display_name }}
-                        <span class="mif-arrow-right"></span></a>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
         <div class="row mt-2">
             {% for congregation in congregations %}
                 {% get_obj_perms request.user for congregation as "congregation_perms" %}
-                {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms %}
+                {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms or "access_audit_log" in congregation_perms %}
                     <div class="cell-md-6">
-                        <div class="more-info-box bg-green fg-white">
-                            <div class="content">
-                                <h3 class="text-bold mb-0">{{ congregation.display_name }}</h3>
-                                <div>Since...</div>
-                            </div>
-                            <div class="icon">
-                                <span class="mif-star-full"></span>
-                            </div>
-                            {% if "access_console" in congregation_perms %}
-                                <a href="{% url 'console:console' congregation.congregation %}" class="more">
+                    <div class="card bg-black fg-white">
+                    {% if congregation.active == True %}
+                        <div class="card-header bg-green fg-white">
+                    {% else %}
+                        <div class="card-header bg-gray fg-white">
+                    {% endif %}
+                <h3 class="text-bold mb-0">{{ congregation.display_name }}</h3>
+                <!-- <div class="icon">
+                    <span class="mif-star-full"></span>
+                </div> -->
+                </div>
+                <div class="card-footer">
+                    {% if congregation.active == True %}
+                        {% if "access_console" in congregation_perms %}
+                            <a href="{% url 'console:console' congregation.congregation %}">
+                                <button class="button secondary">
                                     {% trans "Zur Console..." %}
-                                    <span class="mif-arrow-right"></span></a>
-                            {% endif %}
-                            {% if "access_stopwatch" in congregation_perms %}
-                                <a href="{% url 'console:timer' congregation.congregation %}" class="more">
+                                    <span class="mif-arrow-right"></span>
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if "access_stopwatch" in congregation_perms %}
+                            <a href="{% url 'console:timer' congregation.congregation %}">
+                                <button class="button secondary">
                                     {% trans "Zur Stoppuhr..." %}
-                                    <span class="mif-arrow-right"></span></a>
-                                </div>
-                            {% endif %}
-                    </div>
+                                    <span class="mif-arrow-right"></span>
+                                </button>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                    {% if perms.console.view_audit %}
+                        {% if "access_audit_log" in congregation_perms %}
+                            <a href="{% url 'console:audit' congregation.congregation %}">
+                                <button class="button secondary">
+                                    {% trans "Zum Audit-Log..." %}
+                                    <span class="mif-arrow-right"></span>
+                                </button>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                </div>
                 {% endif %}
             {% endfor %}
+            </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -12,7 +12,7 @@ async def initialize_redis():
         host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
         redis = await aioredis.create_redis(host)
         for key in await redis.keys(REDIS_KEY):
-            redis.delete(key)
+            await redis.delete(key)
         redis.close()
         await redis.wait_closed()
     except OSError:

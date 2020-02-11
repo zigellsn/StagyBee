@@ -42,11 +42,8 @@ async def get_active_congregations():
     except():
         logger.error("Redis Server not available")
     finally:
-        in_filter = []
-        for congregation in congregation_filter:
-            congregation_key = congregation.decode()[len(REDIS_KEY):len(congregation)]
-            in_filter += [congregation_key]
-        return Credential.objects.filter(congregation__in=in_filter)
+        congregation_filter[:] = [c.decode()[len(REDIS_KEY):len(c)] for c in congregation_filter]
+        return congregation_filter
 
 
 class CongregationForm(forms.ModelForm):
@@ -62,5 +59,11 @@ class CongregationForm(forms.ModelForm):
         super(CongregationForm, self).__init__(*args, **kwargs)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        self.congregation_set = loop.run_until_complete(get_active_congregations())
+        congregation_filter = loop.run_until_complete(get_active_congregations())
+        self.congregation_set = Credential.objects.all()
+        for congregation in self.congregation_set:
+            if congregation.congregation in congregation_filter:
+                congregation.active = True
+            else:
+                congregation.active = False
         self.fields["congregation"].queryset = self.congregation_set
