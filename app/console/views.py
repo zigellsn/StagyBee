@@ -11,14 +11,17 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from calendar import month
+from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.safestring import mark_safe
-from guardian.shortcuts import get_perms
 from django.utils.translation import gettext_lazy as _
+from guardian.shortcuts import get_perms
 
+from console.models import Audit
 from picker.models import Credential
 from .forms import CongregationForm
 
@@ -53,5 +56,17 @@ def timer(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     if 'access_stopwatch' in get_perms(request.user, credentials):
         return render(request, "console/timer.html", {"congregation_ws": mark_safe(congregation)})
+    else:
+        return HttpResponse(_("Nicht berechtigt"))
+
+
+@login_required
+def audit(request, congregation):
+    credentials = get_object_or_404(Credential, congregation=congregation)
+    if 'access_audit_log' in get_perms(request.user, credentials):
+        date = datetime.now() - timedelta(days=180)
+        Audit.objects.filter(send_time__lt=date).delete()
+        log = Audit.objects.filter(congregation__exact=congregation)
+        return render(request, "console/audit.html", {"log": log})
     else:
         return HttpResponse(_("Nicht berechtigt"))

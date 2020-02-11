@@ -31,6 +31,7 @@ class Credential(models.Model):
         permissions = (
             ("access_console", _("Zugriff auf Management Console")),
             ("access_stopwatch", _("Zugriff auf Stoppuhr")),
+            ("access_audit_log", _("Zugriff auf Audit-Log")),
         )
 
     congregation = models.CharField(max_length=200, primary_key=True)

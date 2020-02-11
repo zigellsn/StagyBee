@@ -4,8 +4,18 @@
 {% load guardian_tags %}
 {% block content %}
     <div>
-        <div class="row mt-2">
+        {% if perms.console.view_audit %}
+            {% for congregation in congregations %}
+                {% get_obj_perms request.user for congregation as "congregation_perms" %}
+                {% if "access_audit_log" in congregation_perms %}
+                    <a href="{% url 'console:audit' congregation.congregation %}" class="more">
+                        {% trans "Zum Audit-Log..." %}{{ congregation.display_name }}
+                        <span class="mif-arrow-right"></span></a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
+        <div class="row mt-2">
             {% for congregation in congregations %}
                 {% get_obj_perms request.user for congregation as "congregation_perms" %}
                 {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms %}

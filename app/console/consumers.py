@@ -12,9 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from console.models import Audit
 from stage.consumers import generate_channel_group_name
 
 
@@ -37,6 +39,8 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, text_data, **kwargs):
         congregation_group_name = generate_channel_group_name("console",
                                                               self.scope["url_route"]["kwargs"]["congregation"])
+        if text_data["alert"] == "message":
+            await database_sync_to_async(self.get_name)(text_data)
         await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
 
     async def exit(self, event):
@@ -44,3 +48,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def alert(self, event):
         await self.send_json(event)
+
+    def get_name(self, text_data):
+        return Audit.objects.create_audit(self.scope["url_route"]["kwargs"]["congregation"],
+                                          self.scope["user"].username, text_data["value"])
