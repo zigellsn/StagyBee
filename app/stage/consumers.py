@@ -89,7 +89,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         url = "http://%s:%s/receiver/%s/" % (config("RECEIVER_HOST", default=self.scope["server"][0]),
                                              config("RECEIVER_PORT", default=self.scope["server"][1], cast=int),
                                              self.congregation)
-        if self.credentials.autologin is not None:
+        if self.credentials.autologin is not None and self.credentials.autologin != "":
             payload = {"id": self.credentials.autologin, "url": url}
         else:
             payload = {"congregation": self.credentials.congregation,

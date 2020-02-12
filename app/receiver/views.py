@@ -10,7 +10,7 @@ from stage.consumers import generate_channel_group_name
 @require_POST
 @csrf_exempt
 def receiver(request, congregation):
-    event = request.META.get('HTTP_X_JWCONFEXTRACTOR_EVENT')
+    event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
     if event == 'listeners':
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("stage", congregation)
