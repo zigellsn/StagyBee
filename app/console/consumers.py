@@ -11,18 +11,21 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+# from datetime import date
 
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from console.models import Audit
+# from get_times import extract
 from stage.consumers import generate_channel_group_name
 
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
+        # times = await extract(date.today(), date.today())
         await self.channel_layer.group_add(
             generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name

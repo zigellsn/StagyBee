@@ -52,6 +52,19 @@ body {
     }
 }
 
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 15px 0 rgba(80, 155, 255, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 15px 35px rgba(80, 155, 255, 0);
+    }
+}
+
+.requestToSpeak {
+    animation: pulse 1s infinite;
+}
+
 .timeAlert {
     animation: ctime 1s infinite alternate;
 }

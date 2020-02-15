@@ -19,7 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/receiver" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/app/stagy_bee" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/app/console" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/app/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

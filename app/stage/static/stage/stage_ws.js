@@ -68,7 +68,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
                 fullName = `${element['givenName']} ${element['familyName']}`
             }
             if (element['requestToSpeak'] === true && element['speaking'] === false) {
-                speak = 'bg-blue';
+                speak = 'bg-blue requestToSpeak';
             } else if (element['speaking'] === true) {
                 speak = 'bg-green';
             } else {
@@ -128,8 +128,7 @@ function console_client_ws(congregation_ws) {
         else if (alert['alert'] === 'stop') {
             $('#body').removeClass('timeAlert');
             $('#clock').removeClass('clockAlert');
-        }
-        else if (alert['alert'] === 'message')
+        } else if (alert['alert'] === 'message')
             Metro.infobox.create(`<p>${alert['value']}</p>`, "default");
     }
 
