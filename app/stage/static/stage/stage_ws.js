@@ -109,7 +109,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     };
 }
 
-function console_client_ws(congregation_ws, heading = 'Nachricht') {
+function console_client_ws(congregation_ws, heading) {
 
     let scrimTrigger = false;
     let activity = null;

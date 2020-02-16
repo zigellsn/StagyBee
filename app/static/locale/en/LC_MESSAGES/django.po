@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 17:12+0100\n"
+"POT-Creation-Date: 2020-02-16 17:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,14 +27,10 @@ msgstr "User name"
 
 #: .\console\templates\console\audit.html:10
 #: .\stage\templates\stage\base.html:71
-#, fuzzy
-#| msgid "Sende Nachricht"
 msgid "Nachricht"
 msgstr "Message"
 
 #: .\console\templates\console\audit.html:11
-#, fuzzy
-#| msgid "Sende Uhrzeit"
 msgid "Sendezeit"
 msgstr "Send time"
 
@@ -100,8 +96,6 @@ msgid "Zugriff auf Stoppuhr"
 msgstr "Access stopwatch"
 
 #: .\picker\models.py:34
-#, fuzzy
-#| msgid "Zugriff auf Stoppuhr"
 msgid "Zugriff auf Audit-Log"
 msgstr "Access stopwatch"
 
@@ -143,7 +137,7 @@ msgstr "JWConf Login Page"
 
 #: .\stage\templates\stage\stage_extractor.html:6
 msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
-msgstr "Establishing connetion to extractor service..."
+msgstr "Establishing connection to extractor service..."
 
 #: .\stage\templates\stage\stage_extractor.html:11
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
