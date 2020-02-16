@@ -32,11 +32,11 @@ chmod +x app/entrypoint.sh
 
 Then run
 ``` bash
-docker-compose docker-compose.yml up -d --build
-docker-compose -f docker-compose.yml exec web python manage.py migrate --noinput
-docker-compose -f docker-compose.yml exec web python manage.py createsuperuser
-docker-compose -f docker-compose.yml exec web python manage.py compilemessages
-docker-compose -f docker-compose.yml exec web python manage.py collectstatic --no-input --clear
+docker-compose up -d --build
+docker-compose exec web python manage.py migrate --noinput
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py compilemessages
+docker-compose exec web python manage.py collectstatic --no-input --clear
 ```
 
 Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
@@ -44,7 +44,7 @@ Create the required credential data sets.
 
 To stop everything use
 ``` bash
-docker-compose docker-compose.yml down -v
+docker-compose down -v
 ```
 
 ## Running in production
