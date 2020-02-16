@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 17:35+0100\n"
+"POT-Creation-Date: 2020-02-16 18:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Username"
 msgstr ""
 
 #: .\console\templates\console\audit.html:10
-#: .\stage\templates\stage\base.html:71
+#: .\stage\templates\stage\base.html:74
 msgid "Nachricht"
 msgstr ""
 
@@ -35,9 +35,19 @@ msgstr ""
 msgid "Sendezeit"
 msgstr ""
 
-#: .\console\templates\console\base.html:34
-msgid "Willkommen, "
+#: .\console\templates\console\base.html:30
+#, python-format
+msgid "Willkommen, %(username)s!"
 msgstr ""
+
+#: .\console\templates\console\base.html:37
+msgid "Logout"
+msgstr ""
+
+#: .\console\templates\console\base.html:44
+#: .\picker\templates\picker\base.html:55
+msgid "Sprache"
+msgstr "Langue"
 
 #: .\console\templates\console\choose_console_cards.html:28
 msgid "Zur Console..."
@@ -115,10 +125,6 @@ msgstr "Arrêter"
 #: .\picker\templates\picker\base.html:30
 msgid "Bist du sicher?"
 msgstr ""
-
-#: .\picker\templates\picker\base.html:55
-msgid "Sprache"
-msgstr "Langue"
 
 #: .\picker\templates\picker\base.html:95
 msgid "Nein"

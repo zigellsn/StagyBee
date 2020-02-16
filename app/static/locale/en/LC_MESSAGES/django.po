@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 17:35+0100\n"
+"POT-Creation-Date: 2020-02-16 18:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgid "Username"
 msgstr "User name"
 
 #: .\console\templates\console\audit.html:10
-#: .\stage\templates\stage\base.html:71
+#: .\stage\templates\stage\base.html:74
 msgid "Nachricht"
 msgstr "Message"
 
@@ -34,9 +34,18 @@ msgstr "Message"
 msgid "Sendezeit"
 msgstr "Send time"
 
-#: .\console\templates\console\base.html:34
-msgid "Willkommen, "
-msgstr "Welcome, "
+#: .\console\templates\console\base.html:30
+msgid "Willkommen, %(username)s!"
+msgstr "Welcome, %(username)s!"
+
+#: .\console\templates\console\base.html:37
+msgid "Logout"
+msgstr "Logout"
+
+#: .\console\templates\console\base.html:44
+#: .\picker\templates\picker\base.html:55
+msgid "Sprache"
+msgstr "Language"
 
 #: .\console\templates\console\choose_console_cards.html:28
 msgid "Zur Console..."
@@ -115,10 +124,6 @@ msgstr "Shutdown"
 msgid "Bist du sicher?"
 msgstr "Are you sure?"
 
-#: .\picker\templates\picker\base.html:55
-msgid "Sprache"
-msgstr "Language"
-
 #: .\picker\templates\picker\base.html:95
 msgid "Nein"
 msgstr "No"
@@ -166,6 +171,3 @@ msgstr ""
 #: .\stagy_bee\settings.py:148
 msgid "Russian"
 msgstr ""
-
-#~ msgid "Wirklich herunterfahren?"
-#~ msgstr "Are you sure?"
