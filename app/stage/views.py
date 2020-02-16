@@ -31,6 +31,7 @@ def stage(request, congregation):
         'username': credentials.username,
         'password': credentials.password,
         'autologin': credentials.autologin,
+        'display_name': credentials.display_name,
         'touch': credentials.touch,
         'show_only_request_to_speak': credentials.show_only_request_to_speak,
         'congregation_ws': congregation_ws
