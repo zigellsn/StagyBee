@@ -109,7 +109,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     };
 }
 
-function console_client_ws(congregation_ws) {
+function console_client_ws(congregation_ws, heading = 'Nachricht') {
 
     let scrimTrigger = false;
     let activity = null;
@@ -143,7 +143,9 @@ function console_client_ws(congregation_ws) {
             }
             scrimTrigger = !scrimTrigger;
         } else if (alert['alert'] === 'message')
-            Metro.infobox.create(`<p>${alert['value']}</p>`, 'default');
+            Metro.infobox.create(`<h3>${heading}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
+                width: 'auto'
+            });
     }
 
     mySocket.onmessage = function (e) {

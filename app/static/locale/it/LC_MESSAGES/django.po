@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 16:47+0100\n"
+"POT-Creation-Date: 2020-02-16 17:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,7 @@ msgid "Username"
 msgstr ""
 
 #: .\console\templates\console\audit.html:10
+#: .\stage\templates\stage\base.html:71
 msgid "Nachricht"
 msgstr ""
 
