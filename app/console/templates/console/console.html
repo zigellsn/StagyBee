@@ -4,6 +4,9 @@
 {% block content %}
     {% load static %}
     <div class="pt-4">
+        <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
+    </div>
+    <div class="pt-4">
         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
         <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
                id="time" class="bg-dark fg-white"/>

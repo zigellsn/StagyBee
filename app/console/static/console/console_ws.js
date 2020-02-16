@@ -18,6 +18,7 @@ function console_ws(congregation_ws) {
     let submitClock = document.getElementById('submit_clock');
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
+    let submitScrim = document.getElementById('submit_scrim');
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
@@ -61,6 +62,12 @@ function console_ws(congregation_ws) {
     submitStop.onclick = function (_) {
         mySocket.send(JSON.stringify({
             'alert': 'stop'
+        }));
+    };
+
+    submitScrim.onclick = function (_) {
+        mySocket.send(JSON.stringify({
+            'alert': 'scrim'
         }));
     };
 

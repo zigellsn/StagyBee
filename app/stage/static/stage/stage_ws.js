@@ -111,6 +111,8 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
 
 function console_client_ws(congregation_ws) {
 
+    let scrimTrigger = false;
+    let activity = null;
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
@@ -128,8 +130,20 @@ function console_client_ws(congregation_ws) {
         else if (alert['alert'] === 'stop') {
             $('#body').removeClass('timeAlert');
             $('#clock').removeClass('clockAlert');
+        } else if (alert['alert'] === 'scrim') {
+            if (scrimTrigger) {
+                if (activity != null)
+                    Metro.activity.close(activity)
+            } else {
+                activity = Metro.activity.open({
+                    type: 'none',
+                    overlayColor: '#000',
+                    overlayAlpha: 1
+                });
+            }
+            scrimTrigger = !scrimTrigger;
         } else if (alert['alert'] === 'message')
-            Metro.infobox.create(`<p>${alert['value']}</p>`, "default");
+            Metro.infobox.create(`<p>${alert['value']}</p>`, 'default');
     }
 
     mySocket.onmessage = function (e) {

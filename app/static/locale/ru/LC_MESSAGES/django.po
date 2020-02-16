@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-10 18:06+0100\n"
+"POT-Creation-Date: 2020-02-16 16:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,48 +40,52 @@ msgstr ""
 msgid "Willkommen, "
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:12
-msgid "Zum Audit-Log..."
-msgstr ""
-
-#: .\console\templates\console\choose_console_cards.html:33
+#: .\console\templates\console\choose_console_cards.html:28
 msgid "Zur Console..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:38
+#: .\console\templates\console\choose_console_cards.html:36
 msgid "Zur Stoppuhr..."
 msgstr ""
 
+#: .\console\templates\console\choose_console_cards.html:46
+msgid "Zum Audit-Log..."
+msgstr ""
+
 #: .\console\templates\console\console.html:7
+msgid "Bildschirm verdunkeln"
+msgstr ""
+
+#: .\console\templates\console\console.html:10
 #: .\console\templates\console\timer.html:7
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:12
+#: .\console\templates\console\console.html:15
 msgid "Starte Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:15
+#: .\console\templates\console\console.html:18
 msgid "Uhrzeit"
 msgstr ""
 
-#: .\console\templates\console\console.html:19
+#: .\console\templates\console\console.html:22
 msgid "Sende Uhrzeit"
 msgstr ""
 
-#: .\console\templates\console\console.html:22
+#: .\console\templates\console\console.html:25
 msgid "Stoppe alle Timer"
 msgstr ""
 
-#: .\console\templates\console\console.html:24
+#: .\console\templates\console\console.html:27
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:27
+#: .\console\templates\console\console.html:30
 msgid "Sende Nachricht"
 msgstr ""
 
-#: .\console\views.py:51 .\console\views.py:60 .\console\views.py:72
+#: .\console\views.py:50 .\console\views.py:59 .\console\views.py:71
 msgid "Nicht berechtigt"
 msgstr ""
 
