@@ -29,16 +29,19 @@ logger = logging.getLogger("django.request")
 @csrf_exempt
 def receiver(request, congregation):
     event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
+    channel_layer = get_channel_layer()
+    congregation_group_name = generate_channel_group_name("stage", congregation)
     if event == 'listeners':
-        channel_layer = get_channel_layer()
-        congregation_group_name = generate_channel_group_name("stage", congregation)
         async_to_sync(channel_layer.group_send)(
             congregation_group_name,
             {"type": "extractor_listeners", "listeners": request.body},
         )
         return HttpResponse('success')
     elif event == 'status':
-        logger.info(str(request.body))
+        async_to_sync(channel_layer.group_send)(
+            congregation_group_name,
+            {"type": "extractor_status", "status": request.body},
+        )
     elif event == 'meta':
         return HttpResponse('success')
 

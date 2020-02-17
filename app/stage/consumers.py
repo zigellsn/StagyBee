@@ -66,8 +66,11 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         raise StopConsumer()
 
     async def extractor_listeners(self, event):
-        await self.send_json("subscribed_to_extractor")
+        # await self.send_json("subscribed_to_extractor")
         await self.send_json(event["listeners"])
+
+    async def extractor_status(self, event):
+        await self.send_json(event["status"])
 
     async def encode_json(self, content):
         if type(content) == bytes:

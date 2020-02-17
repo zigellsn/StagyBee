@@ -95,13 +95,25 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
             setElements('none', '', 'none');
             return;
         }
+        if (data === 'subscribed_to_extractor') {
+            setElements('none', 'none', '');
+            return;
+        }
+        if ('running' in data) {
+            if (data['running'] === true)
+                setElements('none', 'none', '');
+            else
+                setElements('none', '', 'none');
+            return;
+        }
+        if ('names' in data) {
+            setElements('none', 'none', '');
 
-        setElements('none', 'none', '');
-
-        let sumListeners = 0;
-        let names = data['names'];
-        if (names !== undefined)
-            parseNames(names, namesHtml, sumListeners);
+            let sumListeners = 0;
+            let names = data['names'];
+            if (names !== undefined)
+                parseNames(names, namesHtml, sumListeners);
+        }
     };
 
     mySocket.onclose = function (_) {
