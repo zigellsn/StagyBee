@@ -3,8 +3,62 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
+    <div><h3>{% blocktrans %}Aufgabe Nr. {{ talk|default:"1" }}{% endblocktrans %}</h3></div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <div class="fg-white text-center">{% trans "Laufend" %}</div>
+            </th>
+            <th>
+                <div class="fg-white text-center">{% trans "Übrig" %}</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:72px">{{ stoppwatch|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:72px">{{ remaining|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
     <div class="pt-4">
-        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="fg-white sortable-column sort-asc">{% trans "Aufgabe" %}</th>
+                <th class="fg-white">{% trans "Startzeit" %}</th>
+                <th class="fg-white">{% trans "Endezeit" %}</th>
+                <th class="fg-white">{% trans "Dauer" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for timer_entry in timer %}
+                <tr>
+                    <td>
+                        <div>{{ timer_entry.talk }}</div>
+                    </td>
+                    <td>
+                        <div>{{ timer_entry.start }}</div>
+                    </td>
+                    <td>
+                        <div>{{ timer_entry.stop }}</div>
+                    </td>
+                    <td>
+                        <div>{{ timer_entry.duration }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="{% static 'console/console_ws.js' %}"></script>

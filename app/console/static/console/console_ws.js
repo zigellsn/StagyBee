@@ -42,40 +42,45 @@ function console_ws(congregation_ws) {
         console.error('Socket closed unexpectedly');
     };
 
-    submitTime.onclick = function (_) {
-        let time = $('#time').data('timepicker').time();
-        mySocket.send(JSON.stringify({
-            'alert': 'time',
-            'start': new Date(),
-            'value': time
-        }));
-    };
+    if (submitTime !== null)
+        submitTime.onclick = function (_) {
+            let time = $('#time').data('timepicker').time();
+            mySocket.send(JSON.stringify({
+                'alert': 'time',
+                'start': new Date(),
+                'value': time
+            }));
+        };
 
-    submitClock.onclick = function (_) {
-        let time = $('#clock').data('timepicker').time();
-        mySocket.send(JSON.stringify({
-            'alert': 'clock',
-            'value': time
-        }));
-    };
+    if (submitClock !== null)
+        submitClock.onclick = function (_) {
+            let time = $('#clock').data('timepicker').time();
+            mySocket.send(JSON.stringify({
+                'alert': 'clock',
+                'value': time
+            }));
+        };
 
-    submitStop.onclick = function (_) {
-        mySocket.send(JSON.stringify({
-            'alert': 'stop'
-        }));
-    };
+    if (submitStop !== null)
+        submitStop.onclick = function (_) {
+            mySocket.send(JSON.stringify({
+                'alert': 'stop'
+            }));
+        };
 
-    submitScrim.onclick = function (_) {
-        mySocket.send(JSON.stringify({
-            'alert': 'scrim'
-        }));
-    };
+    if (submitScrim !== null)
+        submitScrim.onclick = function (_) {
+            mySocket.send(JSON.stringify({
+                'alert': 'scrim'
+            }));
+        };
 
-    submitText.onclick = function (_) {
-        let message = document.getElementById("text_message").value;
-        mySocket.send(JSON.stringify({
-            'alert': 'message',
-            'value': message
-        }));
-    };
+    if (submitText !== null)
+        submitText.onclick = function (_) {
+            let message = document.getElementById("text_message").value;
+            mySocket.send(JSON.stringify({
+                'alert': 'message',
+                'value': message
+            }));
+        };
 }

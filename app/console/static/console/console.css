@@ -21,3 +21,11 @@ main {
 body {
     padding-top: 64px;
 }
+
+.table .sortable-column.sort-asc {
+    background-color: #333333;
+}
+
+.wheel-picker .select-block {
+    background-color: #333333;
+}
