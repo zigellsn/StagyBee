@@ -3,7 +3,7 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div><h3>{% blocktrans %}Aufgabe Nr. {{ talk|default:"1" }}{% endblocktrans %}</h3></div>
+    <div><h3>{% blocktrans with talk=timer_entry.talk %}Aufgabe Nr. {{ talk|default:"1" }}{% endblocktrans %}</h3></div>
     <table class="table">
         <thead>
         <tr>
@@ -19,12 +19,12 @@
         <tr>
             <th>
                 <div class="pt-4">
-                    <samp style="font-size:72px">{{ stoppwatch|default:"00:00:00" }}</samp>
+                    <samp style="font-size:72px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
                 </div>
             </th>
             <th>
                 <div class="pt-4">
-                    <samp style="font-size:72px">{{ remaining|default:"00:00:00" }}</samp>
+                    <samp style="font-size:72px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
                 </div>
             </th>
         </tr>
