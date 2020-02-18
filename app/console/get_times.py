@@ -79,30 +79,26 @@ async def parse(content):
 async def get_url(last_monday, next_sunday):
     month = await get_month_name(last_monday.month)
     if last_monday.month == next_sunday.month:
-        url = "%s/%s-%s-mwb/meeting-schedule-%s%s-%s/" % (
-            PREFIX, month.lower(), last_monday.year, month.lower(), last_monday.day, next_sunday.day)
+        url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
+              f"schedule-{month.lower()}{last_monday.day}-{next_sunday.day}/"
     else:
         next_month = await get_month_name(next_sunday.month)
-        url = "%s/%s-%s-mwb/meeting-schedule-%s%s-%s%s/" % (
-            PREFIX, month.lower(), last_monday.year, month.lower(), last_monday.day, next_month.lower(),
-            next_sunday.day)
+        url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
+              f"schedule-{month.lower()}{last_monday.day}-{next_month.lower()}{next_sunday.day}/"
     return url
 
 
 async def get_2020_url(last_monday, next_sunday):
     month = await get_month_name(last_monday.month)
     if last_monday.month == next_sunday.month:
-        url = "%s/%s-%s-mwb/Our-Christian-Life-and-Ministry-Schedule-for-%s-%s-%s-%s/" % (
-            PREFIX, month.lower(), last_monday.year, month, last_monday.day, next_sunday.day,
-            last_monday.year)
+        url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
+              f"Schedule-for-{month}-{last_monday.day}-{next_sunday.day}-{last_monday.year}/"
     else:
         next_month = await get_month_name(next_sunday.month)
         if last_monday.year == next_sunday.year:
-            url = "%s/%s-%s-mwb/Our-Christian-Life-and-Ministry-Schedule-for-%s-%s-%s-%s-%s/" % (
-                PREFIX, month.lower(), last_monday.year, month, last_monday.day, next_month,
-                next_sunday.day, last_monday.year)
+            url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
+                  f"Schedule-for-{month}-{last_monday.day}-{next_month}-{next_sunday.day}-{last_monday.year}/"
         else:
-            url = "%s/%s-%s-mwb/Our-Christian-Life-and-Ministry-Schedule-for-%s-%s-%s-%s-%s-%s/" % (
-                PREFIX, month.lower(), last_monday.year, month, last_monday.day, last_monday.year,
-                next_month, next_sunday.day, next_sunday.year)
+            url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-Schedule-" \
+                  f"for-{month}-{last_monday.day}-{last_monday.year}-{next_month}-{next_sunday.day}-{next_sunday.year}/"
     return url

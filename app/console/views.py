@@ -31,7 +31,7 @@ def choose_console(request):
         form = CongregationForm(request.POST)
         if form.is_valid():
             congregation = form.cleaned_data["congregation"].congregation
-            return HttpResponseRedirect("/console/%s" % congregation)
+            return HttpResponseRedirect(f"/console/{congregation}")
     else:
         form = CongregationForm()
         if len(form.congregation_set) < 10:
