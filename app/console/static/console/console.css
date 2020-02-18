@@ -29,3 +29,16 @@ body {
 .wheel-picker .select-block {
     background-color: #333333;
 }
+
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 15px rgba(206, 53, 44, 0.9);
+    }
+    100% {
+        text-shadow: 0 0 70px rgba(206, 53, 44, 0);
+    }
+}
+
+.timesUp {
+    animation: pulse 1s infinite;
+}

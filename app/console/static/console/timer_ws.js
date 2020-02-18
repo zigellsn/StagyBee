@@ -62,10 +62,12 @@ function runTimer() {
         if (span >= 0) {
             remaining.text(millisecondsToTime(span));
             remaining.removeClass("fg-red");
+            remaining.removeClass("timesUp");
             remaining.addClass("fg-white");
         } else {
             remaining.text('-' + millisecondsToTime(span));
             remaining.removeClass("fg-white");
+            remaining.addClass("timesUp");
             remaining.addClass("fg-red");
         }
     }
