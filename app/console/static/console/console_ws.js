@@ -70,9 +70,10 @@ function console_ws(congregation_ws) {
     if (submitText !== null)
         submitText.onclick = function (_) {
             let message = document.getElementById("text_message").value;
-            mySocket.send(JSON.stringify({
-                'alert': 'message',
-                'value': message
-            }));
+            if (message !== undefined && message !== "")
+                mySocket.send(JSON.stringify({
+                    'alert': 'message',
+                    'value': message
+                }));
         };
 }

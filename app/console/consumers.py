@@ -33,7 +33,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee::timer:%s" % generate_channel_group_name("console", self.congregation)
+        self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
 
     async def connect(self):
         # times = await extract(date.today(), date.today())
@@ -82,7 +82,7 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = "stagybee::timer:%s" % generate_channel_group_name("console", self.congregation)
+        self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
 
     async def connect(self):
         await __connect__(self)
