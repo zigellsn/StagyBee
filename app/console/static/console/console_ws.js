@@ -15,7 +15,6 @@
  */
 function console_ws(congregation_ws) {
     let submitTime = document.getElementById('submit_time');
-    let submitClock = document.getElementById('submit_clock');
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
@@ -47,16 +46,8 @@ function console_ws(congregation_ws) {
             let time = $('#time').data('timepicker').time();
             mySocket.send(JSON.stringify({
                 'alert': 'time',
-                'start': new Date(),
-                'value': time
-            }));
-        };
-
-    if (submitClock !== null)
-        submitClock.onclick = function (_) {
-            let time = $('#clock').data('timepicker').time();
-            mySocket.send(JSON.stringify({
-                'alert': 'clock',
+                'talk': 2,
+                'start': moment().format(),
                 'value': time
             }));
         };

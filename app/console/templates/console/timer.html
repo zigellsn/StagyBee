@@ -3,7 +3,9 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div><h3>{% blocktrans with talk=timer_entry.talk %}Aufgabe Nr. {{ talk|default:"1" }}{% endblocktrans %}</h3></div>
+    <div><h3 id="talk">{% blocktrans with talk=time_entries.talk|default:"1" %}Aufgabe Nr.
+        {{ talk }}{% endblocktrans %}</h3>
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -38,26 +40,36 @@
                 <th class="fg-white">{% trans "Startzeit" %}</th>
                 <th class="fg-white">{% trans "Endezeit" %}</th>
                 <th class="fg-white">{% trans "Dauer" %}</th>
+                <th class="fg-white">{% trans "Maximale Dauer" %}</th>
                 <th class="fg-white">{% trans "Differenz" %}</th>
             </tr>
             </thead>
             <tbody>
-            {% for timer_entry in timer %}
+            {% for time_entry in time_entries %}
                 <tr>
                     <td>
-                        <div>{{ timer_entry.talk }}</div>
+                        <div>{{ time_entry.talk }}</div>
                     </td>
                     <td>
-                        <div>{{ timer_entry.start }}</div>
+                        <div>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}
+                            Uhr{% endblocktrans %}</div>
                     </td>
                     <td>
-                        <div>{{ timer_entry.stop }}</div>
+                        <div>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}
+                            Uhr{% endblocktrans %}</div>
                     </td>
                     <td>
-                        <div>{{ timer_entry.duration }}</div>
+                        <div>{{ time_entry.duration }}</div>
                     </td>
                     <td>
-                        <div>{{ timer_entry.difference }}</div>
+                        <div>{{ time_entry.display_max_duration }}</div>
+                    </td>
+                    <td>
+                        {% if "-" in time_entry.difference %}
+                            <div class="fg-red">{{ time_entry.difference }}</div>
+                        {% else %}
+                            <div class="fg-green">{{ time_entry.difference }}</div>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -66,6 +78,8 @@
     </div>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
         timer_ws('{{ congregation_ws }}');

@@ -20,7 +20,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from guardian.shortcuts import get_perms
 
-from console.models import Audit
+from console.models import Audit, TimeEntry
 from picker.models import Credential
 from .forms import CongregationForm
 
@@ -53,8 +53,24 @@ def console(request, congregation):
 @login_required
 def timer(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
+    time_entries = TimeEntry.objects.filter(congregation=credentials, start__day=datetime.now().day,
+                                            start__month=datetime.now().month, start__year=datetime.now().year)
+    for time_entry in time_entries:
+        td1 = time_entry.stop - time_entry.start
+        time_entry.duration = __get_duration_string(td1.seconds)
+        td2 = timedelta(seconds=time_entry.max_duration)
+        time_entry.display_max_duration = __get_duration_string(time_entry.max_duration)
+
+        if td2 > td1:
+            difference = td2 - td1
+            time_entry.difference = __get_duration_string(difference.seconds)
+        else:
+            difference = td1 - td2
+            time_entry.difference = "-" + __get_duration_string(difference.seconds)
+
     if 'access_stopwatch' in get_perms(request.user, credentials):
-        return render(request, "console/timer.html", {"congregation_ws": mark_safe(congregation)})
+        return render(request, "console/timer.html",
+                      {"congregation_ws": mark_safe(congregation), "time_entries": time_entries})
     else:
         return HttpResponse(_("Nicht berechtigt"))
 
@@ -69,3 +85,8 @@ def audit(request, congregation):
         return render(request, "console/audit.html", {"log": log})
     else:
         return HttpResponse(_("Nicht berechtigt"))
+
+
+def __get_duration_string(timespan):
+    hours, minutes, seconds = timespan // 3600, timespan // 60 % 60, timespan % 60
+    return f"{hours:02}:{minutes:02}:{seconds:02}"

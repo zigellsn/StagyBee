@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 18:51+0100\n"
+"POT-Creation-Date: 2020-02-18 16:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\console\models.py:30
+#: .\console\models.py:32
 msgid "username"
 msgstr "username"
 
@@ -35,6 +35,7 @@ msgid "Sendezeit"
 msgstr "Send time"
 
 #: .\console\templates\console\base.html:30
+#, python-format
 msgid "Willkommen, %(username)s!"
 msgstr "Welcome, %(username)s!"
 
@@ -64,35 +65,72 @@ msgid "Bildschirm verdunkeln"
 msgstr "Mute stage display"
 
 #: .\console\templates\console\console.html:10
-#: .\console\templates\console\timer.html:7
 msgid "Stoppuhr"
 msgstr "Stopwatch"
 
-#: .\console\templates\console\console.html:15
+#: .\console\templates\console\console.html:31
 msgid "Starte Stoppuhr"
 msgstr "Initiate stopwatch"
 
-#: .\console\templates\console\console.html:18
-msgid "Uhrzeit"
-msgstr "Time"
-
-#: .\console\templates\console\console.html:22
-msgid "Sende Uhrzeit"
-msgstr "Send time"
-
-#: .\console\templates\console\console.html:25
+#: .\console\templates\console\console.html:34
 msgid "Stoppe alle Timer"
 msgstr "Stop all timers"
 
-#: .\console\templates\console\console.html:27
+#: .\console\templates\console\console.html:36
 msgid "Textnachricht"
 msgstr "Text message"
 
-#: .\console\templates\console\console.html:30
+#: .\console\templates\console\console.html:39
 msgid "Sende Nachricht"
 msgstr "Send message"
 
-#: .\console\views.py:50 .\console\views.py:59 .\console\views.py:71
+#: .\console\templates\console\timer.html:6
+#, python-format
+msgid "Aufgabe Nr. %(talk|default:\"1\")s"
+msgstr ""
+
+#: .\console\templates\console\timer.html:12
+msgid "Abgelaufen"
+msgstr ""
+
+#: .\console\templates\console\timer.html:15
+msgid "Übrig"
+msgstr ""
+
+#: .\console\templates\console\timer.html:38
+msgid "Aufgabe"
+msgstr ""
+
+#: .\console\templates\console\timer.html:39
+#, fuzzy
+#| msgid "Uhrzeit"
+msgid "Startzeit"
+msgstr "Time"
+
+#: .\console\templates\console\timer.html:40
+#, fuzzy
+#| msgid "Sendezeit"
+msgid "Endezeit"
+msgstr "Send time"
+
+#: .\console\templates\console\timer.html:41
+msgid "Dauer"
+msgstr ""
+
+#: .\console\templates\console\timer.html:42
+msgid "Maximale Dauer"
+msgstr ""
+
+#: .\console\templates\console\timer.html:43
+msgid "Differenz"
+msgstr ""
+
+#: .\console\templates\console\timer.html:53
+#, python-format
+msgid "%(time_entry.start|time:\"H:i:s\")s Uhr"
+msgstr ""
+
+#: .\console\views.py:50 .\console\views.py:75 .\console\views.py:87
 msgid "Nicht berechtigt"
 msgstr "Not authorized"
 
@@ -171,3 +209,6 @@ msgstr ""
 #: .\stagy_bee\settings.py:148
 msgid "Russian"
 msgstr ""
+
+#~ msgid "Sende Uhrzeit"
+#~ msgstr "Send time"

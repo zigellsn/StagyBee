@@ -11,15 +11,24 @@
         <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
                id="time" class="bg-dark fg-white"/>
     </div>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:32px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:32px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
     <div class="pt-4">
         <button class="button primary" id="submit_time">{% trans "Starte Stoppuhr" %}</button>
-    </div>
-    <div class="pt-4">
-        <label for="clock" class="pt-4">{% trans "Uhrzeit" %}</label>
-        <input type="text" data-role="timepicker" data-size="280" id="clock" class="bg-dark fg-white"/>
-    </div>
-    <div class="pt-4">
-        <button class="button primary" id="submit_clock">{% trans "Sende Uhrzeit" %}</button>
     </div>
     <div class="pt-4">
         <button class="button primary" id="submit_stop">{% trans "Stoppe alle Timer" %}</button>
@@ -29,9 +38,19 @@
     <div class="pt-4">
         <button class="button primary" id="submit_text">{% trans "Sende Nachricht" %}</button>
     </div>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/console_ws.js' %}"></script>
     <script>
         console_ws('{{ congregation_ws }}');
+    </script>
+    <script src="{% static 'console/timer_ws.js' %}"></script>
+    <script>
+        timer_ws('{{ congregation_ws }}');
+    </script>
+    <script>
+        runTimer();
     </script>
 {% endblock %}

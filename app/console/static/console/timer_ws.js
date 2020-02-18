@@ -15,6 +15,7 @@
  */
 
 let stopwatch = document.getElementById('stopwatch');
+let talk = document.getElementById('talk');
 let remaining = $('#remaining');
 let timerRunning = false;
 let start = null;
@@ -39,9 +40,16 @@ function timer_ws(congregation_ws) {
         let data = JSON.parse(e.data);
         let message = data['alert'];
         if (message['alert'] === 'time') {
-            start = Date.parse(message['start']);
+            if (talk !== null)
+                talk.innerText = message['talk'];
+            start = moment(message['start']);
             value = message['value'];
             timerRunning = true;
+        } else if (message['alert'] === 'stop') {
+            start = null;
+            value = null;
+            timerRunning = false;
+            location.reload();
         } else {
             console.log(message);
         }
