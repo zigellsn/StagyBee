@@ -3,12 +3,89 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div class="pt-4">
-        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
+    <div><h3 id="talk">{% blocktrans with talk=time_entries.talk|default:"1" %}Aufgabe Nr.
+        {{ talk }}{% endblocktrans %}</h3>
     </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <div class="fg-white text-center">{% trans "Abgelaufen" %}</div>
+            </th>
+            <th>
+                <div class="fg-white text-center">{% trans "Übrig" %}</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:72px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+            <th>
+                <div class="pt-4">
+                    <samp style="font-size:72px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pt-4">
+        <table class="table" data-role="table" data-show-search="false" data-show-pagination="false"
+               data-show-table-info="false" data-show-activity="false" data-show-rows-steps="false">
+            <thead>
+            <tr>
+                <th class="fg-white sortable-column sort-asc">{% trans "Aufgabe" %}</th>
+                <th class="fg-white sortable-column sort-asc">{% trans "Startzeit" %}</th>
+                <th class="fg-white">{% trans "Endezeit" %}</th>
+                <th class="fg-white">{% trans "Dauer" %}</th>
+                <th class="fg-white">{% trans "Maximale Dauer" %}</th>
+                <th class="fg-white">{% trans "Differenz" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for time_entry in time_entries %}
+                <tr>
+                    <td>
+                        <div>{{ time_entry.talk }}</div>
+                    </td>
+                    <td>
+                        <div>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}
+                            Uhr{% endblocktrans %}</div>
+                    </td>
+                    <td>
+                        <div>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}
+                            Uhr{% endblocktrans %}</div>
+                    </td>
+                    <td>
+                        <div>{{ time_entry.duration }}</div>
+                    </td>
+                    <td>
+                        <div>{{ time_entry.display_max_duration }}</div>
+                    </td>
+                    <td>
+                        {% if "-" in time_entry.difference %}
+                            <div class="fg-red">{{ time_entry.difference }}</div>
+                        {% else %}
+                            <div class="fg-green">{{ time_entry.difference }}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-    <script src="{% static 'console/console_ws.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        console_ws('{{ congregation_ws }}');
+        timer_ws('{{ congregation_ws }}', true, false);
+    </script>
+    <script>
+        runTimer();
     </script>
 {% endblock %}

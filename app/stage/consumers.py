@@ -175,6 +175,9 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
     async def alert(self, event):
         await self.send_json(event)
 
+    async def timer(self, event):
+        await self.send_json(event)
+
 
 async def connect_uri(group, channel_name):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 18:51+0100\n"
+"POT-Creation-Date: 2020-02-18 18:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\console\models.py:30
+#: .\console\models.py:32
 msgid "username"
 msgstr ""
 
@@ -68,35 +68,85 @@ msgid "Bildschirm verdunkeln"
 msgstr ""
 
 #: .\console\templates\console\console.html:10
-#: .\console\templates\console\timer.html:7
+#, python-format
+msgid "Aufgabe Nr. %(talk)s"
+msgstr ""
+
+#: .\console\templates\console\console.html:12
+#: .\console\templates\console\timer.html:39
+msgid "Aufgabe"
+msgstr ""
+
+#: .\console\templates\console\console.html:24
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:15
+#: .\console\templates\console\console.html:45
 msgid "Starte Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:18
-msgid "Uhrzeit"
-msgstr ""
-
-#: .\console\templates\console\console.html:22
-msgid "Sende Uhrzeit"
-msgstr ""
-
-#: .\console\templates\console\console.html:25
+#: .\console\templates\console\console.html:48
 msgid "Stoppe alle Timer"
 msgstr ""
 
-#: .\console\templates\console\console.html:27
+#: .\console\templates\console\console.html:50
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:30
+#: .\console\templates\console\console.html:53
 msgid "Sende Nachricht"
 msgstr ""
 
-#: .\console\views.py:50 .\console\views.py:59 .\console\views.py:71
+#: .\console\templates\console\timer.html:6
+#, python-format
+msgid ""
+"Aufgabe Nr.\n"
+"        %(talk)s"
+msgstr ""
+
+#: .\console\templates\console\timer.html:13
+msgid "Abgelaufen"
+msgstr ""
+
+#: .\console\templates\console\timer.html:16
+msgid "Übrig"
+msgstr ""
+
+#: .\console\templates\console\timer.html:40
+msgid "Startzeit"
+msgstr ""
+
+#: .\console\templates\console\timer.html:41
+msgid "Endezeit"
+msgstr ""
+
+#: .\console\templates\console\timer.html:42
+msgid "Dauer"
+msgstr ""
+
+#: .\console\templates\console\timer.html:43
+msgid "Maximale Dauer"
+msgstr ""
+
+#: .\console\templates\console\timer.html:44
+msgid "Differenz"
+msgstr ""
+
+#: .\console\templates\console\timer.html:54
+#, python-format
+msgid ""
+"%(start)s\n"
+"                            Uhr"
+msgstr ""
+
+#: .\console\templates\console\timer.html:58
+#, python-format
+msgid ""
+"%(stop)s\n"
+"                            Uhr"
+msgstr ""
+
+#: .\console\views.py:50 .\console\views.py:75 .\console\views.py:87
 msgid "Nicht berechtigt"
 msgstr ""
 
@@ -114,6 +164,10 @@ msgstr ""
 
 #: .\picker\models.py:45
 msgid "Zeige nur Meldungen"
+msgstr ""
+
+#: .\picker\models.py:46
+msgid "Sende Zeiten an Bühne"
 msgstr ""
 
 #: .\picker\templates\picker\base.html:28
