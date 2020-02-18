@@ -28,25 +28,6 @@ function console_ws(congregation_ws) {
     let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console/${congregation_ws}/`,
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
-    function millisecondsToTime(ms) {
-        const seconds = Math.floor((ms / 1000) % 60);
-        const minutes = Math.floor((ms / 1000 / 60) % 60);
-        const hours = Math.floor(ms / 1000 / 60 / 60);
-
-        return [
-            pad(hours),
-            pad(minutes),
-            pad(seconds),
-        ].join(':');
-    }
-
-    function pad(i) {
-        if (i < 10) {
-            i = `0${i}`
-        }
-        return i;
-    }
-
     mySocket.onopen = function (_) {
         console.log("WebSocket CONNECT successful");
     };
@@ -54,20 +35,7 @@ function console_ws(congregation_ws) {
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
         let message = data['alert'];
-        if (message['alert'] === 'time') {
-            let stopwatch = document.getElementById('stopwatch');
-            if (stopwatch === null)
-                return;
-            let diff = (new Date).getTime() - Date.parse(message['start']);
-            stopwatch.innerText = millisecondsToTime(diff);
-            let remaining = document.getElementById('remaining');
-            if (remaining === null)
-                return;
-            let span = (message['value']['h'] * 60000000 + message['value']['m'] * 60000 + message['value']['s'] * 1000) - diff;
-            remaining.innerText = millisecondsToTime(span);
-        } else {
-            console.log(message);
-        }
+        console.log(message);
     };
 
     mySocket.onclose = function (_) {

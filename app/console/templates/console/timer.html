@@ -8,7 +8,7 @@
         <thead>
         <tr>
             <th>
-                <div class="fg-white text-center">{% trans "Laufend" %}</div>
+                <div class="fg-white text-center">{% trans "Abgelaufen" %}</div>
             </th>
             <th>
                 <div class="fg-white text-center">{% trans "Übrig" %}</div>
@@ -38,6 +38,7 @@
                 <th class="fg-white">{% trans "Startzeit" %}</th>
                 <th class="fg-white">{% trans "Endezeit" %}</th>
                 <th class="fg-white">{% trans "Dauer" %}</th>
+                <th class="fg-white">{% trans "Differenz" %}</th>
             </tr>
             </thead>
             <tbody>
@@ -55,14 +56,21 @@
                     <td>
                         <div>{{ timer_entry.duration }}</div>
                     </td>
+                    <td>
+                        <div>{{ timer_entry.difference }}</div>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-    <script src="{% static 'console/console_ws.js' %}"></script>
+    <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        console_ws('{{ congregation_ws }}');
+        timer_ws('{{ congregation_ws }}');
+    </script>
+    <script>
+        runTimer();
     </script>
 {% endblock %}

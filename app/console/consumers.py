@@ -67,6 +67,43 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
                                           self.scope["user"].username, text_data["value"])
 
 
+class TimerConsumer(AsyncJsonWebsocketConsumer):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        self.redis_key = "stagybee::timer:%s" % generate_channel_group_name("console", self.congregation)
+
+    async def connect(self):
+        await self.channel_layer.group_add(
+            generate_channel_group_name("console", self.congregation),
+            self.channel_name
+        )
+        await self.accept()
+        start, value = await get_timer(self.redis_key)
+        if start is not None and value is not None:
+            message = {"type": "alert",
+                       "alert": {"alert": "time", "start": start.decode("utf-8"), "value": json.loads(value)}}
+            await self.send_json(message)
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            generate_channel_group_name("console", self.congregation),
+            self.channel_name
+        )
+        raise StopConsumer()
+
+    async def receive_json(self, text_data, **kwargs):
+        congregation_group_name = generate_channel_group_name("console", self.congregation)
+        await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
+
+    async def exit(self, event):
+        await self.send_json(event)
+
+    async def alert(self, event):
+        await self.send_json(event)
+
+
 async def add_timer(group, start, value):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
@@ -75,3 +112,13 @@ async def add_timer(group, start, value):
     await redis.expire(group, config("REDIS_EXPIRATION", default=3600, cast=int))
     redis.close()
     await redis.wait_closed()
+
+
+async def get_timer(group):
+    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+    redis = await aioredis.create_redis(host)
+    start = await redis.hget(group, "start")
+    value = await redis.hget(group, "value")
+    redis.close()
+    await redis.wait_closed()
+    return start, value
