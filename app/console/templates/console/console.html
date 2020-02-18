@@ -7,6 +7,20 @@
         <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
     </div>
     <div class="pt-4">
+        <label for="talk" class="pt-4">{% blocktrans with talk="" %}Aufgabe Nr. {{ talk }}{% endblocktrans %}</label>
+        <select data-role="select" id="talk" class="bg-dark fg-white">
+            <optgroup label="{% trans "Aufgabe" %}">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="pt-4">
         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
         <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
                id="time" class="bg-dark fg-white"/>
@@ -48,7 +62,7 @@
     </script>
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        timer_ws('{{ congregation_ws }}');
+        timer_ws('{{ congregation_ws }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
     </script>
     <script>
         runTimer();

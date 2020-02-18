@@ -45,7 +45,8 @@ def choose_console(request):
 def console(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     if 'access_console' in get_perms(request.user, credentials):
-        return render(request, "console/console.html", {"congregation_ws": mark_safe(congregation)})
+        return render(request, "console/console.html",
+                      {"congregation_ws": mark_safe(congregation), "credentials": credentials})
     else:
         return HttpResponse(_("Nicht berechtigt"))
 

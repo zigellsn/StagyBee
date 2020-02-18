@@ -28,15 +28,6 @@ from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 
 
-def get_congregation(congregation):
-    return Credential.objects.get(congregation__exact=congregation)
-
-
-def persist_time_entry(congregation, talk, start, duration):
-    start_time = datetime.strptime(start.decode("utf-8"), '%Y-%m-%dT%H:%M:%S%z')
-    return TimeEntry.objects.create_time_entry(congregation, talk, start_time, datetime.now(), duration)
-
-
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
@@ -46,17 +37,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         # times = await extract(date.today(), date.today())
-        await self.channel_layer.group_add(
-            generate_channel_group_name("console", self.congregation),
-            self.channel_name
-        )
-        await self.accept()
-        talk, start, value = await get_timer(self.redis_key)
-        if start is not None and value is not None:
-            message = {"type": "alert",
-                       "alert": {"alert": "time", "talk": talk, "start": start.decode("utf-8"),
-                                 "value": json.loads(value)}}
-            await self.send_json(message)
+        await __connect__(self)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -67,19 +48,24 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, text_data, **kwargs):
         congregation_group_name = generate_channel_group_name("console", self.congregation)
-        if text_data["alert"] == "message":
-            credential = await database_sync_to_async(get_congregation)(self.congregation)
-            await database_sync_to_async(self.persist_audit_log)(credential, text_data)
-        if text_data["alert"] == "time":
-            await add_timer(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
-        if text_data["alert"] == "stop":
-            credential = await database_sync_to_async(get_congregation)(self.congregation)
-            talk, start, value = await get_timer(self.redis_key)
+        message_type = "alert"
+        if "alert" in text_data and text_data["alert"] == "message":
+            credential = await database_sync_to_async(__get_congregation__)(self.congregation)
+            await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
+                                                                credential, text_data)
+            message_type = "alert"
+        if "timer" in text_data and text_data["timer"] == "start":
+            await __add_timer__(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
+            message_type = "timer"
+        if "timer" in text_data and text_data["timer"] == "stop":
+            credential = await database_sync_to_async(__get_congregation__)(self.congregation)
+            talk, start, value = await __get_timer__(self.redis_key)
             json_value = json.loads(value)
             duration = json_value["h"] * 3600 + json_value["m"] * 60 + json_value["s"]
-            await database_sync_to_async(persist_time_entry)(credential, talk, start, duration)
-            await remove_timer(self.redis_key)
-        await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
+            await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
+            await __remove_timer__(self.redis_key)
+            message_type = "timer"
+        await self.channel_layer.group_send(congregation_group_name, {"type": message_type, message_type: text_data})
 
     async def exit(self, event):
         await self.send_json(event)
@@ -87,8 +73,8 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
     async def alert(self, event):
         await self.send_json(event)
 
-    def persist_audit_log(self, congregation, text_data):
-        return Audit.objects.create_audit(congregation, self.scope["user"].username, text_data["value"])
+    async def timer(self, event):
+        await self.send_json(event)
 
 
 class TimerConsumer(AsyncJsonWebsocketConsumer):
@@ -99,17 +85,7 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
         self.redis_key = "stagybee::timer:%s" % generate_channel_group_name("console", self.congregation)
 
     async def connect(self):
-        await self.channel_layer.group_add(
-            generate_channel_group_name("console", self.congregation),
-            self.channel_name
-        )
-        await self.accept()
-        talk, start, value = await get_timer(self.redis_key)
-        if start is not None and value is not None:
-            message = {"type": "alert",
-                       "alert": {"alert": "time", "talk": talk, "start": start.decode("utf-8"),
-                                 "value": json.loads(value)}}
-            await self.send_json(message)
+        await __connect__(self)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -120,17 +96,23 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, text_data, **kwargs):
         congregation_group_name = generate_channel_group_name("console", self.congregation)
-        await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
+        if "alert" in text_data:
+            await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
+        else:
+            await self.channel_layer.group_send(congregation_group_name, {"type": "timer", "timer": text_data})
 
     async def exit(self, event):
+        await self.send_json(event)
+
+    async def timer(self, event):
         await self.send_json(event)
 
     async def alert(self, event):
         await self.send_json(event)
 
 
-async def add_timer(group, talk, start, value):
-    redis = await connect()
+async def __add_timer__(group, talk, start, value):
+    redis = await __redis_connect()
     await redis.hset(group, "talk", talk)
     await redis.hset(group, "start", start)
     await redis.hset(group, "value", json.dumps(value))
@@ -139,8 +121,8 @@ async def add_timer(group, talk, start, value):
     await redis.wait_closed()
 
 
-async def get_timer(group):
-    redis = await connect()
+async def __get_timer__(group):
+    redis = await __redis_connect()
     talk = await redis.hget(group, "talk")
     start = await redis.hget(group, "start")
     value = await redis.hget(group, "value")
@@ -149,8 +131,8 @@ async def get_timer(group):
     return talk, start, value
 
 
-async def remove_timer(group):
-    redis = await connect()
+async def __remove_timer__(group):
+    redis = await __redis_connect()
     await redis.hdel(group, "talk")
     await redis.hdel(group, "start")
     await redis.hdel(group, "value")
@@ -158,7 +140,34 @@ async def remove_timer(group):
     await redis.wait_closed()
 
 
-async def connect():
+async def __redis_connect():
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
     return redis
+
+
+def __get_congregation__(congregation):
+    return Credential.objects.get(congregation__exact=congregation)
+
+
+def __persist_time_entry__(congregation, talk, start, duration):
+    start_time = datetime.strptime(start.decode("utf-8"), '%Y-%m-%dT%H:%M:%S%z')
+    return TimeEntry.objects.create_time_entry(congregation, talk, start_time, datetime.now(), duration)
+
+
+def __persist_audit_log__(username, congregation, text_data):
+    return Audit.objects.create_audit(congregation, username, text_data["value"])
+
+
+async def __connect__(self):
+    await self.channel_layer.group_add(
+        generate_channel_group_name("console", self.congregation),
+        self.channel_name
+    )
+    await self.accept()
+    talk, start, value = await __get_timer__(self.redis_key)
+    if start is not None and value is not None:
+        message = {"type": "timer",
+                   "timer": {"timer": "start", "talk": int(talk), "start": start.decode("utf-8"),
+                             "value": json.loads(value)}}
+        await self.send_json(message)

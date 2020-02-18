@@ -33,11 +33,12 @@
         </tbody>
     </table>
     <div class="pt-4">
-        <table class="table">
+        <table class="table" data-role="table" data-show-search="false" data-show-pagination="false"
+               data-show-table-info="false" data-show-activity="false" data-show-rows-steps="false">
             <thead>
             <tr>
                 <th class="fg-white sortable-column sort-asc">{% trans "Aufgabe" %}</th>
-                <th class="fg-white">{% trans "Startzeit" %}</th>
+                <th class="fg-white sortable-column sort-asc">{% trans "Startzeit" %}</th>
                 <th class="fg-white">{% trans "Endezeit" %}</th>
                 <th class="fg-white">{% trans "Dauer" %}</th>
                 <th class="fg-white">{% trans "Maximale Dauer" %}</th>
@@ -82,7 +83,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        timer_ws('{{ congregation_ws }}');
+        timer_ws('{{ congregation_ws }}', true, false);
     </script>
     <script>
         runTimer();

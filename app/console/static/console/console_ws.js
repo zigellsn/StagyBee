@@ -32,9 +32,6 @@ function console_ws(congregation_ws) {
     };
 
     mySocket.onmessage = function (e) {
-        let data = JSON.parse(e.data);
-        let message = data['alert'];
-        console.log(message);
     };
 
     mySocket.onclose = function (_) {
@@ -44,9 +41,13 @@ function console_ws(congregation_ws) {
     if (submitTime !== null)
         submitTime.onclick = function (_) {
             let time = $('#time').data('timepicker').time();
+            let select = $('#talk').data('select');
+            let talk = select.val();
+            if (talk === undefined)
+                talk = 1;
             mySocket.send(JSON.stringify({
-                'alert': 'time',
-                'talk': 2,
+                'timer': 'start',
+                'talk': talk,
                 'start': moment().format(),
                 'value': time
             }));
@@ -55,7 +56,7 @@ function console_ws(congregation_ws) {
     if (submitStop !== null)
         submitStop.onclick = function (_) {
             mySocket.send(JSON.stringify({
-                'alert': 'stop'
+                'timer': 'stop'
             }));
         };
 

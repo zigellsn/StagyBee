@@ -21,8 +21,15 @@ let timerRunning = false;
 let start = null;
 let value = null;
 
-function timer_ws(congregation_ws) {
+let sent = false;
+let socket = null;
+let doReload = false;
+let doShowWarning = false;
 
+function timer_ws(congregation_ws, reload, showWarning) {
+
+    doShowWarning = showWarning;
+    doReload = reload;
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
@@ -34,22 +41,37 @@ function timer_ws(congregation_ws) {
 
     mySocket.onopen = function (_) {
         console.log("WebSocket CONNECT successful");
+        socket = mySocket;
     };
 
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
-        let message = data['alert'];
-        if (message['alert'] === 'time') {
+        let message = data['timer'];
+        if (message === undefined)
+            return;
+        let timer = message['timer'];
+        if (timer === undefined)
+            return;
+
+        if (timer === 'start') {
             if (talk !== null)
                 talk.innerText = message['talk'];
             start = moment(message['start']);
             value = message['value'];
             timerRunning = true;
-        } else if (message['alert'] === 'stop') {
+            sent = false;
+        } else if (timer === 'stop') {
             start = null;
             value = null;
             timerRunning = false;
-            location.reload();
+            if (doReload) {
+                location.reload();
+            } else {
+                socket.send(JSON.stringify({
+                    'alert': 'stop',
+                }));
+            }
+            sent = false;
         } else {
             console.log(message);
         }
@@ -57,6 +79,7 @@ function timer_ws(congregation_ws) {
 
     mySocket.onclose = function (_) {
         console.error('Socket closed unexpectedly');
+        socket = null;
     };
 }
 
@@ -72,7 +95,14 @@ function runTimer() {
             remaining.removeClass("fg-red");
             remaining.removeClass("timesUp");
             remaining.addClass("fg-white");
+            sent = false;
         } else {
+            if (socket !== null && !sent && !doReload && doShowWarning) {
+                socket.send(JSON.stringify({
+                    'alert': 'time',
+                }));
+                sent = true;
+            }
             remaining.text('-' + millisecondsToTime(span));
             remaining.removeClass("fg-white");
             remaining.addClass("timesUp");
