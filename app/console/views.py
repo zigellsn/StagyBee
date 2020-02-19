@@ -59,7 +59,7 @@ def console(request, congregation):
 def timer(request, congregation):
     credentials = get_object_or_404(Credential, congregation=congregation)
     date = datetime.now() - timedelta(days=config("KEEP_TIMER_DAYS", default=30))
-    TimeEntry.objects.filter(send_time__lt=date).delete()
+    TimeEntry.objects.filter(start__lt=date).delete()
     time_entries = TimeEntry.objects.filter(congregation=credentials, start__day=datetime.now().day,
                                             start__month=datetime.now().month, start__year=datetime.now().year)
     for time_entry in time_entries:
