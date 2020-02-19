@@ -26,12 +26,16 @@
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}
     <div class="app-bar-container ml-left">
-        {% if user.is_authenticated %}
-            <h4 style="margin-left: 20px;">{% blocktrans with username=user.get_short_name|default:user.get_username %}
-                Willkommen, {{ username }}!{% endblocktrans %}</h4>
-        {% endif %}
+        <a href="{% url 'console:chose_console' %}"><h3 style="margin-left: 20px;">StagyBee Management Console</h3></a>
     </div>
     <div class="app-bar-container ml-auto">
+        <div class="app-bar-container float-none">
+            {% if user.is_authenticated %}
+                <h6>
+                    {% blocktrans with username=user.get_short_name|default:user.get_username %}
+                        Willkommen, {{ username }}!{% endblocktrans %}</h6>
+            {% endif %}
+        </div>
         {% if no_settings|default_if_none:False == False %}
             <div class="app-bar-container float-none">
                 <div class="app-bar-item pl-4 pr-4 pt-2">
