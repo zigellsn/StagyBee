@@ -13,9 +13,12 @@
 #  limitations under the License.
 from datetime import datetime, timedelta
 
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from guardian.shortcuts import get_perms
@@ -86,6 +89,22 @@ def audit(request, congregation):
         return render(request, "console/audit.html", {"log": log})
     else:
         return HttpResponse(_("Nicht berechtigt"))
+
+
+@login_required
+def settings(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, _("Das Passwort wurde geändert."))
+            return redirect('console:settings')
+        else:
+            messages.error(request, _("Bitte den unten stehenden Fehler korrigieren."))
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, "console/settings.html", {"no_settings": True, "form": form})
 
 
 def __get_duration_string(timespan):

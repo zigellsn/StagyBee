@@ -22,6 +22,14 @@ body {
     padding-top: 64px;
 }
 
+input[type=password] {
+    width: 60% !important
+}
+
+input[type=text] {
+    width: 60% !important
+}
+
 .table .sortable-column.sort-asc {
     background-color: #333333;
 }

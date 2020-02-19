@@ -20,17 +20,28 @@
         }
     </style>
 </head>
-<body class="bg-dark fg-white" onload="startTime()" >
+<body class="bg-dark fg-white" onload="startTime()">
 <header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
     {% get_current_language as LANGUAGE_CODE %}
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}
     <div class="app-bar-container ml-left">
         {% if user.is_authenticated %}
-            <h4 style="margin-left: 20px;">{% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}!{% endblocktrans %}</h4>
+            <h4 style="margin-left: 20px;">{% blocktrans with username=user.get_short_name|default:user.get_username %}
+                Willkommen, {{ username }}!{% endblocktrans %}</h4>
         {% endif %}
     </div>
     <div class="app-bar-container ml-auto">
+        {% if no_settings|default_if_none:False == False %}
+            <div class="app-bar-container float-none">
+                <div class="app-bar-item pl-4 pr-4 pt-2">
+                    <a href="{% url 'console:settings' %}">
+                    <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
+                          data-hint-position="bottom"></span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
         <div class="app-bar-container float-none">
             <div class="app-bar-item pl-4 pr-4 pt-2">
                 <a href="{% url 'logout' %}">
@@ -55,7 +66,7 @@
         </div>
     </div>
 </header>
-<div class="notify-container">
+<div class="container-fluid">
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+{% extends 'console/base.html' %}
+{% load i18n utils %}
+{% block content %}
+    {% load static %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div class="pt-4"><input class="button primary" type="submit" value="{% trans "Passwort ändern" %}"></div>
+        </form>
+    </div>
+{% endblock %}
