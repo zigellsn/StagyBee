@@ -52,7 +52,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        await self.connect_to_extractor()
+        await self.__connect_to_extractor()
 
     async def disconnect(self, close_code):
         if self.task is not None and not self.task.done():
@@ -63,7 +63,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             generate_channel_group_name("stage", self.congregation),
             self.channel_name
         )
-        await self.disconnect_from_extractor()
+        await self.__disconnect_from_extractor()
         raise StopConsumer()
 
     async def extractor_listeners(self, event):
@@ -82,7 +82,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         else:
             return await super().encode_json(content=content)
 
-    async def connect_to_extractor(self):
+    async def __connect_to_extractor(self):
         self.credentials = await database_sync_to_async(get_object_or_404)(Credential,
                                                                            congregation=self.congregation)
         if self.credentials.touch:
@@ -100,7 +100,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                        "password": self.credentials.password,
                        "url": url}
         try:
-            self.task = asyncio.create_task(self.post_request(self.extractor_url + "api/subscribe/", payload))
+            self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe/", payload))
             await self.task
         except aiohttp.ClientError:
             await self.send_json("extractor_not_available")
@@ -111,18 +111,18 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             if success:
                 self.sessionId = self.task.result()["sessionId"]
                 await self.send_json("subscribed_to_extractor")
-        await connect_uri(self.redis_key, self.channel_name)
+        await __connect_uri__(self.redis_key, self.channel_name)
 
-    async def disconnect_from_extractor(self):
+    async def __disconnect_from_extractor(self):
         if self.credentials.touch:
             return
         if self.sessionId is not None:
-            count = await disconnect_uri(self.redis_key, self.channel_name)
+            count = await __disconnect_uri__(self.redis_key, self.channel_name)
             if count != 0:
                 return
             try:
                 self.task = asyncio.create_task(
-                    self.delete_request(f"{self.extractor_url}api/unsubscribe/{self.sessionId}/"))
+                    self.__delete_request(f"{self.extractor_url}api/unsubscribe/{self.sessionId}/"))
                 await self.task
             except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")
@@ -136,14 +136,14 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
            stop=stop_after_delay(15))
-    async def post_request(self, url, payload):
+    async def __post_request(self, url, payload):
         async with aiohttp.ClientSession() as session:
             async with session.post(url, json=payload) as response:
                 return await response.json()
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
            stop=stop_after_delay(15))
-    async def delete_request(self, url):
+    async def __delete_request(self, url):
         async with aiohttp.ClientSession() as session:
             async with session.delete(url) as response:
                 return await response.json()
@@ -161,12 +161,12 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
             generate_channel_group_name("console", self.congregation),
             self.channel_name
         )
-        await connect_uri(self.redis_key, self.channel_name)
+        await __connect_uri__(self.redis_key, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
         congregation_channel_group = generate_channel_group_name("console", self.congregation)
-        count = await disconnect_uri(self.redis_key, self.channel_name)
+        count = await __disconnect_uri__(self.redis_key, self.channel_name)
         if count == 0:
             await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
@@ -179,7 +179,7 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(event)
 
 
-async def connect_uri(group, channel_name):
+async def __connect_uri__(group, channel_name):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
     await redis.sadd(group, channel_name)
@@ -188,7 +188,7 @@ async def connect_uri(group, channel_name):
     await redis.wait_closed()
 
 
-async def disconnect_uri(group, channel_name):
+async def __disconnect_uri__(group, channel_name):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
     await redis.srem(group, channel_name)

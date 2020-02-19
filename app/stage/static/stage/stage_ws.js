@@ -39,7 +39,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     }
 
     mySocket.onopen = function (_) {
-        console.log("Stage WebSocket CONNECT successful");
+        console.log('Stage WebSocket CONNECT successful');
         setElements('', 'none', 'none');
     };
 
@@ -170,7 +170,7 @@ function console_client_ws(congregation_ws, heading) {
     };
 
     mySocket.onopen = function (_) {
-        console.log("Console Client WebSocket CONNECT successful");
+        console.log('Console Client WebSocket CONNECT successful');
     };
 
     mySocket.onclose = function (_) {

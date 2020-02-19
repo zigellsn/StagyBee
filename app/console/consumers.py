@@ -48,23 +48,26 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, text_data, **kwargs):
         congregation_group_name = generate_channel_group_name("console", self.congregation)
-        message_type = "alert"
         if "alert" in text_data and text_data["alert"] == "message":
             credential = await database_sync_to_async(__get_congregation__)(self.congregation)
             await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
                                                                 credential, text_data)
             message_type = "alert"
-        if "timer" in text_data and text_data["timer"] == "start":
-            await __add_timer__(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
+        elif "timer" in text_data:
             message_type = "timer"
-        if "timer" in text_data and text_data["timer"] == "stop":
-            credential = await database_sync_to_async(__get_congregation__)(self.congregation)
-            talk, start, value = await __get_timer__(self.redis_key)
-            json_value = json.loads(value)
-            duration = json_value["h"] * 3600 + json_value["m"] * 60 + json_value["s"]
-            await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
-            await __remove_timer__(self.redis_key)
-            message_type = "timer"
+            if text_data["timer"] == "start":
+                await __add_timer__(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
+            elif text_data["timer"] == "stop":
+                credential = await database_sync_to_async(__get_congregation__)(self.congregation)
+                talk, start, value = await __get_timer__(self.redis_key)
+                json_value = json.loads(value)
+                duration = json_value["h"] * 3600 + json_value["m"] * 60 + json_value["s"]
+                await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
+                await __remove_timer__(self.redis_key)
+            else:
+                return
+        else:
+            return
         await self.channel_layer.group_send(congregation_group_name, {"type": message_type, message_type: text_data})
 
     async def exit(self, event):

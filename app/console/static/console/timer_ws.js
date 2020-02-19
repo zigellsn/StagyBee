@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-let stopwatch = document.getElementById('stopwatch');
-let talk = document.getElementById('talk');
-let remaining = $('#remaining');
-let timerRunning = false;
-let start = null;
-let value = null;
-
-let sent = false;
-let socket = null;
-let doReload = false;
-let doShowWarning = false;
-
 function timer_ws(congregation_ws, reload, showWarning) {
 
-    doShowWarning = showWarning;
-    doReload = reload;
+    let stopwatch = document.getElementById('stopwatch');
+    let talk = document.getElementById('talk');
+    let remaining = $('#remaining');
+    let start = null;
+    let value = null;
+    let timeout = null;
+    let sent = false;
+
     let loc = window.location;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
@@ -40,8 +34,7 @@ function timer_ws(congregation_ws, reload, showWarning) {
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
-        console.log("WebSocket CONNECT successful");
-        socket = mySocket;
+        console.log('Timer WebSocket CONNECT successful');
     };
 
     mySocket.onmessage = function (e) {
@@ -58,33 +51,30 @@ function timer_ws(congregation_ws, reload, showWarning) {
                 talk.innerText = message['talk'];
             start = moment(message['start']);
             value = message['value'];
-            timerRunning = true;
             sent = false;
+            timeout = setTimeout(runTimer, 500);
         } else if (timer === 'stop') {
             start = null;
             value = null;
-            timerRunning = false;
-            if (doReload) {
+            if (reload) {
                 location.reload();
             } else {
-                socket.send(JSON.stringify({
+                mySocket.send(JSON.stringify({
                     'alert': 'stop',
                 }));
             }
             sent = false;
+            clearTimeout(timeout);
         } else {
             console.log(message);
         }
     };
 
     mySocket.onclose = function (_) {
-        console.error('Socket closed unexpectedly');
-        socket = null;
+        console.error('Timer Socket closed unexpectedly');
     };
-}
 
-function runTimer() {
-    if (timerRunning === true) {
+    function runTimer() {
         if (stopwatch === null || remaining == null || value === null || start === null)
             return;
         let diff = (new Date).getTime() - start;
@@ -92,43 +82,43 @@ function runTimer() {
         let span = (value['h'] * 60000000 + value['m'] * 60000 + value['s'] * 1000) - diff;
         if (span >= 0) {
             remaining.text(millisecondsToTime(span));
-            remaining.removeClass("fg-red");
-            remaining.removeClass("timesUp");
-            remaining.addClass("fg-white");
+            remaining.removeClass('fg-red');
+            remaining.removeClass('timesUp');
+            remaining.addClass('fg-white');
             sent = false;
         } else {
-            if (socket !== null && !sent && !doReload && doShowWarning) {
-                socket.send(JSON.stringify({
+            if (mySocket !== null && !sent && !reload && showWarning) {
+                mySocket.send(JSON.stringify({
                     'alert': 'time',
                 }));
                 sent = true;
             }
             remaining.text('-' + millisecondsToTime(span));
-            remaining.removeClass("fg-white");
-            remaining.addClass("timesUp");
-            remaining.addClass("fg-red");
+            remaining.removeClass('fg-white');
+            remaining.addClass('timesUp');
+            remaining.addClass('fg-red');
         }
+        timeout = setTimeout(runTimer, 500)
     }
-    setTimeout(runTimer, 500);
-}
 
-function millisecondsToTime(ms) {
-    if (ms < 0)
-        ms *= -1;
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor((ms / 1000 / 60) % 60);
-    const hours = Math.floor(ms / 1000 / 60 / 60);
+    function millisecondsToTime(ms) {
+        if (ms < 0)
+            ms *= -1;
+        const seconds = Math.floor((ms / 1000) % 60);
+        const minutes = Math.floor((ms / 1000 / 60) % 60);
+        const hours = Math.floor(ms / 1000 / 60 / 60);
 
-    return [
-        pad(hours),
-        pad(minutes),
-        pad(seconds),
-    ].join(':');
-}
-
-function pad(i) {
-    if (i < 10) {
-        i = `0${i}`
+        return [
+            pad(hours),
+            pad(minutes),
+            pad(seconds),
+        ].join(':');
     }
-    return i;
+
+    function pad(i) {
+        if (i < 10) {
+            i = `0${i}`
+        }
+        return i;
+    }
 }

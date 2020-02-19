@@ -28,14 +28,14 @@ function console_ws(congregation_ws) {
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
-        console.log("WebSocket CONNECT successful");
+        console.log('Console WebSocket CONNECT successful');
     };
 
     mySocket.onmessage = function (e) {
     };
 
     mySocket.onclose = function (_) {
-        console.error('Socket closed unexpectedly');
+        console.error('Console WebSocket closed unexpectedly');
     };
 
     if (submitTime !== null)
@@ -69,8 +69,8 @@ function console_ws(congregation_ws) {
 
     if (submitText !== null)
         submitText.onclick = function (_) {
-            let message = document.getElementById("text_message").value;
-            if (message !== undefined && message !== "")
+            let message = document.getElementById('text_message').value;
+            if (message !== undefined && message !== '')
                 mySocket.send(JSON.stringify({
                     'alert': 'message',
                     'value': message
