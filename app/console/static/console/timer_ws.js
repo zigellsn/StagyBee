@@ -18,6 +18,9 @@ function timer_ws(congregation_ws, reload, showWarning) {
 
     let stopwatch = document.getElementById('stopwatch');
     let talk = document.getElementById('talk');
+    let talkNumber = document.getElementById('talk_number');
+    if (talk !== null)
+        talk.style.display = 'none';
     let remaining = $('#remaining');
     let start = null;
     let value = null;
@@ -48,7 +51,9 @@ function timer_ws(congregation_ws, reload, showWarning) {
 
         if (timer === 'start') {
             if (talk !== null)
-                talk.innerText = message['talk'];
+                talk.style.display = 'block';
+            if (talkNumber !== null)
+                talkNumber.innerText = message['talk'];
             start = moment(message['start']);
             value = message['value'];
             sent = false;
@@ -56,6 +61,8 @@ function timer_ws(congregation_ws, reload, showWarning) {
         } else if (timer === 'stop') {
             start = null;
             value = null;
+            if (talk !== null)
+                talk.style.display = 'none';
             if (reload) {
                 location.reload();
             } else {
