@@ -33,13 +33,13 @@
         </tbody>
     </table>
     <div class="pt-4">
-        <table class="table" data-role="table" data-show-search="false" data-show-pagination="false"
+        <table class="table" data-show-search="false" data-show-pagination="false"
                data-show-table-info="false" data-show-activity="false" data-show-rows-steps="false"
                data-empty-table-title="">
             <thead>
             <tr>
-                <th class="fg-white sortable-column sort-asc">{% trans "Aufgabe" %}</th>
-                <th class="fg-white sortable-column sort-asc">{% trans "Startzeit" %}</th>
+                <th class="fg-white">{% trans "Aufgabe" %}</th>
+                <th class="fg-white">{% trans "Startzeit" %}</th>
                 <th class="fg-white">{% trans "Endezeit" %}</th>
                 <th class="fg-white">{% trans "Dauer" %}</th>
                 <th class="fg-white">{% trans "Maximale Dauer" %}</th>
@@ -49,30 +49,16 @@
             <tbody>
             {% for time_entry in time_entries %}
                 <tr>
-                    <td>
-                        <div>{{ time_entry.talk }}</div>
-                    </td>
-                    <td>
-                        <div>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}
-                            Uhr{% endblocktrans %}</div>
-                    </td>
-                    <td>
-                        <div>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}
-                            Uhr{% endblocktrans %}</div>
-                    </td>
-                    <td>
-                        <div>{{ time_entry.duration }}</div>
-                    </td>
-                    <td>
-                        <div>{{ time_entry.display_max_duration }}</div>
-                    </td>
-                    <td>
-                        {% if "-" in time_entry.difference %}
-                            <div class="fg-red">{{ time_entry.difference }}</div>
-                        {% else %}
-                            <div class="fg-green">{{ time_entry.difference }}</div>
-                        {% endif %}
-                    </td>
+                    <td>{{ time_entry.talk }}</td>
+                    <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }} Uhr{% endblocktrans %}</td>
+                    <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }} Uhr{% endblocktrans %}</td>
+                    <td>{{ time_entry.duration }}</td>
+                    <td>{{ time_entry.display_max_duration }}</td>
+                    {% if "-" in time_entry.difference %}
+                        <td class="fg-red">{{ time_entry.difference }}</td>
+                    {% else %}
+                        <td class="fg-green">{{ time_entry.difference }}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
