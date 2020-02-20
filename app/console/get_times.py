@@ -12,44 +12,58 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import asyncio
 import re
 
 import aiohttp
 from dateutil.relativedelta import relativedelta, MO
 
 PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
+             "Chrome/79.0.3945.130 Safari/537.36"
 
 
-async def extract(start_date, end_date=None, language="en"):
-    last_monday = start_date + relativedelta(weekday=MO(-1))
-
+async def get_workbooks(urls, language="en"):
     async with aiohttp.ClientSession() as session:
-        weeks = {}
-        response_code = 200
-        while response_code == 200:
-            next_sunday = last_monday + relativedelta(days=6)
-            if last_monday.year >= 2020:
-                url = await __get_2020_url(last_monday, next_sunday)
-            else:
-                url = await __get_url(last_monday, next_sunday)
-            response_code, content = await __get_workbook(session, url)
-            if language == "en":
-                times = await __parse(content, "en")
-            else:
-                language_url = await __get_language_url(content, language)
-                response_code, content = await __get_workbook(session, language_url)
-                times = await __parse(content, language)
-            print(times)
-
-            weeks[last_monday] = times
-            last_monday = last_monday + relativedelta(days=7)
-            if end_date is not None and last_monday > end_date:
-                response_code = 404
+        weeks = await asyncio.gather(*[__extract(session, url, my_date, language) for my_date, url in urls.items()],
+                                     return_exceptions=True)
+        weeks_dict = {i[0]: i[1] for i in weeks if i}
     await session.close()
-    return weeks
+    return weeks_dict
 
 
-async def __get_month_name(month):
+def create_urls(start_date, end_date=None):
+    last_monday = start_date + relativedelta(weekday=MO(-1))
+    urls = {}
+    if end_date is None:
+        end_date = start_date + relativedelta(months=2)
+    while last_monday < end_date:
+        next_sunday = last_monday + relativedelta(days=6)
+        if last_monday.year >= 2020:
+            url = __get_2020_url(last_monday, next_sunday)
+        else:
+            url = __get_url(last_monday, next_sunday)
+
+        urls[last_monday] = url
+        last_monday = last_monday + relativedelta(days=7)
+    return urls
+
+
+async def __extract(session, url, week, language):
+    response_code, content = await __get_workbook(session, url)
+    if response_code == 200:
+        if language == "en":
+            times = await __parse(content, "en")
+            return week, times
+        else:
+            language_url = await __get_language_url(content, language)
+            response_code, content = await __get_workbook(session, language_url)
+            if response_code == 200:
+                times = await __parse(content, language)
+                return week, times
+
+
+def __get_month_name(month):
     switcher = {
         1: "January",
         2: "February",
@@ -72,7 +86,7 @@ async def __get_language_regex(language):
         "en": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
         "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", ")"],
         "fr": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
-        # "fa": [r"\(.*?‏[۱-۹]+ دقیقه\)", r"[۱-۹]+", "("], #TODO: Wrong regex.
+        "fa": [r"\(.*?‏[۱-۹]+ دقیقه\)", r"[۱-۹]+", "("],
         "it": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
         "el": [r"\([0-9]+(\u0020|\u00A0)(λεπτά|λεπτό).*?\)", r"[0-9]+", ")"],
     }
@@ -94,11 +108,16 @@ async def __get_language_url(content, language):
 async def __get_workbook(session, url):
     print(url)
     print("Fetching workbook...")
-    async with session.get(url) as resp:
+    headers = {
+        "User-Agent": USER_AGENT}
+    async with session.get(url, headers=headers) as resp:
         response_code = resp.status
-        if resp.status == 200:
+        if response_code == 200:
             print("Download completed. Parsing...")
             content = await resp.text()
+        else:
+            content = ""
+        await resp.release()
         return response_code, content
 
 
@@ -118,25 +137,25 @@ async def __parse(content, language):
     return times
 
 
-async def __get_url(last_monday, next_sunday):
-    month = await __get_month_name(last_monday.month)
+def __get_url(last_monday, next_sunday):
+    month = __get_month_name(last_monday.month)
     if last_monday.month == next_sunday.month:
         url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
               f"schedule-{month.lower()}{last_monday.day}-{next_sunday.day}/"
     else:
-        next_month = await __get_month_name(next_sunday.month)
+        next_month = __get_month_name(next_sunday.month)
         url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
               f"schedule-{month.lower()}{last_monday.day}-{next_month.lower()}{next_sunday.day}/"
     return url
 
 
-async def __get_2020_url(last_monday, next_sunday):
-    month = await __get_month_name(last_monday.month)
+def __get_2020_url(last_monday, next_sunday):
+    month = __get_month_name(last_monday.month)
     if last_monday.month == next_sunday.month:
         url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
               f"Schedule-for-{month}-{last_monday.day}-{next_sunday.day}-{last_monday.year}/"
     else:
-        next_month = await __get_month_name(next_sunday.month)
+        next_month = __get_month_name(next_sunday.month)
         if last_monday.year == next_sunday.year:
             url = f"{PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
                   f"Schedule-for-{month}-{last_monday.day}-{next_month}-{next_sunday.day}-{last_monday.year}/"
@@ -150,3 +169,11 @@ async def __clean_html(raw_html, regex):
     clean_reg = re.compile(r"<.*?>")
     clean_text = re.sub(clean_reg, "", raw_html)
     return clean_text[:clean_text.find(regex) + 1].strip()
+
+
+# if __name__ == '__main__':
+#     loop = asyncio.get_event_loop()
+#     my_urls = create_urls(date.today(), date.today())
+#     print("Results: %s" % my_urls)
+#     results = loop.run_until_complete(main(my_urls, "it"))
+#     print("Results: %s" % results)
