@@ -7,22 +7,13 @@
         <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
     </div>
     <div class="pt-4">
-        <label for="talk" class="pt-4">{% blocktrans with talk="" %}Aufgabe Nr. {{ talk }}{% endblocktrans %}</label>
-        <select data-role="select" id="talk" class="bg-dark fg-white">
-            <optgroup label="{% trans "Aufgabe" %}">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-            </optgroup>
-        </select>
+        <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
+        <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true" id="talk_list">
+        </ul>
     </div>
     <div class="pt-4">
         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
-        <input type="text" data-role="timepicker" data-size="280" data-value="00:10:00" data-hours="false"
+        <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00" data-hours="false"
                id="time" class="bg-dark fg-white"/>
     </div>
     <table class="table">
@@ -42,10 +33,8 @@
         </tbody>
     </table>
     <div class="pt-4">
-        <button class="button primary" id="submit_time">{% trans "Starte Stoppuhr" %}</button>
-    </div>
-    <div class="pt-4">
-        <button class="button primary" id="submit_stop">{% trans "Stoppe alle Timer" %}</button>
+        <button class="button primary" id="submit_time"><span class="mif-play"></span>{% trans "Start" %}</button>
+        <button class="button primary" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}</button>
     </div>
     <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
     <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>
@@ -63,8 +52,5 @@
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
         timer_ws('{{ congregation_ws }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
-    </script>
-    <script>
-        runTimer();
     </script>
 {% endblock %}

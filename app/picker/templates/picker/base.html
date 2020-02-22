@@ -56,10 +56,10 @@
                 </a>
                 <ul class="d-menu p-2 bg-dark fg-white" data-role="dropdown">
                     <li class="bg-blue-hover"><a href="#"
-                                                 onclick="openDemoDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
+                                                 onclick="shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
                     </li>
                     <li class="bg-blue-hover"><a href="#"
-                                                 onclick="openDemoDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
+                                                 onclick="shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
                     </li>
                 </ul>
             </div>
@@ -88,7 +88,7 @@
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script>
-    function openDemoDialogActions(dialogTitle, target) {
+    function shutdownDialogActions(dialogTitle, target) {
         Metro.dialog.create({
             title: dialogTitle,
             content: "<div>{{ confirm }}</div>",

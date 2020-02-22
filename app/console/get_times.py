@@ -13,11 +13,14 @@
 #  limitations under the License.
 
 import asyncio
+import logging
 import re
 
 import aiohttp
 from dateutil.relativedelta import relativedelta, MO
 
+
+logger = logging.getLogger("django.request")
 PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
              "Chrome/79.0.3945.130 Safari/537.36"
@@ -54,13 +57,13 @@ async def __extract(session, url, week, language):
     if response_code == 200:
         if language == "en":
             times = await __parse(content, "en")
-            return week, times
+            return week.strftime("YYYY-MM-DD"), times
         else:
             language_url = await __get_language_url(content, language)
             response_code, content = await __get_workbook(session, language_url)
             if response_code == 200:
                 times = await __parse(content, language)
-                return week, times
+                return week.strftime("%Y-%m-%d"), times
 
 
 def __get_month_name(month):
@@ -106,14 +109,14 @@ async def __get_language_url(content, language):
 
 
 async def __get_workbook(session, url):
-    print(url)
-    print("Fetching workbook...")
+    logger.info(url)
+    logger.info("Fetching workbook...")
     headers = {
         "User-Agent": USER_AGENT}
     async with session.get(url, headers=headers) as resp:
         response_code = resp.status
         if response_code == 200:
-            print("Download completed. Parsing...")
+            logger.info("Download completed. Parsing...")
             content = await resp.text()
         else:
             content = ""

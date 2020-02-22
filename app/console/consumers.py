@@ -21,9 +21,11 @@ from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from decouple import config
 from django.conf import settings
+from django.utils.translation import get_language, get_language_from_request
 
 from console.models import Audit, TimeEntry
-# from get_times import extract
+from get_times import create_urls, get_workbooks
+
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 
@@ -36,8 +38,18 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
         self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
 
     async def connect(self):
-        # times = await extract(date.today(), date.today())
-        await __connect__(self)
+        await self.channel_layer.group_add(
+            generate_channel_group_name("console", self.congregation),
+            self.channel_name
+        )
+        await self.accept()
+        urls = create_urls(datetime.today(), datetime.today())
+        times = await get_workbooks(urls, get_language())
+        if times is not None:
+            dump = json.dumps(times)
+            message = {"type": "times",
+                       "times": dump}
+            await self.send_json(message)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -48,10 +60,11 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, text_data, **kwargs):
         congregation_group_name = generate_channel_group_name("console", self.congregation)
-        if "alert" in text_data and text_data["alert"] == "message":
-            credential = await database_sync_to_async(__get_congregation__)(self.congregation)
-            await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
-                                                                credential, text_data)
+        if "alert" in text_data:
+            if text_data["alert"] == "message":
+                credential = await database_sync_to_async(__get_congregation__)(self.congregation)
+                await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
+                                                                    credential, text_data)
             message_type = "alert"
         elif "timer" in text_data:
             message_type = "timer"
@@ -61,7 +74,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
                 credential = await database_sync_to_async(__get_congregation__)(self.congregation)
                 talk, start, value = await __get_timer__(self.redis_key)
                 json_value = json.loads(value)
-                duration = json_value["h"] * 3600 + json_value["m"] * 60 + json_value["s"]
+                duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
                 await __remove_timer__(self.redis_key)
             else:
@@ -155,7 +168,7 @@ def __get_congregation__(congregation):
 
 def __persist_time_entry__(congregation, talk, start, duration):
     start_time = datetime.strptime(start.decode("utf-8"), '%Y-%m-%dT%H:%M:%S%z')
-    return TimeEntry.objects.create_time_entry(congregation, talk, start_time, datetime.now(), duration)
+    return TimeEntry.objects.create_time_entry(congregation, talk.decode("utf-8"), start_time, datetime.now(), duration)
 
 
 def __persist_audit_log__(username, congregation, text_data):
@@ -171,6 +184,6 @@ async def __connect__(self):
     talk, start, value = await __get_timer__(self.redis_key)
     if start is not None and value is not None:
         message = {"type": "timer",
-                   "timer": {"timer": "start", "talk": int(talk), "start": start.decode("utf-8"),
+                   "timer": {"timer": "start", "talk": talk.decode("utf-8"), "start": start.decode("utf-8"),
                              "value": json.loads(value)}}
         await self.send_json(message)

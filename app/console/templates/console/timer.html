@@ -3,8 +3,7 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div><h3 id="talk">{% blocktrans with talk=time_entries.talk|default:"1" %}Aufgabe Nr.
-        <span id="talk_number">{{ talk }}</span>{% endblocktrans %}</h3>
+    <div><h3 id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></h3>
     </div>
     <table class="table">
         <thead>

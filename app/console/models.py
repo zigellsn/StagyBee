@@ -44,10 +44,10 @@ class TimeEntryManager(models.Manager):
 
 class TimeEntry(models.Model):
     class Meta:
-        ordering = ["talk", "start"]
+        ordering = ["start"]
 
     congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
-    talk = models.IntegerField()
+    talk = models.CharField(max_length=255)
     start = models.DateTimeField()
     stop = models.DateTimeField()
     max_duration = models.IntegerField()
