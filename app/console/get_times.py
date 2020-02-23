@@ -137,6 +137,7 @@ async def __parse(content, language):
         if not ti:
             continue
         times.append([int(ti[0]), clean])
+    logger.info("Parsing completed.")
     return times
 
 

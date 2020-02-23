@@ -21,10 +21,10 @@ from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from decouple import config
 from django.conf import settings
-from django.utils.translation import get_language, get_language_from_request
+from django.utils.translation import get_language
 
 from console.models import Audit, TimeEntry
-from get_times import create_urls, get_workbooks
+from .get_times import create_urls, get_workbooks
 
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
