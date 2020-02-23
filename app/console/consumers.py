@@ -35,6 +35,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        self.language = self.scope["url_route"]["kwargs"]["language"]
         self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
 
     async def connect(self):
@@ -44,7 +45,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
         )
         await self.accept()
         urls = create_urls(datetime.today(), datetime.today())
-        times = await get_workbooks(urls, get_language())
+        times = await get_workbooks(urls, self.language)
         if times is not None:
             dump = json.dumps(times)
             message = {"type": "times",

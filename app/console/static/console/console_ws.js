@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function console_ws(congregation_ws) {
+function console_ws(language, congregation_ws) {
     let submitTime = document.getElementById('submit_time');
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
@@ -27,7 +27,7 @@ function console_ws(congregation_ws) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/${language}/console/${congregation_ws}/`,
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
