@@ -11,6 +11,10 @@
         <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true" id="talk_list">
         </ul>
     </div>
+    <div class="pt-4" id="custom_talk_name">
+        <label for="talk_name" class="pt-4">{% trans "Aufgabe" %}</label>
+        <input type="text" data-role="input" data-default-value="{% trans "Aufgabe" %}" id="talk_name">
+    </div>
     <div class="pt-4">
         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
         <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00" data-hours="false"

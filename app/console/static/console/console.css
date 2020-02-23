@@ -34,6 +34,11 @@ input[type=text] {
     background-color: #333333;
 }
 
+.listview .node.current-select {
+    background-color: #0366d6!important;
+    border-color: #75b5fd!important;
+}
+
 .wheel-picker .select-block {
     background-color: #333333;
 }

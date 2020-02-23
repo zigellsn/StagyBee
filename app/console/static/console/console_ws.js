@@ -18,7 +18,8 @@ function console_ws(congregation_ws) {
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
-    let talkName = "";
+    let customTalkName = document.getElementById('custom_talk_name');
+    let talkNameInput = document.getElementById('talk_name');
     let loc = window.location;
     let running = false;
     let protocol = 'ws://';
@@ -31,8 +32,12 @@ function console_ws(congregation_ws) {
 
     mySocket.onopen = function (_) {
         console.log('Console WebSocket CONNECT successful');
+        customTalkName.style.display = 'none';
         let list = $('#talk_list');
         list.children('.node').each(function () {
+            list.data('listview').del(this);
+        });
+        list.children('.node-group').each(function () {
             list.data('listview').del(this);
         });
     };
@@ -58,7 +63,7 @@ function console_ws(congregation_ws) {
                                 lv.data('listview').add(null, {
                                     caption: values[time][1],
                                     content: values[time][0]
-                                });
+                                }).addClass('bg-darkBlue-hover');
                             }
                         }
                     }
@@ -69,18 +74,18 @@ function console_ws(congregation_ws) {
                 lv.data('listview').add(null, {
                     caption: 'Öffentlicher Vortrag (30 Min.)',
                     content: 30
-                });
+                }).addClass('bg-darkBlue-hover');
                 lv.data('listview').add(null, {
                     caption: 'Bibelstudium anhand des Wachtturms (60 Min.)',
                     content: 60
-                });
+                }).addClass('bg-darkBlue-hover');
                 lv.data('listview').addGroup({
                     caption: 'Custom'
                 });
                 lv.data('listview').add(null, {
                     caption: 'Custom',
                     content: 10
-                });
+                }).addClass('bg-darkBlue-hover');
                 lv.children('.node').first().click();
             }
         }
@@ -88,9 +93,15 @@ function console_ws(congregation_ws) {
     };
 
     $('#talk_list').on("node-click", function (e) {
-        talkName = e.detail.node[0].innerText;
-        let t = e.detail.node[0].querySelector('div.content').innerText;
-        $('#time').data('timepicker').time('0:' + t + ':0')
+        let talkName = e.detail.node[0];
+        if (talkName.innerText === 'Custom') {
+            customTalkName.style.display = 'block';
+        } else {
+            customTalkName.style.display = 'none';
+        }
+        let t = talkName.querySelector('div.content').innerText;
+        $('#time').data('timepicker').time('0:' + t + ':0');
+
     });
 
     mySocket.onclose = function (_) {
@@ -107,6 +118,10 @@ function console_ws(congregation_ws) {
                     closeButton: true
                 });
                 return;
+            }
+            let talkName = $('#talk_list').find('.current')[0].innerText;
+            if (talkName === 'Custom') {
+                talkName = talkNameInput.value
             }
             mySocket.send(JSON.stringify({
                 'timer': 'start',
