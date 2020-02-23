@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-18 18:55+0100\n"
+"POT-Creation-Date: 2020-02-23 22:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,6 @@ msgid "Username"
 msgstr ""
 
 #: .\console\templates\console\audit.html:10
-#: .\stage\templates\stage\base.html:74
 msgid "Nachricht"
 msgstr ""
 
@@ -37,18 +36,24 @@ msgstr ""
 msgid "Sendezeit"
 msgstr ""
 
-#: .\console\templates\console\base.html:30
+#: .\console\templates\console\base.html:38
 #, python-format
-msgid "Willkommen, %(username)s!"
+msgid ""
+"\n"
+"                        Willkommen, %(username)s!"
 msgstr ""
 
-#: .\console\templates\console\base.html:37
-msgid "Logout"
+#: .\console\templates\console\base.html:46
+msgid "Einstellungen"
 msgstr ""
 
-#: .\console\templates\console\base.html:44
-#: .\picker\templates\picker\base.html:55
+#: .\console\templates\console\base.html:54
+#: .\picker\templates\picker\base.html:40
 msgid "Sprache"
+msgstr ""
+
+#: .\console\templates\console\base.html:67
+msgid "Logout"
 msgstr ""
 
 #: .\console\templates\console\choose_console_cards.html:28
@@ -68,105 +73,104 @@ msgid "Bildschirm verdunkeln"
 msgstr ""
 
 #: .\console\templates\console\console.html:10
-#, python-format
-msgid "Aufgabe Nr. %(talk)s"
-msgstr ""
-
-#: .\console\templates\console\console.html:12
-#: .\console\templates\console\timer.html:39
+#: .\console\templates\console\console.html:15
+#: .\console\templates\console\console.html:16
+#: .\console\templates\console\timer.html:6
+#: .\console\templates\console\timer.html:40
 msgid "Aufgabe"
 msgstr ""
 
-#: .\console\templates\console\console.html:24
+#: .\console\templates\console\console.html:19
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:45
-msgid "Starte Stoppuhr"
+#: .\console\templates\console\console.html:40
+msgid "Start"
 msgstr ""
 
-#: .\console\templates\console\console.html:48
-msgid "Stoppe alle Timer"
+#: .\console\templates\console\console.html:41
+msgid "Stopp"
 msgstr ""
 
-#: .\console\templates\console\console.html:50
+#: .\console\templates\console\console.html:43
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:53
+#: .\console\templates\console\console.html:46
 msgid "Sende Nachricht"
 msgstr ""
 
-#: .\console\templates\console\timer.html:6
-#, python-format
-msgid ""
-"Aufgabe Nr.\n"
-"        %(talk)s"
+#: .\console\templates\console\settings.html:10
+msgid "Passwort ändern"
 msgstr ""
 
-#: .\console\templates\console\timer.html:13
+#: .\console\templates\console\timer.html:12
 msgid "Abgelaufen"
 msgstr ""
 
-#: .\console\templates\console\timer.html:16
+#: .\console\templates\console\timer.html:15
 msgid "Übrig"
 msgstr ""
 
-#: .\console\templates\console\timer.html:40
+#: .\console\templates\console\timer.html:41
 msgid "Startzeit"
 msgstr ""
 
-#: .\console\templates\console\timer.html:41
+#: .\console\templates\console\timer.html:42
 msgid "Endezeit"
 msgstr ""
 
-#: .\console\templates\console\timer.html:42
+#: .\console\templates\console\timer.html:43
 msgid "Dauer"
 msgstr ""
 
-#: .\console\templates\console\timer.html:43
+#: .\console\templates\console\timer.html:44
 msgid "Maximale Dauer"
 msgstr ""
 
-#: .\console\templates\console\timer.html:44
+#: .\console\templates\console\timer.html:45
 msgid "Differenz"
 msgstr ""
 
-#: .\console\templates\console\timer.html:54
+#: .\console\templates\console\timer.html:52
 #, python-format
-msgid ""
-"%(start)s\n"
-"                            Uhr"
+msgid "%(start)s Uhr"
 msgstr ""
 
-#: .\console\templates\console\timer.html:58
+#: .\console\templates\console\timer.html:53
 #, python-format
-msgid ""
-"%(stop)s\n"
-"                            Uhr"
+msgid "%(stop)s Uhr"
 msgstr ""
 
-#: .\console\views.py:50 .\console\views.py:75 .\console\views.py:87
+#: .\console\views.py:55 .\console\views.py:82 .\console\views.py:94
 msgid "Nicht berechtigt"
 msgstr ""
 
-#: .\picker\models.py:32
-msgid "Zugriff auf Management Console"
+#: .\console\views.py:104
+msgid "Das Passwort wurde geändert."
+msgstr ""
+
+#: .\console\views.py:107
+msgid "Bitte den unten stehenden Fehler korrigieren."
 msgstr ""
 
 #: .\picker\models.py:33
-msgid "Zugriff auf Stoppuhr"
+msgid "Zugriff auf Management Console"
 msgstr ""
 
 #: .\picker\models.py:34
+msgid "Zugriff auf Stoppuhr"
+msgstr ""
+
+#: .\picker\models.py:35
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:45
+#: .\picker\models.py:46
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:46
+#: .\picker\models.py:47
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -182,11 +186,11 @@ msgstr ""
 msgid "Bist du sicher?"
 msgstr ""
 
-#: .\picker\templates\picker\base.html:95
+#: .\picker\templates\picker\base.html:97
 msgid "Nein"
 msgstr ""
 
-#: .\picker\templates\picker\base.html:99
+#: .\picker\templates\picker\base.html:101
 msgid "Ja"
 msgstr ""
 

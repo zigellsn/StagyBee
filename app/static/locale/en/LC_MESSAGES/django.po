@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-18 18:55+0100\n"
+"POT-Creation-Date: 2020-02-23 22:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,6 @@ msgid "Username"
 msgstr "User name"
 
 #: .\console\templates\console\audit.html:10
-#: .\stage\templates\stage\base.html:74
 msgid "Nachricht"
 msgstr "Message"
 
@@ -34,19 +33,26 @@ msgstr "Message"
 msgid "Sendezeit"
 msgstr "Send time"
 
-#: .\console\templates\console\base.html:30
-#, python-format
-msgid "Willkommen, %(username)s!"
+#: .\console\templates\console\base.html:38
+#, fuzzy, python-format
+#| msgid "Willkommen, %(username)s!"
+msgid ""
+"\n"
+"                        Willkommen, %(username)s!"
 msgstr "Welcome, %(username)s!"
 
-#: .\console\templates\console\base.html:37
-msgid "Logout"
-msgstr "Logout"
+#: .\console\templates\console\base.html:46
+msgid "Einstellungen"
+msgstr "Settings"
 
-#: .\console\templates\console\base.html:44
-#: .\picker\templates\picker\base.html:55
+#: .\console\templates\console\base.html:54
+#: .\picker\templates\picker\base.html:40
 msgid "Sprache"
 msgstr "Language"
+
+#: .\console\templates\console\base.html:67
+msgid "Logout"
+msgstr "Logout"
 
 #: .\console\templates\console\choose_console_cards.html:28
 msgid "Zur Console..."
@@ -65,111 +71,114 @@ msgid "Bildschirm verdunkeln"
 msgstr "Mute stage display"
 
 #: .\console\templates\console\console.html:10
-#, python-format
-msgid "Aufgabe Nr. %(talk)s"
-msgstr ""
-
-#: .\console\templates\console\console.html:12
-#: .\console\templates\console\timer.html:39
+#: .\console\templates\console\console.html:15
+#: .\console\templates\console\console.html:16
+#: .\console\templates\console\timer.html:6
+#: .\console\templates\console\timer.html:40
 msgid "Aufgabe"
-msgstr ""
+msgstr "Talk"
 
-#: .\console\templates\console\console.html:24
+#: .\console\templates\console\console.html:19
 msgid "Stoppuhr"
 msgstr "Stopwatch"
 
-#: .\console\templates\console\console.html:45
-msgid "Starte Stoppuhr"
-msgstr "Initiate stopwatch"
+#: .\console\templates\console\console.html:40
+#, fuzzy
+#| msgid "Uhrzeit"
+msgid "Start"
+msgstr "Time"
 
-#: .\console\templates\console\console.html:48
-msgid "Stoppe alle Timer"
-msgstr "Stop all timers"
+#: .\console\templates\console\console.html:41
+#, fuzzy
+#| msgid "Stoppuhr"
+msgid "Stopp"
+msgstr "Stopwatch"
 
-#: .\console\templates\console\console.html:50
+#: .\console\templates\console\console.html:43
 msgid "Textnachricht"
 msgstr "Text message"
 
-#: .\console\templates\console\console.html:53
+#: .\console\templates\console\console.html:46
 msgid "Sende Nachricht"
 msgstr "Send message"
 
-#: .\console\templates\console\timer.html:6
-#, python-format
-msgid ""
-"Aufgabe Nr.\n"
-"        %(talk)s"
-msgstr ""
+#: .\console\templates\console\settings.html:10
+msgid "Passwort ändern"
+msgstr "Change password"
 
-#: .\console\templates\console\timer.html:13
+#: .\console\templates\console\timer.html:12
 msgid "Abgelaufen"
-msgstr ""
+msgstr "Elapsed"
 
-#: .\console\templates\console\timer.html:16
+#: .\console\templates\console\timer.html:15
 msgid "Übrig"
-msgstr ""
+msgstr "TIme left"
 
-#: .\console\templates\console\timer.html:40
+#: .\console\templates\console\timer.html:41
 #, fuzzy
 #| msgid "Uhrzeit"
 msgid "Startzeit"
 msgstr "Time"
 
-#: .\console\templates\console\timer.html:41
+#: .\console\templates\console\timer.html:42
 #, fuzzy
 #| msgid "Sendezeit"
 msgid "Endezeit"
 msgstr "Send time"
 
-#: .\console\templates\console\timer.html:42
-msgid "Dauer"
-msgstr ""
-
 #: .\console\templates\console\timer.html:43
-msgid "Maximale Dauer"
-msgstr ""
+msgid "Dauer"
+msgstr "Timespan"
 
 #: .\console\templates\console\timer.html:44
+msgid "Maximale Dauer"
+msgstr "Maximum timespan"
+
+#: .\console\templates\console\timer.html:45
 msgid "Differenz"
-msgstr ""
+msgstr "Difference"
 
-#: .\console\templates\console\timer.html:54
+#: .\console\templates\console\timer.html:52
 #, python-format
-msgid ""
-"%(start)s\n"
-"                            Uhr"
+msgid "%(start)s Uhr"
 msgstr ""
 
-#: .\console\templates\console\timer.html:58
+#: .\console\templates\console\timer.html:53
 #, python-format
-msgid ""
-"%(stop)s\n"
-"                            Uhr"
+msgid "%(stop)s Uhr"
 msgstr ""
 
-#: .\console\views.py:50 .\console\views.py:75 .\console\views.py:87
+#: .\console\views.py:55 .\console\views.py:82 .\console\views.py:94
 msgid "Nicht berechtigt"
 msgstr "Not authorized"
 
-#: .\picker\models.py:32
+#: .\console\views.py:104
+msgid "Das Passwort wurde geändert."
+msgstr "The password has been changed."
+
+#: .\console\views.py:107
+msgid "Bitte den unten stehenden Fehler korrigieren."
+msgstr "Please correct the error below."
+
+#: .\picker\models.py:33
 msgid "Zugriff auf Management Console"
 msgstr "Access Management Console"
 
-#: .\picker\models.py:33
+#: .\picker\models.py:34
 msgid "Zugriff auf Stoppuhr"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:34
+#: .\picker\models.py:35
 msgid "Zugriff auf Audit-Log"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:45
+#: .\picker\models.py:46
 msgid "Zeige nur Meldungen"
 msgstr "Show requests to speak only"
 
-#: .\picker\models.py:46
+#: .\picker\models.py:47
 msgid "Sende Zeiten an Bühne"
-msgstr ""
+msgstr "Send times to stage"
 
 #: .\picker\templates\picker\base.html:28
 msgid "Neu starten"
@@ -183,11 +192,11 @@ msgstr "Shutdown"
 msgid "Bist du sicher?"
 msgstr "Are you sure?"
 
-#: .\picker\templates\picker\base.html:95
+#: .\picker\templates\picker\base.html:97
 msgid "Nein"
 msgstr "No"
 
-#: .\picker\templates\picker\base.html:99
+#: .\picker\templates\picker\base.html:101
 msgid "Ja"
 msgstr "Yes"
 
@@ -211,6 +220,10 @@ msgstr "Extractor service not running or not reachable"
 msgid "Zuhörer gesamt:"
 msgstr "Listeners total:"
 
+#: .\console\static\console\console_ws.js:82
+msgid "Benutzerdefiniert"
+msgstr "Custom"
+
 #: .\stagy_bee\settings.py:144
 msgid "English"
 msgstr ""
@@ -230,6 +243,12 @@ msgstr ""
 #: .\stagy_bee\settings.py:148
 msgid "Russian"
 msgstr ""
+
+#~ msgid "Starte Stoppuhr"
+#~ msgstr "Initiate stopwatch"
+
+#~ msgid "Stoppe alle Timer"
+#~ msgstr "Stop all timers"
 
 #~ msgid "Sende Uhrzeit"
 #~ msgstr "Send time"

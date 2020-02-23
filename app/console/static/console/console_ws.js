@@ -53,7 +53,7 @@ function console_ws(language, congregation_ws) {
                 let lv = $('#talk_list');
                 let pTimes = JSON.parse(times);
                 lv.data('listview').addGroup({
-                    caption: 'Freitag'
+                    caption: gettext('Leben- und Dienstzusammenkunft')
                 });
                 for (let k in pTimes) {
                     if (pTimes.hasOwnProperty(k)) {
@@ -69,21 +69,21 @@ function console_ws(language, congregation_ws) {
                     }
                 }
                 lv.data('listview').addGroup({
-                    caption: 'Sonntag'
+                    caption: gettext('Öffentlicher Vortrag und Wachtturmstudium')
                 });
                 lv.data('listview').add(null, {
-                    caption: 'Öffentlicher Vortrag (30 Min.)',
+                    caption: gettext('Öffentlicher Vortrag (30 Min.)'),
                     content: 30
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').add(null, {
-                    caption: 'Bibelstudium anhand des Wachtturms (60 Min.)',
+                    caption: gettext('Bibelstudium anhand des Wachtturms (60 Min.)'),
                     content: 60
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').addGroup({
-                    caption: 'Custom'
+                    caption: gettext('Benutzerdefiniert')
                 });
                 lv.data('listview').add(null, {
-                    caption: 'Custom',
+                    caption: gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
                 lv.children('.node').first().click();
@@ -94,7 +94,7 @@ function console_ws(language, congregation_ws) {
 
     $('#talk_list').on("node-click", function (e) {
         let talkName = e.detail.node[0];
-        if (talkName.innerText === 'Custom') {
+        if (talkName.innerText === gettext('Benutzerdefiniert')) {
             customTalkName.style.display = 'block';
         } else {
             customTalkName.style.display = 'none';
@@ -113,14 +113,14 @@ function console_ws(language, congregation_ws) {
             let time = $('#time').data('timepicker').time();
             if (time['h'] === 0 && time['m'] === 0 && time['s'] === 0) {
                 Metro.dialog.create({
-                    title: "Timer",
-                    content: "<div>Bitte eine Zeit > 0 angeben.</div>",
+                    title: 'Timer',
+                    content: `<div>${gettext('Bitte eine Zeit > 0 angeben.')}</div>`,
                     closeButton: true
                 });
                 return;
             }
             let talkName = $('#talk_list').find('.current')[0].innerText;
-            if (talkName === 'Custom') {
+            if (talkName === gettext('Benutzerdefiniert')) {
                 talkName = talkNameInput.value
             }
             mySocket.send(JSON.stringify({

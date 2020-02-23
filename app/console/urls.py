@@ -13,10 +13,16 @@
 #  limitations under the License.
 
 from django.urls import path
+from django.views.i18n import JavaScriptCatalog
 
 from . import views
 
 app_name = 'console'
+
+js_info = {
+   'domain': 'django',
+   'packages': None,
+}
 
 urlpatterns = [
     path('', views.choose_console, name='chose_console'),
@@ -24,4 +30,5 @@ urlpatterns = [
     path('timer/<str:congregation>', views.timer, name='timer'),
     path('audit/<str:congregation>', views.audit, name='audit'),
     path('settings/', views.settings, name='settings'),
+    path('jsi18n/', JavaScriptCatalog.as_view(), js_info, name='javascript-catalog'),
 ]

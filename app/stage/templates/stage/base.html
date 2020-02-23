@@ -67,11 +67,12 @@
     </main>
 </div>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script type="text/javascript" src="{% url 'stage:javascript-catalog' %}"></script>
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script src="{% static 'stage/stage_ws.js' %}"></script>
 <script>
-    console_client_ws('{{ congregation_ws }}', '{% trans "Nachricht" %}');
+    console_client_ws('{{ congregation_ws }}');
 </script>
 </body>
 </html>
