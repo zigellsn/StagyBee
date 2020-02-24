@@ -53,7 +53,7 @@ function console_ws(language, congregation_ws) {
                 let lv = $('#talk_list');
                 let pTimes = JSON.parse(times);
                 lv.data('listview').addGroup({
-                    caption: gettext('Leben- und Dienstzusammenkunft')
+                    caption: gettext('Leben-und-Dienst-Zusammenkunft')
                 });
                 for (let k in pTimes) {
                     if (pTimes.hasOwnProperty(k)) {
@@ -69,14 +69,14 @@ function console_ws(language, congregation_ws) {
                     }
                 }
                 lv.data('listview').addGroup({
-                    caption: gettext('Öffentlicher Vortrag und Wachtturmstudium')
+                    caption: gettext('Zusammenkunft für die Öffentlichkeit')
                 });
                 lv.data('listview').add(null, {
                     caption: gettext('Öffentlicher Vortrag (30 Min.)'),
                     content: 30
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').add(null, {
-                    caption: gettext('Bibelstudium anhand des Wachtturms (60 Min.)'),
+                    caption: gettext('Wachtturm-Studium (60 Min.)'),
                     content: 60
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').addGroup({
