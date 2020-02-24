@@ -25,7 +25,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate --run-syncdb
 python manage.py createsuperuser
-python manage.py compilemessages
+python manage.py compilemessages --ignore venv
 python manage.py collectstatic
 python manage.py runserver
 ```

@@ -35,7 +35,7 @@ Then run
 docker-compose up -d --build
 docker-compose exec web python manage.py migrate --noinput
 docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py compilemessages
+docker-compose exec web python manage.py compilemessages --ignore venv
 docker-compose exec web python manage.py collectstatic --no-input --clear
 ```
 
@@ -76,7 +76,7 @@ Then run
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py migrate --noinput
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py createsuperuser
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py compilemessages
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py compilemessages --ignore venv
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
 ```
 
