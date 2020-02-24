@@ -4,10 +4,10 @@
 {% block content %}
     {% load static %}
     <div class="embed-container">
-        {% if autologin %}
-            <iframe name="frame" src="https://jwconf.org/?key={{ autologin }}"></iframe>
+        {% if credential.autologin %}
+            <iframe name="frame" src="https://jwconf.org/?key={{ credential.autologin }}"></iframe>
         {% else %}
-            <iframe name="frame" src="{% url 'stage:stage_form' congregation %}"></iframe>
+            <iframe name="frame" src="{% url 'stage:stage_form' credential.congregation %}"></iframe>
         {% endif %}
     </div>
 {% endblock %}

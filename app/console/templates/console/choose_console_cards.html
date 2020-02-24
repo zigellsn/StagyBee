@@ -5,7 +5,7 @@
 {% block content %}
     <div>
         <div class="row mt-2">
-            {% for congregation in congregations %}
+            {% for congregation in object_list %}
                 {% get_obj_perms request.user for congregation as "congregation_perms" %}
                 {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms or "access_audit_log" in congregation_perms %}
                     <div class="cell-md-6">

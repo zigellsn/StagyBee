@@ -46,7 +46,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for time_entry in time_entries %}
+            {% for time_entry in object_list %}
                 <tr>
                     <td>{{ time_entry.talk }}</td>
                     <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }} Uhr{% endblocktrans %}</td>
@@ -69,6 +69,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        timer_ws('{{ congregation_ws }}', true, false);
+        timer_ws('{{ congregation.congregation|escape }}', true, false);
     </script>
 {% endblock %}

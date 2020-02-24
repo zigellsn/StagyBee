@@ -11,12 +11,53 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import asyncio
+import logging
+
+import aioredis
+from django.conf import settings
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+REDIS_KEY = "stagybee::console:congregation.console."
+logger = logging.getLogger(__name__)
+
+
+async def __get_redis_congregations():
+    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+    redis = await aioredis.create_redis(host)
+    congregations = await redis.keys(REDIS_KEY + "*")
+    redis.close()
+    await redis.wait_closed()
+    return congregations
+
+
+async def __get_active_congregations__():
+    congregation_filter = []
+    try:
+        congregation_filter = await __get_redis_congregations()
+    except():
+        logger.error("Redis Server not available")
+    finally:
+        congregation_filter[:] = [c.decode()[len(REDIS_KEY):len(c)] for c in congregation_filter]
+        return congregation_filter
+
 
 class CredentialManager(models.Manager):
+
+    def active(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        congregation_filter = loop.run_until_complete(__get_active_congregations__())
+        congregation_set = self.all()
+        for congregation in congregation_set:
+            if congregation.congregation in congregation_filter:
+                congregation.active = True
+            else:
+                congregation.active = False
+        return congregation_set
+
     def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch,
                           show_only_request_to_speak, send_times_to_stage):
         credential = self.create(congregation=congregation, autologin=autologin, username=username, password=password,

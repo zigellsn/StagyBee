@@ -1,10 +1,11 @@
 from django.urls import path
 
-from . import views
+from .views import PickerView, ShutdownView, RebootView
 
 app_name = 'picker'
+
 urlpatterns = [
-    path('', views.picker, name='picker'),
-    path('shutdown/', views.shutdown, name='shutdown'),
-    path('reboot/', views.reboot, name='reboot'),
+    path('', PickerView.as_view(), name='picker'),
+    path('shutdown/', ShutdownView.as_view(), name='shutdown'),
+    path('reboot/', RebootView.as_view(), name='reboot'),
 ]

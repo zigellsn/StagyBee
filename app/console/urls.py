@@ -15,20 +15,20 @@
 from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
-from . import views
+from .views import ConsoleView, ChooseConsoleView, AuditView, TimerView, SettingsView
 
 app_name = 'console'
 
 js_info = {
-   'domain': 'django',
-   'packages': None,
+    'domain': 'django',
+    'packages': None,
 }
 
 urlpatterns = [
-    path('', views.choose_console, name='chose_console'),
-    path('<str:congregation>', views.console, name='console'),
-    path('timer/<str:congregation>', views.timer, name='timer'),
-    path('audit/<str:congregation>', views.audit, name='audit'),
-    path('settings/', views.settings, name='settings'),
+    path('', ChooseConsoleView.as_view(), name='choose_console'),
+    path('<str:pk>', ConsoleView.as_view(), name='console'),
+    path('timer/<str:pk>', TimerView.as_view(), name='timer'),
+    path('audit/<str:pk>', AuditView.as_view(), name='audit'),
+    path('settings/', SettingsView.as_view(), name='settings'),
     path('jsi18n/', JavaScriptCatalog.as_view(), js_info, name='javascript-catalog'),
 ]

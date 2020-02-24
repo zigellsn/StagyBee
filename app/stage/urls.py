@@ -15,17 +15,17 @@
 from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
-from . import views
+from .views import StageView, StageFormView
 
 app_name = 'stage'
 
 js_info = {
-   'domain': 'django',
-   'packages': None,
+    'domain': 'django',
+    'packages': None,
 }
 
 urlpatterns = [
-    path('<str:congregation>', views.stage, name='stage'),
-    path('form/<str:congregation>', views.stage_form, name='stage_form'),
+    path('<str:pk>', StageView.as_view(), name='stage'),
+    path('form/<str:pk>', StageFormView.as_view(), name='stage_form'),
     path('jsi18n/', JavaScriptCatalog.as_view(), js_info, name='javascript-catalog'),
 ]

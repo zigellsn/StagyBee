@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from .views import ReceiverView
 
 app_name = 'receiver'
+
 urlpatterns = [
-    path('<str:congregation>/', views.receiver, name='receiver'),
+    path('<str:pk>/', ReceiverView.as_view(), name='receiver'),
 ]

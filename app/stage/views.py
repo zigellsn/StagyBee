@@ -12,43 +12,40 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import urllib.parse
-
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.generic import DetailView
 
 from picker.models import Credential
 
 
-@xframe_options_exempt
-def stage(request, congregation):
-    if 'HTTP_REFERER' in request.META and "picker" not in request.META['HTTP_REFERER']:
-        return redirect('picker')
-    credentials = get_object_or_404(Credential, congregation=congregation)
-    congregation_ws = urllib.parse.quote(congregation)
-    context = {
-        'congregation': credentials.congregation,
-        'username': credentials.username,
-        'password': credentials.password,
-        'autologin': credentials.autologin,
-        'display_name': credentials.display_name,
-        'touch': credentials.touch,
-        'show_only_request_to_speak': credentials.show_only_request_to_speak,
-        'congregation_ws': congregation_ws
-    }
-    if credentials.touch:
-        return render(request, 'stage/stage.html', context)
-    else:
-        return render(request, 'stage/stage_extractor.html', context)
+class StageView(DetailView):
+    model = Credential
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        if 'HTTP_REFERER' in request.META and "picker" not in request.META['HTTP_REFERER']:
+            return redirect('picker')
+
+    @method_decorator(xframe_options_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_template_names(self):
+        if self.get_object().touch:
+            return "stage/stage.html"
+        else:
+            return "stage/stage_extractor.html"
 
 
-@xframe_options_exempt
-def stage_form(request, congregation):
-    credentials = get_object_or_404(Credential, congregation=congregation)
-    context = {
-        'congregation': credentials.congregation,
-        'username': credentials.username,
-        'password': credentials.password,
-        'autologin': credentials.autologin,
-    }
-    return render(request, 'stage/stage_form.html', context)
+class StageFormView(DetailView):
+    model = Credential
+    template_name = "stage/stage_form.html"
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+    @method_decorator(xframe_options_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

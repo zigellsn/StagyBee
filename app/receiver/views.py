@@ -17,32 +17,34 @@ import logging
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.generic.base import View
 
 from stage.consumers import generate_channel_group_name
 
 logger = logging.getLogger("django.request")
 
 
-@require_POST
-@csrf_exempt
-def receiver(request, congregation):
-    event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
-    channel_layer = get_channel_layer()
-    congregation_group_name = generate_channel_group_name("stage", congregation)
-    if event == 'listeners':
-        async_to_sync(channel_layer.group_send)(
-            congregation_group_name,
-            {"type": "extractor_listeners", "listeners": request.body},
-        )
-        return HttpResponse('success')
-    elif event == 'status':
-        async_to_sync(channel_layer.group_send)(
-            congregation_group_name,
-            {"type": "extractor_status", "status": request.body},
-        )
-    elif event == 'meta':
-        return HttpResponse('success')
+class ReceiverView(View):
 
-    return HttpResponse(status=204)
+    @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
+        channel_layer = get_channel_layer()
+        congregation_group_name = generate_channel_group_name("stage", kwargs.get("pk"))
+        if event == 'listeners':
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "extractor_listeners", "listeners": request.body},
+            )
+            return HttpResponse('success')
+        elif event == 'status':
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "extractor_status", "status": request.body},
+            )
+        elif event == 'meta':
+            return HttpResponse('success')
+
+        return HttpResponse(status=204)

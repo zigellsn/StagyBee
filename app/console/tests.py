@@ -22,13 +22,13 @@ from picker.tests import create_credential
 class ConsoleViewTests(TestCase):
     def test_not_logged_in(self):
         create_credential().active = False
-        response = self.client.get(reverse("console:chose_console"))
+        response = self.client.get(reverse("console:choose_console"))
         self.assertEqual(response.status_code, 302)
 
     def test_logged_in(self):
         self.user()
         logged_in = self.login()
-        response = self.client.get(reverse("console:chose_console"))
+        response = self.client.get(reverse("console:choose_console"))
         self.assertEqual(logged_in, True)
         self.assertEqual(response.status_code, 200)
 
@@ -41,7 +41,7 @@ class ConsoleViewTests(TestCase):
         permission = Permission.objects.get(name="Can view audit")
         user.user_permissions.add(permission)
         self.login()
-        response = self.client.get(reverse("console:chose_console"))
+        response = self.client.get(reverse("console:choose_console"))
         self.assertContains(response, "LE")
         self.assertNotContains(response, "FE")
         self.assertContains(response, "Zum Audit-Log...")

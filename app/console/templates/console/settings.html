@@ -6,7 +6,7 @@
     <div>
         <form method="post">
             {% csrf_token %}
-            {{ form }}
+            {{ form.as_p }}
             <div class="pt-4"><input class="button primary" type="submit" value="{% trans "Passwort ändern" %}"></div>
         </form>
     </div>

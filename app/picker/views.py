@@ -19,46 +19,62 @@ from sys import platform
 from decouple import config
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.views.generic import ListView
+from django.views.generic.base import View
 
 from .models import Credential
 
 
-def picker(request):
-    credentials = Credential.objects.all()
-    host_ip, host_name = __get_address(request.get_port())
+class PickerView(ListView):
+    model = Credential
+    template_name = "picker/tiles.html"
 
-    col, size = __get_tiles_configuration(credentials)
-    context = {"credentials": credentials, "ip": host_ip, "port": request.get_port(),
-               "hostname": host_name, "shutdown_icon": True, "size": size, "col": col, "version": settings.VERSION}
-    return render(request, "picker/tiles.html", context)
-
-
-def shutdown(request):
-    if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
-            "aix") or platform.startswith("cygwin"):
-        if config("RUN_IN_CONTAINER", default=False):
-            __write_signal_file("shutdown_signal", "shutdown")
-        else:
-            call(["sh shutdown.sh", "-h", "now"], shell=False)
-    elif platform.startswith("win32"):
-        call(["shutdown.bat", "-h"], shell=False)
-    return HttpResponse("Shutdown in progress")
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        host_ip, host_name = __get_address__(self.request.get_port())
+        credentials = Credential.objects.all()
+        col, size = __get_tiles_configuration__(credentials)
+        context["ip"] = host_ip
+        context["port"] = self.request.get_port(),
+        context["size"] = size
+        context["col"] = col
+        context["hostname"] = host_name
+        context["shutdown_icon"] = True
+        context["version"] = settings.VERSION
+        return context
 
 
-def reboot(request):
-    if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
-            "aix") or platform.startswith("cygwin"):
-        if config("RUN_IN_CONTAINER", default=False):
-            __write_signal_file("shutdown_signal", "reboot")
-        else:
-            call(["sh shutdown.sh", "-r"], shell=False)
-    elif platform.startswith("win32"):
-        call(["shutdown.bat", "-r"], shell=False)
-    return HttpResponse("Reboot in progress")
+class ShutdownView(View):
+
+    @staticmethod
+    def get(request):
+        if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
+                "aix") or platform.startswith("cygwin"):
+            if config("RUN_IN_CONTAINER", default=False):
+                __write_signal_file__("shutdown_signal", "shutdown")
+            else:
+                call(["sh shutdown.sh", "-h", "now"], shell=False)
+        elif platform.startswith("win32"):
+            call(["shutdown.bat", "-h"], shell=False)
+        return HttpResponse("Shutdown in progress")
 
 
-def __write_signal_file(filename, mode):
+class RebootView(View):
+
+    @staticmethod
+    def get(request):
+        if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
+                "aix") or platform.startswith("cygwin"):
+            if config("RUN_IN_CONTAINER", default=False):
+                __write_signal_file__("shutdown_signal", "reboot")
+            else:
+                call(["sh shutdown.sh", "-r"], shell=False)
+        elif platform.startswith("win32"):
+            call(["shutdown.bat", "-r"], shell=False)
+        return HttpResponse("Reboot in progress")
+
+
+def __write_signal_file__(filename, mode):
     f = open(filename, "w")
     f.write(mode)
     f.close()
@@ -78,7 +94,7 @@ def __get_ip():
     return ip
 
 
-def __get_address(port):
+def __get_address__(port):
     host_name, host_ip, host_ipv6 = "", "", ""
     try:
         host_name = socket.getfqdn()
@@ -88,7 +104,7 @@ def __get_address(port):
     return host_ip, host_name
 
 
-def __get_tiles_configuration(credentials):
+def __get_tiles_configuration__(credentials):
     if credentials.count() == 1:
         size = 2
         col = 0

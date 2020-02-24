@@ -51,10 +51,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/console_ws.js' %}"></script>
     <script>
-        console_ws('{{ LANGUAGE_CODE }}', '{{ congregation_ws }}');
+        console_ws('{{ LANGUAGE_CODE }}', '{{ credential.congregation|escape }}');
     </script>
     <script src="{% static 'console/timer_ws.js' %}"></script>
     <script>
-        timer_ws('{{ congregation_ws }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
+        timer_ws('{{ credential.congregation|escape }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
     </script>
 {% endblock %}

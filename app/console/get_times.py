@@ -19,7 +19,6 @@ import re
 import aiohttp
 from dateutil.relativedelta import relativedelta, MO
 
-
 logger = logging.getLogger("django.request")
 PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
@@ -40,7 +39,7 @@ def create_urls(start_date, end_date=None):
     urls = {}
     if end_date is None:
         end_date = start_date + relativedelta(months=2)
-    while last_monday < end_date:
+    while last_monday <= end_date:
         next_sunday = last_monday + relativedelta(days=6)
         if last_monday.year >= 2020:
             url = __get_2020_url(last_monday, next_sunday)
@@ -173,7 +172,6 @@ async def __clean_html(raw_html, regex):
     clean_reg = re.compile(r"<.*?>")
     clean_text = re.sub(clean_reg, "", raw_html)
     return clean_text[:clean_text.find(regex) + 1].strip()
-
 
 # if __name__ == '__main__':
 #     loop = asyncio.get_event_loop()

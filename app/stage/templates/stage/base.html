@@ -29,7 +29,7 @@
 <header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
     <div class="app-bar-container float-none">
         <div class="app-bar-item pl-4 pr-4 pt-2">
-            {% if touch %}
+            {% if credential.touch %}
                 <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
                    href="{% url 'picker:picker' %}">
                     <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
@@ -41,9 +41,9 @@
             {% endif %}
         </div>
     </div>
-    {% if not touch %}
+    {% if not credential.touch %}
         <div class="app-bar-container ml-left">
-            <span class="display1">{{ display_name }}</span>
+            <span class="display1">{{ credential.display_name }}</span>
         </div>
         <div class="app-bar-container ml-auto" id="clock">
             <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp>
@@ -72,7 +72,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script src="{% static 'stage/stage_ws.js' %}"></script>
 <script>
-    console_client_ws('{{ congregation_ws }}');
+    console_client_ws('{{ credential.congregation|escape }}');
 </script>
 </body>
 </html>

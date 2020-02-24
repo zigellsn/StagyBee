@@ -5,7 +5,7 @@
     {% trans "Versammlung wählen" as choose_congregation %}
     <div class="tiles-grid tiles-group size-{{ size }} pos-top-center"
          data-group-title="{{ choose_congregation }}">
-        {% for credential in credentials %}
+        {% for credential in object_list %}
             <a href="{% url 'stage:stage' credential.congregation %}" data-role="tile"
                class="bg-indigo fg-white">
                 <span class="pos-absolute pos-center">{{ credential.display_name }}</span>
