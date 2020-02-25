@@ -53,7 +53,7 @@
     <script>
         console_ws('{{ LANGUAGE_CODE }}', '{{ credential.congregation|escape }}');
     </script>
-    <script src="{% static 'console/timer_ws.js' %}"></script>
+    <script src="{% static 'stopwatch/timer_ws.js' %}"></script>
     <script>
         timer_ws('{{ credential.congregation|escape }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
     </script>
