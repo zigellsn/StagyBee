@@ -12,15 +12,52 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from datetime import timedelta, datetime
+
+from decouple import config
 from django.db import models
+from django.db.models import QuerySet
 
 from picker.models import Credential
 
 
+class TimeEntryQuerySet(QuerySet):
+
+    def invalid(self):
+        date = datetime.now() - timedelta(days=config("KEEP_TIMER_DAYS", default=30))
+        return self.filter(start__lt=date)
+
+    def by_congregation(self, congregation):
+        now = datetime.now()
+        return self.filter(congregation=congregation, start__day=now.day, start__month=now.month, start__year=now.year)
+
+
 class TimeEntryManager(models.Manager):
+
+    def get_query_set(self):
+        return TimeEntryQuerySet(self.model, using=self._db)
+
     def create_time_entry(self, congregation, talk, start, stop, max_duration):
-        time_entry = self.create(congregation=congregation, talk=talk, start=start, stop=stop, max_duration=max_duration)
-        return time_entry
+        return self.create(congregation=congregation, talk=talk, start=start, stop=stop, max_duration=max_duration)
+
+    def delete_invalid(self):
+        return self.get_query_set().invalid().delete()
+
+    def by_congregation(self, congregation):
+        time_entries = self.get_query_set().by_congregation(congregation)
+        for time_entry in time_entries:
+            td1 = time_entry.stop - time_entry.start
+            time_entry.duration = __get_duration_string__(td1.seconds)
+            td2 = timedelta(seconds=time_entry.max_duration)
+            time_entry.display_max_duration = __get_duration_string__(time_entry.max_duration)
+
+            if td2 > td1:
+                difference = td2 - td1
+                time_entry.difference = __get_duration_string__(difference.seconds)
+            else:
+                difference = td1 - td2
+                time_entry.difference = "-" + __get_duration_string__(difference.seconds)
+        return time_entries
 
 
 class TimeEntry(models.Model):
@@ -34,3 +71,8 @@ class TimeEntry(models.Model):
     max_duration = models.IntegerField()
 
     objects = TimeEntryManager()
+
+
+def __get_duration_string__(timespan):
+    hours, minutes, seconds = timespan // 3600, timespan // 60 % 60, timespan % 60
+    return f"{hours:02}:{minutes:02}:{seconds:02}"

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'receiver.apps.ReceiverConfig',
     'console.apps.ConsoleConfig',
     'audit.apps.AuditConfig',
+    'stopwatch.apps.StopwatchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
