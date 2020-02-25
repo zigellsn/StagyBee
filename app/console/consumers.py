@@ -26,7 +26,7 @@ from audit.models import Audit
 from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from workbook.workbook import WorkbookExtractor
+from .workbook.workbook import WorkbookExtractor
 
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
