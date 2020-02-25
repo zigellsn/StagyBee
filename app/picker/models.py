@@ -18,6 +18,7 @@ import aioredis
 from django.conf import settings
 
 from django.db import models
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 REDIS_KEY = "stagybee::console:congregation.console."
@@ -44,13 +45,22 @@ async def __get_active_congregations__():
         return congregation_filter
 
 
+class CredentialQuerySet(QuerySet):
+
+    def active(self):
+        return self.all()
+
+
 class CredentialManager(models.Manager):
+
+    def get_query_set(self):
+        return CredentialQuerySet(self.model, using=self._db)
 
     def active(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         congregation_filter = loop.run_until_complete(__get_active_congregations__())
-        congregation_set = self.all()
+        congregation_set = self.get_query_set().all()
         for congregation in congregation_set:
             if congregation.congregation in congregation_filter:
                 congregation.active = True
@@ -60,11 +70,10 @@ class CredentialManager(models.Manager):
 
     def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch,
                           show_only_request_to_speak, send_times_to_stage):
-        credential = self.create(congregation=congregation, autologin=autologin, username=username, password=password,
+        return self.create(congregation=congregation, autologin=autologin, username=username, password=password,
                                  display_name=display_name, extractor_url=extractor_url, touch=touch,
                                  show_only_request_to_speak=show_only_request_to_speak,
                                  send_times_to_stage=send_times_to_stage)
-        return credential
 
 
 class Credential(models.Model):
