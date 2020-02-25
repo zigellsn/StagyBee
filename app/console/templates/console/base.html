@@ -35,8 +35,7 @@
         <div class="app-bar-container float-right">
             {% if user.is_authenticated %}
                 <h6>
-                    {% blocktrans with username=user.get_short_name|default:user.get_username %}
-                        Willkommen, {{ username }}!{% endblocktrans %}</h6>
+                    {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}!{% endblocktrans %}</h6>
             {% endif %}
         </div>
         {% if no_settings|default_if_none:False == False %}

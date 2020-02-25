@@ -26,7 +26,8 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/extractor/${congregation_ws}/`,
+    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/extractor/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/extractor/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     function setElements(activityVisibility, errorMessageVisibility, sumListenersContainerVisibility) {
@@ -65,7 +66,8 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
             } else if (element['familyName'] === '') {
                 fullName = element['givenName'];
             } else {
-                fullName = `${element['givenName']} ${element['familyName']}`
+                // fullName = `${element['givenName']} ${element['familyName']}`
+                fullName = element['givenName'] + ' ' + element['familyName']
             }
             if (element['requestToSpeak'] === true && element['speaking'] === false) {
                 speak = 'bg-blue requestToSpeak';
@@ -75,7 +77,8 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
                 speak = 'bg-gray';
             }
             if ((showOnlyRequestToSpeak && element['requestToSpeak'] === true) || !showOnlyRequestToSpeak)
-                namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
+                namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1">' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
+                // namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
             if (typeof element['listenerCount'] === 'string')
                 sumListeners += parseInt(element['listenerCount']);
             else
@@ -131,7 +134,8 @@ function console_client_ws(congregation_ws) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console_client/${congregation_ws}/`,
+    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console_client/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/console_client/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     function showAlert(alert) {
@@ -155,7 +159,8 @@ function console_client_ws(congregation_ws) {
             }
             scrimTrigger = !scrimTrigger;
         } else if (alert['alert'] === 'message')
-            Metro.infobox.create(`<h3>${gettext('Nachricht')}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
+            // Metro.infobox.create(`<h3>${gettext('Nachricht')}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
+            Metro.infobox.create('<h3>' + gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>', 'default', {
                 width: 'auto'
             });
     }

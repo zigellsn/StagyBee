@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-23 22:43+0100\n"
+"POT-Creation-Date: 2020-02-25 19:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,21 +36,19 @@ msgstr ""
 
 #: .\console\templates\console\base.html:38
 #, python-format
-msgid ""
-"\n"
-"                        Willkommen, %(username)s!"
+msgid "Willkommen, %(username)s!"
 msgstr ""
 
-#: .\console\templates\console\base.html:46
+#: .\console\templates\console\base.html:45
 msgid "Einstellungen"
 msgstr ""
 
-#: .\console\templates\console\base.html:54
+#: .\console\templates\console\base.html:53
 #: .\picker\templates\picker\base.html:40
 msgid "Sprache"
 msgstr ""
 
-#: .\console\templates\console\base.html:67
+#: .\console\templates\console\base.html:66
 msgid "Logout"
 msgstr ""
 
@@ -140,35 +138,27 @@ msgstr ""
 msgid "%(stop)s Uhr"
 msgstr ""
 
-#: .\console\views.py:55 .\console\views.py:82 .\console\views.py:94
-msgid "Nicht berechtigt"
-msgstr ""
-
-#: .\console\views.py:104
+#: .\console\views.py:135
 msgid "Das Passwort wurde geändert."
 msgstr ""
 
-#: .\console\views.py:107
-msgid "Bitte den unten stehenden Fehler korrigieren."
-msgstr ""
-
-#: .\picker\models.py:33
+#: .\picker\models.py:74
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:34
+#: .\picker\models.py:75
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:35
+#: .\picker\models.py:76
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:46
+#: .\picker\models.py:87
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:47
+#: .\picker\models.py:88
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 

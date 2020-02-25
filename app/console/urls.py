@@ -19,16 +19,11 @@ from .views import ConsoleView, ChooseConsoleView, AuditView, TimerView, Setting
 
 app_name = 'console'
 
-js_info = {
-    'domain': 'django',
-    'packages': None,
-}
-
 urlpatterns = [
     path('', ChooseConsoleView.as_view(), name='choose_console'),
     path('<str:pk>', ConsoleView.as_view(), name='console'),
     path('timer/<str:pk>', TimerView.as_view(), name='timer'),
     path('audit/<str:pk>', AuditView.as_view(), name='audit'),
     path('settings/', SettingsView.as_view(), name='settings'),
-    path('jsi18n/', JavaScriptCatalog.as_view(), js_info, name='javascript-catalog'),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]

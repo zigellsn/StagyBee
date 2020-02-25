@@ -27,7 +27,8 @@ function console_ws(language, congregation_ws) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/${language}/console/${congregation_ws}/`,
+    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/${language}/console/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/' + language + '/console/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
@@ -114,7 +115,8 @@ function console_ws(language, congregation_ws) {
             if (time['h'] === 0 && time['m'] === 0 && time['s'] === 0) {
                 Metro.dialog.create({
                     title: 'Timer',
-                    content: `<div>${gettext('Bitte eine Zeit > 0 angeben.')}</div>`,
+                    // content: `<div>${gettext('Bitte eine Zeit > 0 angeben.')}</div>`,
+                    content: '<div>' + gettext('Bitte eine Zeit > 0 angeben.') + '</div>',
                     closeButton: true
                 });
                 return;

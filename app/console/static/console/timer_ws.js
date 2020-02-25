@@ -33,7 +33,8 @@ function timer_ws(congregation_ws, reload, showWarning) {
         protocol = 'wss://'
     }
 
-    let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/timer/${congregation_ws}/`,
+    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/timer/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/timer/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
@@ -124,7 +125,8 @@ function timer_ws(congregation_ws, reload, showWarning) {
 
     function pad(i) {
         if (i < 10) {
-            i = `0${i}`
+            // i = `0${i}`
+            i = '0' + i
         }
         return i;
     }

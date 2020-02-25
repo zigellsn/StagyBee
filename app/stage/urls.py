@@ -19,13 +19,8 @@ from .views import StageView, StageFormView
 
 app_name = 'stage'
 
-js_info = {
-    'domain': 'django',
-    'packages': None,
-}
-
 urlpatterns = [
     path('<str:pk>', StageView.as_view(), name='stage'),
     path('form/<str:pk>', StageFormView.as_view(), name='stage_form'),
-    path('jsi18n/', JavaScriptCatalog.as_view(), js_info, name='javascript-catalog'),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]
