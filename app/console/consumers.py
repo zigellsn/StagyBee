@@ -26,7 +26,7 @@ from audit.models import Audit
 from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from .get_times import create_urls, get_workbooks
+from workbook.workbook import WorkbookExtractor
 
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
@@ -43,8 +43,9 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        urls = create_urls(datetime.today(), datetime.today())
-        times = await get_workbooks(urls, self.language)
+        workbook_extractor = WorkbookExtractor()
+        urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
+        times = await workbook_extractor.get_workbooks(urls, self.language)
         if times is not None:
             dump = json.dumps(times)
             message = {"type": "times",
