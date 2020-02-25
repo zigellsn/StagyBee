@@ -15,7 +15,8 @@
 from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
-from .views import ConsoleView, ChooseConsoleView, AuditView, TimerView, SettingsView
+from audit.views import AuditView
+from .views import ConsoleView, ChooseConsoleView, TimerView, SettingsView
 
 app_name = 'console'
 

@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-# from datetime import date
+
 import json
 from datetime import datetime
 
@@ -21,13 +21,12 @@ from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from decouple import config
 from django.conf import settings
-from django.utils.translation import get_language
 
-from console.models import Audit, TimeEntry
-from .get_times import create_urls, get_workbooks
-
+from audit.models import Audit
+from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
+from .get_times import create_urls, get_workbooks
 
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):

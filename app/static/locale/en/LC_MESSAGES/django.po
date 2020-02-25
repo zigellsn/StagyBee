@@ -34,7 +34,6 @@ msgid "Sendezeit"
 msgstr "Send time"
 
 #: .\console\templates\console\base.html:38
-#, fuzzy, python-format
 #| msgid "Willkommen, %(username)s!"
 msgid "Willkommen, %(username)s!"
 msgstr "Welcome, %(username)s!"
@@ -81,13 +80,11 @@ msgid "Stoppuhr"
 msgstr "Stopwatch"
 
 #: .\console\templates\console\console.html:40
-#, fuzzy
 #| msgid "Uhrzeit"
 msgid "Start"
 msgstr "Time"
 
 #: .\console\templates\console\console.html:41
-#, fuzzy
 #| msgid "Stoppuhr"
 msgid "Stopp"
 msgstr "Stopwatch"
@@ -113,13 +110,11 @@ msgid "Übrig"
 msgstr "TIme left"
 
 #: .\console\templates\console\timer.html:41
-#, fuzzy
 #| msgid "Uhrzeit"
 msgid "Startzeit"
 msgstr "Time"
 
 #: .\console\templates\console\timer.html:42
-#, fuzzy
 #| msgid "Sendezeit"
 msgid "Endezeit"
 msgstr "Send time"

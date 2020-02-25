@@ -13,33 +13,14 @@
 #  limitations under the License.
 
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 from picker.models import Credential
 
 
-class AuditManager(models.Manager):
-    def create_audit(self, congregation, username, message):
-        audit = self.create(congregation=congregation, username=username, message=message)
-        return audit
-
-
-class Audit(models.Model):
-    class Meta:
-        ordering = ["send_time"]
-
-    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
-    username = models.CharField(_('username'), max_length=150)
-    message = models.TextField(default="", blank=True)
-    send_time = models.DateTimeField(auto_now=True)
-
-    objects = AuditManager()
-
-
 class TimeEntryManager(models.Manager):
     def create_time_entry(self, congregation, talk, start, stop, max_duration):
-        audit = self.create(congregation=congregation, talk=talk, start=start, stop=stop, max_duration=max_duration)
-        return audit
+        time_entry = self.create(congregation=congregation, talk=talk, start=start, stop=stop, max_duration=max_duration)
+        return time_entry
 
 
 class TimeEntry(models.Model):

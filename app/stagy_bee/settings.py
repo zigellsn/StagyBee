@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'picker.apps.PickerConfig',
     'receiver.apps.ReceiverConfig',
     'console.apps.ConsoleConfig',
+    'audit.apps.AuditConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -25,7 +25,7 @@ from django.views.generic import DetailView, ListView, FormView
 from django.views.generic.edit import FormMixin
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from console.models import Audit, TimeEntry
+from console.models import TimeEntry
 from picker.models import Credential
 from .forms import CongregationForm
 
@@ -97,25 +97,6 @@ class TimerView(PermissionRequiredMixin, ListView):
                 difference = td1 - td2
                 time_entry.difference = "-" + __get_duration_string__(difference.seconds)
         return time_entries
-
-
-class AuditView(PermissionRequiredMixin, ListView):
-    model = Audit
-    return_403 = True
-    permission_required = "access_audit_log"
-    template_name = "console/audit.html"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        date = datetime.now() - timedelta(days=180)
-        Audit.objects.filter(send_time__lt=date).delete()
-
-    def get_queryset(self):
-        credentials = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
-        return Audit.objects.filter(congregation__exact=credentials)
-
-    def get_permission_object(self):
-        return get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
 
 
 class SettingsView(LoginRequiredMixin, FormView):
