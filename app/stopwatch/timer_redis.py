@@ -19,6 +19,15 @@ from decouple import config
 from django.conf import settings
 
 
+async def connect_timer(consumer, redis_key):
+    talk, start, value = await get_timer(redis_key)
+    if start is not None and value is not None:
+        message = {"type": "timer",
+                   "timer": {"timer": "start", "talk": talk.decode("utf-8"), "start": start.decode("utf-8"),
+                             "value": json.loads(value)}}
+        await consumer.send_json(message)
+
+
 async def add_timer(group, talk, start, value):
     redis = await __redis_connect()
     await redis.hset(group, "talk", talk)

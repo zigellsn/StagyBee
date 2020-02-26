@@ -19,6 +19,18 @@ function console_client_ws(congregation_ws) {
     let scrimTrigger = false;
     let activity = null;
     let loc = window.location;
+
+    let line = new ProgressBar.Line('#container', {
+        strokeWidth: 1,
+        trailColor: '#f4f4f4',
+        trailWidth: 0.3,
+        from: {color: '#33ff33'},
+        to: {color: '#ff3333'},
+        step: function (state, line, attachment) {
+            line.path.setAttribute('stroke', state.color);
+        },
+    });
+
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
         protocol = 'wss://'
@@ -29,14 +41,7 @@ function console_client_ws(congregation_ws) {
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     function showAlert(alert) {
-        if (alert['alert'] === 'time')
-            $('#body').addClass('timeAlert');
-        else if (alert['alert'] === 'clock')
-            $('#clock').addClass('clockAlert');
-        else if (alert['alert'] === 'stop') {
-            $('#body').removeClass('timeAlert');
-            $('#clock').removeClass('clockAlert');
-        } else if (alert['alert'] === 'scrim') {
+        if (alert['alert'] === 'scrim') {
             if (scrimTrigger) {
                 if (activity != null)
                     Metro.activity.close(activity)
@@ -55,13 +60,29 @@ function console_client_ws(congregation_ws) {
             });
     }
 
+    function showTimer(timer) {
+        if (timer['timer'] === 'start' && line !== null) {
+            let value = timer['value'];
+            let start = moment(timer['start']);
+            let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
+            let diff = (new Date).getTime() - start;
+            line.set(diff / span);
+            line.animate(1.0, {
+                duration: span - diff
+            });
+        } else if (timer['timer'] === 'stop' && line !== null) {
+            line.set(0.0);
+            line.stop();
+        }
+    }
+
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
 
-        let alert = data['alert'];
-        if (alert !== undefined) {
-            showAlert(alert);
-        }
+        if ('alert' in data)
+            showAlert(data['alert']);
+        if ('timer' in data)
+            showTimer(data['timer']);
     };
 
     mySocket.onopen = function (_) {

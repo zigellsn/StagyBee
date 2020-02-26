@@ -23,7 +23,7 @@ from audit.models import Audit
 from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from stopwatch.timer_redis import add_timer, get_timer, remove_timer
+from stopwatch.timer_redis import add_timer, get_timer, remove_timer, connect_timer
 from .workbook.workbook import WorkbookExtractor
 
 
@@ -41,6 +41,7 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
+        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}")
         workbook_extractor = WorkbookExtractor()
         urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
         times = await workbook_extractor.get_workbooks(urls, self.language)

@@ -48,6 +48,9 @@ function console_ws(language, congregation_ws) {
         if (data === undefined) {
             return;
         }
+        if ('type' in data && data['type'] === 'timer' && 'timer' in data && 'start' in data['timer']) {
+            running = true;
+        }
         if ('type' in data && data['type'] === 'times' && 'times' in data) {
             let times = data['times'];
             if (times !== undefined) {

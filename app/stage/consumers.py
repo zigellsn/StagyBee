@@ -28,6 +28,7 @@ from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 from picker.models import Credential
+from stopwatch.timer_redis import connect_timer
 
 
 def generate_channel_group_name(function, congregation):
@@ -161,8 +162,9 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
             generate_channel_group_name("console", self.congregation),
             self.channel_name
         )
-        await __connect_uri__(self.redis_key, self.channel_name)
         await self.accept()
+        await __connect_uri__(self.redis_key, self.channel_name)
+        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}")
 
     async def disconnect(self, close_code):
         congregation_channel_group = generate_channel_group_name("console", self.congregation)

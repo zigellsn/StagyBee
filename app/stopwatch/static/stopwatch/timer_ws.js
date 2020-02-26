@@ -87,7 +87,7 @@ function timer_ws(congregation_ws, reload, showWarning) {
             return;
         let diff = (new Date).getTime() - start;
         stopwatch.innerText = millisecondsToTime(diff);
-        let span = (value['h'] * 60000000 + value['m'] * 60000 + value['s'] * 1000) - diff;
+        let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000) - diff;
         if (span >= 0) {
             remaining.text(millisecondsToTime(span));
             remaining.removeClass('fg-red');

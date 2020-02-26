@@ -66,11 +66,17 @@
         {% endblock %}
     </main>
 </div>
+<footer>
+    <div id="container"></div>
+</footer>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script type="text/javascript" src="{% url 'stage:javascript-catalog' %}"></script>
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script src="{% static 'stage/console_client_ws.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
 <script>
     console_client_ws('{{ credential.congregation|escape }}');
 </script>

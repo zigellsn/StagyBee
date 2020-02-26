@@ -18,7 +18,7 @@ from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from stage.consumers import generate_channel_group_name
-from .timer_redis import get_timer
+from .timer_redis import connect_timer
 
 
 class TimerConsumer(AsyncJsonWebsocketConsumer):
@@ -29,7 +29,12 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
         self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
 
     async def connect(self):
-        await __connect__(self)
+        await self.channel_layer.group_add(
+            generate_channel_group_name("console", self.congregation),
+            self.channel_name
+        )
+        await self.accept()
+        await connect_timer(self, self.redis_key)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -53,17 +58,3 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
 
     async def alert(self, event):
         await self.send_json(event)
-
-
-async def __connect__(self):
-    await self.channel_layer.group_add(
-        generate_channel_group_name("console", self.congregation),
-        self.channel_name
-    )
-    await self.accept()
-    talk, start, value = await get_timer(self.redis_key)
-    if start is not None and value is not None:
-        message = {"type": "timer",
-                   "timer": {"timer": "start", "talk": talk.decode("utf-8"), "start": start.decode("utf-8"),
-                             "value": json.loads(value)}}
-        await self.send_json(message)
