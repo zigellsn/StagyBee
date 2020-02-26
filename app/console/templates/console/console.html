@@ -4,41 +4,53 @@
 {% block content %}
     {% load static %}
     <div class="pt-4">
-        <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>
+                    <div class="pt-4">{% trans "Übrig" %}</div>
+                </th>
+                <th>
+                    <div class="pt-4">{% trans "Abgelaufen" %}</div>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <div class="pt-4">
+                        <samp style="font-size:32px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                    </div>
+                </th>
+                <th>
+                    <div class="pt-4">
+                        <samp style="font-size:32px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
+                    </div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="pt-4">
         <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
         <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true" id="talk_list">
         </ul>
     </div>
-    <div class="pt-4" id="custom_talk_name">
-        <label for="talk_name" class="pt-4">{% trans "Aufgabe" %}</label>
-        <input type="text" data-role="input" data-default-value="{% trans "Aufgabe" %}" id="talk_name">
+    <div id="custom_talk">
+        <div class="pt-4">
+            <label for="talk_name" class="pt-4">{% trans "Titel" %}</label>
+            <input type="text" data-role="input" data-default-value="{% trans "Titel" %}" id="talk_name">
+        </div>
+        <div class="pt-4">
+            <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
+            <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00" data-hours="false"
+                   id="time" class="bg-dark fg-white"/>
+        </div>
     </div>
-    <div class="pt-4">
-        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
-        <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00" data-hours="false"
-               id="time" class="bg-dark fg-white"/>
-    </div>
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>
-                <div class="pt-4">
-                    <samp style="font-size:32px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
-                </div>
-            </th>
-            <th>
-                <div class="pt-4">
-                    <samp style="font-size:32px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
-                </div>
-            </th>
-        </tr>
-        </tbody>
-    </table>
     <div class="pt-4">
         <button class="button primary" id="submit_time"><span class="mif-play"></span>{% trans "Start" %}</button>
         <button class="button primary" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}</button>
+    </div>
+    <div class="pt-4">
+        <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
     </div>
     <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
     <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>

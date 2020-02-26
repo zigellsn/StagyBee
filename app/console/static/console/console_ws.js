@@ -18,7 +18,7 @@ function console_ws(language, congregation_ws) {
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
-    let customTalkName = document.getElementById('custom_talk_name');
+    let customTalkName = document.getElementById('custom_talk');
     let talkNameInput = document.getElementById('talk_name');
     let loc = window.location;
     let running = false;
