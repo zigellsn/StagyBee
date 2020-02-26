@@ -22,8 +22,12 @@ function console_client_ws(congregation_ws) {
 
     let line = new ProgressBar.Line('#container', {
         strokeWidth: 1,
-        trailColor: '#f4f4f4',
-        trailWidth: 0.3,
+        trailColor: '#c4c4c4',
+        trailWidth: 0.1,
+        svgStyle: {
+            display: 'block',
+            width: '100%',
+        },
         from: {color: '#33ff33'},
         to: {color: '#ff3333'},
         step: function (state, line, attachment) {
