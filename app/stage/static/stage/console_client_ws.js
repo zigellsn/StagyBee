@@ -22,14 +22,14 @@ function console_client_ws(congregation_ws) {
 
     let line = new ProgressBar.Line('#container', {
         strokeWidth: 1,
-        trailColor: '#c4c4c4',
+        trailColor: '#41545e',
         trailWidth: 0.1,
         svgStyle: {
             display: 'block',
             width: '100%',
         },
-        from: {color: '#33ff33'},
-        to: {color: '#ff3333'},
+        from: {color: '#60a917'},
+        to: {color: '#CE352C'},
         step: function (state, line, attachment) {
             line.path.setAttribute('stroke', state.color);
         },
