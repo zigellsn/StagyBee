@@ -15,9 +15,7 @@
 from django.urls import re_path
 
 from console.consumers import ConsoleConsumer
-from console.consumers import TimerConsumer
 
 websocket_urlpatterns = [
-    re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer),
-    re_path(r"^ws/timer/(?P<congregation>[^/]+)/$", TimerConsumer),
+    re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer)
 ]

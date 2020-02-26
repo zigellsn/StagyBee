@@ -15,17 +15,15 @@
 import json
 from datetime import datetime
 
-import aioredis
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from decouple import config
-from django.conf import settings
 
 from audit.models import Audit
 from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
+from stopwatch.timer_redis import add_timer, get_timer, remove_timer
 from .workbook.workbook import WorkbookExtractor
 
 
@@ -70,14 +68,14 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
         elif "timer" in text_data:
             message_type = "timer"
             if text_data["timer"] == "start":
-                await __add_timer__(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
+                await add_timer(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
             elif text_data["timer"] == "stop":
                 credential = await database_sync_to_async(__get_congregation__)(self.congregation)
-                talk, start, value = await __get_timer__(self.redis_key)
+                talk, start, value = await get_timer(self.redis_key)
                 json_value = json.loads(value)
                 duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
-                await __remove_timer__(self.redis_key)
+                await remove_timer(self.redis_key)
             else:
                 return
         else:
@@ -94,75 +92,6 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(event)
 
 
-class TimerConsumer(AsyncJsonWebsocketConsumer):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
-
-    async def connect(self):
-        await __connect__(self)
-
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            generate_channel_group_name("console", self.congregation),
-            self.channel_name
-        )
-        raise StopConsumer()
-
-    async def receive_json(self, text_data, **kwargs):
-        congregation_group_name = generate_channel_group_name("console", self.congregation)
-        if "alert" in text_data:
-            await self.channel_layer.group_send(congregation_group_name, {"type": "alert", "alert": text_data})
-        else:
-            await self.channel_layer.group_send(congregation_group_name, {"type": "timer", "timer": text_data})
-
-    async def exit(self, event):
-        await self.send_json(event)
-
-    async def timer(self, event):
-        await self.send_json(event)
-
-    async def alert(self, event):
-        await self.send_json(event)
-
-
-async def __add_timer__(group, talk, start, value):
-    redis = await __redis_connect()
-    await redis.hset(group, "talk", talk)
-    await redis.hset(group, "start", start)
-    await redis.hset(group, "value", json.dumps(value))
-    await redis.expire(group, config("REDIS_EXPIRATION", default=3600, cast=int))
-    redis.close()
-    await redis.wait_closed()
-
-
-async def __get_timer__(group):
-    redis = await __redis_connect()
-    talk = await redis.hget(group, "talk")
-    start = await redis.hget(group, "start")
-    value = await redis.hget(group, "value")
-    redis.close()
-    await redis.wait_closed()
-    return talk, start, value
-
-
-async def __remove_timer__(group):
-    redis = await __redis_connect()
-    await redis.hdel(group, "talk")
-    await redis.hdel(group, "start")
-    await redis.hdel(group, "value")
-    redis.close()
-    await redis.wait_closed()
-
-
-async def __redis_connect():
-    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-    redis = await aioredis.create_redis(host)
-    return redis
-
-
 def __get_congregation__(congregation):
     return Credential.objects.get(congregation__exact=congregation)
 
@@ -174,17 +103,3 @@ def __persist_time_entry__(congregation, talk, start, duration):
 
 def __persist_audit_log__(username, congregation, text_data):
     return Audit.objects.create_audit(congregation, username, text_data["value"])
-
-
-async def __connect__(self):
-    await self.channel_layer.group_add(
-        generate_channel_group_name("console", self.congregation),
-        self.channel_name
-    )
-    await self.accept()
-    talk, start, value = await __get_timer__(self.redis_key)
-    if start is not None and value is not None:
-        message = {"type": "timer",
-                   "timer": {"timer": "start", "talk": talk.decode("utf-8"), "start": start.decode("utf-8"),
-                             "value": json.loads(value)}}
-        await self.send_json(message)
