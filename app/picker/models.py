@@ -16,7 +16,6 @@ import logging
 
 import aioredis
 from django.conf import settings
-
 from django.db import models
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
@@ -71,9 +70,9 @@ class CredentialManager(models.Manager):
     def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch,
                           show_only_request_to_speak, send_times_to_stage):
         return self.create(congregation=congregation, autologin=autologin, username=username, password=password,
-                                 display_name=display_name, extractor_url=extractor_url, touch=touch,
-                                 show_only_request_to_speak=show_only_request_to_speak,
-                                 send_times_to_stage=send_times_to_stage)
+                           display_name=display_name, extractor_url=extractor_url, touch=touch,
+                           show_only_request_to_speak=show_only_request_to_speak,
+                           send_times_to_stage=send_times_to_stage)
 
 
 class Credential(models.Model):

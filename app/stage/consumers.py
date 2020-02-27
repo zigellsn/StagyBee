@@ -38,22 +38,13 @@ def generate_channel_group_name(function, congregation):
 
 class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = f"stagybee::session:{generate_channel_group_name('stage', self.congregation)}"
-        self.credentials = None
-        self.sessionId = None
-        self.extractor_url = ""
-        self.task = None
-
     async def connect(self):
         await self.channel_layer.group_add(
-            generate_channel_group_name("stage", self.congregation),
+            generate_channel_group_name("stage", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
         await self.accept()
-        await self.__connect_to_extractor()
+        await self.__connect_to_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
 
     async def disconnect(self, close_code):
         if self.task is not None and not self.task.done():
@@ -61,10 +52,10 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
             with suppress(asyncio.CancelledError):
                 await self.task
         await self.channel_layer.group_discard(
-            generate_channel_group_name("stage", self.congregation),
+            generate_channel_group_name("stage", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
-        await self.__disconnect_from_extractor()
+        await self.__disconnect_from_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
         raise StopConsumer()
 
     async def extractor_listeners(self, event):
@@ -83,22 +74,26 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         else:
             return await super().encode_json(content=content)
 
-    async def __connect_to_extractor(self):
-        self.credentials = await database_sync_to_async(get_object_or_404)(Credential,
-                                                                           congregation=self.congregation)
-        if self.credentials.touch:
+    @staticmethod
+    def __get_redis_key(congregation):
+        return f"stagybee::session:{generate_channel_group_name('stage', congregation)}"
+
+    async def __connect_to_extractor(self, redis_key):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
+        if credentials.touch:
             return
-        self.extractor_url = self.credentials.extractor_url
+        self.extractor_url = credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
         url = f"http://{config('RECEIVER_HOST', default=self.scope['server'][0])}:" \
-              f"{config('RECEIVER_PORT', default=self.scope['server'][1], cast=int)}/receiver/{self.congregation}/"
-        if self.credentials.autologin is not None and self.credentials.autologin != "":
-            payload = {"id": self.credentials.autologin, "url": url}
+              f"{config('RECEIVER_PORT', default=self.scope['server'][1], cast=int)}/receiver/{congregation}/"
+        if credentials.autologin is not None and credentials.autologin != "":
+            payload = {"id": credentials.autologin, "url": url}
         else:
-            payload = {"congregation": self.credentials.congregation,
-                       "username": self.credentials.username,
-                       "password": self.credentials.password,
+            payload = {"congregation": credentials.congregation,
+                       "username": credentials.username,
+                       "password": credentials.password,
                        "url": url}
         try:
             self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe/", payload))
@@ -110,20 +105,24 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
         else:
             success = self.task.result()["success"]
             if success:
-                self.sessionId = self.task.result()["sessionId"]
+                self.scope["url_route"]["kwargs"]["sessionId"] = self.task.result()["sessionId"]
                 await self.send_json("subscribed_to_extractor")
-        await __connect_uri__(self.redis_key, self.channel_name)
+        await __connect_uri__(redis_key, self.channel_name)
 
-    async def __disconnect_from_extractor(self):
-        if self.credentials.touch:
+    async def __disconnect_from_extractor(self, redis_key):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
+        if credentials.touch:
             return
-        if self.sessionId is not None:
-            count = await __disconnect_uri__(self.redis_key, self.channel_name)
+        if "sessionId" in self.scope["url_route"]["kwargs"] and \
+                self.scope["url_route"]["kwargs"]["sessionId"] is not None:
+            count = await __disconnect_uri__(redis_key, self.channel_name)
             if count != 0:
                 return
             try:
                 self.task = asyncio.create_task(
-                    self.__delete_request(f"{self.extractor_url}api/unsubscribe/{self.sessionId}/"))
+                    self.__delete_request(
+                        f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['sessionId']}/"))
                 await self.task
             except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")
@@ -133,7 +132,7 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
                 success = self.task.result()["success"]
                 if success:
                     await self.send_json("unsubscribed_from_extractor")
-                    self.sessionId = None
+                    self.scope["url_route"]["kwargs"]["sessionId"] = None
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
            stop=stop_after_delay(15))
@@ -152,23 +151,20 @@ class ExtractorConsumer(AsyncJsonWebsocketConsumer):
 
 class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.redis_key = f"stagybee::console:{generate_channel_group_name('console', self.congregation)}"
-
     async def connect(self):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
-            generate_channel_group_name("console", self.congregation),
+            generate_channel_group_name("console", congregation),
             self.channel_name
         )
         await self.accept()
-        await __connect_uri__(self.redis_key, self.channel_name)
-        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}")
+        await __connect_uri__(self.__get_redis_key(congregation), self.channel_name)
+        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
 
     async def disconnect(self, close_code):
-        congregation_channel_group = generate_channel_group_name("console", self.congregation)
-        count = await __disconnect_uri__(self.redis_key, self.channel_name)
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        congregation_channel_group = generate_channel_group_name("console", congregation)
+        count = await __disconnect_uri__(self.__get_redis_key(congregation), self.channel_name)
         if count == 0:
             await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
@@ -179,6 +175,10 @@ class ConsoleClientConsumer(AsyncJsonWebsocketConsumer):
 
     async def timer(self, event):
         await self.send_json(event)
+
+    @staticmethod
+    def __get_redis_key(congregation):
+        return f"stagybee::console:{generate_channel_group_name('console', congregation)}"
 
 
 async def __connect_uri__(group, channel_name):

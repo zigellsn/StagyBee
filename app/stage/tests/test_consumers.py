@@ -13,18 +13,38 @@
 #  limitations under the License.
 
 import pytest
+from channels.db import database_sync_to_async
+from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
+from django.urls import re_path
 
-from stage.consumers import ExtractorConsumer
+from consumers import ExtractorConsumer, ConsoleClientConsumer
+from picker.tests import create_credential
 
 
 @pytest.mark.asyncio
+@pytest.mark.django_db
 async def test_extractor_consumer():
-    # TODO: Write tests...
-    communicator = WebsocketCommunicator(ExtractorConsumer, "/ws/extractor/")
-    connected, subprotocol = await communicator.connect()
+    await database_sync_to_async(create_credential)()
+    application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer)])
+
+    communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
+    connected, _ = await communicator.connect()
     assert connected
-    await communicator.send_to(text_data="hello")
-    response = await communicator.receive_from()
-    assert response == "hello"
+    # await communicator.send_to(text_data="hello")
+    # response = await communicator.receive_from()
+    # assert response == "hello"
+    await communicator.disconnect()
+
+
+@pytest.mark.asyncio
+async def test_console_client_consumer():
+    application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer)])
+
+    communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")
+    connected, _ = await communicator.connect()
+    assert connected
+    # await communicator.send_to(text_data="hello")
+    # response = await communicator.receive_from()
+    # assert response == "hello"
     await communicator.disconnect()

@@ -26,10 +26,11 @@ from stage.consumers import generate_channel_group_name
 logger = logging.getLogger("django.request")
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ReceiverView(View):
 
-    @method_decorator(csrf_exempt)
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("stage", kwargs.get("pk"))

@@ -29,22 +29,17 @@ from .workbook.workbook import WorkbookExtractor
 
 class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        self.language = self.scope["url_route"]["kwargs"]["language"]
-        self.redis_key = f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}"
-
     async def connect(self):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
-            generate_channel_group_name("console", self.congregation),
+            generate_channel_group_name("console", congregation),
             self.channel_name
         )
         await self.accept()
-        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', self.congregation)}")
+        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
         workbook_extractor = WorkbookExtractor()
         urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
-        times = await workbook_extractor.get_workbooks(urls, self.language)
+        times = await workbook_extractor.get_workbooks(urls, self.scope["url_route"]["kwargs"]["language"])
         if times is not None:
             dump = json.dumps(times)
             message = {"type": "times",
@@ -53,30 +48,32 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
-            generate_channel_group_name("console", self.congregation),
+            generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
         raise StopConsumer()
 
     async def receive_json(self, text_data, **kwargs):
-        congregation_group_name = generate_channel_group_name("console", self.congregation)
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        congregation_group_name = generate_channel_group_name("console", congregation)
         if "alert" in text_data:
             if text_data["alert"] == "message":
-                credential = await database_sync_to_async(__get_congregation__)(self.congregation)
+                credential = await database_sync_to_async(__get_congregation__)(congregation)
                 await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
                                                                     credential, text_data)
             message_type = "alert"
         elif "timer" in text_data:
             message_type = "timer"
             if text_data["timer"] == "start":
-                await add_timer(self.redis_key, text_data["talk"], text_data["start"], text_data["value"])
+                await add_timer(self.__get_redis_key(congregation), text_data["talk"], text_data["start"],
+                                text_data["value"])
             elif text_data["timer"] == "stop":
-                credential = await database_sync_to_async(__get_congregation__)(self.congregation)
-                talk, start, value = await get_timer(self.redis_key)
+                credential = await database_sync_to_async(__get_congregation__)(congregation)
+                talk, start, value = await get_timer(self.__get_redis_key(congregation))
                 json_value = json.loads(value)
                 duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
-                await remove_timer(self.redis_key)
+                await remove_timer(self.__get_redis_key(congregation))
             else:
                 return
         else:
@@ -91,6 +88,10 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
 
     async def timer(self, event):
         await self.send_json(event)
+
+    @staticmethod
+    def __get_redis_key(congregation):
+        return f"stagybee::timer:{generate_channel_group_name('console', congregation)}"
 
 
 def __get_congregation__(congregation):
