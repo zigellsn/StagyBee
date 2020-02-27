@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-26 22:30+0100\n"
+"POT-Creation-Date: 2020-02-27 23:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,6 +44,7 @@ msgid "Einstellungen"
 msgstr ""
 
 #: .\console\templates\console\base.html:53
+#: .\console\templates\registration\base.html:31
 #: .\picker\templates\picker\base.html:40
 msgid "Sprache"
 msgstr "Langue"
@@ -64,38 +65,48 @@ msgstr ""
 msgid "Zum Audit-Log..."
 msgstr ""
 
-#: .\console\templates\console\console.html:25
+#: .\console\templates\console\console.html:11
+#: .\stopwatch\templates\stopwatch\timer.html:15
+msgid "Übrig"
+msgstr ""
+
+#: .\console\templates\console\console.html:14
+#: .\stopwatch\templates\stopwatch\timer.html:12
+msgid "Abgelaufen"
+msgstr ""
+
+#: .\console\templates\console\console.html:33
 #: .\stopwatch\templates\stopwatch\timer.html:6
 #: .\stopwatch\templates\stopwatch\timer.html:40
 msgid "Aufgabe"
 msgstr ""
 
-#: .\console\templates\console\console.html:31
-#: .\console\templates\console\console.html:32
+#: .\console\templates\console\console.html:39
+#: .\console\templates\console\console.html:40
 msgid "Titel"
 msgstr ""
 
-#: .\console\templates\console\console.html:35
+#: .\console\templates\console\console.html:43
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:41
+#: .\console\templates\console\console.html:49
 msgid "Start"
 msgstr ""
 
-#: .\console\templates\console\console.html:42
+#: .\console\templates\console\console.html:50
 msgid "Stopp"
 msgstr ""
 
-#: .\console\templates\console\console.html:45
+#: .\console\templates\console\console.html:53
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\console\templates\console\console.html:47
+#: .\console\templates\console\console.html:55
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:50
+#: .\console\templates\console\console.html:58
 msgid "Sende Nachricht"
 msgstr ""
 
@@ -103,27 +114,32 @@ msgstr ""
 msgid "Passwort ändern"
 msgstr ""
 
+#: .\console\templates\registration\login.html:7
+#: .\console\templates\registration\login.html:11
+msgid "Login"
+msgstr ""
+
 #: .\console\views.py:68
 msgid "Das Passwort wurde geändert."
 msgstr ""
 
-#: .\picker\models.py:83
+#: .\picker\models.py:82
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:84
+#: .\picker\models.py:83
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:85
+#: .\picker\models.py:84
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:96
+#: .\picker\models.py:95
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:97
+#: .\picker\models.py:96
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -139,11 +155,11 @@ msgstr "Arrêter"
 msgid "Bist du sicher?"
 msgstr ""
 
-#: .\picker\templates\picker\base.html:97
+#: .\picker\templates\picker\base.html:99
 msgid "Nein"
 msgstr ""
 
-#: .\picker\templates\picker\base.html:101
+#: .\picker\templates\picker\base.html:103
 msgid "Ja"
 msgstr ""
 
@@ -185,14 +201,6 @@ msgstr ""
 
 #: .\stagy_bee\settings.py:150
 msgid "Russian"
-msgstr ""
-
-#: .\stopwatch\templates\stopwatch\timer.html:12
-msgid "Abgelaufen"
-msgstr ""
-
-#: .\stopwatch\templates\stopwatch\timer.html:15
-msgid "Übrig"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timer.html:41
