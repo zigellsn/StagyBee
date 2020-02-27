@@ -82,9 +82,11 @@
         {% endblock %}
     </main>
 </div>
-<div class="pos-fixed fixed-bottom z-top text-small text-right p-3">
-    Version: {{ version }}, Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
-</div>
+<footer class="pos-fixed fixed-bottom z-top text-small text-right p-3">
+    <div>
+        Version: {{ version }}, Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
+    </div>
+</footer>
 <script src="{% static 'picker/time.js' %}"></script>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script>
