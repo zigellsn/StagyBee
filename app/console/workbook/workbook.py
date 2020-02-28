@@ -88,12 +88,12 @@ class WorkbookExtractor:
     @staticmethod
     async def __get_language_regex__(language):
         switcher = {
-            "en": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
-            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", ")"],
-            "fr": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
-            "fa": [r"\(.*?‏[۱-۹]+ دقیقه\)", r"[۱-۹]+", "("],
-            "it": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", ")"],
-            "el": [r"\([0-9]+(\u0020|\u00A0)(λεπτά|λεπτό).*?\)", r"[0-9]+", ")"],
+            "en": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|less\))"],
+            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", r"\.\)"],
+            "fr": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"\)"],
+            "fa": [r"\(.*?‏[۱-۹]+ دقیقه\)", r"[۱-۹]+", r"(\)|moins\))"],
+            "it": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|meno\))"],
+            "el": [r"\([0-9]+(\u0020|\u00A0)(λεπτά|λεπτό).*?\)", r"[0-9]+", r"\)"],
         }
         return switcher.get(language, "Invalid language")
 
@@ -130,6 +130,8 @@ class WorkbookExtractor:
         lines = content.split("\n")
         for line in lines:
             clean = await self.__clean_html__(line, regex[2])
+            if clean is None or clean == "":
+                continue
             times_tmp = re.findall(regex[0], clean)
             if not times_tmp:
                 continue
@@ -171,4 +173,7 @@ class WorkbookExtractor:
     async def __clean_html__(raw_html, regex):
         clean_reg = re.compile(r"<.*?>")
         clean_text = re.sub(clean_reg, "", raw_html)
-        return clean_text[:clean_text.find(regex) + 1].strip()
+        if clean_text is None or clean_text == "":
+            return ""
+        for match in re.finditer(regex, clean_text):
+            return clean_text[:match.end()].strip()
