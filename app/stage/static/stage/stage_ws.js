@@ -96,6 +96,8 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         let namesHtml = '';
         if (data === 'extractor_not_available') {
             setElements('none', '', 'none');
+            //TODO: Clear listeners if extractor is unavailable, like so:
+            //listeners.innerHTML = '';
             return;
         }
         if (data === 'subscribed_to_extractor') {
