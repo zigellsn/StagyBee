@@ -28,7 +28,7 @@ function console_client_ws(congregation_ws) {
             display: 'block',
             width: '100%',
         },
-        from: {color: '#60a917'},
+        from: {color: '#00AFF0'},
         to: {color: '#CE352C'},
         step: function (state, line, attachment) {
             line.path.setAttribute('stroke', state.color);
