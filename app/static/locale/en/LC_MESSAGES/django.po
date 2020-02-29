@@ -67,7 +67,7 @@ msgstr "Proceed to audit log..."
 #: .\console\templates\console\console.html:11
 #: .\stopwatch\templates\stopwatch\timer.html:15
 msgid "Übrig"
-msgstr "TIme left"
+msgstr "Time left"
 
 #: .\console\templates\console\console.html:14
 #: .\stopwatch\templates\stopwatch\timer.html:12
