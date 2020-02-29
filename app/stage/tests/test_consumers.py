@@ -29,11 +29,12 @@ async def test_extractor_consumer():
     application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
+    communicator.scope["server"] = ["www", 8000]
     connected, _ = await communicator.connect()
     assert connected
-    # await communicator.send_to(text_data="hello")
-    # response = await communicator.receive_from()
-    # assert response == "hello"
+    # await communicator.send_json_to({"hello": "hello"})
+    # response = await communicator.receive_json_from()
+    # assert response == {"hello": "hello"}
     await communicator.disconnect()
 
 
@@ -44,7 +45,7 @@ async def test_console_client_consumer():
     communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")
     connected, _ = await communicator.connect()
     assert connected
-    # await communicator.send_to(text_data="hello")
-    # response = await communicator.receive_from()
-    # assert response == "hello"
+    # await communicator.send_json_to({"hello": "hello"})
+    # response = await communicator.receive_json_from()
+    # assert response == {"hello": "hello"}
     await communicator.disconnect()

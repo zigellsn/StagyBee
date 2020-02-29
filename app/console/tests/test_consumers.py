@@ -13,21 +13,70 @@
 #  limitations under the License.
 
 import pytest
+from channels.db import database_sync_to_async
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.urls import re_path
 
 from console.consumers import ConsoleConsumer
+from picker.tests import create_credential
+from stagy_bee.consumers import RedisConnector
+
+
+class TestRedisConnector(RedisConnector):
+    pass
+
+    def __init__(self):
+        super().__init__()
+        self.host = ""
+
+    async def redis_connect(self):
+        pass
+
+    @staticmethod
+    async def redis_disconnect(redis):
+        pass
+
+    async def connect_uri(self, group, channel_name):
+        pass
+
+    async def disconnect_uri(self, group, channel_name):
+        pass
+
+    async def connect_timer(self, redis_key):
+        pass
+
+    async def add_timer(self, group, talk, start, value):
+        pass
+
+    async def get_timer(self, group):
+        pass
+
+    async def remove_timer(self, group):
+        pass
 
 
 @pytest.mark.asyncio
+@pytest.mark.django_db
 async def test_console_consumer():
+    await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer)])
-
     communicator = WebsocketCommunicator(application, "/ws/de/console/LE/")
     connected, _ = await communicator.connect()
     assert connected
-    # await communicator.send_to(text_data="hello")
-    # response = await communicator.receive_from()
-    # assert response == "hello"
+    response = await communicator.receive_json_from()
+    assert response["type"] == "times"
+    await communicator.send_json_to(
+        {"timer": "start", "talk": "Foo", "value": {"h": "0", "m": "5", "s": "0"},
+         "start": "2020-02-29T17:40:00+01:00"})
+    response = await communicator.receive_json_from()
+    assert response == {"type": "timer",
+                        "timer": {"timer": "start", "talk": "Foo", "value": {"h": "0", "m": "5", "s": "0"},
+                                  "start": "2020-02-29T17:40:00+01:00"}}
+    await communicator.send_json_to({"timer": "stop"})
+    response = await communicator.receive_json_from()
+    assert response == {"timer": {"timer": "stop"}, "type": "timer"}
+    await communicator.send_json_to({"alert": {"message": "Bla"}})
+    response = await communicator.receive_json_from()
+    assert response == {"alert": {"alert": {"message": "Bla"}}, "type": "alert"}
     await communicator.disconnect()

@@ -17,17 +17,16 @@ from datetime import datetime
 
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from audit.models import Audit
 from console.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from stopwatch.timer_redis import add_timer, get_timer, remove_timer, connect_timer
+from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 from .workbook.workbook import WorkbookExtractor
 
 
-class ConsoleConsumer(AsyncJsonWebsocketConsumer):
+class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
 
     async def connect(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -36,7 +35,10 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        await connect_timer(self, f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
+        message = await self._redis.connect_timer(
+            f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
+        if message is not None:
+            await self.send_json(message)
         workbook_extractor = WorkbookExtractor()
         urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
         times = await workbook_extractor.get_workbooks(urls, self.scope["url_route"]["kwargs"]["language"])
@@ -65,15 +67,15 @@ class ConsoleConsumer(AsyncJsonWebsocketConsumer):
         elif "timer" in text_data:
             message_type = "timer"
             if text_data["timer"] == "start":
-                await add_timer(self.__get_redis_key(congregation), text_data["talk"], text_data["start"],
-                                text_data["value"])
+                await self._redis.add_timer(self.__get_redis_key(congregation), text_data["talk"], text_data["start"],
+                                            text_data["value"])
             elif text_data["timer"] == "stop":
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
-                talk, start, value = await get_timer(self.__get_redis_key(congregation))
+                talk, start, value = await self._redis.get_timer(self.__get_redis_key(congregation))
                 json_value = json.loads(value)
                 duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
-                await remove_timer(self.__get_redis_key(congregation))
+                await self._redis.remove_timer(self.__get_redis_key(congregation))
             else:
                 return
         else:

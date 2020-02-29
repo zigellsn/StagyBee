@@ -13,13 +13,12 @@
 #  limitations under the License.
 
 from channels.exceptions import StopConsumer
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from consumers import AsyncJsonRedisWebsocketConsumer
 from stage.consumers import generate_channel_group_name
-from .timer_redis import connect_timer
 
 
-class TimerConsumer(AsyncJsonWebsocketConsumer):
+class TimerConsumer(AsyncJsonRedisWebsocketConsumer):
 
     async def connect(self):
         await self.channel_layer.group_add(
@@ -27,7 +26,10 @@ class TimerConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        await connect_timer(self, self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
+        message = await self._redis.connect_timer(
+            self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
+        if message is not None:
+            await self.send_json(message)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
