@@ -14,7 +14,7 @@
 
 from channels.exceptions import StopConsumer
 
-from consumers import AsyncJsonRedisWebsocketConsumer
+from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 from stage.consumers import generate_channel_group_name
 
 
