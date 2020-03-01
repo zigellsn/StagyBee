@@ -24,7 +24,6 @@ class AuditView(PermissionRequiredMixin, ListView):
     model = Audit
     return_403 = True
     permission_required = "access_audit_log"
-    template_name = "audit/audit.html"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

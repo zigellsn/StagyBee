@@ -1,4 +1,4 @@
-#  Copyright 2019 Simon Zigelli
+#  Copyright 2019-2020 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -12,16 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.urls import path, include
+from django.urls import path
 
-from .views import ConsoleView, ChooseConsoleView, SettingsView
+from .views import AuditView
 
-app_name = 'console'
+app_name = 'audit'
 
 urlpatterns = [
-    path('', ChooseConsoleView.as_view(), name='choose_console'),
-    path('<str:pk>/', ConsoleView.as_view(), name='console'),
-    path('audit/', include('audit.urls')),
-    path('timer/', include('stopwatch.urls')),
-    path('settings/', SettingsView.as_view(), name='settings')
+    path('<str:pk>/', AuditView.as_view(), name='audit'),
 ]
