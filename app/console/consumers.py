@@ -68,10 +68,10 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
             message_type = "timer"
             if text_data["timer"] == "start":
                 await self._redis.add_timer(self.__get_redis_key(congregation), text_data["talk"], text_data["start"],
-                                            text_data["value"])
+                                            text_data["value"], text_data["index"])
             elif text_data["timer"] == "stop":
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
-                talk, start, value = await self._redis.get_timer(self.__get_redis_key(congregation))
+                talk, start, value, _ = await self._redis.get_timer(self.__get_redis_key(congregation))
                 json_value = json.loads(value)
                 duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)

@@ -46,18 +46,19 @@ class RedisConnector(object):
         return count
 
     async def connect_timer(self, redis_key):
-        talk, start, value = await self.get_timer(redis_key)
+        talk, start, value, index = await self.get_timer(redis_key)
         if start is not None and value is not None:
             message = {"type": "timer",
                        "timer": {"timer": "start", "talk": talk.decode("utf-8"), "start": start.decode("utf-8"),
-                                 "value": json.loads(value)}}
+                                 "value": json.loads(value), "index": index}}
             return message
 
-    async def add_timer(self, group, talk, start, value):
+    async def add_timer(self, group, talk, start, value, index):
         redis = await self.redis_connect()
         await redis.hset(group, "talk", talk)
         await redis.hset(group, "start", start)
         await redis.hset(group, "value", json.dumps(value))
+        await redis.hset(group, "index", index)
         await redis.expire(group, config("REDIS_EXPIRATION", default=3600, cast=int))
         await self.redis_disconnect(redis)
 
@@ -66,8 +67,11 @@ class RedisConnector(object):
         talk = await redis.hget(group, "talk")
         start = await redis.hget(group, "start")
         value = await redis.hget(group, "value")
+        index = await redis.hget(group, "index")
+        if index is None:
+            index = -1
         await self.redis_disconnect(redis)
-        return talk, start, value
+        return talk, start, value, int(index)
 
     async def remove_timer(self, group):
         redis = await self.redis_connect()

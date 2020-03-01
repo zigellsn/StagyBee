@@ -21,7 +21,7 @@ function console_ws(language, congregation_ws) {
     let customTalkName = document.getElementById('custom_talk');
     let talkNameInput = document.getElementById('talk_name');
     let loc = window.location;
-    let running = false;
+    let running = -1;
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
         protocol = 'wss://'
@@ -49,7 +49,7 @@ function console_ws(language, congregation_ws) {
             return;
         }
         if ('type' in data && data['type'] === 'timer' && 'timer' in data && 'start' in data['timer']) {
-            running = true;
+            running = data['timer']['index'];
         }
         if ('type' in data && data['type'] === 'times' && 'times' in data) {
             let times = data['times'];
@@ -90,7 +90,10 @@ function console_ws(language, congregation_ws) {
                     caption: gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
-                lv.children('.node').first().click();
+                if (running !== -1 && running < lv[0].childNodes.length)
+                    lv[0].childNodes[running].click();
+                else
+                    lv.children('.node').first().click();
             }
         }
 
@@ -124,7 +127,10 @@ function console_ws(language, congregation_ws) {
                 });
                 return;
             }
-            let talkName = $('#talk_list').find('.current')[0].innerText;
+            let talk = $('#talk_list').find('.current')[0];
+            let parent = talk.parentNode;
+            let index = Array.prototype.indexOf.call(parent.children, talk) + 1;
+            let talkName = talk.innerText;
             if (talkName === gettext('Benutzerdefiniert')) {
                 talkName = talkNameInput.value
             }
@@ -132,19 +138,20 @@ function console_ws(language, congregation_ws) {
                 'timer': 'start',
                 'talk': talkName,
                 'start': moment().format(),
-                'value': time
+                'value': time,
+                'index': index
             }));
-            running = true;
+            running = index;
         };
 
     if (submitStop !== null)
         submitStop.onclick = function (_) {
-            if (running) {
+            if (running !== -1) {
                 mySocket.send(JSON.stringify({
                     'timer': 'stop'
                 }));
                 $('#talk_list').find('.current').next().click();
-                running = false;
+                running = -1;
             }
         };
 
