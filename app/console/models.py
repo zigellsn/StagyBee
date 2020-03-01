@@ -27,9 +27,8 @@ class TimeEntryQuerySet(QuerySet):
         date = datetime.now() - timedelta(days=config("KEEP_TIMER_DAYS", default=30))
         return self.filter(start__lt=date)
 
-    def by_congregation(self, congregation):
-        now = datetime.now()
-        return self.filter(congregation=congregation, start__day=now.day, start__month=now.month, start__year=now.year)
+    def all_by_congregation(self, congregation):
+        return self.filter(congregation=congregation)
 
 
 class TimeEntryManager(models.Manager):
@@ -43,8 +42,18 @@ class TimeEntryManager(models.Manager):
     def delete_invalid(self):
         return self.get_query_set().invalid().delete()
 
+    def all_by_congregation(self, congregation):
+        time_entries = self.get_query_set().all_by_congregation(congregation)
+        return self.calculate_additional_values(time_entries)
+
     def by_congregation(self, congregation):
-        time_entries = self.get_query_set().by_congregation(congregation)
+        now = datetime.now()
+        time_entries = self.all_by_congregation(congregation).filter(congregation=congregation, start__day=now.day,
+                                                                     start__month=now.month, start__year=now.year)
+        return self.calculate_additional_values(time_entries)
+
+    @staticmethod
+    def calculate_additional_values(time_entries):
         for time_entry in time_entries:
             td1 = time_entry.stop - time_entry.start
             time_entry.duration = __get_duration_string__(td1.seconds)

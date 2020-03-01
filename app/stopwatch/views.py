@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
+from django.views.generic import ListView, MonthArchiveView, WeekArchiveView
 from guardian.mixins import PermissionRequiredMixin
 
 from console.models import TimeEntry
@@ -24,7 +24,6 @@ class TimerView(PermissionRequiredMixin, ListView):
     model = TimeEntry
     return_403 = True
     permission_required = "access_stopwatch"
-    template_name = "stopwatch/timer.html"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -42,3 +41,39 @@ class TimerView(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         self.credentials = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
         return TimeEntry.objects.by_congregation(congregation=self.credentials)
+
+
+class ArchiveView(PermissionRequiredMixin, WeekArchiveView):
+    model = TimeEntry
+    date_field = "start"
+    week_format = "%W"
+    allow_empty = True
+    allow_future = True
+    return_403 = True
+    permission_required = "access_stopwatch"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.credentials = None
+        TimeEntry.objects.delete_invalid()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["congregation"] = self.credentials
+        return context
+
+    def get_permission_object(self):
+        return get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
+
+    def get_queryset(self):
+        self.credentials = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
+        return TimeEntry.objects.all_by_congregation(congregation=self.credentials)
+
+    def get_week(self):
+        week = super().get_week()
+        return week - 1
+
+    def get_dated_items(self):
+        dates = super().get_dated_items()
+        TimeEntry.objects.calculate_additional_values(dates[1])
+        return dates

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-27 23:01+0100\n"
+"POT-Creation-Date: 2020-03-01 19:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,22 +62,27 @@ msgid "Zur Stoppuhr..."
 msgstr ""
 
 #: .\console\templates\console\choose_console_cards.html:46
+msgid "Zum Archiv..."
+msgstr ""
+
+#: .\console\templates\console\choose_console_cards.html:56
 msgid "Zum Audit-Log..."
 msgstr ""
 
 #: .\console\templates\console\console.html:11
-#: .\stopwatch\templates\stopwatch\timer.html:15
-msgid "Übrig"
-msgstr ""
-
-#: .\console\templates\console\console.html:14
-#: .\stopwatch\templates\stopwatch\timer.html:12
+#: .\stopwatch\templates\console\timeentry_list.html:12
 msgid "Abgelaufen"
 msgstr ""
 
+#: .\console\templates\console\console.html:14
+#: .\stopwatch\templates\console\timeentry_list.html:15
+msgid "Übrig"
+msgstr ""
+
 #: .\console\templates\console\console.html:33
-#: .\stopwatch\templates\stopwatch\timer.html:6
-#: .\stopwatch\templates\stopwatch\timer.html:40
+#: .\stopwatch\templates\console\timeentry_archive_week.html:28
+#: .\stopwatch\templates\console\timeentry_list.html:6
+#: .\stopwatch\templates\console\timeentry_list.html:40
 msgid "Aufgabe"
 msgstr ""
 
@@ -203,32 +208,56 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:41
+#: .\stopwatch\templates\console\timeentry_archive_week.html:7
+msgid "Kalenderwoche"
+msgstr ""
+
+#: .\stopwatch\templates\console\timeentry_archive_week.html:12
+msgid "Vorherige KW:"
+msgstr ""
+
+#: .\stopwatch\templates\console\timeentry_archive_week.html:12
+#: .\stopwatch\templates\console\timeentry_archive_week.html:18
+msgid "Jahr"
+msgstr ""
+
+#: .\stopwatch\templates\console\timeentry_archive_week.html:18
+msgid "Nächste KW:"
+msgstr ""
+
+#: .\stopwatch\templates\console\timeentry_archive_week.html:29
+#: .\stopwatch\templates\console\timeentry_list.html:41
 msgid "Startzeit"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:42
+#: .\stopwatch\templates\console\timeentry_archive_week.html:30
+#: .\stopwatch\templates\console\timeentry_list.html:42
 msgid "Endezeit"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:43
+#: .\stopwatch\templates\console\timeentry_archive_week.html:31
+#: .\stopwatch\templates\console\timeentry_list.html:43
 msgid "Dauer"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:44
+#: .\stopwatch\templates\console\timeentry_archive_week.html:32
+#: .\stopwatch\templates\console\timeentry_list.html:44
 msgid "Maximale Dauer"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:45
+#: .\stopwatch\templates\console\timeentry_archive_week.html:33
+#: .\stopwatch\templates\console\timeentry_list.html:45
 msgid "Differenz"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:52
+#: .\stopwatch\templates\console\timeentry_archive_week.html:40
+#: .\stopwatch\templates\console\timeentry_list.html:52
 #, python-format
 msgid "%(start)s Uhr"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timer.html:53
+#: .\stopwatch\templates\console\timeentry_archive_week.html:41
+#: .\stopwatch\templates\console\timeentry_list.html:53
 #, python-format
 msgid "%(stop)s Uhr"
 msgstr ""

@@ -31,9 +31,19 @@
                             </a>
                         {% endif %}
                         {% if "access_stopwatch" in congregation_perms %}
-                            <a href="{% url 'console:timer' congregation.congregation %}">
+                            <a href="{% url 'console:stopwatch:timer' congregation.congregation %}">
                                 <button class="button secondary">
                                     {% trans "Zur Stoppuhr..." %}
+                                    <span class="mif-arrow-right"></span>
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if "access_stopwatch" in congregation_perms %}
+                            {% now "Y" as year %}
+                            {% now "W" as week %}
+                            <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
+                                <button class="button secondary">
+                                    {% trans "Zum Archiv..." %}
                                     <span class="mif-arrow-right"></span>
                                 </button>
                             </a>

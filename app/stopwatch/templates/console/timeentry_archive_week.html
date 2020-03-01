@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'console/base.html' %}
+{% load i18n utils %}
+{% block content %}
+    {% load static %}
+    <div class="pt-4">
+        <h1>{% trans "Kalenderwoche" %} {{ week|date:'W' }}</h1>
+    </div>
+    <div class="pt-4">
+        {% if previous_week %}
+            <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=previous_week|date:"Y" week=previous_week|date:"W" %}">
+                {% trans "Vorherige KW:" %} {{ previous_week|date:"W" }}, {% trans "Jahr" %} {{ previous_week|date:"Y" }}
+            </a>
+        {% endif %}
+        {% if previous_week and next_week %}--{% endif %}
+        {% if next_week %}
+            <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=next_week|date:"Y" week=next_week|date:"W" %}">
+                {% trans "Nächste KW:" %} {{ next_week|date:"W" }}, {% trans "Jahr" %} {{ next_week|date:"Y" }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="pt-4">
+        <table class="table" data-show-search="false" data-show-pagination="false"
+               data-show-table-info="false" data-show-activity="false" data-show-rows-steps="false"
+               data-empty-table-title="">
+            <thead>
+            <tr>
+                <th class="fg-white">{% trans "Aufgabe" %}</th>
+                <th class="fg-white">{% trans "Startzeit" %}</th>
+                <th class="fg-white">{% trans "Endezeit" %}</th>
+                <th class="fg-white">{% trans "Dauer" %}</th>
+                <th class="fg-white">{% trans "Maximale Dauer" %}</th>
+                <th class="fg-white">{% trans "Differenz" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for time_entry in object_list %}
+                <tr>
+                    <td>{{ time_entry.talk }}</td>
+                    <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }} Uhr{% endblocktrans %}</td>
+                    <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }} Uhr{% endblocktrans %}</td>
+                    <td>{{ time_entry.duration }}</td>
+                    <td>{{ time_entry.display_max_duration }}</td>
+                    {% if "-" in time_entry.difference %}
+                        <td class="fg-red">{{ time_entry.difference }}</td>
+                    {% else %}
+                        <td class="fg-blue">{{ time_entry.difference }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+{% endblock %}

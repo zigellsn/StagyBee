@@ -21,6 +21,5 @@ app_name = 'stage'
 
 urlpatterns = [
     path('<str:pk>', StageView.as_view(), name='stage'),
-    path('form/<str:pk>', StageFormView.as_view(), name='stage_form'),
-    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('form/<str:pk>', StageFormView.as_view(), name='stage_form')
 ]
