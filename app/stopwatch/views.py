@@ -13,10 +13,10 @@
 #  limitations under the License.
 
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, MonthArchiveView, WeekArchiveView
+from django.views.generic import ListView, WeekArchiveView
 from guardian.mixins import PermissionRequiredMixin
 
-from console.models import TimeEntry
+from .models import TimeEntry
 from picker.models import Credential
 
 
