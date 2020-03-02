@@ -13,35 +13,30 @@
 #  limitations under the License.
 
 from django.contrib.auth.models import User, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
 
+from audit.models import Audit
 from picker.tests import create_credential
 
 
 class AuditViewTests(TestCase):
-    def test_audit(self):
+    def setUp(self):
         congregation = create_credential()
-        create_credential(congregation='FE')
-        congregation.active = False
-        user = self.user()
-        assign_perm("access_audit_log", user, congregation)
-        permission = Permission.objects.get(name="Can view audit")
-        user.user_permissions.add(permission)
-        self.login()
+        # create_credential(congregation='FE')
+        test_user = User.objects.create(username="testuser")
+        test_user.set_password("12345")
+        content_type = ContentType.objects.get_for_model(Audit)
+        permission = Permission.objects.get(codename="view_audit")
+        test_user.user_permissions.add(permission)
+        assign_perm("access_audit_log", test_user, congregation)
+        test_user.save()
+
+    def test_audit(self):
+        self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("console:choose_console"))
         self.assertContains(response, "LE")
         self.assertNotContains(response, "FE")
         self.assertContains(response, "Zum Audit-Log...")
-
-    @staticmethod
-    def user():
-        user = User.objects.create(username="testuser")
-        user.set_password("12345")
-        user.save()
-        return user
-
-    def login(self):
-        logged_in = self.client.login(username="testuser", password="12345")
-        return logged_in

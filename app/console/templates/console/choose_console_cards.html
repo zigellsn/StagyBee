@@ -49,15 +49,13 @@
                             </button>
                         </a>
                     {% endif %}
-                    {% if perms.console.view_audit %}
-                        {% if "access_audit_log" in congregation_perms %}
-                            <a href="{% url 'console:audit:audit' congregation.congregation %}">
-                                <button class="button secondary">
-                                    {% trans "Zum Audit-Log..." %}
-                                    <span class="mif-arrow-right"></span>
-                                </button>
-                            </a>
-                        {% endif %}
+                    {% if perms.audit.view_audit and "access_audit_log" in congregation_perms %}
+                        <a href="{% url 'console:audit:audit' congregation.congregation %}">
+                            <button class="button secondary">
+                                {% trans "Zum Audit-Log..." %}
+                                <span class="mif-arrow-right"></span>
+                            </button>
+                        </a>
                     {% endif %}
                 </div>
                 </div>
