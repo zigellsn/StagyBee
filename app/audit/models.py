@@ -12,10 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.db import models
 from django.db.models import QuerySet
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from picker.models import Credential
@@ -23,7 +24,7 @@ from picker.models import Credential
 
 class AuditQuerySet(QuerySet):
     def invalid(self):
-        date = datetime.now() - timedelta(days=180)
+        date = timezone.now() - timedelta(days=180)
         return self.filter(send_time__lt=date)
 
     def by_congregation(self, congregation):
@@ -52,6 +53,6 @@ class Audit(models.Model):
     congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
     username = models.CharField(_('username'), max_length=150)
     message = models.TextField(default="", blank=True)
-    send_time = models.DateTimeField(auto_now=True)
+    send_time = models.DateTimeField(default=timezone.now)
 
     objects = AuditManager()

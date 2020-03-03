@@ -13,30 +13,47 @@
 #  limitations under the License.
 
 from django.contrib.auth.models import User, Permission
-from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
 
 from audit.models import Audit
+from picker.models import Credential
 from picker.tests import create_credential
 
 
 class AuditViewTests(TestCase):
     def setUp(self):
         congregation = create_credential()
-        # create_credential(congregation='FE')
+        create_credential(congregation='FE')
         test_user = User.objects.create(username="testuser")
         test_user.set_password("12345")
-        content_type = ContentType.objects.get_for_model(Audit)
         permission = Permission.objects.get(codename="view_audit")
         test_user.user_permissions.add(permission)
         assign_perm("access_audit_log", test_user, congregation)
         test_user.save()
 
-    def test_audit(self):
+    def test_permission_audit(self):
         self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("console:choose_console"))
         self.assertContains(response, "LE")
         self.assertNotContains(response, "FE")
         self.assertContains(response, "Zum Audit-Log...")
+
+    def test_audit(self):
+        congregation = Credential.objects.get(congregation="LE")
+        congregation_fe = Credential.objects.get(congregation="FE")
+        Audit.objects.create_audit(congregation=congregation, message="Bla", username="testuser")
+        Audit.objects.create_audit(congregation=congregation, message="Blub", username="testuser")
+        Audit.objects.create_audit(congregation=congregation_fe, message="Foo", username="testuser")
+        Audit.objects.create_audit(congregation=congregation_fe, message="Bar", username="testuser")
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("console:audit:audit", kwargs={"pk": "LE"}))
+        self.assertContains(response, "Bla")
+        self.assertNotContains(response, "Foo")
+        self.assertNotContains(response, "Bar")
+        self.assertContains(response, "Blub")
+
+    def test_not_authorized(self):
+        response = self.client.get(reverse("console:audit:audit", kwargs={"pk": "FE"}))
+        self.assertEqual(response.status_code, 403)
