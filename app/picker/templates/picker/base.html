@@ -42,7 +42,7 @@
         {% endblock %}
     </main>
 </div>
-<footer class="pos-fixed fixed-bottom z-top text-small text-right p-3">
+<footer class="pos-fixed fixed-bottom z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %} p-3">
     <div>
         Version: {{ version }}, Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
     </div>

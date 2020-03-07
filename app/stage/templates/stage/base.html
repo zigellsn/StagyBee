@@ -48,7 +48,7 @@
     </main>
 </div>
 <footer class="fixed-bottom">
-    <div id="container"></div>
+    <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container"></div>
 </footer>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
