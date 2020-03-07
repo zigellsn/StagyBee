@@ -50,6 +50,7 @@ function console_ws(language, congregation_ws) {
         }
         if ('type' in data && data['type'] === 'timer' && 'timer' in data && 'start' in data['timer']) {
             running = data['timer']['index'];
+            $('#submit_stop').removeClass("light").addClass("primary");
         }
         if ('type' in data && data['type'] === 'times' && 'times' in data) {
             let times = data['times'];
@@ -90,8 +91,10 @@ function console_ws(language, congregation_ws) {
                     caption: gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
-                if (running !== -1 && running < lv[0].childNodes.length)
+                if (running !== -1 && running < lv[0].childNodes.length) {
+                    $('#submit_stop').removeClass("light").addClass("primary");
                     lv[0].childNodes[running].click();
+                }
                 else
                     lv.children('.node').first().click();
             }
@@ -142,6 +145,7 @@ function console_ws(language, congregation_ws) {
                 'index': index
             }));
             running = index;
+            $('#submit_stop').removeClass("light").addClass("primary");
         };
 
     if (submitStop !== null)
@@ -151,6 +155,7 @@ function console_ws(language, congregation_ws) {
                     'timer': 'stop'
                 }));
                 $('#talk_list').find('.current').next().click();
+                $('#submit_stop').removeClass("primary").addClass("light");
                 running = -1;
             }
         };

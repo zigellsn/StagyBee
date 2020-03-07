@@ -3,59 +3,82 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div class="pt-4">
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>
-                    <div class="pt-4">{% trans "Abgelaufen" %}</div>
-                </th>
-                <th>
-                    <div class="pt-4">{% trans "Übrig" %}</div>
-                </th>
-            </tr>
-            <tr>
-                <th>
+    <div data-role="accordion" data-one-frame="true" data-show-active="true" data-material="true">
+        <div class="frame active">
+            <div class="bg-dark fg-white heading">{% trans "Stoppuhr" %}</div>
+            <div class="content">
+                <div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div>{% trans "Abgelaufen" %}</div>
+                            </th>
+                            <th>
+                                <div>{% trans "Übrig" %}</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div>
+                                    <samp style="font-size:32px"
+                                          id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <samp style="font-size:32px"
+                                          id="remaining">{{ remaining|default:"00:00:00" }}</samp>
+                                </div>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pt-4">
+                    <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
+                    <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true"
+                        id="talk_list">
+                    </ul>
+                </div>
+                <div id="custom_talk">
                     <div class="pt-4">
-                        <samp style="font-size:32px" id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                        <label for="talk_name" class="pt-4">{% trans "Titel" %}</label>
+                        <input type="text" data-role="input" data-default-value="{% trans "Titel" %}" id="talk_name">
                     </div>
-                </th>
-                <th>
                     <div class="pt-4">
-                        <samp style="font-size:32px" id="remaining">{{ remaining|default:"00:00:00" }}</samp>
+                        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
+                        <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
+                               data-hours="false"
+                               id="time" class="bg-dark fg-white"/>
                     </div>
-                </th>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="pt-4">
-        <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
-        <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true" id="talk_list">
-        </ul>
-    </div>
-    <div id="custom_talk">
-        <div class="pt-4">
-            <label for="talk_name" class="pt-4">{% trans "Titel" %}</label>
-            <input type="text" data-role="input" data-default-value="{% trans "Titel" %}" id="talk_name">
+                </div>
+                <div class="pt-4">
+                    <a href="#" class="button primary" id="submit_time"><span
+                            class="mif-play"></span>{% trans "Start" %}</a>
+                    <a href="#" class="button light" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="pt-4">
-            <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
-            <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00" data-hours="false"
-                   id="time" class="bg-dark fg-white"/>
+        <div class="frame">
+            <div class="bg-dark fg-white heading">{% trans "Bildschirm verdunkeln" %}</div>
+            <div class="content">
+                <div class="pt-4">
+                    <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="pt-4">
-        <button class="button primary" id="submit_time"><span class="mif-play"></span>{% trans "Start" %}</button>
-        <button class="button primary" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}</button>
-    </div>
-    <div class="pt-4">
-        <button class="button primary" id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
-    </div>
-    <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
-    <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>
-    <div class="pt-4">
-        <button class="button primary" id="submit_text">{% trans "Sende Nachricht" %}</button>
+        <div class="frame">
+            <div class="bg-dark fg-white heading">{% trans "Textnachricht" %}</div>
+            <div class="content">
+                <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
+                <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>
+                <div class="pt-4">
+                    <button class="button primary" id="submit_text">{% trans "Sende Nachricht" %}</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
