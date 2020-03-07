@@ -148,14 +148,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGES = (
-    ('en', _('English')),
-    ('de', _('German')),
-    ('it', _('Italian')),
-    ('fr', _('French')),
-    ('ru', _('Russian')),
-    ('fa', _('Persian')),
-)
+LANGUAGES = config('LANGUAGES', default="de:German,en:English",
+                   cast=Csv(cast=lambda s: (s.split(':')[0], _(s.split(':')[1])), delimiter=',', strip=' %*'))
 
 LANGUAGE_CODE = 'de'
 
