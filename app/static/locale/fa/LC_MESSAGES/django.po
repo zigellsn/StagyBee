@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-07 11:48+0100\n"
+"POT-Creation-Date: 2020-03-07 13:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,104 +22,105 @@ msgstr ""
 msgid "username"
 msgstr ""
 
-#: .\audit\templates\audit\audit_list.html:9
+#: .\audit\templates\audit\audit_list.html:10
 msgid "Username"
 msgstr ""
 
-#: .\audit\templates\audit\audit_list.html:10
+#: .\audit\templates\audit\audit_list.html:11
 msgid "Nachricht"
 msgstr ""
 
-#: .\audit\templates\audit\audit_list.html:11
+#: .\audit\templates\audit\audit_list.html:12
 msgid "Sendezeit"
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:28
+#: .\console\templates\console\choose_console_cards.html:29
 msgid "Zur Console..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:36
+#: .\console\templates\console\choose_console_cards.html:41
 msgid "Zur Stoppuhr..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:47
+#: .\console\templates\console\choose_console_cards.html:56
 msgid "Zum Archiv..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:55
+#: .\console\templates\console\choose_console_cards.html:68
 msgid "Zum Audit-Log..."
 msgstr ""
 
-#: .\console\templates\console\console.html:9
-#: .\console\templates\console\console.html:51
+#: .\console\templates\console\console.html:12
+#: .\console\templates\console\console.html:54
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\console\templates\console\console.html:16
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:12
+#: .\console\templates\console\console.html:19
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:13
 msgid "Abgelaufen"
 msgstr ""
 
-#: .\console\templates\console\console.html:19
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:15
+#: .\console\templates\console\console.html:22
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:16
 msgid "Übrig"
 msgstr ""
 
-#: .\console\templates\console\console.html:40
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:28
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:6
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:40
+#: .\console\templates\console\console.html:43
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:29
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:7
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:41
 msgid "Aufgabe"
 msgstr ""
 
-#: .\console\templates\console\console.html:47
-#: .\console\templates\console\console.html:48
+#: .\console\templates\console\console.html:50
+#: .\console\templates\console\console.html:51
 msgid "Titel"
 msgstr ""
 
-#: .\console\templates\console\console.html:59
+#: .\console\templates\console\console.html:62
 msgid "Start"
-msgstr ""
+msgstr "شروع"
 
-#: .\console\templates\console\console.html:60
+#: .\console\templates\console\console.html:63
 msgid "Stopp"
-msgstr ""
+msgstr "توقف"
 
-#: .\console\templates\console\console.html:66
 #: .\console\templates\console\console.html:69
+#: .\console\templates\console\console.html:72
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\console\templates\console\console.html:74
-#: .\console\templates\console\console.html:76
+#: .\console\templates\console\console.html:77
+#: .\console\templates\console\console.html:79
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:79
+#: .\console\templates\console\console.html:82
 msgid "Sende Nachricht"
 msgstr ""
 
 #: .\console\templates\console\header.html:17
-#: .\console\templates\console\header_rtl.html:43
+#: .\console\templates\console\header_rtl.html:17
 #, python-format
 msgid "Willkommen, %(username)s!"
 msgstr "خش آمدید، %(username)s!"
 
 #: .\console\templates\console\header.html:24
-#: .\console\templates\console\header_rtl.html:34
+#: .\console\templates\console\header_rtl.html:24
 msgid "Einstellungen"
 msgstr ""
 
 #: .\console\templates\console\header.html:32
-#: .\console\templates\console\header_rtl.html:20
-#: .\console\templates\registration\base.html:31
+#: .\console\templates\console\header_rtl.html:32
+#: .\console\templates\registration\header.html:10
+#: .\console\templates\registration\header_rtl.html:10
 #: .\picker\templates\picker\header.html:19
-#: .\picker\templates\picker\header_rtl.html:32
+#: .\picker\templates\picker\header_rtl.html:19
 msgid "Sprache"
-msgstr ""
+msgstr "زبان"
 
 #: .\console\templates\console\header.html:45
-#: .\console\templates\console\header_rtl.html:13
+#: .\console\templates\console\header_rtl.html:45
 msgid "Logout"
 msgstr ""
 
@@ -188,15 +189,15 @@ msgid "JWConf Login Seite"
 msgstr ""
 
 #: .\stage\templates\stage\stage_extractor.html:6
-msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
+msgid "Zuhörer gesamt:"
 msgstr ""
 
 #: .\stage\templates\stage\stage_extractor.html:11
-msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
+msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
 msgstr ""
 
 #: .\stage\templates\stage\stage_extractor.html:16
-msgid "Zuhörer gesamt:"
+msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr ""
 
 #: .\stagy_bee\settings.py:152
@@ -223,56 +224,56 @@ msgstr ""
 msgid "Persian"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:7
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:8
 msgid "Kalenderwoche"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:12
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:13
 msgid "Vorherige KW:"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:12
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:18
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:13
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:19
 msgid "Jahr"
-msgstr ""
+msgstr "سال"
 
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:18
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:19
 msgid "Nächste KW:"
-msgstr ""
-
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:29
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:41
-msgid "Startzeit"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:30
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:42
-msgid "Endezeit"
+msgid "Startzeit"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:31
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:43
-msgid "Dauer"
+msgid "Endezeit"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:32
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:44
-msgid "Maximale Dauer"
+msgid "Dauer"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:33
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:45
-msgid "Differenz"
+msgid "Maximale Dauer"
 msgstr ""
 
-#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:40
-#: .\stopwatch\templates\stopwatch\timeentry_list.html:52
-#, python-format
-msgid "%(start)s Uhr"
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:34
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:46
+msgid "Differenz"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:41
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:53
 #, python-format
+msgid "%(start)s Uhr"
+msgstr "%(start)s"
+
+#: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:42
+#: .\stopwatch\templates\stopwatch\timeentry_list.html:54
+#, python-format
 msgid "%(stop)s Uhr"
-msgstr ""
+msgstr "%(stop)s"
