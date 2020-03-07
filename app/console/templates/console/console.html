@@ -2,6 +2,7 @@
 {% extends 'console/base.html' %}
 {% load i18n utils %}
 {% block content %}
+    {% get_current_language as LANGUAGE_CODE %}
     {% load static %}
     <div data-role="accordion" data-one-frame="true" data-show-active="true" data-material="true">
         <div class="frame active">
@@ -86,7 +87,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="{% static 'console/console_ws.js' %}"></script>
     <script>
-        console_ws('{{ LANGUAGE_CODE }}', '{{ credential.congregation|escape }}');
+        console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
     </script>
     <script src="{% static 'stopwatch/timer_ws.js' %}"></script>
     <script>

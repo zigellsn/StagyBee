@@ -154,6 +154,7 @@ LANGUAGES = (
     ('it', _('Italian')),
     ('fr', _('French')),
     ('ru', _('Russian')),
+    ('fa', _('Persian')),
 )
 
 LANGUAGE_CODE = 'de'

@@ -26,31 +26,12 @@
     </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()" id="body">
-<header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
-    <div class="app-bar-container float-none">
-        <div class="app-bar-item pl-4 pr-4 pt-2">
-            {% if credential.touch %}
-                <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
-                   href="{% url 'picker:picker' %}">
-                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
-                </a>
-            {% else %}
-                <a href="{% url 'picker:picker' %}">
-                    <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
-    {% if not credential.touch %}
-        <div class="app-bar-container ml-left">
-            <span class="display1">{{ credential.display_name }}</span>
-        </div>
-        <div class="app-bar-container ml-auto" id="clock">
-            <div class="app-bar-item pt-1 place-right"><samp><span class="text-leader" id="currentTime"></span></samp>
-            </div>
-        </div>
-    {% endif %}
-</header>
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% if LANGUAGE_BIDI %}
+    {% include "stage/header_rtl.html" %}
+{% else %}
+    {% include "stage/header.html" %}
+{% endif %}
 <div class="notify-container">
     {% if messages %}
         <ul class="messages">

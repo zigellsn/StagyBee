@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
+    {% if not credential.touch %}
+        <div class="app-bar-container mr-auto" id="clock">
+            <div class="app-bar-item pt-1 place-left"><samp><span class="text-leader" id="currentTime"></span></samp>
+            </div>
+        </div>
+        <div class="app-bar-container ml-right">
+            <span class="display1">{{ credential.display_name }}</span>
+        </div>
+    {% endif %}
+    <div class="app-bar-container float-none">
+        <div class="app-bar-item pl-4 pr-4 pt-2">
+            {% if credential.touch %}
+                <a onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
+                   href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% else %}
+                <a href="{% url 'picker:picker' %}">
+                    <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</header>
