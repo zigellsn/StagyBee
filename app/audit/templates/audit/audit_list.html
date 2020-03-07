@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 {% extends 'console/base.html' %}
 {% load i18n utils %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div>
         <table class="table">
             <thead>
             <tr>
-                <th class="fg-white">{% trans "Username" %}</th>
-                <th class="fg-white">{% trans "Nachricht" %}</th>
-                <th class="fg-white">{% trans "Sendezeit" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Username" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sendezeit" %}</th>
             </tr>
             </thead>
             <tbody>

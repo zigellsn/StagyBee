@@ -3,8 +3,11 @@
 {% load i18n utils %}
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
     {% load static %}
-    <div data-role="accordion" data-one-frame="true" data-show-active="true" data-material="true">
+
+    <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
+         data-material="true">
         <div class="frame active">
             <div class="bg-dark fg-white heading">{% trans "Stoppuhr" %}</div>
             <div class="content">

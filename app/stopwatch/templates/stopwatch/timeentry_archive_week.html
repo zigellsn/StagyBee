@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends 'console/base.html' %}
 {% load i18n utils %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     {% load static %}
     <div class="pt-4">
@@ -25,12 +26,12 @@
                data-empty-table-title="">
             <thead>
             <tr>
-                <th class="fg-white">{% trans "Aufgabe" %}</th>
-                <th class="fg-white">{% trans "Startzeit" %}</th>
-                <th class="fg-white">{% trans "Endezeit" %}</th>
-                <th class="fg-white">{% trans "Dauer" %}</th>
-                <th class="fg-white">{% trans "Maximale Dauer" %}</th>
-                <th class="fg-white">{% trans "Differenz" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
             </tr>
             </thead>
             <tbody>

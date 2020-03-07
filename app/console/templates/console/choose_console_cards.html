@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends 'console/base.html' %}
 {% load i18n utils %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% load guardian_tags %}
 {% block content %}
     <div>
@@ -26,7 +27,11 @@
                             <a href="{% url 'console:console' congregation.congregation %}">
                                 <button class="button secondary">
                                     {% trans "Zur Console..." %}
-                                    <span class="mif-arrow-right"></span>
+                                    {% if LANGUAGE_BIDI %}
+                                        <span class="mif-arrow-left"></span>
+                                    {% else %}
+                                        <span class="mif-arrow-right"></span>
+                                    {% endif %}
                                 </button>
                             </a>
                         {% endif %}
@@ -34,7 +39,11 @@
                             <a href="{% url 'console:stopwatch:timer' congregation.congregation %}">
                                 <button class="button secondary">
                                     {% trans "Zur Stoppuhr..." %}
-                                    <span class="mif-arrow-right"></span>
+                                    {% if LANGUAGE_BIDI %}
+                                        <span class="mif-arrow-left"></span>
+                                    {% else %}
+                                        <span class="mif-arrow-right"></span>
+                                    {% endif %}
                                 </button>
                             </a>
                         {% endif %}
@@ -45,7 +54,11 @@
                         <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
                             <button class="button secondary">
                                 {% trans "Zum Archiv..." %}
-                                <span class="mif-arrow-right"></span>
+                                {% if LANGUAGE_BIDI %}
+                                    <span class="mif-arrow-left"></span>
+                                {% else %}
+                                    <span class="mif-arrow-right"></span>
+                                {% endif %}
                             </button>
                         </a>
                     {% endif %}
@@ -53,7 +66,11 @@
                         <a href="{% url 'console:audit:audit' congregation.congregation %}">
                             <button class="button secondary">
                                 {% trans "Zum Audit-Log..." %}
-                                <span class="mif-arrow-right"></span>
+                                {% if LANGUAGE_BIDI %}
+                                    <span class="mif-arrow-left"></span>
+                                {% else %}
+                                    <span class="mif-arrow-right"></span>
+                                {% endif %}
                             </button>
                         </a>
                     {% endif %}

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 {% load i18n utils %}
-<html lang="de">
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE %}
+{% if LANGUAGE_BIDI %}
+    <html dir="rtl" lang="{{ LANGUAGE }}">
+{% else %}
+    <html lang="{{ LANGUAGE }}">
+{% endif %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -21,7 +27,6 @@
     </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()">
-{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% if LANGUAGE_BIDI %}
     {% include "console/header_rtl.html" %}
 {% else %}
