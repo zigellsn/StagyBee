@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-07 13:18+0100\n"
+"POT-Creation-Date: 2020-03-09 21:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,19 +34,24 @@ msgstr ""
 msgid "Sendezeit"
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:29
+#: .\console\templates\console\choose_console_cards.html:21
+#| msgid "Seit %(since)s Uhr"
+msgid "Seit %(since)s Uhr"
+msgstr ""
+
+#: .\console\templates\console\choose_console_cards.html:32
 msgid "Zur Console..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:41
+#: .\console\templates\console\choose_console_cards.html:44
 msgid "Zur Stoppuhr..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:56
+#: .\console\templates\console\choose_console_cards.html:59
 msgid "Zum Archiv..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:68
+#: .\console\templates\console\choose_console_cards.html:71
 msgid "Zum Audit-Log..."
 msgstr ""
 
@@ -137,23 +142,23 @@ msgstr ""
 msgid "Das Passwort wurde geändert."
 msgstr ""
 
-#: .\picker\models.py:82
+#: .\picker\models.py:96
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:83
+#: .\picker\models.py:97
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:84
+#: .\picker\models.py:98
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:95
+#: .\picker\models.py:109
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:96
+#: .\picker\models.py:110
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -198,30 +203,6 @@ msgstr ""
 
 #: .\stage\templates\stage\stage_extractor.html:16
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
-msgstr ""
-
-#: .\stagy_bee\settings.py:152
-msgid "English"
-msgstr ""
-
-#: .\stagy_bee\settings.py:153
-msgid "German"
-msgstr ""
-
-#: .\stagy_bee\settings.py:154
-msgid "Italian"
-msgstr ""
-
-#: .\stagy_bee\settings.py:155
-msgid "French"
-msgstr ""
-
-#: .\stagy_bee\settings.py:156
-msgid "Russian"
-msgstr ""
-
-#: .\stagy_bee\settings.py:157
-msgid "Persian"
 msgstr ""
 
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:8

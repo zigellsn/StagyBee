@@ -104,7 +104,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             if success:
                 self.scope["url_route"]["kwargs"]["session_id"] = self.task.result()["sessionId"]
                 await self.send_json("subscribed_to_extractor")
-        await self._redis.connect_uri(redis_key, self.channel_name)
+            await self._redis.connect_uri(redis_key, self.channel_name)
 
     async def __disconnect_from_extractor(self, redis_key):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]

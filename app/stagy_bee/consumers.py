@@ -17,6 +17,7 @@ import aioredis
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from decouple import config
 from django.conf import settings
+from datetime import datetime
 
 
 class RedisConnector(object):
@@ -35,6 +36,11 @@ class RedisConnector(object):
     async def connect_uri(self, group, channel_name):
         redis = await self.redis_connect()
         await redis.sadd(group, channel_name)
+        members = await redis.smembers(group)
+        with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
+        if not with_since:
+            date = f"since:{datetime.now()}"
+            await redis.sadd(group, date)
         await redis.expire(group, config("REDIS_EXPIRATION", default=21600, cast=int))
         await self.redis_disconnect(redis)
 
@@ -42,6 +48,10 @@ class RedisConnector(object):
         redis = await self.redis_connect()
         await redis.srem(group, channel_name)
         count = await redis.scard(group)
+        if count == 1:
+            members = await redis.smembers(group)
+            await redis.srem(group, members[0])
+            count = count - 1
         await self.redis_disconnect(redis)
         return count
 

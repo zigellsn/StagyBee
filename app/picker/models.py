@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import asyncio
+import datetime
 import logging
 
 import aioredis
@@ -44,6 +45,17 @@ async def __get_active_congregations__():
         return congregation_filter
 
 
+async def __get_running_since__(congregation):
+    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+    redis = await aioredis.create_redis(host)
+    members = await redis.smembers(f"stagybee::console:congregation.console.{congregation}")
+    with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
+    if with_since:
+        redis.close()
+        await redis.wait_closed()
+        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], "%Y-%m-%d %H:%M:%S.%f")
+
+
 class CredentialQuerySet(QuerySet):
 
     def active(self):
@@ -63,8 +75,10 @@ class CredentialManager(models.Manager):
         for congregation in congregation_set:
             if congregation.congregation in congregation_filter:
                 congregation.active = True
+                congregation.since = loop.run_until_complete(__get_running_since__(congregation.congregation))
             else:
                 congregation.active = False
+                congregation.since = None
         return congregation_set
 
     def create_credential(self, congregation, autologin, username, password, display_name, extractor_url, touch,

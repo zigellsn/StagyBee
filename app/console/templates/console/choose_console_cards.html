@@ -17,6 +17,9 @@
                         <div class="card-header bg-gray fg-white">
                     {% endif %}
                 <h3 class="text-bold mb-0">{{ congregation.display_name }}</h3>
+                {% if congregation.since != None %}
+                    {% blocktrans with since=congregation.since|time:"TIME_FORMAT" %}Seit {{ since }} Uhr{% endblocktrans %}
+                {% endif %}
                 <!-- <div class="icon">
                     <span class="mif-star-full"></span>
                 </div> -->
