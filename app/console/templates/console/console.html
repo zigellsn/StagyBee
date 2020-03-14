@@ -26,7 +26,7 @@
                             <th>
                                 <div>
                                     <samp style="font-size:32px"
-                                          id="stopwatch">{{ stoppwatch|default:"00:00:00" }}</samp>
+                                          id="stopwatch">{{ stopwatch|default:"00:00:00" }}</samp>
                                 </div>
                             </th>
                             <th>
@@ -94,6 +94,6 @@
     </script>
     <script src="{% static 'stopwatch/timer_ws.js' %}"></script>
     <script>
-        timer_ws('{{ credential.congregation|escape }}', false, {{ credentials.send_times_to_stage|yesno:"true,false" }});
+        timer_ws('{{ credential.congregation|escape }}', false, false);
     </script>
 {% endblock %}

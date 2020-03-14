@@ -14,8 +14,8 @@
 
 from django.urls import re_path
 
-from stopwatch.consumers import TimerConsumer
+from stopwatch.consumers import CentralTimerConsumer
 
 websocket_urlpatterns = [
-    re_path(r"^ws/timer/(?P<congregation>[^/]+)/$", TimerConsumer),
+    re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer),
 ]

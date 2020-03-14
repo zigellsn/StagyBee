@@ -19,10 +19,11 @@ from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 
 from audit.models import Audit
-from stopwatch.models import TimeEntry
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
+from stopwatch.consumers import get_duration
+from stopwatch.models import TimeEntry
 from .workbook.workbook import WorkbookExtractor
 
 
@@ -73,7 +74,7 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
                 talk, start, value, _ = await self._redis.get_timer(self.__get_redis_key(congregation))
                 json_value = json.loads(value)
-                duration = int(json_value["h"]) * 3600 + int(json_value["m"]) * 60 + int(json_value["s"])
+                duration = get_duration(json_value)
                 await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
                 await self._redis.remove_timer(self.__get_redis_key(congregation))
             else:

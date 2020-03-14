@@ -19,6 +19,7 @@
 
     <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
     <link href="{% static 'stage/stage.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'console/console.css' %}" rel="stylesheet" type="text/css">
     <title>StagyBee Auto-Login Page</title>
     <script>
         function RedirectPage(element, url) {
@@ -54,7 +55,17 @@
     </main>
 </div>
 <footer class="fixed-bottom">
-    <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container"></div>
+    {% if not credential.touch and credential.send_times_to_stage %}
+        <div id="timer" class="wrapper">
+            <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
+            </div>
+            <div id="timer_overlay">
+                <samp class="text-leader" id="stopwatch">00:00:00</samp>
+                <samp class="text-leader">&nbsp;|&nbsp;</samp>
+                <samp class="text-leader" id="remaining">00:00:00</samp>
+            </div>
+        </div>
+    {% endif %}
 </footer>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
@@ -66,6 +77,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
 <script>
     console_client_ws('{{ credential.congregation|escape }}');
+</script>
+<script src="{% static 'stopwatch/timer_ws.js' %}"></script>
+<script>
+    timer_ws('{{ credential.congregation|escape }}', false, true);
 </script>
 </body>
 </html>

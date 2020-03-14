@@ -31,6 +31,21 @@ function console_ws(language, congregation_ws) {
     let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/' + language + '/console/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
+    let centralTimerSocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
+        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+
+    centralTimerSocket.onopen = function (_) {
+        console.log('Timer WebSocket CONNECT successful');
+    };
+
+    centralTimerSocket.onclose = function (_) {
+        console.error('Timer WebSocket closed unexpectedly');
+    };
+
+    centralTimerSocket.onmessage = function (e) {
+        console.log(e)
+    };
+
     mySocket.onopen = function (_) {
         console.log('Console WebSocket CONNECT successful');
         customTalkName.style.display = 'none';
@@ -94,8 +109,7 @@ function console_ws(language, congregation_ws) {
                 if (running !== -1 && running < lv[0].childNodes.length) {
                     $('#submit_stop').removeClass("light").addClass("primary");
                     lv[0].childNodes[running].click();
-                }
-                else
+                } else
                     lv.children('.node').first().click();
             }
         }
@@ -137,6 +151,13 @@ function console_ws(language, congregation_ws) {
             if (talkName === gettext('Benutzerdefiniert')) {
                 talkName = talkNameInput.value
             }
+            centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
+            centralTimerSocket.send(JSON.stringify({
+                'timer': 'start',
+                'duration': time,
+                'name': talkName,
+                'index': index
+            }));
             mySocket.send(JSON.stringify({
                 'timer': 'start',
                 'talk': talkName,
@@ -151,9 +172,8 @@ function console_ws(language, congregation_ws) {
     if (submitStop !== null)
         submitStop.onclick = function (_) {
             if (running !== -1) {
-                mySocket.send(JSON.stringify({
-                    'timer': 'stop'
-                }));
+                centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
+                mySocket.send(JSON.stringify({'timer': 'stop'}));
                 $('#talk_list').find('.current').next().click();
                 $('#submit_stop').removeClass("primary").addClass("light");
                 running = -1;

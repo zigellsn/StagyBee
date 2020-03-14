@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-function timer_ws(congregation_ws, reload, showWarning) {
+function timer_ws(congregation_ws, reload, resetOnStop = false) {
 
     let stopwatch = document.getElementById('stopwatch');
     let talk = document.getElementById('talk');
@@ -22,10 +22,6 @@ function timer_ws(congregation_ws, reload, showWarning) {
     if (talk !== null)
         talk.style.display = 'none';
     let remaining = $('#remaining');
-    let start = null;
-    let value = null;
-    let timeout = null;
-    let sent = false;
 
     let loc = window.location;
     let protocol = 'ws://';
@@ -33,8 +29,8 @@ function timer_ws(congregation_ws, reload, showWarning) {
         protocol = 'wss://'
     }
 
-    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/timer/${congregation_ws}/`,
-    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/timer/' + congregation_ws + '/',
+    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/central_timer/${congregation_ws}/`,
+    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     mySocket.onopen = function (_) {
@@ -46,22 +42,13 @@ function timer_ws(congregation_ws, reload, showWarning) {
         let message = data['timer'];
         if (message === undefined)
             return;
-        let timer = message['timer'];
-        if (timer === undefined)
-            return;
 
-        if (timer === 'start') {
+        if (message['timer'] === 'started') {
             if (talk !== null)
                 talk.style.display = 'block';
             if (talkNumber !== null)
-                talkNumber.innerText = message['talk'];
-            start = moment(message['start']);
-            value = message['value'];
-            sent = false;
-            timeout = setTimeout(runTimer, 500);
-        } else if (timer === 'stop') {
-            start = null;
-            value = null;
+                talkNumber.innerText = message['name'];
+        } else if (message['timer'] === 'stopped') {
             if (talk !== null)
                 talk.style.display = 'none';
             if (reload) {
@@ -71,8 +58,34 @@ function timer_ws(congregation_ws, reload, showWarning) {
                     'alert': 'stop',
                 }));
             }
-            sent = false;
-            clearTimeout(timeout);
+            if (resetOnStop) {
+                remaining.text(millisecondsToTime(0));
+                stopwatch.innerText = millisecondsToTime(0);
+            }
+        } else if ('sync' in message) {
+            if (talk !== null)
+                talk.style.display = 'block';
+            if (talkNumber !== null)
+                talkNumber.innerText = message['name'];
+            let value = message['sync'];
+            let duration = message['duration'];
+            let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
+            let span_duration = (parseInt(duration['h']) * 3600000 + parseInt(duration['m']) * 60000 + parseInt(duration['s']) * 1000);
+            let rem = span_duration - span;
+            if (stopwatch !== null)
+                stopwatch.innerText = millisecondsToTime(span);
+            if (remaining !== undefined)
+                if (rem >= 0) {
+                    remaining.text(millisecondsToTime(rem));
+                    remaining.removeClass('fg-red');
+                    remaining.removeClass('timesUp');
+                    remaining.addClass('fg-white');
+                } else {
+                    remaining.text('-' + millisecondsToTime(rem));
+                    remaining.removeClass('fg-white');
+                    remaining.addClass('timesUp');
+                    remaining.addClass('fg-red');
+                }
         } else {
             console.log(message);
         }
@@ -81,33 +94,6 @@ function timer_ws(congregation_ws, reload, showWarning) {
     mySocket.onclose = function (_) {
         console.error('Timer Socket closed unexpectedly');
     };
-
-    function runTimer() {
-        if (stopwatch === null || remaining == null || value === null || start === null)
-            return;
-        let diff = (new Date).getTime() - start;
-        stopwatch.innerText = millisecondsToTime(diff);
-        let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000) - diff;
-        if (span >= 0) {
-            remaining.text(millisecondsToTime(span));
-            remaining.removeClass('fg-red');
-            remaining.removeClass('timesUp');
-            remaining.addClass('fg-white');
-            sent = false;
-        } else {
-            if (mySocket !== null && !sent && !reload && showWarning) {
-                mySocket.send(JSON.stringify({
-                    'alert': 'time',
-                }));
-                sent = true;
-            }
-            remaining.text('-' + millisecondsToTime(span));
-            remaining.removeClass('fg-white');
-            remaining.addClass('timesUp');
-            remaining.addClass('fg-red');
-        }
-        timeout = setTimeout(runTimer, 500)
-    }
 
     function millisecondsToTime(ms) {
         if (ms < 0)

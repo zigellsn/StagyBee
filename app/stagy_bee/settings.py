@@ -159,6 +159,8 @@ LOCALE_PATHS = (
 
 TIME_ZONE = 'CET'
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
+
 USE_I18N = True
 
 USE_L10N = True
