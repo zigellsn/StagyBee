@@ -22,8 +22,6 @@ from audit.models import Audit
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
-from stopwatch.consumers import get_duration
-from stopwatch.models import TimeEntry
 from .workbook.workbook import WorkbookExtractor
 
 
@@ -36,10 +34,6 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        message = await self._redis.connect_timer(
-            f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
-        if message is not None:
-            await self.send_json(message)
         workbook_extractor = WorkbookExtractor()
         urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
         times = await workbook_extractor.get_workbooks(urls, self.scope["url_route"]["kwargs"]["language"])
@@ -65,20 +59,6 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
                 await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
                                                                     credential, text_data)
             message_type = "alert"
-        elif "timer" in text_data:
-            message_type = "timer"
-            if text_data["timer"] == "start":
-                await self._redis.add_timer(self.__get_redis_key(congregation), text_data["talk"], text_data["start"],
-                                            text_data["value"], text_data["index"])
-            elif text_data["timer"] == "stop":
-                credential = await database_sync_to_async(__get_congregation__)(congregation)
-                talk, start, value, _ = await self._redis.get_timer(self.__get_redis_key(congregation))
-                json_value = json.loads(value)
-                duration = get_duration(json_value)
-                await database_sync_to_async(__persist_time_entry__)(credential, talk, start, duration)
-                await self._redis.remove_timer(self.__get_redis_key(congregation))
-            else:
-                return
         else:
             return
         await self.channel_layer.group_send(congregation_group_name, {"type": message_type, message_type: text_data})
@@ -99,11 +79,6 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
 
 def __get_congregation__(congregation):
     return Credential.objects.get(congregation__exact=congregation)
-
-
-def __persist_time_entry__(congregation, talk, start, duration):
-    start_time = datetime.strptime(start.decode("utf-8"), '%Y-%m-%dT%H:%M:%S%z')
-    return TimeEntry.objects.create_time_entry(congregation, talk.decode("utf-8"), start_time, datetime.now(), duration)
 
 
 def __persist_audit_log__(username, congregation, text_data):

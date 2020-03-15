@@ -11,34 +11,43 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import asyncio
 from datetime import datetime
 
+from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 
+from picker.models import Credential
 from settings import DATETIME_FORMAT
 from stage.consumers import generate_channel_group_name
 from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
+from stopwatch.models import TimeEntry
+from timer import Timer, GLOBAL_TIMERS
 
 
 class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._timer = None
-
     async def connect(self):
-        await self.channel_layer.group_add(
-            generate_channel_group_name("timer", self.scope["url_route"]["kwargs"]["congregation"]),
-            self.channel_name
-        )
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        congregation_group_name = generate_channel_group_name("timer", congregation)
+        await self.channel_layer.group_add(congregation_group_name, self.channel_name)
         await self.accept()
 
+        timer = GLOBAL_TIMERS.get(congregation)
+        if timer is not None:
+            context = timer.get_context()
+            start = datetime.strptime(context["start"], DATETIME_FORMAT)
+            delta = datetime.now() - start
+            await self.channel_layer.group_send(congregation_group_name,
+                                                {"timer": {"mode": "running",
+                                                           "remaining": get_json_duration(delta.seconds),
+                                                           "duration": context["duration"],
+                                                           "name": timer.get_timer_name(),
+                                                           "start": context["start"],
+                                                           "index": context["index"]}, "type": "timer"})
+
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            generate_channel_group_name("timer", self.scope["url_route"]["kwargs"]["congregation"]),
-            self.channel_name
-        )
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        await self.channel_layer.group_discard(generate_channel_group_name("timer", congregation), self.channel_name)
         raise StopConsumer()
 
     async def timeout_callback(self, name, context, _):
@@ -47,60 +56,49 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
         start = datetime.strptime(context["start"], DATETIME_FORMAT)
         delta = datetime.now() - start
         await self.channel_layer.group_send(congregation_group_name,
-                                            {"timer": {"sync": get_json_duration(delta.seconds),
+                                            {"timer": {"mode": "sync", "remaining": get_json_duration(delta.seconds),
                                                        "duration": context["duration"],
                                                        "name": name, "index": context["index"]}, "type": "timer"})
 
     async def receive_json(self, text_data, **kwargs):
-        congregation_group_name = generate_channel_group_name("timer",
-                                                              self.scope["url_route"]["kwargs"]["congregation"])
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        congregation_group_name = generate_channel_group_name("timer", congregation)
         if "timer" not in text_data:
             return
         if text_data["timer"] == "start":
             await self.channel_layer.group_send(congregation_group_name,
-                                                {"timer": {"timer": "started", "name": text_data["name"],
+                                                {"timer": {"mode": "started", "name": text_data["name"],
                                                            "index": text_data["index"]}, "type": "timer"})
-            if self._timer is None:
+            timer = GLOBAL_TIMERS.get(congregation)
+            if timer is None:
                 context = {"duration": text_data["duration"],
                            "start": datetime.now().strftime(DATETIME_FORMAT),
                            "index": text_data["index"]}
-                self._timer = Timer(1, self.timeout_callback, context=context, timer_name=text_data["name"])
+                GLOBAL_TIMERS[congregation] = Timer(1, self.timeout_callback, context=context,
+                                                    timer_name=text_data["name"])
         elif text_data["timer"] == "stop":
-            if self._timer is not None:
-                self._timer.cancel()
-                self._timer = None
+            timer = GLOBAL_TIMERS.get(congregation)
+            if timer is not None:
+                context = timer.get_context()
+                duration = get_duration(context["duration"])
+                credential = await database_sync_to_async(__get_congregation__)(congregation)
+                await database_sync_to_async(__persist_time_entry__)(credential, timer.get_timer_name(),
+                                                                     context["start"], duration)
+                timer.cancel()
+                GLOBAL_TIMERS.pop(congregation)
             await self.channel_layer.group_send(congregation_group_name,
-                                                {"timer": {"timer": "stopped"}, "type": "timer"})
+                                                {"timer": {"mode": "stopped"}, "type": "timer"})
 
     async def timer(self, event):
         await self.send_json(event)
 
 
-class Timer:
-    def __init__(self, interval, callback, first_immediately=True, timer_name="timer", context=None):
-        self._interval = interval
-        self._first_immediately = first_immediately
-        self._callback = callback
-        self._name = timer_name
-        self._context = context
-        self._is_first_call = True
-        self._running = True
-        self._task = asyncio.create_task(self._job())
+def __get_congregation__(congregation):
+    return Credential.objects.get(congregation__exact=congregation)
 
-    async def _job(self):
-        try:
-            while self._running:
-                if not self._is_first_call or not self._first_immediately:
-                    await asyncio.sleep(self._interval)
-                await self._callback(self._name, self._context, self)
-                self._is_first_call = False
-            self._running = False
-        except Exception as ex:
-            print(ex)
 
-    def cancel(self):
-        self._running = False
-        self._task.cancel()
+def __persist_time_entry__(congregation, talk, start, duration):
+    return TimeEntry.objects.create_time_entry(congregation, talk, start, datetime.now(), duration)
 
 
 def get_duration(duration):

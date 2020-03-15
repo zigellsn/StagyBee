@@ -27,8 +27,8 @@ function console_ws(language, congregation_ws) {
         protocol = 'wss://'
     }
 
-    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/${language}/console/${congregation_ws}/`,
-    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/' + language + '/console/' + congregation_ws + '/',
+    // let consoleSocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/${language}/console/${congregation_ws}/`,
+    let consoleSocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/' + language + '/console/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
     let centralTimerSocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
@@ -43,29 +43,26 @@ function console_ws(language, congregation_ws) {
     };
 
     centralTimerSocket.onmessage = function (e) {
-        console.log(e)
+        let data = JSON.parse(e.data);
+        if ('type' in data && data['type'] === 'timer') {
+            running = data['timer']['index'];
+        }
+        if ('type' in data && data['type'] === 'timer' && 'mode' in data['timer'] && data['timer']['mode'] === 'running') {
+            setRunningTalk(data['timer']['index']);
+            $('#submit_stop').removeClass("light").addClass("primary");
+        }
     };
 
-    mySocket.onopen = function (_) {
+    consoleSocket.onopen = function (_) {
         console.log('Console WebSocket CONNECT successful');
         customTalkName.style.display = 'none';
-        let list = $('#talk_list');
-        list.children('.node').each(function () {
-            list.data('listview').del(this);
-        });
-        list.children('.node-group').each(function () {
-            list.data('listview').del(this);
-        });
+        removeAllListItems();
     };
 
-    mySocket.onmessage = function (e) {
+    consoleSocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
         if (data === undefined) {
             return;
-        }
-        if ('type' in data && data['type'] === 'timer' && 'timer' in data && 'start' in data['timer']) {
-            running = data['timer']['index'];
-            $('#submit_stop').removeClass("light").addClass("primary");
         }
         if ('type' in data && data['type'] === 'times' && 'times' in data) {
             let times = data['times'];
@@ -106,31 +103,45 @@ function console_ws(language, congregation_ws) {
                     caption: gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
-                if (running !== -1 && running < lv[0].childNodes.length) {
-                    $('#submit_stop').removeClass("light").addClass("primary");
-                    lv[0].childNodes[running].click();
-                } else
-                    lv.children('.node').first().click();
-            }
-        }
+                lv.children('.node').first().click();
+                lv.on("node-click", function (e) {
+                    let talkName = e.detail.node[0];
+                    if (talkName.innerText === gettext('Benutzerdefiniert')) {
+                        customTalkName.style.display = 'block';
+                    } else {
+                        customTalkName.style.display = 'none';
+                    }
+                    let t = talkName.querySelector('div.content').innerText;
+                    $('#time').data('timepicker').time('0:' + t + ':0');
 
+                });
+            }
+            setRunningTalk(running);
+        }
     };
 
-    $('#talk_list').on("node-click", function (e) {
-        let talkName = e.detail.node[0];
-        if (talkName.innerText === gettext('Benutzerdefiniert')) {
-            customTalkName.style.display = 'block';
-        } else {
-            customTalkName.style.display = 'none';
-        }
-        let t = talkName.querySelector('div.content').innerText;
-        $('#time').data('timepicker').time('0:' + t + ':0');
-
-    });
-
-    mySocket.onclose = function (_) {
+    consoleSocket.onclose = function (_) {
         console.error('Console WebSocket closed unexpectedly');
     };
+
+    function setRunningTalk(talk) {
+        let lv = $('#talk_list');
+        if (talk !== -1 && talk < lv[0].childNodes.length) {
+            $('#submit_stop').removeClass("light").addClass("primary");
+            lv[0].childNodes[talk].click();
+        } else
+            lv.children('.node').first().click();
+    }
+
+    function removeAllListItems() {
+        let list = $('#talk_list');
+        list.children('.node').each(function () {
+            list.data('listview').del(this);
+        });
+        list.children('.node-group').each(function () {
+            list.data('listview').del(this);
+        });
+    }
 
     if (submitTime !== null)
         submitTime.onclick = function (_) {
@@ -158,13 +169,6 @@ function console_ws(language, congregation_ws) {
                 'name': talkName,
                 'index': index
             }));
-            mySocket.send(JSON.stringify({
-                'timer': 'start',
-                'talk': talkName,
-                'start': moment().format(),
-                'value': time,
-                'index': index
-            }));
             running = index;
             $('#submit_stop').removeClass("light").addClass("primary");
         };
@@ -173,7 +177,6 @@ function console_ws(language, congregation_ws) {
         submitStop.onclick = function (_) {
             if (running !== -1) {
                 centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
-                mySocket.send(JSON.stringify({'timer': 'stop'}));
                 $('#talk_list').find('.current').next().click();
                 $('#submit_stop').removeClass("primary").addClass("light");
                 running = -1;
@@ -182,7 +185,7 @@ function console_ws(language, congregation_ws) {
 
     if (submitScrim !== null)
         submitScrim.onclick = function (_) {
-            mySocket.send(JSON.stringify({
+            consoleSocket.send(JSON.stringify({
                 'alert': 'scrim'
             }));
         };
@@ -191,7 +194,7 @@ function console_ws(language, congregation_ws) {
         submitText.onclick = function (_) {
             let message = document.getElementById('text_message').value;
             if (message !== undefined && message !== '')
-                mySocket.send(JSON.stringify({
+                consoleSocket.send(JSON.stringify({
                     'alert': 'message',
                     'value': message
                 }));

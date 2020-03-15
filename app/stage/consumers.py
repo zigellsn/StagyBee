@@ -156,10 +156,6 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
         )
         await self.accept()
         await self._redis.connect_uri(self.__get_redis_key(congregation), self.channel_name)
-        message = await self._redis.connect_timer(
-            f"stagybee::timer:{generate_channel_group_name('console', congregation)}")
-        if message is not None:
-            await self.send_json(message)
 
     async def disconnect(self, close_code):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]

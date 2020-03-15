@@ -19,6 +19,7 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
     let stopwatch = document.getElementById('stopwatch');
     let talk = document.getElementById('talk');
     let talkNumber = document.getElementById('talk_number');
+    let line = undefined;
     if (talk !== null)
         talk.style.display = 'none';
     let remaining = $('#remaining');
@@ -29,32 +30,33 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
         protocol = 'wss://'
     }
 
-    // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/central_timer/${congregation_ws}/`,
-    let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
+    // let centralTimerSocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/central_timer/${congregation_ws}/`,
+    let centralTimerSocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
         null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
 
-    mySocket.onopen = function (_) {
+    centralTimerSocket.onopen = function (_) {
         console.log('Timer WebSocket CONNECT successful');
     };
 
-    mySocket.onmessage = function (e) {
+    centralTimerSocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
         let message = data['timer'];
         if (message === undefined)
             return;
 
-        if (message['timer'] === 'started') {
+        if (message['mode'] === 'started') {
             if (talk !== null)
                 talk.style.display = 'block';
             if (talkNumber !== null)
                 talkNumber.innerText = message['name'];
-        } else if (message['timer'] === 'stopped') {
+            showTimer(message['timer']);
+        } else if (message['mode'] === 'stopped') {
             if (talk !== null)
                 talk.style.display = 'none';
             if (reload) {
                 location.reload();
             } else {
-                mySocket.send(JSON.stringify({
+                centralTimerSocket.send(JSON.stringify({
                     'alert': 'stop',
                 }));
             }
@@ -62,12 +64,13 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
                 remaining.text(millisecondsToTime(0));
                 stopwatch.innerText = millisecondsToTime(0);
             }
-        } else if ('sync' in message) {
+            showTimer(message)
+        } else if (message['mode'] === 'sync') {
             if (talk !== null)
                 talk.style.display = 'block';
             if (talkNumber !== null)
                 talkNumber.innerText = message['name'];
-            let value = message['sync'];
+            let value = message['remaining'];
             let duration = message['duration'];
             let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
             let span_duration = (parseInt(duration['h']) * 3600000 + parseInt(duration['m']) * 60000 + parseInt(duration['s']) * 1000);
@@ -86,14 +89,52 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
                     remaining.addClass('timesUp');
                     remaining.addClass('fg-red');
                 }
-        } else {
-            console.log(message);
+        } else if (message['mode'] === 'running') {
+            showTimer(message);
         }
     };
 
-    mySocket.onclose = function (_) {
+    centralTimerSocket.onclose = function (_) {
         console.error('Timer Socket closed unexpectedly');
     };
+
+    try {
+        if ($('#container') !== undefined)
+            line = new ProgressBar.Line('#container', {
+                strokeWidth: 1,
+                trailColor: '#41545e',
+                trailWidth: 0.1,
+                svgStyle: {
+                    display: 'block',
+                    width: '100%',
+                },
+                from: {color: '#00AFF0'},
+                to: {color: '#CE352C'},
+                step: function (state, line, attachment) {
+                    line.path.setAttribute('stroke', state.color);
+                },
+            });
+    } catch (_) {
+
+    }
+
+    function showTimer(timer) {
+        if (line === undefined)
+            return;
+        if ('mode' in timer && (timer['mode'] === 'started') || timer['mode'] === 'running') {
+            let value = timer['duration'];
+            let start = moment(timer['start']);
+            let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
+            let diff = (new Date).getTime() - start;
+            line.set(diff / span);
+            line.animate(1.0, {
+                duration: span - diff
+            });
+        } else if ('mode' in timer && timer['mode'] === 'stopped') {
+            line.set(0.0);
+            line.stop();
+        }
+    }
 
     function millisecondsToTime(ms) {
         if (ms < 0)

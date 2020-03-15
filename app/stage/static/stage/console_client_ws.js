@@ -20,21 +20,6 @@ function console_client_ws(congregation_ws) {
     let activity = null;
     let loc = window.location;
 
-    let line = new ProgressBar.Line('#container', {
-        strokeWidth: 1,
-        trailColor: '#41545e',
-        trailWidth: 0.1,
-        svgStyle: {
-            display: 'block',
-            width: '100%',
-        },
-        from: {color: '#00AFF0'},
-        to: {color: '#CE352C'},
-        step: function (state, line, attachment) {
-            line.path.setAttribute('stroke', state.color);
-        },
-    });
-
     let protocol = 'ws://';
     if (loc.protocol === 'https:') {
         protocol = 'wss://'
@@ -64,29 +49,11 @@ function console_client_ws(congregation_ws) {
             });
     }
 
-    function showTimer(timer) {
-        if (timer['timer'] === 'start' && line !== null) {
-            let value = timer['value'];
-            let start = moment(timer['start']);
-            let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
-            let diff = (new Date).getTime() - start;
-            line.set(diff / span);
-            line.animate(1.0, {
-                duration: span - diff
-            });
-        } else if (timer['timer'] === 'stop' && line !== null) {
-            line.set(0.0);
-            line.stop();
-        }
-    }
-
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
 
         if ('alert' in data)
             showAlert(data['alert']);
-        if ('timer' in data)
-            showTimer(data['timer']);
     };
 
     mySocket.onopen = function (_) {
