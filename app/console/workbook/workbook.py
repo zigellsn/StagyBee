@@ -89,7 +89,7 @@ class WorkbookExtractor:
     async def __get_language_regex__(language):
         switcher = {
             "en": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|or(\u0020|\u00A0)less\))"],
-            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", r"\.\)"],
+            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", r"Min\.\)"],
             "fr": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|ou(\u0020|\u00A0)moins\))"],
             "fa": [r"\(\u200f[\u06f0-\u06f9]+(\u0020|\u00A0)\u062f\u0642\u06cc\u0642\u0647.*?\)", r"[\u06f0-\u06f9]+",
                    r"(\)|\u06cc\u0627(\u0020|\u00A0)\u06a9\u0645\u062a\u0631\))"],
@@ -134,10 +134,10 @@ class WorkbookExtractor:
             clean = await self.__clean_html__(line, regex[2])
             if clean is None or clean == "":
                 continue
-            times_tmp = re.findall(regex[0], clean)
+            times_tmp = re.search(regex[0], clean)
             if not times_tmp:
                 continue
-            ti = re.findall(regex[1], clean)
+            ti = re.findall(regex[1], times_tmp.group(0))
             if not ti:
                 continue
             times.append([int(ti[0]), clean])
