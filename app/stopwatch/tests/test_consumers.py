@@ -11,19 +11,24 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import asyncio
 from asyncio import CancelledError
 
 import pytest
+from channels.db import database_sync_to_async
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.urls import re_path
 
 from stopwatch.consumers import CentralTimerConsumer
+from picker.tests import create_credential
 
 
 @pytest.mark.asyncio
+@pytest.mark.django_db
 async def test_central_timer_consumer():
+    await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/central_timer/LE/")
@@ -40,19 +45,19 @@ async def test_central_timer_consumer():
             break
         except CancelledError:
             break
-        if "timer" in response["timer"]:
+        if "mode" in response["timer"] and response["timer"]["mode"] == "started":
             assert response == {
-                "timer": {"timer": "started", "name": "abc", "index": 2},
+                "timer": {"mode": "started", "name": "abc", "index": 2},
                 "type": "timer"}
             timer = True
         else:
-            assert "sync" in response["timer"]
+            assert "mode" in response["timer"]
             sync = True
         await asyncio.sleep(0.5)
 
     assert timer and sync
 
     await communicator.send_json_to({"timer": "stop"})
-    assert await communicator.receive_json_from() == {"timer": {"timer": "stopped"}, "type": "timer"}
+    assert await communicator.receive_json_from() == {"timer": {"mode": "stopped"}, "type": "timer"}
 
     await communicator.disconnect()

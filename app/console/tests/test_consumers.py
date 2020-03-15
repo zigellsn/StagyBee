@@ -32,16 +32,6 @@ async def test_console_consumer():
     assert connected
     response = await communicator.receive_json_from()
     assert response["type"] == "times"
-    await communicator.send_json_to(
-        {"timer": "start", "talk": "Foo", "value": {"h": "0", "m": "5", "s": "0"},
-         "start": "2020-02-29T17:40:00+01:00", "index": 1})
-    response = await communicator.receive_json_from()
-    assert response == {"type": "timer",
-                        "timer": {"timer": "start", "talk": "Foo", "value": {"h": "0", "m": "5", "s": "0"},
-                                  "start": "2020-02-29T17:40:00+01:00", "index": 1}}
-    await communicator.send_json_to({"timer": "stop"})
-    response = await communicator.receive_json_from()
-    assert response == {"timer": {"timer": "stop"}, "type": "timer"}
     await communicator.send_json_to({"alert": {"message": "Bla"}})
     response = await communicator.receive_json_from()
     assert response == {"alert": {"alert": {"message": "Bla"}}, "type": "alert"}
