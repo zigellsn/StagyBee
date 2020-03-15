@@ -122,7 +122,7 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
     }
 
     function showTimer(timer) {
-        if (line === undefined)
+        if (line === undefined || timer === undefined)
             return;
         if ('mode' in timer && (timer['mode'] === 'started') || timer['mode'] === 'running') {
             let value = timer['duration'];

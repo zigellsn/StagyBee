@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import asyncio
+import datetime
 import json
 import re
 from contextlib import suppress
@@ -22,6 +23,7 @@ from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from decouple import config
 from django.shortcuts import get_object_or_404
+from django.utils import formats
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 from picker.models import Credential
@@ -166,10 +168,20 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
         raise StopConsumer()
 
+    async def receive_json(self, text_data, **kwargs):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        congregation_channel_group = generate_channel_group_name("console", congregation)
+        time = datetime.datetime.fromtimestamp(text_data["time"] / 1000)
+        text_data["time"] = formats.date_format(time, "DATETIME_FORMAT", use_l10n=True)
+        await self.channel_layer.group_send(congregation_channel_group, {"type": "message", "message": text_data})
+
     async def alert(self, event):
         await self.send_json(event)
 
     async def timer(self, event):
+        await self.send_json(event)
+
+    async def message(self, event):
         await self.send_json(event)
 
     @staticmethod

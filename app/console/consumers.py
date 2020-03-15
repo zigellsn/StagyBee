@@ -72,6 +72,9 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
     async def timer(self, event):
         await self.send_json(event)
 
+    async def message(self, event):
+        await self.send_json(event)
+
     @staticmethod
     def __get_redis_key(congregation):
         return f"stagybee::timer:{generate_channel_group_name('console', congregation)}"

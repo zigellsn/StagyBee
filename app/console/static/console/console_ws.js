@@ -19,6 +19,7 @@ function console_ws(language, congregation_ws) {
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
     let customTalkName = document.getElementById('custom_talk');
+    let messageAcknowledgement = document.getElementById('messageAcknowledgement');
     let talkNameInput = document.getElementById('talk_name');
     let loc = window.location;
     let running = -1;
@@ -56,6 +57,7 @@ function console_ws(language, congregation_ws) {
     consoleSocket.onopen = function (_) {
         console.log('Console WebSocket CONNECT successful');
         customTalkName.style.display = 'none';
+        messageAcknowledgement.style.display = 'none';
         removeAllListItems();
     };
 
@@ -117,6 +119,11 @@ function console_ws(language, congregation_ws) {
                 });
             }
             setRunningTalk(running);
+        }
+        if ('type' in data && data['type'] === 'message' && 'message' in data) {
+            messageAcknowledgement.style.display = 'block';
+            let line = gettext('Nachricht vom %s bestätigt.');
+            messageAcknowledgement.innerText = interpolate(line, [data['message']['time']]);
         }
     };
 
@@ -193,10 +200,12 @@ function console_ws(language, congregation_ws) {
     if (submitText !== null)
         submitText.onclick = function (_) {
             let message = document.getElementById('text_message').value;
-            if (message !== undefined && message !== '')
+            if (message !== undefined && message !== '') {
                 consoleSocket.send(JSON.stringify({
                     'alert': 'message',
                     'value': message
                 }));
+                messageAcknowledgement.style.display = 'none';
+            }
         };
 }
