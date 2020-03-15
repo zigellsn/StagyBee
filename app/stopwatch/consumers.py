@@ -15,9 +15,9 @@ from datetime import datetime
 
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
+from django.conf import settings
 
 from picker.models import Credential
-from settings import DATETIME_FORMAT
 from stage.consumers import generate_channel_group_name
 from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 from stopwatch.models import TimeEntry
@@ -35,7 +35,7 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
         timer = GLOBAL_TIMERS.get(congregation)
         if timer is not None:
             context = timer.get_context()
-            start = datetime.strptime(context["start"], DATETIME_FORMAT)
+            start = datetime.strptime(context["start"], settings.DATETIME_FORMAT)
             delta = datetime.now() - start
             await self.channel_layer.group_send(congregation_group_name,
                                                 {"timer": {"mode": "running",
@@ -53,7 +53,7 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
     async def timeout_callback(self, name, context, _):
         congregation_group_name = generate_channel_group_name("timer",
                                                               self.scope["url_route"]["kwargs"]["congregation"])
-        start = datetime.strptime(context["start"], DATETIME_FORMAT)
+        start = datetime.strptime(context["start"], settings.DATETIME_FORMAT)
         delta = datetime.now() - start
         await self.channel_layer.group_send(congregation_group_name,
                                             {"timer": {"mode": "sync", "remaining": get_json_duration(delta.seconds),
@@ -72,7 +72,7 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is None:
                 context = {"duration": text_data["duration"],
-                           "start": datetime.now().strftime(DATETIME_FORMAT),
+                           "start": datetime.now().strftime(settings.DATETIME_FORMAT),
                            "index": text_data["index"]}
                 GLOBAL_TIMERS[congregation] = Timer(1, self.timeout_callback, context=context,
                                                     timer_name=text_data["name"])

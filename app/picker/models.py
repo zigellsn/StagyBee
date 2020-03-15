@@ -21,8 +21,6 @@ from django.db import models
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from settings import DATETIME_FORMAT
-
 REDIS_KEY = "stagybee::console:congregation.console."
 logger = logging.getLogger(__name__)
 
@@ -55,7 +53,7 @@ async def __get_running_since__(congregation):
     if with_since:
         redis.close()
         await redis.wait_closed()
-        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], DATETIME_FORMAT)
+        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], settings.DATETIME_FORMAT)
 
 
 class CredentialQuerySet(QuerySet):
