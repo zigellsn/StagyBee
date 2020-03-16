@@ -92,7 +92,6 @@ msgid "Stopp"
 msgstr "Stop"
 
 #: .\console\templates\console\console.html:67
-#, fuzzy
 #| msgid "Bildschirm verdunkeln"
 msgid "Bildschirmsteuerung"
 msgstr "Display control"

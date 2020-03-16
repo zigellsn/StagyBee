@@ -48,7 +48,7 @@ msgstr "Message from %s acknowledged."
 
 #: .\console\static\console\console_ws.js:134
 msgid "Verdunkelung aufheben"
-msgstr "Un.ute stage display"
+msgstr "Unmute stage display"
 
 #: .\console\static\console\console_ws.js:136
 msgid "Bildschirm verdunkeln"
