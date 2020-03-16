@@ -22,6 +22,5 @@ urlpatterns = [
     path('', ChooseConsoleView.as_view(), name='choose_console'),
     path('<str:pk>/', ConsoleView.as_view(), name='console'),
     path('audit/', include('audit.urls')),
-    path('timer/', include('stopwatch.urls')),
-    path('settings/', SettingsView.as_view(), name='settings')
+    path('timer/', include('stopwatch.urls'))
 ]

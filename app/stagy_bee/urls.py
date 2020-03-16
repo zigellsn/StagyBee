@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
+from console.views import SettingsView
 from .views import redirect_root
 
 urlpatterns = []
@@ -28,6 +29,7 @@ urlpatterns += i18n_patterns(
     path('picker/', include('picker.urls')),
     path('receiver/', include('receiver.urls')),
     path('console/', include('console.urls')),
+    path('settings/', SettingsView.as_view(), name='settings'),
     path('admin/', admin.site.urls),
     prefix_default_language=False
 )

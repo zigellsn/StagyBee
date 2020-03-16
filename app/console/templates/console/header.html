@@ -20,7 +20,7 @@
         {% if no_settings|default_if_none:False == False %}
             <div class="app-bar-container float-right">
                 <div class="app-bar-item pl-4 pr-4 pt-2">
-                    <a href="{% url 'console:settings' %}">
+                    <a href="{% url 'settings' %}">
                     <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
                           data-hint-position="bottom"></span>
                     </a>
