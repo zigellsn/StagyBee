@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 21:04+0100\n"
+"POT-Creation-Date: 2020-03-16 19:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgid "Zum Audit-Log..."
 msgstr ""
 
 #: .\console\templates\console\console.html:12
-#: .\console\templates\console\console.html:54
+#: .\console\templates\console\console.html:52
 msgid "Stoppuhr"
 msgstr ""
 
@@ -70,37 +70,40 @@ msgstr ""
 msgid "Übrig"
 msgstr ""
 
-#: .\console\templates\console\console.html:43
+#: .\console\templates\console\console.html:41
 #: .\stopwatch\templates\stopwatch\timeentry_archive_week.html:29
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:7
 #: .\stopwatch\templates\stopwatch\timeentry_list.html:41
 msgid "Aufgabe"
 msgstr ""
 
-#: .\console\templates\console\console.html:50
-#: .\console\templates\console\console.html:51
+#: .\console\templates\console\console.html:48
+#: .\console\templates\console\console.html:49
 msgid "Titel"
 msgstr ""
 
-#: .\console\templates\console\console.html:62
+#: .\console\templates\console\console.html:60
 msgid "Start"
 msgstr ""
 
-#: .\console\templates\console\console.html:63
+#: .\console\templates\console\console.html:61
 msgid "Stopp"
 msgstr ""
 
-#: .\console\templates\console\console.html:69
-#: .\console\templates\console\console.html:72
+#: .\console\templates\console\console.html:67
+msgid "Bildschirmsteuerung"
+msgstr ""
+
+#: .\console\templates\console\console.html:71
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\console\templates\console\console.html:77
-#: .\console\templates\console\console.html:79
+#: .\console\templates\console\console.html:76
+#: .\console\templates\console\console.html:78
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:82
+#: .\console\templates\console\console.html:83
 msgid "Sende Nachricht"
 msgstr ""
 

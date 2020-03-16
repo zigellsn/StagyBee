@@ -18,6 +18,7 @@ function console_ws(language, congregation_ws) {
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
+    let submitRefresh = document.getElementById('submit_refresh');
     let customTalkName = document.getElementById('custom_talk');
     let messageAcknowledgement = document.getElementById('messageAcknowledgement');
     let talkNameInput = document.getElementById('talk_name');
@@ -59,6 +60,9 @@ function console_ws(language, congregation_ws) {
         customTalkName.style.display = 'none';
         messageAcknowledgement.style.display = 'none';
         removeAllListItems();
+        consoleSocket.send(JSON.stringify({
+            'alert': 'status'
+        }));
     };
 
     consoleSocket.onmessage = function (e) {
@@ -121,9 +125,17 @@ function console_ws(language, congregation_ws) {
             setRunningTalk(running);
         }
         if ('type' in data && data['type'] === 'message' && 'message' in data) {
-            messageAcknowledgement.style.display = 'block';
-            let line = gettext('Nachricht vom %s bestätigt.');
-            messageAcknowledgement.innerText = interpolate(line, [data['message']['time']]);
+            if (data['message']['message'] === 'ACK') {
+                messageAcknowledgement.style.display = 'block';
+                let line = gettext('Nachricht vom %s bestätigt.');
+                messageAcknowledgement.innerText = interpolate(line, [data['message']['time']]);
+            } else if (data['message']['message'] === 'status') {
+                if (data['message']['scrim']) {
+                    submitScrim.innerText = gettext('Verdunkelung aufheben')
+                } else {
+                    submitScrim.innerText = gettext('Bildschirm verdunkeln')
+                }
+            }
         }
     };
 
@@ -194,6 +206,16 @@ function console_ws(language, congregation_ws) {
         submitScrim.onclick = function (_) {
             consoleSocket.send(JSON.stringify({
                 'alert': 'scrim'
+            }));
+            consoleSocket.send(JSON.stringify({
+                'alert': 'status'
+            }));
+        };
+
+    if (submitRefresh !== null)
+        submitRefresh.onclick = function (_) {
+            consoleSocket.send(JSON.stringify({
+                'alert': 'status'
             }));
         };
 

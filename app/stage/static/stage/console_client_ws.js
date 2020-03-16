@@ -51,7 +51,7 @@ function console_client_ws(congregation_ws) {
                     removeOnClose: true,
                     width: 'auto',
                     onClose: function () {
-                      mySocket.send(JSON.stringify({'message': 'ACK', 'time': date}))
+                        mySocket.send(JSON.stringify({'message': 'ACK', 'time': date}))
                     }
                 });
         }
@@ -60,7 +60,10 @@ function console_client_ws(congregation_ws) {
     mySocket.onmessage = function (e) {
         let data = JSON.parse(e.data);
         if ('alert' in data)
-            showAlert(data['alert']);
+            if (data['alert']['alert'] === 'status')
+                mySocket.send(JSON.stringify({'message': 'status', 'scrim': scrimTrigger}));
+            else
+                showAlert(data['alert']);
     };
 
     mySocket.onopen = function (_) {

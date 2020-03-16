@@ -171,9 +171,11 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
     async def receive_json(self, text_data, **kwargs):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         congregation_channel_group = generate_channel_group_name("console", congregation)
-        time = datetime.datetime.fromtimestamp(text_data["time"] / 1000)
-        text_data["time"] = formats.date_format(time, "DATETIME_FORMAT", use_l10n=True)
-        await self.channel_layer.group_send(congregation_channel_group, {"type": "message", "message": text_data})
+        if "message" in text_data:
+            if text_data["message"] == "ACK":
+                time = datetime.datetime.fromtimestamp(text_data["time"] / 1000)
+                text_data["time"] = formats.date_format(time, "DATETIME_FORMAT", use_l10n=True)
+            await self.channel_layer.group_send(congregation_channel_group, {"type": "message", "message": text_data})
 
     async def alert(self, event):
         await self.send_json(event)

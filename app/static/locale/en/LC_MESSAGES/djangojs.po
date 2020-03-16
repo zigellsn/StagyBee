@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-25 19:05+0100\n"
+"POT-Creation-Date: 2020-03-16 19:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,33 +18,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\console\static\console\console_ws.js:57
+#: .\console\static\console\console_ws.js:79
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr "Life and Ministry Meeting"
 
-#: .\console\static\console\console_ws.js:73
+#: .\console\static\console\console_ws.js:95
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr "Public Meeting"
 
-#: .\console\static\console\console_ws.js:76
+#: .\console\static\console\console_ws.js:98
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr "Public talk (30 min.)"
 
-#: .\console\static\console\console_ws.js:80
+#: .\console\static\console\console_ws.js:102
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr "Watchtower Study (60 min.)"
 
-#: .\console\static\console\console_ws.js:84
-#: .\console\static\console\console_ws.js:87
-#: .\console\static\console\console_ws.js:98
-#: .\console\static\console\console_ws.js:125
+#: .\console\static\console\console_ws.js:106
+#: .\console\static\console\console_ws.js:109
+#: .\console\static\console\console_ws.js:115
+#: .\console\static\console\console_ws.js:181
 msgid "Benutzerdefiniert"
 msgstr "Custom"
 
-#: .\console\static\console\console_ws.js:119
+#: .\console\static\console\console_ws.js:130
+#, javascript-format
+msgid "Nachricht vom %s bestätigt."
+msgstr "Message from %s acknowledged."
+
+#: .\console\static\console\console_ws.js:134
+msgid "Verdunkelung aufheben"
+msgstr "Un.ute stage display"
+
+#: .\console\static\console\console_ws.js:136
+msgid "Bildschirm verdunkeln"
+msgstr "Mute stage display"
+
+#: .\console\static\console\console_ws.js:172
 msgid "Bitte eine Zeit > 0 angeben."
 msgstr "Please provide a time span > 0."
 
-#: .\stage\static\stage\stage_ws.js:163
+#: .\stage\static\stage\console_client_ws.js:48
 msgid "Nachricht"
 msgstr "Message"
