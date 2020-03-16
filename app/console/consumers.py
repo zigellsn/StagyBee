@@ -17,6 +17,7 @@ from datetime import datetime
 
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
+from django.utils import formats, translation
 
 from audit.models import Audit
 from picker.models import Credential
@@ -73,6 +74,12 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
         await self.send_json(event)
 
     async def message(self, event):
+        if event["message"]["message"] == "ACK":
+            time = datetime.fromtimestamp(event["message"]["time"] / 1000)
+            old_lang = translation.get_language()
+            translation.activate(self.scope["url_route"]["kwargs"]["language"])
+            event["message"]["time"] = formats.date_format(time, "DATETIME_FORMAT")
+            translation.activate(old_lang)
         await self.send_json(event)
 
     @staticmethod
