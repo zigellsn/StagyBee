@@ -3,11 +3,21 @@
 {% load i18n utils %}
 {% block content %}
     {% load static %}
-    <div>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="pt-4"><input class="button primary" type="submit" value="{% trans "Passwort ändern" %}"></div>
-        </form>
+    <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
+         data-material="true">
+        <div class="frame active">
+            <div class="bg-dark fg-white heading">{% trans "Passwort ändern" %}</div>
+            <div class="content">
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="pt-4"><input class="button primary" type="submit"
+                                                 value="{% trans "Passwort ändern" %}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
