@@ -18,6 +18,7 @@ function console_ws(language, congregation_ws) {
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
+    let refreshActivity = document.getElementById('refresh_activity');
     let submitRefresh = document.getElementById('submit_refresh');
     let customTalkName = document.getElementById('custom_talk');
     let messageAcknowledgement = document.getElementById('messageAcknowledgement');
@@ -59,6 +60,7 @@ function console_ws(language, congregation_ws) {
         console.log('Console WebSocket CONNECT successful');
         customTalkName.style.display = 'none';
         messageAcknowledgement.style.display = 'none';
+        refreshActivity.style.display = 'none';
         removeAllListItems();
         consoleSocket.send(JSON.stringify({
             'alert': 'status'
@@ -135,6 +137,7 @@ function console_ws(language, congregation_ws) {
                 } else {
                     submitScrim.innerText = gettext('Bildschirm verdunkeln')
                 }
+                refreshActivity.style.display = 'none';
             }
         }
     };
@@ -207,6 +210,7 @@ function console_ws(language, congregation_ws) {
             consoleSocket.send(JSON.stringify({
                 'alert': 'scrim'
             }));
+            refreshActivity.style.display = 'block';
             consoleSocket.send(JSON.stringify({
                 'alert': 'status'
             }));
@@ -217,6 +221,7 @@ function console_ws(language, congregation_ws) {
             consoleSocket.send(JSON.stringify({
                 'alert': 'status'
             }));
+            refreshActivity.style.display = 'block';
         };
 
     if (submitText !== null)
