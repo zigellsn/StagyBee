@@ -59,6 +59,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         for (const element of names) {
             let speak = '';
             let fullName = '';
+            let listenerType = '';
             if (element['givenName'] === '' && element['familyName'] === '')
                 continue;
             else if (element['givenName'] === '') {
@@ -76,9 +77,14 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
             } else {
                 speak = 'bg-gray';
             }
+            if (element['listenerType'] === 3) {
+                listenerType = 'mif-phone';
+            } else {
+                listenerType = 'mif-tablet';
+            }
             if ((showOnlyRequestToSpeak && element['requestToSpeak'] === true) || !showOnlyRequestToSpeak)
-                namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1">' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
-                // namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
+                namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1"><span class="' + listenerType + '"></span> ' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
+            // namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
             if (typeof element['listenerCount'] === 'string')
                 sumListeners += parseInt(element['listenerCount']);
             else

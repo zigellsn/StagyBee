@@ -14,7 +14,7 @@
 
 from django.urls import path, include
 
-from .views import ConsoleView, ChooseConsoleView, SettingsView
+from .views import ConsoleView, ChooseConsoleView
 
 app_name = 'console'
 
