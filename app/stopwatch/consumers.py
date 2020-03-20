@@ -66,9 +66,6 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
         if "timer" not in text_data:
             return
         if text_data["timer"] == "start":
-            await self.channel_layer.group_send(congregation_group_name,
-                                                {"timer": {"mode": "started", "name": text_data["name"],
-                                                           "index": text_data["index"]}, "type": "timer"})
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is None:
                 context = {"duration": text_data["duration"],
@@ -76,6 +73,10 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
                            "index": text_data["index"]}
                 GLOBAL_TIMERS[congregation] = Timer(1, self.timeout_callback, context=context,
                                                     timer_name=text_data["name"])
+            await self.channel_layer.group_send(congregation_group_name,
+                                                {"timer": {"mode": "started", "name": text_data["name"],
+                                                           "duration": text_data["duration"],
+                                                           "index": text_data["index"]}, "type": "timer"})
         elif text_data["timer"] == "stop":
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is not None:

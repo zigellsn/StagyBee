@@ -49,7 +49,7 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
                 talk.style.display = 'block';
             if (talkNumber !== null)
                 talkNumber.innerText = message['name'];
-            showTimer(message['timer']);
+            showTimer(message);
         } else if (message['mode'] === 'stopped') {
             if (talk !== null)
                 talk.style.display = 'none';
