@@ -37,13 +37,11 @@
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/stage/templates" />
-        <option value="$MODULE_DIR$/picker/templates" />
-        <option value="$MODULE_DIR$/stage/templates/stage" />
-        <option value="$MODULE_DIR$/console/templates" />
-        <option value="$MODULE_DIR$/console/templates/registration" />
-        <option value="$MODULE_DIR$/console/templates/console" />
-        <option value="$MODULE_DIR$/picker/templates/picker" />
+        <option value="$MODULE_DIR$/app/stopwatch/templates" />
+        <option value="$MODULE_DIR$/app/stage/templates" />
+        <option value="$MODULE_DIR$/app/picker/templates" />
+        <option value="$MODULE_DIR$/app/console/templates" />
+        <option value="$MODULE_DIR$/app/audit/templates" />
       </list>
     </option>
   </component>
