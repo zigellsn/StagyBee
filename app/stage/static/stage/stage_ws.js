@@ -83,7 +83,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
                 listenerType = 'mif-tablet';
             }
             if ((showOnlyRequestToSpeak && element['requestToSpeak'] === true) || !showOnlyRequestToSpeak)
-                namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1"><span class="' + listenerType + '"></span> ' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
+                namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1"><span class="' + listenerType + '"></span>&nbsp;' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
             // namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
             if (typeof element['listenerCount'] === 'string')
                 sumListeners += parseInt(element['listenerCount']);
@@ -102,8 +102,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         let namesHtml = '';
         if (data === 'extractor_not_available') {
             setElements('none', '', 'none');
-            //TODO: Clear listeners if extractor is unavailable, like so:
-            //listeners.innerHTML = '';
+            listeners.innerHTML = '';
             return;
         }
         if (data === 'subscribed_to_extractor') {
@@ -113,8 +112,10 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         if ('running' in data) {
             if (data['running'] === true)
                 setElements('none', 'none', '');
-            else
+            else {
                 setElements('none', '', 'none');
+                listeners.innerHTML = '';
+            }
             return;
         }
         if ('names' in data) {

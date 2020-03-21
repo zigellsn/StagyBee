@@ -27,6 +27,8 @@ from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_
 from picker.models import Credential
 from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 
+GLOBAL_TIMEOUT = {}
+
 
 def generate_channel_group_name(function, congregation):
     con = re.sub(r'[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]', '_', congregation)
@@ -36,11 +38,16 @@ def generate_channel_group_name(function, congregation):
 class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
 
     async def connect(self):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
-            generate_channel_group_name("stage", self.scope["url_route"]["kwargs"]["congregation"]),
+            generate_channel_group_name("stage", congregation),
             self.channel_name
         )
         await self.accept()
+        timeout = GLOBAL_TIMEOUT.get(congregation)
+        if timeout is not None:
+            timeout.cancel()
+            GLOBAL_TIMEOUT.pop(congregation)
         await self.__connect_to_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
 
     async def disconnect(self, close_code):
@@ -56,7 +63,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         raise StopConsumer()
 
     async def extractor_listeners(self, event):
-        # await self.send_json("subscribed_to_extractor")
+        await self.__restart_waiter()
         await self.send_json(event["listeners"])
 
     async def extractor_status(self, event):
@@ -71,9 +78,41 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         else:
             return await super().encode_json(content=content)
 
+    async def __waiter(self):
+        await asyncio.sleep(config("EXTRACTOR_TIMEOUT", default=120))
+        reachable = await self.__get_extractor_status()
+        if not reachable:
+            await self.send_json("extractor_not_available")
+
+    async def __restart_waiter(self):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        timeout = GLOBAL_TIMEOUT.get(congregation)
+        if timeout is not None:
+            timeout.cancel()
+        GLOBAL_TIMEOUT[congregation] = asyncio.create_task(self.__waiter())
+
     @staticmethod
     def __get_redis_key(congregation):
         return f"stagybee::session:{generate_channel_group_name('stage', congregation)}"
+
+    async def __get_extractor_status(self):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
+        if credentials.touch:
+            return
+        if "session_id" in self.scope["url_route"]["kwargs"] and \
+                self.scope["url_route"]["kwargs"]["session_id"] is not None:
+            url = f"{self.extractor_url}api/status/{self.scope['url_route']['kwargs']['session_id']}/"
+            try:
+                self.task = asyncio.create_task(
+                    self.__get_request(url))
+                await self.task
+            except aiohttp.ClientError:
+                return False
+            except RetryError:
+                return False
+            else:
+                return True
 
     async def __connect_to_extractor(self, redis_key):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -143,6 +182,13 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
     async def __delete_request(self, url):
         async with aiohttp.ClientSession() as session:
             async with session.delete(url) as response:
+                return await response.json()
+
+    @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
+           stop=stop_after_delay(15))
+    async def __get_request(self, url):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
                 return await response.json()
 
 

@@ -45,6 +45,7 @@ class ReceiverView(View):
                 congregation_group_name,
                 {"type": "extractor_status", "status": request.body},
             )
+            return HttpResponse('success')
         elif event == 'meta':
             return HttpResponse('success')
 

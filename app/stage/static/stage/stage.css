@@ -42,25 +42,7 @@ body {
     }
 }
 
-@keyframes ctime {
-    0% {
-        background-color: #1d1d1d;
-    }
-    100% {
-        background-color: #ff0000;
-    }
-}
-
-@keyframes clock {
-    0% {
-        background-color: #1d1d1d;
-    }
-    100% {
-        background-color: #ffff00;
-    }
-}
-
-@keyframes pulse {
+@keyframes requestToSpeakPulse {
     0% {
         box-shadow: 0 0 15px 0 rgba(80, 155, 255, 0.9);
     }
@@ -70,15 +52,7 @@ body {
 }
 
 .requestToSpeak {
-    animation: pulse 1s infinite;
-}
-
-.timeAlert {
-    animation: ctime 1s infinite alternate;
-}
-
-.clockAlert {
-    animation: clock 1s infinite alternate;
+    animation: requestToSpeakPulse 1s infinite;
 }
 
 #container {
