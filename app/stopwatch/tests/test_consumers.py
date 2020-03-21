@@ -47,7 +47,7 @@ async def test_central_timer_consumer():
             break
         if "mode" in response["timer"] and response["timer"]["mode"] == "started":
             assert response == {
-                "timer": {"mode": "started", "name": "abc", "index": 2},
+                "timer": {"mode": "started", "name": "abc", "index": 2, "duration": {"h": "0", "m": "0", "s": "5"}},
                 "type": "timer"}
             timer = True
         else:
