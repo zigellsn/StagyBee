@@ -43,6 +43,32 @@ input[type=text] {
     background-color: #333333;
 }
 
+.card .card-header .icon {
+  float: left;
+  width: 64px;
+  height: auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.card .card-header .title {
+  font-size: 25px;
+  line-height: 1.1;
+  font-weight: 300;
+  margin: 5px 5px 5px 75px;
+}
+
+.card .card-header .subtitle {
+  font-size: 14px;
+  line-height: 1.1;
+  font-weight: 500;
+  margin: 0 5px 5px 75px;
+}
+
+.card-footer {
+    display: block;
+}
+
 @keyframes timesUpPulse {
     0% {
         text-shadow: 0 0 15px rgba(206, 53, 44, 0.9);

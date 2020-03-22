@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-16 19:47+0100\n"
+"POT-Creation-Date: 2020-03-22 13:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,26 +33,35 @@ msgstr "Message"
 msgid "Sendezeit"
 msgstr "Send time"
 
-#: .\console\templates\console\choose_console_cards.html:21
-#, python-format
-msgid "Seit %(since)s Uhr"
-msgstr "Since %(since)s"
+#: .\console\templates\console\choose_console_cards.html:20
+#python-format
+#| msgid ""
+#| "Seit %(since)s Uhr\n"
+#| "                            "
+msgid ""
+"Seit&nbsp;\n"
+"                                        %(since)s&nbsp;Uhr"
+msgstr ""
+"Since&nbsp;%(since)s\n"
+"                            "
+
+#: .\console\templates\console\choose_console_cards.html:23
+msgid "Nicht eingewählt"
+msgstr "Not active"
 
 #: .\console\templates\console\choose_console_cards.html:32
 msgid "Zur Console..."
 msgstr "Proceed to console..."
 
-#: .\console\templates\console\choose_console_cards.html:44
+#: .\console\templates\console\choose_console_cards.html:40
 msgid "Zur Stoppuhr..."
 msgstr "Proceed to stopwatch..."
 
-#: .\console\templates\console\choose_console_cards.html:59
-#, fuzzy
-#| msgid "Zum Audit-Log..."
+#: .\console\templates\console\choose_console_cards.html:51
 msgid "Zum Archiv..."
-msgstr "Proceed to audit log..."
+msgstr "Proceed to archive..."
 
-#: .\console\templates\console\choose_console_cards.html:71
+#: .\console\templates\console\choose_console_cards.html:59
 msgid "Zum Audit-Log..."
 msgstr "Proceed to audit log..."
 
@@ -92,20 +101,19 @@ msgid "Stopp"
 msgstr "Stop"
 
 #: .\console\templates\console\console.html:67
-#| msgid "Bildschirm verdunkeln"
 msgid "Bildschirmsteuerung"
 msgstr "Display control"
 
-#: .\console\templates\console\console.html:71
+#: .\console\templates\console\console.html:76
 msgid "Bildschirm verdunkeln"
 msgstr "Mute stage display"
 
-#: .\console\templates\console\console.html:76
-#: .\console\templates\console\console.html:78
+#: .\console\templates\console\console.html:86
+#: .\console\templates\console\console.html:88
 msgid "Textnachricht"
 msgstr "Text message"
 
-#: .\console\templates\console\console.html:83
+#: .\console\templates\console\console.html:93
 msgid "Sende Nachricht"
 msgstr "Send message"
 
@@ -134,7 +142,8 @@ msgstr "Language"
 msgid "Logout"
 msgstr "Logout"
 
-#: .\console\templates\console\settings.html:10
+#: .\console\templates\console\settings.html:9
+#: .\console\templates\console\settings.html:16
 msgid "Passwort ändern"
 msgstr "Change password"
 
@@ -264,8 +273,9 @@ msgstr ""
 msgid "%(stop)s Uhr"
 msgstr ""
 
-#~ msgid "Nicht berechtigt"
-#~ msgstr "Not authorized"
+#, python-format
+#~ msgid "Seit %(since)s Uhr"
+#~ msgstr "Since %(since)s"
 
 #~ msgid "Bitte den unten stehenden Fehler korrigieren."
 #~ msgstr "Please correct the error below."

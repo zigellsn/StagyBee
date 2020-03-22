@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-16 19:47+0100\n"
+"POT-Creation-Date: 2020-03-22 13:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,24 +34,30 @@ msgstr ""
 msgid "Sendezeit"
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:21
+#: .\console\templates\console\choose_console_cards.html:20
 #, python-format
-msgid "Seit %(since)s Uhr"
+msgid ""
+"Seit&nbsp;\n"
+"                                        %(since)s&nbsp;Uhr"
+msgstr ""
+
+#: .\console\templates\console\choose_console_cards.html:23
+msgid "Nicht eingewählt"
 msgstr ""
 
 #: .\console\templates\console\choose_console_cards.html:32
 msgid "Zur Console..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:44
+#: .\console\templates\console\choose_console_cards.html:40
 msgid "Zur Stoppuhr..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:59
+#: .\console\templates\console\choose_console_cards.html:51
 msgid "Zum Archiv..."
 msgstr ""
 
-#: .\console\templates\console\choose_console_cards.html:71
+#: .\console\templates\console\choose_console_cards.html:59
 msgid "Zum Audit-Log..."
 msgstr ""
 
@@ -94,16 +100,16 @@ msgstr ""
 msgid "Bildschirmsteuerung"
 msgstr ""
 
-#: .\console\templates\console\console.html:71
+#: .\console\templates\console\console.html:76
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\console\templates\console\console.html:76
-#: .\console\templates\console\console.html:78
+#: .\console\templates\console\console.html:86
+#: .\console\templates\console\console.html:88
 msgid "Textnachricht"
 msgstr ""
 
-#: .\console\templates\console\console.html:83
+#: .\console\templates\console\console.html:93
 msgid "Sende Nachricht"
 msgstr ""
 
@@ -132,7 +138,8 @@ msgstr "Langue"
 msgid "Logout"
 msgstr ""
 
-#: .\console\templates\console\settings.html:10
+#: .\console\templates\console\settings.html:9
+#: .\console\templates\console\settings.html:16
 msgid "Passwort ändern"
 msgstr ""
 
