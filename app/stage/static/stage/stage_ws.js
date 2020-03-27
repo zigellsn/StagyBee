@@ -77,7 +77,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
             } else {
                 speak = 'bg-gray';
             }
-            if (element['listenerType'] === 3) {
+            if (element['listenerType'] <= 3) {
                 listenerType = 'mif-phone';
             } else {
                 listenerType = 'mif-tablet';
