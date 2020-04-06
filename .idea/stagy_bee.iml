@@ -42,6 +42,7 @@
         <option value="$MODULE_DIR$/app/picker/templates" />
         <option value="$MODULE_DIR$/app/console/templates" />
         <option value="$MODULE_DIR$/app/audit/templates" />
+        <option value="$MODULE_DIR$/app/templates" />
       </list>
     </option>
   </component>
