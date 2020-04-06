@@ -14,10 +14,10 @@
 
 from datetime import timedelta
 
+from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 
 from picker.models import Credential
 
@@ -36,8 +36,8 @@ class AuditManager(models.Manager):
     def get_query_set(self):
         return AuditQuerySet(self.model, using=self._db)
 
-    def create_audit(self, congregation, username, message):
-        return self.create(congregation=congregation, username=username, message=message)
+    def create_audit(self, congregation, user, message):
+        return self.create(congregation=congregation, user=user, message=message)
 
     def delete_invalid(self):
         return self.get_query_set().invalid().delete()
@@ -51,7 +51,7 @@ class Audit(models.Model):
         ordering = ["send_time"]
 
     congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
-    username = models.CharField(_('username'), max_length=150)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField(default="", blank=True)
     send_time = models.DateTimeField(default=timezone.now)
 

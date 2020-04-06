@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-22 13:51+0100\n"
+"POT-Creation-Date: 2020-04-06 16:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\audit\models.py:54
-msgid "username"
-msgstr ""
-
 #: .\audit\templates\audit\audit_list.html:10
-msgid "Username"
+msgid "User"
 msgstr ""
 
 #: .\audit\templates\audit\audit_list.html:11
@@ -116,16 +112,23 @@ msgstr ""
 #: .\console\templates\console\header.html:17
 #: .\console\templates\console\header_rtl.html:17
 #, python-format
-msgid "Willkommen, %(username)s!"
+msgid ""
+"Willkommen,\n"
+"                        %(username)s!"
 msgstr ""
 
-#: .\console\templates\console\header.html:24
-#: .\console\templates\console\header_rtl.html:24
+#: .\console\templates\console\header.html:27
+#: .\console\templates\console\header_rtl.html:27
+msgid "Archiv"
+msgstr ""
+
+#: .\console\templates\console\header.html:37
+#: .\console\templates\console\header_rtl.html:37
 msgid "Einstellungen"
 msgstr ""
 
-#: .\console\templates\console\header.html:32
-#: .\console\templates\console\header_rtl.html:32
+#: .\console\templates\console\header.html:45
+#: .\console\templates\console\header_rtl.html:45
 #: .\console\templates\registration\header.html:10
 #: .\console\templates\registration\header_rtl.html:10
 #: .\picker\templates\picker\header.html:19
@@ -133,8 +136,8 @@ msgstr ""
 msgid "Sprache"
 msgstr ""
 
-#: .\console\templates\console\header.html:45
-#: .\console\templates\console\header_rtl.html:45
+#: .\console\templates\console\header.html:58
+#: .\console\templates\console\header_rtl.html:58
 msgid "Logout"
 msgstr ""
 
@@ -148,7 +151,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: .\console\views.py:68
+#: .\console\views.py:73
 msgid "Das Passwort wurde geändert."
 msgstr ""
 

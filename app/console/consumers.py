@@ -57,7 +57,7 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
         if "alert" in text_data:
             if text_data["alert"] == "message":
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
-                await database_sync_to_async(__persist_audit_log__)(self.scope["user"].username,
+                await database_sync_to_async(__persist_audit_log__)(self.scope["user"],
                                                                     credential, text_data)
             message_type = "alert"
         else:
@@ -91,5 +91,5 @@ def __get_congregation__(congregation):
     return Credential.objects.get(congregation__exact=congregation)
 
 
-def __persist_audit_log__(username, congregation, text_data):
-    return Audit.objects.create_audit(congregation, username, text_data["value"])
+def __persist_audit_log__(user, congregation, text_data):
+    return Audit.objects.create_audit(congregation, user, text_data["value"])

@@ -7,7 +7,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Username" %}</th>
+                <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "User" %}</th>
                 <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
                 <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sendezeit" %}</th>
             </tr>
@@ -16,7 +16,7 @@
             {% for log_entry in object_list %}
                 <tr>
                     <td>
-                        <div>{{ log_entry.username }}</div>
+                        <div>{{ log_entry.user.get_full_name|default:log_entry.user.username }}</div>
                     </td>
                     <td>
                         <div>{{ log_entry.message }}</div>
