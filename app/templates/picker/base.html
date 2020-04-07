@@ -27,6 +27,7 @@
     </style>
 </head>
 <body class="bg-dark fg-white" onload="startTime()">
+<noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% if LANGUAGE_BIDI %}
     {% include "picker/header_rtl.html" %}
