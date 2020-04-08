@@ -52,7 +52,6 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
 
 
 class SettingsView(LoginRequiredMixin, FormView):
-    model = User
     template_name = 'console/settings.html'
     form_class = PasswordChangeForm
     success_url = '/settings/'
