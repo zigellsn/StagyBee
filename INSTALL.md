@@ -22,7 +22,7 @@ This can be changed easily by editing the .env-File.
 ```bash
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements/dev.txt
 python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py compilemessages --ignore venv
@@ -46,7 +46,7 @@ To run StagyBee in a production setting use
 ```bash
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements/prod.txt
 python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py compilemessages

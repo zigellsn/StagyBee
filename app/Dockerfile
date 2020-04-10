@@ -9,13 +9,15 @@ ENV DEPENDENCIES="gcc \
     libpq-dev \
     libc-dev"
 
-ADD requirements.txt $TMP
+ADD requirements/common.txt $TMP
+ADD requirements/dev.txt $TMP
 
 RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
-    pip install --no-cache-dir -r $TMP/requirements.txt && \
+    pip install --no-cache-dir -r $TMP/dev.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -f $TMP/requirements.txt
+    rm -f $TMP/common.txt && \
+    rm -f $TMP/dev.txt
 
 USER pyuser
 
