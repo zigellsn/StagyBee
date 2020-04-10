@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-{% extends 'console/base.html' %}
-{% load i18n utils %}
+{% extends 'console/choose_console_base.html' %}
+{% load static i18n %}
+
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% load static %}
-
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
          data-material="true">
         <div class="frame active">
@@ -95,7 +93,9 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+{% endblock %}
+
+{% block body_extra %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

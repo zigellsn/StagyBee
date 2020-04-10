@@ -1,9 +1,23 @@
-<!DOCTYPE html>
-{% extends 'console/base.html' %}
-{% load i18n utils %}
+{% extends 'base.html' %}
+{% load static i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
+
+{% block title %}{% trans "Stoppuhr" %}{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'console/css/console.css' %}" type="text/css">
+{% endblock %}
+
+{% block header %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
+    {% if LANGUAGE_BIDI %}
+        {% include "console/header_rtl.html" %}
+    {% else %}
+        {% include "console/header.html" %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-    {% load static %}
     <div><h3 id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></h3>
     </div>
     <table class="table">
@@ -64,7 +78,9 @@
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+{% endblock %}
+
+{% block body_extra %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

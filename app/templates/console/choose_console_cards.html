@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-{% extends 'console/base.html' %}
-{% load i18n utils %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
-{% load guardian_tags %}
+{% extends 'console/choose_console_base.html' %}
+{% load utils i18n guardian_tags %}
+
 {% block content %}
     <div class="row mt-2">
         {% for congregation in object_list %}

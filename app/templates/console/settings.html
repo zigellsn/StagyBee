@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-{% extends 'console/base.html' %}
-{% load i18n utils %}
+{% extends 'console/choose_console_base.html' %}
+{% load i18n %}
+
 {% block content %}
-    {% load static %}
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
          data-material="true">
         <div class="frame active">

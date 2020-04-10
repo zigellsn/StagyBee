@@ -1,0 +1,52 @@
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE %}
+<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="StagyBee, stage, control">
+    <meta name="Copyright" content="Simon Zigelli"/>
+    <meta name="MSSmartTagsPreventParsing" content="true"/>
+    <title>{% block title %}Login{% endblock %} | StagyBee</title>
+    {% block link_rel_tags %}{% endblock link_rel_tags %}
+    <link rel="icon" sizes="192x192" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version">
+    {% block head_extra %}{% endblock head_extra %}
+    <style>
+        .app-bar-menu li {
+            list-style: none !important;
+        }
+    </style>
+</head>
+<body class="bg-dark fg-white" onload="startTime()" id="body">
+<noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
+{% block header %}
+{% endblock %}
+<div class="container-fluid">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <main class="pr-1-sx pl-1-sx pr-1-md pl-1-md">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
+{% block footer %}
+{% endblock %}
+<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js" async></script>
+<script type="text/javascript" src="{% url 'javascript-catalog' %}" async></script>
+{% block body_extra %}{% endblock body_extra %}
+</body>
+</html>

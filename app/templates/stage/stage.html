@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-{% extends 'stage/base.html' %}
-{% load i18n utils %}
+{% extends 'base.html' %}
+
 {% block content %}
-    {% load static %}
     <div class="embed-container">
         {% if credential.autologin %}
             <iframe name="frame" src="https://jwconf.org/?key={{ credential.autologin }}"></iframe>

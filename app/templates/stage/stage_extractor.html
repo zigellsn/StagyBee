@@ -1,6 +1,27 @@
-<!DOCTYPE html>
-{% extends 'stage/base.html' %}
-{% load i18n utils %}
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}Stage{% endblock %}
+
+{% block head_extra %}
+    <link href="{% static 'console/css/console.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'stage/css/stage.css' %}" rel="stylesheet" type="text/css">
+    <script>
+        function RedirectPage(element, url) {
+            window.frames[element].location = url;
+        }
+    </script>
+{% endblock %}
+
+{% block header %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
+    {% if LANGUAGE_BIDI %}
+        {% include "stage/header_rtl.html" %}
+    {% else %}
+        {% include "stage/header.html" %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% load static %}
     {% trans "Zuhörer gesamt:" as sum_listeners %}
@@ -22,5 +43,37 @@
     <script src="{% static 'stage/js/stage_ws.js' %}"></script>
     <script>
         stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
+    </script>
+{% endblock %}
+
+{% block footer %}
+    <footer class="fixed-bottom">
+        {% if not credential.touch and credential.send_times_to_stage %}
+            <div id="timer" class="wrapper">
+                <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
+                </div>
+                <div id="timer_overlay">
+                    <samp class="text-leader" id="stopwatch">00:00:00</samp>
+                    <samp class="text-leader">&nbsp;|&nbsp;</samp>
+                    <samp class="text-leader" id="remaining">00:00:00</samp>
+                </div>
+            </div>
+        {% endif %}
+    </footer>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/time.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+    <script src="{% static 'stage/js/console_client_ws.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
+    <script>
+        console_client_ws('{{ credential.congregation|escape }}');
+    </script>
+    <script src="{% static 'stopwatch/js/timer_ws.js' %}"></script>
+    <script>
+        timer_ws('{{ credential.congregation|escape }}', false, true);
     </script>
 {% endblock %}

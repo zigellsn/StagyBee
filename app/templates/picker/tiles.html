@@ -1,6 +1,21 @@
-<!DOCTYPE html>
-{% extends 'picker/base.html' %}
-{% load i18n utils %}
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}Picker{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'picker/css/picker.css' %}" type="text/css">
+{% endblock %}
+
+{% block header %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
+    {% if LANGUAGE_BIDI %}
+        {% include "picker/header_rtl.html" %}
+    {% else %}
+        {% include "picker/header.html" %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% trans "Versammlung wählen" as choose_congregation %}
     <div class="tiles-grid tiles-group size-{{ size }} pos-top-center"
@@ -16,4 +31,37 @@
             <span class="pos-absolute pos-center">{% trans "JWConf Login Seite" %}</span>
         </a>
     </div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="pos-fixed fixed-bottom z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %} p-3">
+        <div>
+            Version: {{ version }}, Hostname: {{ hostname }}, IP-Address: {{ ip }}:{{ port }}
+        </div>
+    </footer>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/time.js' %}"></script>
+    <script>
+        function shutdownDialogActions(dialogTitle, target) {
+            Metro.dialog.create({
+                title: dialogTitle,
+                content: "<div>{{ confirm }}</div>",
+                actions: [
+                    {
+                        caption: "{% trans "Nein" %}",
+                        cls: "js-dialog-close alert"
+                    },
+                    {
+                        caption: "{% trans "Ja" %}",
+                        cls: "js-dialog-close",
+                        onclick: function () {
+                            window.location.href = target;
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
 {% endblock %}
