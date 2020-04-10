@@ -14,6 +14,7 @@
 import asyncio
 import os
 import sys
+from pathlib import Path
 
 from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
@@ -22,11 +23,9 @@ from django.utils.translation import gettext_lazy as _
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_PACKAGE = Path(__file__).resolve().parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
+BASE_DIR = PROJECT_PACKAGE.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default='abc_change_key')
@@ -170,5 +169,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATIC_URL = '/static/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')
+STATICFILES_DIRS = [str(PROJECT_PACKAGE.joinpath('static'))]

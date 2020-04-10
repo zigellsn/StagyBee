@@ -99,11 +99,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="{% static 'console/console_ws.js' %}"></script>
+    <script src="{% static 'console/js/console_ws.js' %}"></script>
     <script>
         console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
     </script>
-    <script src="{% static 'stopwatch/timer_ws.js' %}"></script>
+    <script src="{% static 'stopwatch/js/timer_ws.js' %}"></script>
     <script>
         timer_ws('{{ credential.congregation|escape }}', false, false);
     </script>

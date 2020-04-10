@@ -14,12 +14,12 @@
     <meta name="description" content="StagyBee Login">
     <meta name="keywords" content="StagyBee, Login">
     {% load static %}
-    <link rel="shortcut icon" href="{% static 'picker/favicon.ico' %}" type="image/x-icon">
-    <link rel="icon" href="{% static 'picker/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 
     <link href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version" rel="stylesheet">
-    <link href="{% static 'console/console.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'stage/stage.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'console/css/console.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'stage/css/stage.css' %}" rel="stylesheet" type="text/css">
     <title>StagyBee Auto-Login Page</title>
     <script>
         function RedirectPage(element, url) {
@@ -70,16 +70,16 @@
 </footer>
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-<script src="{% static 'picker/time.js' %}"></script>
+<script src="{% static 'picker/js/time.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-<script src="{% static 'stage/console_client_ws.js' %}"></script>
+<script src="{% static 'stage/js/console_client_ws.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
 <script>
     console_client_ws('{{ credential.congregation|escape }}');
 </script>
-<script src="{% static 'stopwatch/timer_ws.js' %}"></script>
+<script src="{% static 'stopwatch/js/timer_ws.js' %}"></script>
 <script>
     timer_ws('{{ credential.congregation|escape }}', false, true);
 </script>
