@@ -4,8 +4,8 @@
 {% block title %}Stage{% endblock %}
 
 {% block head_extra %}
-    <link href="{% static 'console/css/console.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'stage/css/stage.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'console/css/console.css' %}"  type="text/css">
+    <link rel="stylesheet" href="{% static 'stage/css/stage.css' %}"  type="text/css">
     <script>
         function RedirectPage(element, url) {
             window.frames[element].location = url;

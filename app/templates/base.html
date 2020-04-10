@@ -16,7 +16,7 @@
     <link rel="icon" sizes="192x192" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css?ver=@@b-version">
+    <link rel="stylesheet" href="{% static "css/bundle.css" %}" type="text/css">
     {% block head_extra %}{% endblock head_extra %}
     <style>
         .app-bar-menu li {
@@ -45,8 +45,8 @@
 </div>
 {% block footer %}
 {% endblock %}
-<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js" async></script>
-<script type="text/javascript" src="{% url 'javascript-catalog' %}" async></script>
+<script src="{% static "js/bundle.js" %}"></script>
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 {% block body_extra %}{% endblock body_extra %}
 </body>
 </html>
