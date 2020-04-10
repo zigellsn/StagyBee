@@ -43,10 +43,10 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv(
 INSTALLED_APPS = [
     'channels',
     'guardian',
-    'stage.apps.StageConfig',
+    'stage',
+    'receiver',
+    'console',
     'picker.apps.PickerConfig',
-    'receiver.apps.ReceiverConfig',
-    'console.apps.ConsoleConfig',
     'audit.apps.AuditConfig',
     'stopwatch.apps.StopwatchConfig',
     'django.contrib.admin',
