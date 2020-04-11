@@ -25,11 +25,6 @@ Copy /app/static/locale to static
 cp -r app/static/locale static/
 ```
 
-Make entrypoint.sh executable.
-``` bash
-chmod +x app/entrypoint.sh
-```
-
 Then run
 ``` bash
 docker-compose up -d --build
@@ -66,11 +61,6 @@ Copy /app/static/locale to static
 cp -r app/static/locale static/
 ```
 
-Make entrypoint.prod.sh executable.
-``` bash
-chmod +x app/entrypoint.prod.sh
-```
-
 Then run
 ``` bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
@@ -102,7 +92,6 @@ Set variable SHUTDOWN_SIGNAL in app/shutdown_interface.sh to the full path of th
 
 Then run
 ``` bash
-chmod +x app/shutdown_interface.sh
 sudo cp app/shutdown_interface.sh /usr/bin/
 sudo cp app/shutdown_stagybee.service /etc/systemd/system/
 sudo systemctl start shutdown_stagybee.service
