@@ -24,9 +24,9 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements/dev.txt
 python manage.py migrate --run-syncdb
-python manage.py createsuperuser
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic
+python manage.py createsuperuser
 python manage.py runserver
 ```
 
@@ -48,9 +48,9 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements/prod.txt
 python manage.py migrate --run-syncdb
-python manage.py createsuperuser
 python manage.py compilemessages
 python manage.py collectstatic
+python manage.py createsuperuser
 daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application
 ```
 

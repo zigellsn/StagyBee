@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 SHUTDOWN_SIGNAL=/var/run/shutdown_signal
 
