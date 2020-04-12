@@ -1,4 +1,15 @@
-FROM stagybee/python-base:slim 
+FROM node:10-slim AS build
+
+COPY package.json .
+COPY package-lock.json .
+COPY webpack.config.js .
+COPY style.scss .
+
+RUN npm install && \
+    npm run build && \
+    rm -rf node_modules
+
+FROM stagybee/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -9,22 +20,21 @@ ENV DEPENDENCIES="gcc \
     libpq-dev \
     libc-dev"
 
-ADD requirements/common.txt $TMP
-ADD requirements/prod.txt $TMP
+COPY requirements/common.txt .
+COPY requirements/prod.txt .
 
-RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
-    pip install --no-cache-dir -r $TMP/prod.txt && \
+RUN mkdir -p $HOME/static && \
+    chown -R pyuser:users $HOME/static && \
+    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
+    pip install --no-cache-dir -r ./prod.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -f $TMP/common.txt && \
-    rm -f $TMP/prod.txt
-
-RUN mkdir $HOME/static
-RUN chown -R pyuser:users $HOME/static
+    rm -f ./common.txt && \
+    rm -f ./prod.txt
 
 USER pyuser
 
-ADD --chown=pyuser:users . .
-ADD entrypoint.sh .
+COPY --chown=pyuser:users . .
+COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
 
 ENTRYPOINT ["/home/pyuser/entrypoint.prod.sh"]

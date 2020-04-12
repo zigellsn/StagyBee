@@ -20,18 +20,10 @@ mkdir data
 mkdir static
 ```
 
-Copy /app/static/locale to static
-``` bash
-cp -r app/static/locale static/
-```
-
 Then run
 ``` bash
-docker-compose up -d --build
-docker-compose exec web python manage.py migrate --noinput
-docker-compose exec web python manage.py compilemessages --ignore venv
-docker-compose exec web python manage.py collectstatic --no-input --clear
-docker-compose exec web python manage.py createsuperuser
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec web python manage.py createsuperuser
 ```
 
 Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
@@ -39,7 +31,7 @@ Create the required credential data sets.
 
 To stop everything use
 ``` bash
-docker-compose down -v
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
 ```
 
 ## Running in production
@@ -56,17 +48,9 @@ mkdir data
 mkdir static
 ```
 
-Copy /app/static/locale to static
-``` bash
-cp -r app/static/locale static/
-```
-
 Then run
 ``` bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py migrate --noinput
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py compilemessages --ignore venv
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py createsuperuser
 ```
 

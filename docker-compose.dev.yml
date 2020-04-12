@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    image: "stagybee/frontend:latest"
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - db
+  #   - extractor
+    volumes:
+      - type: bind
+        source: ./app
+        target: /home/pyuser
+      - type: bind
+        source: ./app/shutdown_signal
+        target: /home/pyuser/shutdown_signal

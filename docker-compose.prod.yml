@@ -16,6 +16,7 @@ services:
       - type: bind
         source: ./static
         target: /home/pyuser/static
+        read_only: true
   web:
     build:
       context: app/

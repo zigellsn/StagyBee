@@ -31,7 +31,7 @@ BASE_DIR = PROJECT_PACKAGE.parent
 SECRET_KEY = config("SECRET_KEY", default='abc_change_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True)
+DEBUG = config("DEBUG", cast=bool)
 
 VERSION = "0.1.0-alpha"
 
@@ -147,7 +147,7 @@ LANGUAGES = config('LANGUAGES', default="de:German,en:English",
 LANGUAGE_CODE = 'de'
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'static/locale'),
+    str(PROJECT_PACKAGE.joinpath('locale')),
 )
 
 TIME_ZONE = 'CET'

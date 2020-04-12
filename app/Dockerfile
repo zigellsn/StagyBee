@@ -1,4 +1,14 @@
-FROM stagybee/python-base:slim 
+FROM node:10-slim AS build
+
+COPY package.json .
+COPY package-lock.json .
+COPY webpack.config.js .
+COPY style.scss .
+
+RUN npm install && \
+    npm run build
+
+FROM stagybee/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -9,19 +19,19 @@ ENV DEPENDENCIES="gcc \
     libpq-dev \
     libc-dev"
 
-ADD requirements/common.txt $TMP
-ADD requirements/dev.txt $TMP
+COPY requirements/common.txt .
+COPY requirements/dev.txt .
 
 RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
-    pip install --no-cache-dir -r $TMP/dev.txt && \
+    pip install --no-cache-dir -r ./dev.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -f $TMP/common.txt && \
-    rm -f $TMP/dev.txt
+    rm -f ./common.txt && \
+    rm -f ./dev.txt
 
 USER pyuser
 
-ADD --chown=pyuser:users . .
-ADD entrypoint.sh .
+COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
+COPY ./entrypoint.sh $HOME/
 
 ENTRYPOINT ["/home/pyuser/entrypoint.sh"]
