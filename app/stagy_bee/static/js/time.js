@@ -26,3 +26,5 @@ function pad(i) {
     }
     return i;
 }
+
+export { startTime }

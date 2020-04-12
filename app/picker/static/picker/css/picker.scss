@@ -14,8 +14,47 @@
  * limitations under the License.
  */
 
-@import '~normalize.css';
-@import '~metro4/build/css/metro-all.min.css';
-@import 'picker/static/picker/css/picker';
-@import 'console/static/console/css/console';
-@import 'stage/static/stage/css/stage';
+[class*=tile-] {
+  transform: scale(1);
+}
+
+.tiles-group {
+  margin-left: 0;
+  margin-top: 50px;
+}
+
+main {
+  padding-bottom: 20px !important;
+}
+
+body {
+  padding-top: 64px;
+}
+
+@media all and (min-width: 768px) {
+  header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+  }
+
+  body {
+    padding-top: 64px;
+  }
+}
+
+@supports (-ms-ime-align: auto) {
+  header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+  }
+
+  body {
+    padding-top: 64px;
+  }
+}

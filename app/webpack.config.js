@@ -19,12 +19,20 @@ const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
-    entry: ['./style.scss', 'metro4', 'reconnecting-websocket', 'progressbar.js', 'moment'],
+    // mode: 'development',
+    mode: 'production',
+    entry: {
+        external: ['./style.scss', 'metro4'],
+        main: ['./index.js']
+    },
     output: {
-        filename: 'js/bundle.js',
+        filename: 'js/[name].bundle.js',
+        libraryTarget: 'umd',
+        globalObject: 'this',
+        library: ['StagyBee', '[name]'],
         path: path.resolve(__dirname, 'stagy_bee/static')
     },
+    devtool: 'source-map',
     module: {
         rules: [{
             test: /\.scss$/,
@@ -58,6 +66,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
+                exclude: /node_modules|dev/,
                 query: {
                     presets: ['@babel/preset-env'],
                 },
@@ -79,7 +88,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/bundle.css',
+            filename: 'css/[name].bundle.css',
         }),
     ],
 };

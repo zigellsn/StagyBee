@@ -3,10 +3,6 @@
 
 {% block title %}Login{% endblock %}
 
-{% block head_extra %}
-    <link rel="stylesheet" href="{% static 'console/css/console.css' %}" type="text/css">
-{% endblock %}
-
 {% block header %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
     {% if LANGUAGE_BIDI %}
@@ -23,8 +19,4 @@
         {{ form.as_p }}
         <button class="button primary mt-4" type="submit">{% trans "Login" %}</button>
     </form>
-{% endblock %}
-
-{% block body_extra %}
-    <script src="{% static 'js/time.js' %}"></script>
 {% endblock %}

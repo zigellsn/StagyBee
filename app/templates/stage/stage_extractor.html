@@ -4,8 +4,6 @@
 {% block title %}Stage{% endblock %}
 
 {% block head_extra %}
-    <link rel="stylesheet" href="{% static 'console/css/console.css' %}"  type="text/css">
-    <link rel="stylesheet" href="{% static 'stage/css/stage.css' %}"  type="text/css">
     <script>
         function RedirectPage(element, url) {
             window.frames[element].location = url;
@@ -39,11 +37,6 @@
         <span class="mif-cancel mif-5x fg-red pos-fixed pos-center" style="margin-top: -74px"></span>
         <div>{{ error_message }}</div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-    <script src="{% static 'stage/js/stage_ws.js' %}"></script>
-    <script>
-        stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
-    </script>
 {% endblock %}
 
 {% block footer %}
@@ -63,17 +56,9 @@
 {% endblock %}
 
 {% block body_extra %}
-    <script src="{% static 'js/time.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-    <script src="{% static 'stage/js/console_client_ws.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
     <script>
-        console_client_ws('{{ credential.congregation|escape }}');
-    </script>
-    <script src="{% static 'stopwatch/js/timer_ws.js' %}"></script>
-    <script>
-        timer_ws('{{ credential.congregation|escape }}', false, true);
+        StagyBee.main.console_client_ws('{{ credential.congregation|escape }}');
+        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, true);
+        StagyBee.main.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
     </script>
 {% endblock %}

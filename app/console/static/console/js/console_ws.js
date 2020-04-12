@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+'use strict';
+
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 function console_ws(language, congregation_ws) {
     let submitTime = document.getElementById('submit_time');
     let submitStop = document.getElementById('submit_stop');
@@ -236,3 +241,5 @@ function console_ws(language, congregation_ws) {
             }
         };
 }
+
+export { console_ws }

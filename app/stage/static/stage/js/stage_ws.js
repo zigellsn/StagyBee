@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+'use strict';
+
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
@@ -132,3 +137,5 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         console.error('Stage Socket closed unexpectedly');
     };
 }
+
+export { stage_ws }

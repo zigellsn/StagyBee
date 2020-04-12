@@ -3,10 +3,6 @@
 
 {% block title %}Picker{% endblock %}
 
-{% block head_extra %}
-    <link rel="stylesheet" href="{% static 'picker/css/picker.css' %}" type="text/css">
-{% endblock %}
-
 {% block header %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
     {% if LANGUAGE_BIDI %}
@@ -42,7 +38,6 @@
 {% endblock %}
 
 {% block body_extra %}
-    <script src="{% static 'js/time.js' %}"></script>
     <script>
         function shutdownDialogActions(dialogTitle, target) {
             Metro.dialog.create({

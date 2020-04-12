@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+'use strict';
+
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 function console_client_ws(congregation_ws) {
 
     let scrimTrigger = false;
@@ -74,3 +78,5 @@ function console_client_ws(congregation_ws) {
         console.error('Console Client Socket closed unexpectedly');
     };
 }
+
+export { console_client_ws }

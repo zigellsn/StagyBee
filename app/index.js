@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2019-2020 Simon Zigelli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-@import '~normalize.css';
-@import '~metro4/build/css/metro-all.min.css';
-@import 'picker/static/picker/css/picker';
-@import 'console/static/console/css/console';
-@import 'stage/static/stage/css/stage';
+import {console_client_ws} from './stage/static/stage/js/console_client_ws.js';
+import {timer_ws} from './stopwatch/static/stopwatch/js/timer_ws.js';
+import {console_ws} from './console/static/console/js/console_ws.js';
+import {stage_ws} from './stage/static/stage/js/stage_ws.js';
+import {startTime} from './stagy_bee/static/js/time';
+
+export { console_client_ws, timer_ws, console_ws, stage_ws, startTime }

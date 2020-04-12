@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+'use strict';
+
+import ReconnectingWebSocket from "reconnecting-websocket";
+import moment from "moment";
+import ProgressBar from "progressbar.js"
+
 function timer_ws(congregation_ws, reload, resetOnStop = false) {
 
     let stopwatch = document.getElementById('stopwatch');
@@ -161,3 +167,5 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
         return i;
     }
 }
+
+export { timer_ws }

@@ -24,7 +24,7 @@
         }
     </style>
 </head>
-<body class="bg-dark fg-white" onload="startTime()" id="body">
+<body class="bg-dark fg-white" onload="StagyBee.main.startTime()" id="body">
 <noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
 {% block header %}
 {% endblock %}
@@ -45,8 +45,9 @@
 </div>
 {% block footer %}
 {% endblock %}
-<script src="{% static "js/bundle.js" %}"></script>
-<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+<script src="{% static "js/external.bundle.js" %}" type="text/javascript"></script>
+<script src="{% static "js/main.bundle.js" %}" type="text/javascript"></script>
+<script src="{% url 'javascript-catalog' %}" type="text/javascript"></script>
 {% block body_extra %}{% endblock body_extra %}
 </body>
 </html>

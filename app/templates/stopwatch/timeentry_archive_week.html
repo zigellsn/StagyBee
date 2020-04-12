@@ -4,10 +4,6 @@
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
-{% block head_extra %}
-    <link rel="stylesheet" href="{% static 'console/css/console.css' %}" type="text/css">
-{% endblock %}
-
 {% block header %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
     {% if LANGUAGE_BIDI %}
@@ -66,10 +62,4 @@
             </tbody>
         </table>
     </div>
-{% endblock %}
-
-{% block body_extra %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 {% endblock %}
