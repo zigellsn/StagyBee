@@ -18,7 +18,7 @@ from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.urls import re_path
 
-from consumers import ExtractorConsumer, ConsoleClientConsumer
+from stage.consumers import ExtractorConsumer, ConsoleClientConsumer
 from picker.tests import create_credential
 
 

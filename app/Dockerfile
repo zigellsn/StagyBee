@@ -9,6 +9,7 @@ FROM stagybee/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=stagy_bee.settings.dev
 
 ENV DEPENDENCIES="gcc \
     libffi-dev \

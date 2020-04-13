@@ -20,20 +20,14 @@ from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 
 # Needed for now when using Python 3.8 on Windows
-if sys.platform == 'win32':
+if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.minor == 8:
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-PROJECT_PACKAGE = Path(__file__).resolve().parent
+PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 BASE_DIR = PROJECT_PACKAGE.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool)
-
-VERSION = "0.1.0-alpha"
+VERSION = "0.2.0-alpha"
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
 
@@ -163,20 +157,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATIC_URL = '/static/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')
 STATICFILES_DIRS = [str(PROJECT_PACKAGE.joinpath('static'))]
-
-if DEBUG:
-    try:
-        import debug_toolbar
-    except ImportError:
-        pass
-    else:
-        INSTALLED_APPS.append('debug_toolbar')
-        INTERNAL_IPS = ['127.0.0.1']
-        MIDDLEWARE.insert(
-            MIDDLEWARE.index('django.middleware.common.CommonMiddleware') + 1,
-            'debug_toolbar.middleware.DebugToolbarMiddleware'
-        )
