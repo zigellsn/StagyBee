@@ -22,7 +22,7 @@ from django.utils import formats, translation
 from audit.models import Audit
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
+from app.stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 from .workbook.workbook import WorkbookExtractor
 
 
