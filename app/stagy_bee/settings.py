@@ -28,7 +28,7 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent
 BASE_DIR = PROJECT_PACKAGE.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default='abc_change_key')
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
