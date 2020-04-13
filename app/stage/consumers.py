@@ -25,7 +25,7 @@ from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 from picker.models import Credential
-from app.stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
+from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
 
 GLOBAL_TIMEOUT = {}
 
