@@ -88,14 +88,14 @@ class WorkbookExtractor:
     @staticmethod
     async def __get_language_regex__(language):
         switcher = {
-            "en": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|or(\u0020|\u00A0)less\))"],
-            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.\)", r"[0-9]+", r"Min\.\)"],
-            "fr": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|ou(\u0020|\u00A0)moins\))"],
+            "en": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|or(\u0020|\u00A0)less\))"],
+            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.?\)", r"[0-9]+", r"Min\.?\)"],
+            "fr": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|ou(\u0020|\u00A0)moins\))"],
             "fa": [r"\(\u200f[\u06f0-\u06f9]+(\u0020|\u00A0)\u062f\u0642\u06cc\u0642\u0647.*?\)", r"[\u06f0-\u06f9]+",
                    r"(\)|\u06cc\u0627(\u0020|\u00A0)\u06a9\u0645\u062a\u0631\))"],
-            "it": [r"\([0-9]+(\u0020|\u00A0)min.*?\)", r"[0-9]+", r"(\)|o(\u0020|\u00A0)meno\))"],
+            "it": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|o(\u0020|\u00A0)meno\))"],
             "el": [r"\([0-9]+(\u0020|\u00A0)(λεπτά|λεπτό).*?\)", r"[0-9]+", r"(\)|ή(\u0020|\u00A0)λιγότερο\))"],
-            "ru": [r"\([0-9]+(\u0020|\u00A0)мин.*?\)", r"[0-9]+", r"(\)|или(\u0020|\u00A0)меньше\))"],
+            "ru": [r"\([0-9]+(\u0020|\u00A0)мин.?*?\)", r"[0-9]+", r"(\)|или(\u0020|\u00A0)меньше\))"],
         }
         return switcher.get(language, "Invalid language")
 
@@ -145,29 +145,33 @@ class WorkbookExtractor:
         return times
 
     def __get_url__(self, last_monday, next_sunday):
+        prefix = "meeting-schedule"
+
         month = self.__get_month_name__(last_monday.month)
         if last_monday.month == next_sunday.month:
-            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
-                  f"schedule-{month.lower()}{last_monday.day}-{next_sunday.day}/"
+            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                  f"{prefix}-{month.lower()}{last_monday.day}-{next_sunday.day}/"
         else:
             next_month = self.__get_month_name__(next_sunday.month)
-            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/meeting-" \
-                  f"schedule-{month.lower()}{last_monday.day}-{next_month.lower()}{next_sunday.day}/"
+            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                  f"{prefix}-{month.lower()}{last_monday.day}-{next_month.lower()}{next_sunday.day}/"
         return url
 
     def __get_2020_url__(self, last_monday, next_sunday):
+        # prefix = "Our-Christian-Life-and-Ministry-Schedule-for"
+        prefix = "Life-and-Ministry-Meeting-Schedule-for"
         month = self.__get_month_name__(last_monday.month)
         if last_monday.month == next_sunday.month:
-            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
-                  f"Schedule-for-{month}-{last_monday.day}-{next_sunday.day}-{last_monday.year}/"
+            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                  f"{prefix}-{month}-{last_monday.day}-{next_sunday.day}-{last_monday.year}/"
         else:
             next_month = self.__get_month_name__(next_sunday.month)
             if last_monday.year == next_sunday.year:
-                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
-                      f"Schedule-for-{month}-{last_monday.day}-{next_month}-{next_sunday.day}-{last_monday.year}/"
+                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                      f"{prefix}-{month}-{last_monday.day}-{next_month}-{next_sunday.day}-{last_monday.year}/"
             else:
-                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/Our-Christian-Life-and-Ministry-" \
-                      f"Schedule-for-{month}-{last_monday.day}-{last_monday.year}-{next_month}-{next_sunday.day}-" \
+                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                      f"{prefix}-{month}-{last_monday.day}-{last_monday.year}-{next_month}-{next_sunday.day}-" \
                       f"{next_sunday.year}/"
         return url
 
