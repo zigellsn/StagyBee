@@ -39,7 +39,7 @@ class PickerView(ListView):
         context["size"] = size
         context["col"] = col
         context["hostname"] = host_name
-        context["shutdown_icon"] = True
+        context["shutdown_icon"] = config("SHOW_SHUTDOWN_ICON", cast=bool, default=True)
         context["version"] = settings.VERSION
         return context
 
@@ -50,7 +50,7 @@ class ShutdownView(View):
     def get(request):
         if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
                 "aix") or platform.startswith("cygwin"):
-            if config("RUN_IN_CONTAINER", default=False):
+            if config("RUN_IN_CONTAINER", cast=bool, default=False):
                 __write_signal_file__("shutdown_signal", "shutdown")
             else:
                 call(["sh shutdown.sh", "-h", "now"], shell=False)
@@ -65,7 +65,7 @@ class RebootView(View):
     def get(request):
         if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
                 "aix") or platform.startswith("cygwin"):
-            if config("RUN_IN_CONTAINER", default=False):
+            if config("RUN_IN_CONTAINER", cast=bool, default=False):
                 __write_signal_file__("shutdown_signal", "reboot")
             else:
                 call(["sh shutdown.sh", "-r"], shell=False)
