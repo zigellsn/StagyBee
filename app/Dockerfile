@@ -20,7 +20,7 @@ ENV DEPENDENCIES="gcc \
 COPY requirements/common.txt .
 COPY requirements/dev.txt .
 
-RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
+RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat $DEPENDENCIES && \
     pip install --no-cache-dir -r ./dev.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \

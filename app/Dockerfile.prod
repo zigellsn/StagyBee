@@ -23,7 +23,7 @@ COPY requirements/prod.txt .
 
 RUN mkdir -p $HOME/static && \
     chown -R pyuser:users $HOME/static && \
-    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
+    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat $DEPENDENCIES && \
     pip install --no-cache-dir -r ./prod.txt && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
