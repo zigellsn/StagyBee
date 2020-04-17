@@ -19,7 +19,7 @@ import re
 import aiohttp
 from dateutil.relativedelta import relativedelta, MO
 
-from app.stagy_bee.settings.common import WB_LANGUAGE_SWITCHER
+from stagy_bee.settings.common import WB_LANGUAGE_SWITCHER
 
 
 class WorkbookExtractor:
