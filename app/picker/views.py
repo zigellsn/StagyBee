@@ -53,9 +53,9 @@ class ShutdownView(View):
             if config("RUN_IN_CONTAINER", cast=bool, default=False):
                 __write_signal_file__("shutdown_signal", "shutdown")
             else:
-                call(["sh shutdown.sh", "-h", "now"], shell=False)
+                call(["sh scripts/shutdown.sh", "-h", "now"], shell=False)
         elif platform.startswith("win32"):
-            call(["shutdown.bat", "-h"], shell=False)
+            call(["scripts/shutdown.bat", "-h"], shell=False)
         return HttpResponse("Shutdown in progress")
 
 
@@ -68,9 +68,9 @@ class RebootView(View):
             if config("RUN_IN_CONTAINER", cast=bool, default=False):
                 __write_signal_file__("shutdown_signal", "reboot")
             else:
-                call(["sh shutdown.sh", "-r"], shell=False)
+                call(["sh scripts/shutdown.sh", "-r"], shell=False)
         elif platform.startswith("win32"):
-            call(["shutdown.bat", "-r"], shell=False)
+            call(["scripts/shutdown.bat", "-r"], shell=False)
         return HttpResponse("Reboot in progress")
 
 

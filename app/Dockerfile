@@ -30,6 +30,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 
 USER pyuser
 
 COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
-COPY ./entrypoint.sh $HOME/
+COPY ./scripts/entrypoint.sh $HOME/
 
 ENTRYPOINT ["/home/pyuser/entrypoint.sh"]

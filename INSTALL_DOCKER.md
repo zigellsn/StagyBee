@@ -76,8 +76,8 @@ Set variable SHUTDOWN_SIGNAL in app/shutdown_interface.sh to the full path of th
 
 Then run
 ``` bash
-sudo cp app/shutdown_interface.sh /usr/bin/
-sudo cp app/shutdown_stagybee.service /etc/systemd/system/
+sudo cp app/scripts/shutdown_interface.sh /usr/bin/
+sudo cp app/scripts/shutdown_stagybee.service /etc/systemd/system/
 sudo systemctl start shutdown_stagybee.service
 sudo systemctl enable shutdown_stagybee.service
 ```

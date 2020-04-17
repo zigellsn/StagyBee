@@ -35,4 +35,4 @@ USER pyuser
 COPY --chown=pyuser:users . .
 COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
 
-ENTRYPOINT ["/home/pyuser/entrypoint.prod.sh"]
+ENTRYPOINT ["/home/pyuser/scripts/entrypoint.prod.sh"]
