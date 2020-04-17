@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import asyncio
+import json
 import os
 import sys
 from pathlib import Path
@@ -26,6 +27,12 @@ if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.
 PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 BASE_DIR = PROJECT_PACKAGE.parent
+
+try:
+    with open(f"{PROJECT_PACKAGE}/regex.json", encoding="utf-8") as json_file:
+        WB_LANGUAGE_SWITCHER = json.load(json_file)
+except FileNotFoundError:
+    WB_LANGUAGE_SWITCHER = {}
 
 VERSION = "0.2.0-alpha"
 

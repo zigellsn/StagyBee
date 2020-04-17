@@ -19,6 +19,8 @@ import re
 import aiohttp
 from dateutil.relativedelta import relativedelta, MO
 
+from app.stagy_bee.settings.common import WB_LANGUAGE_SWITCHER
+
 
 class WorkbookExtractor:
 
@@ -87,17 +89,7 @@ class WorkbookExtractor:
 
     @staticmethod
     async def __get_language_regex__(language):
-        switcher = {
-            "en": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|or(\u0020|\u00A0)less\))"],
-            "de": [r"\(.*?[0-9]+(\u0020|\u00A0)Min.?\)", r"[0-9]+", r"Min\.?\)"],
-            "fr": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|ou(\u0020|\u00A0)moins\))"],
-            "fa": [r"\(\u200f[\u06f0-\u06f9]+(\u0020|\u00A0)\u062f\u0642\u06cc\u0642\u0647.*?\)", r"[\u06f0-\u06f9]+",
-                   r"(\)|\u06cc\u0627(\u0020|\u00A0)\u06a9\u0645\u062a\u0631\))"],
-            "it": [r"\([0-9]+(\u0020|\u00A0)min.?*?\)", r"[0-9]+", r"(\)|o(\u0020|\u00A0)meno\))"],
-            "el": [r"\([0-9]+(\u0020|\u00A0)(λεπτά|λεπτό).*?\)", r"[0-9]+", r"(\)|ή(\u0020|\u00A0)λιγότερο\))"],
-            "ru": [r"\([0-9]+(\u0020|\u00A0)мин.?*?\)", r"[0-9]+", r"(\)|или(\u0020|\u00A0)меньше\))"],
-        }
-        return switcher.get(language, "Invalid language")
+        return WB_LANGUAGE_SWITCHER.get(language, "Invalid language")
 
     @staticmethod
     async def __get_language_url__(content, language):
