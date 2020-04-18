@@ -7,7 +7,7 @@ if [ -e ".env" ]; then
       ENV_SQL_HOST="$(grep SQL_HOST .env | cut -d '=' -f2)"
       SQL_HOST="${ENV_SQL_HOST:-localhost}"
       ENV_SQL_PORT="$(grep SQL_PORT .env | cut -d '=' -f2)"
-      SQL_PORT="${ENV_SQL_PORT:-5678}"
+      SQL_PORT="${ENV_SQL_PORT:-5432}"
     fi
 fi
 
