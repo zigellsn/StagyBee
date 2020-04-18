@@ -2,6 +2,8 @@
 
 Install [Python 3.8](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Install and configure [Redis](https://redis.io/) if necessary.
+Install and configure [Node.js](https://nodejs.org/) if necessary.
+If you don't want to use the standard SQLite database, you will need something like [PostgreSQL](https://www.postgresql.org/).
 
 Download and extract [this repository](https://github.com/zigellsn/StagyBee/archive/master.zip) or use
 ``` bash
@@ -19,10 +21,19 @@ cp .env.example .env
 StagyBee is configured to be running with a [PostgreSQL](https://www.postgresql.org/) database. 
 This can be changed easily by editing the .env-File.
 
+Prepare static files:
+```bash
+npm install
+npm run build
+```
+
+Copy the generated files to ./stagy_bee/static/
+
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/dev.txt
+export DJANGO_SETTINGS_MODULE=stagy_bee.settings.dev
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic
@@ -40,15 +51,21 @@ Copy the file .env.example to .env and adjust to your needs.
 cp .env.example .env
 ```
 
-Change the value of DEBUG in .env to False, and don't forget to set the SECRET_KEY value!
+Don't forget to set the SECRET_KEY value in .env!
 
 To run StagyBee in a production setting use
+```bash
+npm install
+npm run build
+```
+Copy the generated files to ./stagy_bee/static/
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/prod.txt
+export DJANGO_SETTINGS_MODULE=stagy_bee.settings.prod
 python manage.py migrate --run-syncdb
-python manage.py compilemessages
+python manage.py compilemessages --ignore venv
 python manage.py collectstatic
 python manage.py createsuperuser
 daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application
