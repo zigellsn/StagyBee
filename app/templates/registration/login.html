@@ -13,10 +13,16 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Login" %}</h2>
+    <div class="bg-dark fg-white h2">{% trans 'Log in' %}</div>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="button primary mt-4" type="submit">{% trans "Login" %}</button>
+        <button class="button primary mt-4" type="submit">{% trans 'Log in' %}</button>
     </form>
+
+    {% comment %}
+    <div class="password-reset-link">
+        <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+    </div>
+    {% endcomment %}
 {% endblock %}

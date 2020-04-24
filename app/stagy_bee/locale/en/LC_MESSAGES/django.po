@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-11 14:23+0200\n"
+"POT-Creation-Date: 2020-04-24 15:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: .\console\views.py:72
-msgid "Das Passwort wurde geändert."
-msgstr "The password has been changed."
 
 #: .\picker\models.py:96
 msgid "Zugriff auf Management Console"
@@ -94,19 +90,19 @@ msgid "Stoppuhr"
 msgstr "Stopwatch"
 
 #: .\templates\console\console.html:17
-#: .\templates\stopwatch\timeentry_list.html:27
+#: .\templates\stopwatch\timeentry_list.html:23
 msgid "Abgelaufen"
 msgstr "Elapsed"
 
 #: .\templates\console\console.html:20
-#: .\templates\stopwatch\timeentry_list.html:30
+#: .\templates\stopwatch\timeentry_list.html:26
 msgid "Übrig"
 msgstr "Time left"
 
 #: .\templates\console\console.html:39
-#: .\templates\stopwatch\timeentry_archive_week.html:43
-#: .\templates\stopwatch\timeentry_list.html:21
-#: .\templates\stopwatch\timeentry_list.html:55
+#: .\templates\stopwatch\timeentry_archive_week.html:39
+#: .\templates\stopwatch\timeentry_list.html:17
+#: .\templates\stopwatch\timeentry_list.html:51
 msgid "Aufgabe"
 msgstr "Talk"
 
@@ -167,10 +163,6 @@ msgstr "Language"
 msgid "Logout"
 msgstr "Logout"
 
-#: .\templates\console\settings.html:8 .\templates\console\settings.html:15
-msgid "Passwort ändern"
-msgstr "Change password"
-
 #: .\templates\picker\header.html:6 .\templates\picker\header_rtl.html:6
 msgid "Neu starten"
 msgstr "Restart"
@@ -183,92 +175,109 @@ msgstr "Shutdown"
 msgid "Bist du sicher?"
 msgstr "Are you sure?"
 
-#: .\templates\picker\tiles.html:20
+#: .\templates\picker\tiles.html:16
 msgid "Versammlung wählen"
 msgstr "Choose Congregation"
 
-#: .\templates\picker\tiles.html:31
+#: .\templates\picker\tiles.html:27
 msgid "JWConf Login Seite"
 msgstr "JWConf Login Page"
 
-#: .\templates\picker\tiles.html:53
+#: .\templates\picker\tiles.html:48
 msgid "Nein"
 msgstr "No"
 
-#: .\templates\picker\tiles.html:57
+#: .\templates\picker\tiles.html:52
 msgid "Ja"
 msgstr "Yes"
 
+#: .\templates\registration\login.html:16
 #: .\templates\registration\login.html:20
-#: .\templates\registration\login.html:24
-msgid "Login"
-msgstr "Login"
+msgid "Log in"
+msgstr ""
 
-#: .\templates\stage\stage_extractor.html:27
+#: .\templates\registration\password_change_done.html:8
+msgid "Your password was changed."
+msgstr ""
+
+#: .\templates\registration\password_change_form.html:13
+msgid "Change my password"
+msgstr ""
+
+#: .\templates\stage\stage_extractor.html:25
 msgid "Zuhörer gesamt:"
 msgstr "Listeners total:"
 
-#: .\templates\stage\stage_extractor.html:32
+#: .\templates\stage\stage_extractor.html:30
 msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
 msgstr "Establishing connection to extractor service..."
 
-#: .\templates\stage\stage_extractor.html:37
+#: .\templates\stage\stage_extractor.html:35
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr "Extractor service not running or not reachable"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:22
+#: .\templates\stopwatch\timeentry_archive_week.html:18
 msgid "Kalenderwoche"
 msgstr "Week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:27
+#: .\templates\stopwatch\timeentry_archive_week.html:23
 msgid "Vorherige KW:"
 msgstr "Previous week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:27
-#: .\templates\stopwatch\timeentry_archive_week.html:33
+#: .\templates\stopwatch\timeentry_archive_week.html:23
+#: .\templates\stopwatch\timeentry_archive_week.html:29
 msgid "Jahr"
 msgstr "of year"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:33
+#: .\templates\stopwatch\timeentry_archive_week.html:29
 msgid "Nächste KW:"
 msgstr "Next week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:44
-#: .\templates\stopwatch\timeentry_list.html:56
+#: .\templates\stopwatch\timeentry_archive_week.html:40
+#: .\templates\stopwatch\timeentry_list.html:52
 msgid "Startzeit"
 msgstr "Time"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:45
-#: .\templates\stopwatch\timeentry_list.html:57
+#: .\templates\stopwatch\timeentry_archive_week.html:41
+#: .\templates\stopwatch\timeentry_list.html:53
 msgid "Endezeit"
 msgstr "Send time"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:46
-#: .\templates\stopwatch\timeentry_list.html:58
+#: .\templates\stopwatch\timeentry_archive_week.html:42
+#: .\templates\stopwatch\timeentry_list.html:54
 msgid "Dauer"
 msgstr "Timespan"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:47
-#: .\templates\stopwatch\timeentry_list.html:59
+#: .\templates\stopwatch\timeentry_archive_week.html:43
+#: .\templates\stopwatch\timeentry_list.html:55
 msgid "Maximale Dauer"
 msgstr "Maximum timespan"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:48
-#: .\templates\stopwatch\timeentry_list.html:60
+#: .\templates\stopwatch\timeentry_archive_week.html:44
+#: .\templates\stopwatch\timeentry_list.html:56
 msgid "Differenz"
 msgstr "Difference"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:55
-#: .\templates\stopwatch\timeentry_list.html:67
+#: .\templates\stopwatch\timeentry_archive_week.html:51
+#: .\templates\stopwatch\timeentry_list.html:63
 #, python-format
 msgid "%(start)s Uhr"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:56
-#: .\templates\stopwatch\timeentry_list.html:68
+#: .\templates\stopwatch\timeentry_archive_week.html:52
+#: .\templates\stopwatch\timeentry_list.html:64
 #, python-format
 msgid "%(stop)s Uhr"
 msgstr ""
+
+#~ msgid "Das Passwort wurde geändert."
+#~ msgstr "The password has been changed."
+
+#~ msgid "Passwort ändern"
+#~ msgstr "Change password"
+
+#~ msgid "Login"
+#~ msgstr "Login"
 
 #~ msgid "username"
 #~ msgstr "username"

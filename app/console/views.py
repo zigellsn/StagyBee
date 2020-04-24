@@ -49,25 +49,3 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
     return_403 = True
     permission_required = "access_console"
     template_name = "console/console.html"
-
-
-class SettingsView(LoginRequiredMixin, FormView):
-    template_name = 'console/settings.html'
-    form_class = PasswordChangeForm
-    success_url = '/settings/'
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["no_settings"] = True
-        return context
-
-    def form_valid(self, form):
-        form.save()
-        update_session_auth_hash(self.request, form.user)
-        messages.success(self.request, _("Das Passwort wurde geändert."))
-        return super().form_valid(form)
