@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 
-{% block title %}Login{% endblock %}
+{% block title %}{% trans 'Log in' %}{% endblock %}
 
 {% block header %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
@@ -20,9 +20,7 @@
         <button class="button primary mt-4" type="submit">{% trans 'Log in' %}</button>
     </form>
 
-    {% comment %}
     <div class="password-reset-link">
         <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
     </div>
-    {% endcomment %}
 {% endblock %}

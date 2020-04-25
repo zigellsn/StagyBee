@@ -3,6 +3,12 @@
     {% get_current_language as LANGUAGE_CODE %}
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}
+    <div class="app-bar-container float-none">
+        <div class="app-bar-item pl-4 pr-4">
+            <a href="{% url 'login' %}" class="brand"><span
+                    class="display1">StagyBee</span></a>
+        </div>
+    </div>
     <div class="app-bar-container mr-auto">
         <div class="app-bar-container float-left">
             <a href="#" class="app-bar-item dropdown-toggle marker-light">
