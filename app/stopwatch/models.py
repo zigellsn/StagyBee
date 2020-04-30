@@ -14,7 +14,7 @@
 
 from datetime import timedelta, datetime
 
-from decouple import config
+from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
@@ -25,7 +25,7 @@ from picker.models import Credential
 class TimeEntryQuerySet(QuerySet):
 
     def invalid(self):
-        date = timezone.now() - timedelta(days=config("KEEP_TIMER_DAYS", default=30))
+        date = timezone.now() - timedelta(days=settings.KEEP_TIMER_DAYS)
         return self.filter(start__lt=date)
 
     def all_by_congregation(self, congregation):

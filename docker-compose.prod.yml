@@ -24,8 +24,8 @@ services:
     image: "stagybee/frontend:latest"
     command: bash -c "daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application"
     restart: always
-    expose:
-      - 8000
+    ports:
+      - "127.0.0.1:8000:8000"
     volumes:
       - type: bind
         source: ./static
