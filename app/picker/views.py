@@ -33,8 +33,14 @@ class PickerView(ListView):
         host_ip, host_name = __get_address__(self.request.get_port())
         credentials = Credential.objects.all()
         col, size = __get_tiles_configuration__(credentials)
-        context["ip"] = host_ip
-        context["port"] = self.request.get_port(),
+        if settings.RUN_IN_CONTAINER:
+            context["ip"] = settings.EXTERNAL_IP
+        else:
+            port = self.request.get_port()
+            if port == 80 or port == 443:
+                context["ip"] = host_ip
+            else:
+                context["ip"] = f"{host_ip}:{port}"
         context["size"] = size
         context["col"] = col
         context["hostname"] = host_name

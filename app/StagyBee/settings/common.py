@@ -37,7 +37,7 @@ try:
 except FileNotFoundError:
     WB_LANGUAGE_SWITCHER = {}
 
-VERSION = "0.2.0-alpha"
+VERSION = "1.0.0-beta01"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
@@ -118,6 +118,7 @@ REDIS_EXPIRATION = env.int("REDIS_EXPIRATION", default=21600)
 EXTRACTOR_TIMEOUT = env.int("EXTRACTOR_TIMEOUT", default=120)
 SHOW_SHUTDOWN_ICON = env.bool("SHOW_SHUTDOWN_ICON", default=True)
 RUN_IN_CONTAINER = env.bool("RUN_IN_CONTAINER", default=False)
+EXTERNAL_IP = env.str("EXTERNAL_IP", default='127.0.0.1:8000')
 KEEP_TIMER_DAYS = env.int("KEEP_TIMER_DAYS", default=30)
 RECEIVER_HOST = env.str('RECEIVER_HOST', default='')
 RECEIVER_PORT = env.int('RECEIVER_PORT', default=0)
