@@ -14,7 +14,7 @@
 
 from .common import *  # noqa
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY")
 
 DEBUG = False
 

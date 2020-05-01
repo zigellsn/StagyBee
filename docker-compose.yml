@@ -10,27 +10,29 @@ services:
       - type: bind
         source: ./data
         target: /var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=stagybee
-      - POSTGRES_PASSWORD=stagybee
-      - POSTGRES_DB=stagybee_dev
+    ports:
+      - "127.0.0.1:5432:5432"
+    env_file:
+      - app/.env
   redis:
     image: redis:alpine
+    ports:
+      - "127.0.0.1:6379:6379"
   #extractor:
   #  build:
   #    context: ../extractor/   # change accordingly
   #    dockerfile: Dockerfile
   #  image: "stagybee/extractor:latest"
   #  restart: always
-  #  expose:
-  #    - 5000
+  #  ports:
+  #    - "127.0.0.1:8080:8080"
   web:
     build:
       context: app/
     image: "stagybee/frontend:latest"
     command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - redis
       - db

@@ -17,16 +17,19 @@ import os
 import sys
 from pathlib import Path
 
-from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
-
 # Needed for now when using Python 3.8 on Windows
+from environ import environ
+
 if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.minor == 8:
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 BASE_DIR = PROJECT_PACKAGE.parent
+
+env = environ.Env()
+env.read_env(env_file=os.path.dirname(PROJECT_PACKAGE) + "\\.env")
 
 try:
     with open(f"{PROJECT_PACKAGE}/regex.json", encoding="utf-8") as json_file:
@@ -36,7 +39,7 @@ except FileNotFoundError:
 
 VERSION = "0.2.0-alpha"
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
 # Application definition
 
@@ -78,13 +81,8 @@ LOGIN_REDIRECT_URL = '/console/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-EMAIL_HOST = config("EMAIL_HOST", default="localhost")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
-EMAIL_PORT = config("EMAIL_PORT", default="25")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False, cast=bool)
-EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+EMAIL_CONFIG = env.email_url(default='smtp://user:password@localhost:25')
 
 TEMPLATES = [
     {
@@ -110,23 +108,24 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(config("REDIS_HOST", default="localhost"), config("REDIS_PORT", default=6379, cast=int))],
+            "hosts": [(env.str("REDIS_HOST", default="localhost"), env.int("REDIS_PORT", default=6379))],
         },
     },
 }
+
+REDIS_EXPIRATION = env.int("REDIS_EXPIRATION", default=21600)
+EXTRACTOR_TIMEOUT = env.int("EXTRACTOR_TIMEOUT", default=120)
+SHOW_SHUTDOWN_ICON = env.bool("SHOW_SHUTDOWN_ICON", default=True)
+RUN_IN_CONTAINER = env.bool("RUN_IN_CONTAINER", default=False)
+KEEP_TIMER_DAYS = env.int("KEEP_TIMER_DAYS", default=30)
+RECEIVER_HOST = env.str('RECEIVER_HOST', default='')
+RECEIVER_PORT = env.int('RECEIVER_HOST', default=0)
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        "ENGINE": config("SQL_ENGINE", default="django.db.backends.sqlite3"),
-        "NAME": config("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": config("SQL_USER", default="user"),
-        "PASSWORD": config("SQL_PASSWORD", default="password"),
-        "HOST": config("SQL_HOST", default="localhost"),
-        "PORT": config("SQL_PORT", default="5432"),
-    }
+    'default': env.db_url(default='sqlite:///db.sqlite3')
 }
 
 # Password validation
@@ -150,8 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGES = config('LANGUAGES', default="de:German,en:English",
-                   cast=Csv(cast=lambda s: (s.split(':')[0], _(s.split(':')[1])), delimiter=',', strip=' %*'))
+LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in env.list('LANGUAGES', default="de:German,en:English")]
 
 LANGUAGE_CODE = 'de'
 

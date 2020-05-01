@@ -20,7 +20,7 @@ from contextlib import suppress
 import aiohttp
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
-from decouple import config
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
@@ -79,7 +79,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             return await super().encode_json(content=content)
 
     async def __waiter(self):
-        await asyncio.sleep(config("EXTRACTOR_TIMEOUT", default=120))
+        await asyncio.sleep(settings.EXTRACTOR_TIMEOUT)
         reachable = await self.__get_extractor_status()
         if not reachable:
             await self.send_json("extractor_not_available")
@@ -122,8 +122,13 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         self.extractor_url = credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
-        url = f"http://{config('RECEIVER_HOST', default=self.scope['server'][0])}:" \
-              f"{config('RECEIVER_PORT', default=self.scope['server'][1], cast=int)}/receiver/{congregation}/"
+        receiver_host = settings.RECEIVER_HOST
+        if receiver_host == 0:
+            receiver_host = self.scope['server'][1]
+        receiver_port = settings.RECEIVER_PORT
+        if receiver_port == 0:
+            receiver_port = self.scope['server'][1]
+        url = f"http://{receiver_host}:{receiver_port}/receiver/{congregation}/"
         if credentials.autologin is not None and credentials.autologin != "":
             payload = {"id": credentials.autologin, "url": url}
         else:
