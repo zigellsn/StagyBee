@@ -25,8 +25,11 @@ from picker.models import Credential
 class TimeEntryQuerySet(QuerySet):
 
     def invalid(self):
-        date = timezone.now() - timedelta(days=settings.KEEP_TIMER_DAYS)
-        return self.filter(start__lt=date)
+        if settings.KEEP_TIMER_DAYS != -1:
+            date = timezone.now() - timedelta(days=settings.KEEP_TIMER_DAYS)
+            return self.filter(start__lt=date)
+        else:
+            return self.none()
 
     def all_by_congregation(self, congregation):
         return self.filter(congregation=congregation)
