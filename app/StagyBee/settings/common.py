@@ -76,7 +76,7 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-ROOT_URLCONF = 'stagy_bee.urls'
+ROOT_URLCONF = 'StagyBee.urls'
 LOGIN_REDIRECT_URL = '/console/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
@@ -100,9 +100,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'stagy_bee.wsgi.application'
+WSGI_APPLICATION = 'StagyBee.wsgi.application'
 
-ASGI_APPLICATION = "stagy_bee.routing.application"
+ASGI_APPLICATION = "StagyBee.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {

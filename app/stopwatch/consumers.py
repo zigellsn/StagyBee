@@ -19,7 +19,7 @@ from django.conf import settings
 
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from stagy_bee.consumers import AsyncJsonRedisWebsocketConsumer
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from stopwatch.models import TimeEntry
 from .timer import Timer, GLOBAL_TIMERS
 

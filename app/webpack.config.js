@@ -30,7 +30,7 @@ module.exports = {
         libraryTarget: 'umd',
         globalObject: 'this',
         library: ['StagyBee', '[name]'],
-        path: path.resolve(__dirname, 'stagy_bee/static')
+        path: path.resolve(__dirname, 'StagyBee/static')
     },
     devtool: 'source-map',
     module: {

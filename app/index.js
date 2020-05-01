@@ -18,6 +18,6 @@ import {console_client_ws} from './stage/static/stage/js/console_client_ws.js';
 import {timer_ws} from './stopwatch/static/stopwatch/js/timer_ws.js';
 import {console_ws} from './console/static/console/js/console_ws.js';
 import {stage_ws} from './stage/static/stage/js/stage_ws.js';
-import {startTime} from './stagy_bee/static/js/time';
+import {startTime} from './StagyBee/static/js/time';
 
 export { console_client_ws, timer_ws, console_ws, stage_ws, startTime }

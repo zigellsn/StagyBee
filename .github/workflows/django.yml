@@ -27,4 +27,4 @@ jobs:
         pip install -r app/requirements/dev.txt
     - name: Run Tests
       run: |
-        python app/manage.py test ./app --settings=stagy_bee.settings.dev
+        python app/manage.py test ./app --settings=StagyBee.settings.dev

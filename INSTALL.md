@@ -27,13 +27,13 @@ npm install
 npm run build
 ```
 
-Copy the generated files to ./stagy_bee/static/
+Copy the generated files to ./StagyBee/static/
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/dev.txt
-export DJANGO_SETTINGS_MODULE=stagy_bee.settings.dev
+export DJANGO_SETTINGS_MODULE=StagyBee.settings.dev
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic
@@ -58,17 +58,17 @@ To run StagyBee in a production setting use
 npm install
 npm run build
 ```
-Copy the generated files to ./stagy_bee/static/
+Copy the generated files to ./StagyBee/static/
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/prod.txt
-export DJANGO_SETTINGS_MODULE=stagy_bee.settings.prod
+export DJANGO_SETTINGS_MODULE=StagyBee.settings.prod
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic
 python manage.py createsuperuser
-daphne -b 0.0.0.0 -p 8000 stagy_bee.asgi:application
+daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application
 ```
 
 Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.

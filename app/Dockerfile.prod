@@ -10,7 +10,7 @@ FROM stagybee/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE=stagy_bee.settings.prod
+ENV DJANGO_SETTINGS_MODULE=StagyBee.settings.prod
 
 ENV DEPENDENCIES="gcc \
     libffi-dev \
@@ -33,6 +33,6 @@ RUN mkdir -p $HOME/static && \
 USER pyuser
 
 COPY --chown=pyuser:users . .
-COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
+COPY --from=build --chown=pyuser:users /StagyBee/static ./StagyBee/static
 
 ENTRYPOINT ["/home/pyuser/scripts/entrypoint.prod.sh"]

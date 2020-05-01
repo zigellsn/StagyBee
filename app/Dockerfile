@@ -9,7 +9,7 @@ FROM stagybee/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE=stagy_bee.settings.dev
+ENV DJANGO_SETTINGS_MODULE=StagyBee.settings.dev
 
 ENV DEPENDENCIES="gcc \
     libffi-dev \
@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 
 
 USER pyuser
 
-COPY --from=build --chown=pyuser:users /stagy_bee/static ./stagy_bee/static
+COPY --from=build --chown=pyuser:users /StagyBee/static ./StagyBee/static
 COPY ./scripts/entrypoint.sh $HOME/
 
 ENTRYPOINT ["/home/pyuser/entrypoint.sh"]
