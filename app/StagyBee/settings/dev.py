@@ -24,6 +24,9 @@ SESSION_COOKIE_SECURE = False
 
 CSRF_COOKIE_SECURE = False
 
+if "symmetric_encryption_keys" in CHANNEL_LAYERS["default"]["CONFIG"]:
+    del CHANNEL_LAYERS["default"]["CONFIG"]["symmetric_encryption_keys"]
+
 if DEBUG:
     try:
         import debug_toolbar
