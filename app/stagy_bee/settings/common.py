@@ -108,7 +108,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env.str("REDIS_HOST", default="localhost"), env.int("REDIS_PORT", default=6379))],
+            "hosts": [env.str('REDIS_URL', default='redis://localhost:6379/0')],
+            "symmetric_encryption_keys": [env.str("SECRET_KEY")],
         },
     },
 }
@@ -119,7 +120,7 @@ SHOW_SHUTDOWN_ICON = env.bool("SHOW_SHUTDOWN_ICON", default=True)
 RUN_IN_CONTAINER = env.bool("RUN_IN_CONTAINER", default=False)
 KEEP_TIMER_DAYS = env.int("KEEP_TIMER_DAYS", default=30)
 RECEIVER_HOST = env.str('RECEIVER_HOST', default='')
-RECEIVER_PORT = env.int('RECEIVER_HOST', default=0)
+RECEIVER_PORT = env.int('RECEIVER_PORT', default=0)
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -149,7 +150,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in env.list('LANGUAGES', default="de:German,en:English")]
+LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in
+             env.list('LANGUAGES', default=[('de', 'German'), ('en', 'English')])]
 
 LANGUAGE_CODE = 'de'
 
