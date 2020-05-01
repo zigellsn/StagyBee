@@ -29,7 +29,7 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 BASE_DIR = PROJECT_PACKAGE.parent
 
 env = environ.Env()
-env.read_env(env_file=os.path.dirname(PROJECT_PACKAGE) + "\\.env")
+env.read_env(env_file=os.path.dirname(PROJECT_PACKAGE) + "/.env")
 
 try:
     with open(f"{PROJECT_PACKAGE}/regex.json", encoding="utf-8") as json_file:
