@@ -30,12 +30,14 @@ class PickerView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        host_ip, host_name = __get_address__(self.request.get_port())
         credentials = Credential.objects.all()
         col, size = __get_tiles_configuration__(credentials)
         if settings.RUN_IN_CONTAINER:
             context["ip"] = settings.EXTERNAL_IP
+            context["hostname"] = settings.EXTERNAL_HOST_NAME
         else:
+            host_ip, host_name = __get_address__(self.request.get_port())
+            context["hostname"] = host_name
             port = self.request.get_port()
             if port == 80 or port == 443:
                 context["ip"] = host_ip
@@ -43,7 +45,6 @@ class PickerView(ListView):
                 context["ip"] = f"{host_ip}:{port}"
         context["size"] = size
         context["col"] = col
-        context["hostname"] = host_name
         context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
         context["version"] = settings.VERSION
         return context
