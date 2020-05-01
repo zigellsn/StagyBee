@@ -18,4 +18,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 
 DEBUG = False
 
+if "symmetric_encryption_keys" not in CHANNEL_LAYERS["default"]["CONFIG"]:
+    CHANNEL_LAYERS["default"]["CONFIG"]["symmetric_encryption_keys"] = [SECRET_KEY]
+
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
