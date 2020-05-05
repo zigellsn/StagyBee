@@ -11,7 +11,7 @@ services:
     depends_on:
       - redis
       - db
-  #   - extractor
+      - extractor
     volumes:
       - type: bind
         source: ./app

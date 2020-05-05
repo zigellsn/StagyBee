@@ -103,7 +103,7 @@ class Credential(models.Model):
     username = models.CharField(max_length=200, default="", blank=True)
     password = models.CharField(max_length=200, default="", blank=True)
     display_name = models.CharField(max_length=200, default="", blank=True)
-    extractor_url = models.CharField(max_length=200, default="http://localhost:5000/", blank=True,
+    extractor_url = models.CharField(max_length=200, default="http://extractor:8080/", blank=True,
                                      verbose_name="Extractor URL")
     touch = models.BooleanField(default=True)
     show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))

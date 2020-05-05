@@ -18,14 +18,14 @@ services:
     image: redis:alpine
     ports:
       - "127.0.0.1:6379:6379"
-  #extractor:
-  #  build:
-  #    context: ../extractor/   # change accordingly
-  #    dockerfile: Dockerfile
-  #  image: "stagybee/extractor:latest"
-  #  restart: always
-  #  ports:
-  #    - "127.0.0.1:8080:8080"
+  extractor:
+    build:
+      context: extractor/
+      dockerfile: Dockerfile
+    image: "stagybee/extractor:latest"
+    restart: always
+    ports:
+      - "127.0.0.1:8080:8080"
   web:
     build:
       context: app/
@@ -36,7 +36,7 @@ services:
     depends_on:
       - redis
       - db
-  #   - extractor
+      - extractor
     volumes:
       - type: bind
         source: ./app/shutdown_signal
