@@ -43,6 +43,7 @@ async def test_console_consumer():
     assert response == {"alert": {"alert": {"message": "Bla"}}, "type": "alert"}
     await communicator.disconnect()
     await database_sync_to_async(credential.delete)()
+    await database_sync_to_async(test_user.delete)()
 
 
 @database_sync_to_async
