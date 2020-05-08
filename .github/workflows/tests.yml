@@ -27,6 +27,4 @@ jobs:
         pip install -r app/requirements/dev.txt
     - name: Run Tests
       run: |
-        python app/manage.py test ./app
-      env:
-        DJANGO_SETTINGS_MODULE: StagyBee.settings.dev
+        python app/manage.py test ./app --settings=StagyBee.settings.dev
