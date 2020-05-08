@@ -25,7 +25,7 @@ from picker.tests import create_credential
 @pytest.mark.asyncio
 @pytest.mark.django_db
 async def test_extractor_consumer():
-    await database_sync_to_async(create_credential)()
+    credential = await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
@@ -36,10 +36,13 @@ async def test_extractor_consumer():
     # response = await communicator.receive_json_from()
     # assert response == {"hello": "hello"}
     await communicator.disconnect()
+    await database_sync_to_async(credential.delete)()
 
 
 @pytest.mark.asyncio
+@pytest.mark.django_db
 async def test_console_client_consumer():
+    credential = await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")
@@ -49,3 +52,4 @@ async def test_console_client_consumer():
     # response = await communicator.receive_json_from()
     # assert response == {"hello": "hello"}
     await communicator.disconnect()
+    await database_sync_to_async(credential.delete)()

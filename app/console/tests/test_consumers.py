@@ -13,9 +13,13 @@
 #  limitations under the License.
 
 import pytest
+from asgiref.sync import async_to_sync
+from channels.auth import login
 from channels.db import database_sync_to_async
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.urls import re_path
 
 from console.consumers import ConsoleConsumer
@@ -25,9 +29,11 @@ from picker.tests import create_credential
 @pytest.mark.asyncio
 @pytest.mark.django_db
 async def test_console_consumer():
-    await database_sync_to_async(create_credential)()
+    test_user = await user()
+    credential = await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer)])
     communicator = WebsocketCommunicator(application, "/ws/de/console/LE/")
+    communicator.scope['user'] = test_user
     connected, _ = await communicator.connect()
     assert connected
     response = await communicator.receive_json_from()
@@ -36,3 +42,9 @@ async def test_console_consumer():
     response = await communicator.receive_json_from()
     assert response == {"alert": {"alert": {"message": "Bla"}}, "type": "alert"}
     await communicator.disconnect()
+    await database_sync_to_async(credential.delete)()
+
+
+@database_sync_to_async
+def user():
+    return get_user_model().objects.create_user("testuser", "12345")

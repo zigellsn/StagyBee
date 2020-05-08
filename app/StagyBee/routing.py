@@ -14,6 +14,7 @@
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.security.websocket import AllowedHostsOriginValidator
 
 from console import routing as console_routing
 from stage import routing as stage_routing
@@ -24,7 +25,9 @@ urlpatterns += console_routing.websocket_urlpatterns
 urlpatterns += stopwatch_routing.websocket_urlpatterns
 
 application = ProtocolTypeRouter({
-    "websocket": AuthMiddlewareStack(
-        URLRouter(urlpatterns)
+    "websocket": AllowedHostsOriginValidator(
+        AuthMiddlewareStack(
+            URLRouter(urlpatterns)
+        ),
     ),
 })

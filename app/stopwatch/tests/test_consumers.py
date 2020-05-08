@@ -28,7 +28,7 @@ from picker.tests import create_credential
 @pytest.mark.asyncio
 @pytest.mark.django_db
 async def test_central_timer_consumer():
-    await database_sync_to_async(create_credential)()
+    credential = await database_sync_to_async(create_credential)()
     application = URLRouter([re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/central_timer/LE/")
@@ -61,3 +61,4 @@ async def test_central_timer_consumer():
     assert await communicator.receive_json_from() == {"timer": {"mode": "stopped"}, "type": "timer"}
 
     await communicator.disconnect()
+    await database_sync_to_async(credential.delete)()

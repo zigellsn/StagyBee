@@ -29,6 +29,10 @@ from .workbook.workbook import WorkbookExtractor
 class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
 
     async def connect(self):
+        user = self.scope['user']
+        if user.is_anonymous or not user.is_authenticated:
+            await self.close()
+            return
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
             generate_channel_group_name("console", congregation),

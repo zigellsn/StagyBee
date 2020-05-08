@@ -1,0 +1,54 @@
+name: Django CI
+
+on:
+    push:
+      tags:
+        - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Release Info
+        id: build_release_info
+        run: |
+          echo ::set-output name=version::${TAG_REF_NAME##*/v}
+        env:
+          TAG_REF_NAME: ${{ github.ref }}
+      - name: Build project
+        run: |
+          mkdir build
+          cd .. && zip -r StagyBee/build/StagyBee-${{steps.build_release_info.outputs.version}}.zip StagyBee -x "StagyBee/.git/*" "StagyBee/.github/*" "StagyBee/.idea/*" "StagyBee/.gitignore" "StagyBee/build/*" && cd StagyBee
+          tar --exclude='.git' --exclude='.github' --exclude='.gitignore' --exclude='.idea' --exclude='build' -cvf build/StagyBee-${{steps.build_release_info.outputs.version}}.tar ../StagyBee
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release version ${{steps.build_release_info.outputs.version}}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset-tar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/StagyBee-${{steps.build_release_info.outputs.version}}.tar
+          asset_name: StagyBee-${{steps.build_release_info.outputs.version}}.tar
+          asset_content_type: application/x-tar
+      - name: Upload Release Asset
+        id: upload-release-asset-zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/StagyBee-${{steps.build_release_info.outputs.version}}.zip
+          asset_name: StagyBee-${{steps.build_release_info.outputs.version}}.zip
+          asset_content_type: application/zip
