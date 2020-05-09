@@ -19,9 +19,9 @@ jobs:
           TAG_REF_NAME: ${{ github.ref }}
       - name: Build project
         run: |
-          mkdir build
-          cd .. && zip -r StagyBee/build/StagyBee-${{steps.build_release_info.outputs.version}}.zip StagyBee -x "StagyBee/.git/*" "StagyBee/.github/*" "StagyBee/.idea/*" "StagyBee/.gitignore" "StagyBee/build/*" && cd StagyBee
-          tar --exclude='.git' --exclude='.github' --exclude='.gitignore' --exclude='.idea' --exclude='build' -cvf build/StagyBee-${{steps.build_release_info.outputs.version}}.tar ../StagyBee
+          mkdir dist
+          cd .. && zip -r StagyBee/dist/StagyBee-${{steps.build_release_info.outputs.version}}.zip StagyBee -x "StagyBee/.git/*" "StagyBee/.github/*" "StagyBee/.idea/*" "StagyBee/.gitignore" "StagyBee/dist/*" && cd StagyBee
+          tar --exclude='.git' --exclude='.github' --exclude='.gitignore' --exclude='.idea' --exclude='dist' -cvf dist/StagyBee-${{steps.build_release_info.outputs.version}}.tar ../StagyBee
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/StagyBee-${{steps.build_release_info.outputs.version}}.tar
+          asset_path: dist/StagyBee-${{steps.build_release_info.outputs.version}}.tar
           asset_name: StagyBee-${{steps.build_release_info.outputs.version}}.tar
           asset_content_type: application/x-tar
       - name: Upload Release Asset
@@ -49,6 +49,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/StagyBee-${{steps.build_release_info.outputs.version}}.zip
+          asset_path: dist/StagyBee-${{steps.build_release_info.outputs.version}}.zip
           asset_name: StagyBee-${{steps.build_release_info.outputs.version}}.zip
           asset_content_type: application/zip
