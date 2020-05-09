@@ -8,6 +8,8 @@ REDIS_KEY = "stagybee::*"
 
 
 async def initialize_redis():
+    if "CONFIG" not in settings.CHANNEL_LAYERS["default"]:
+        return
     try:
         host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
         redis = await aioredis.create_redis(host)

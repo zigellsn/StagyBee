@@ -1,9 +1,9 @@
 name: Django CI
 
 on:
-    push:
-      tags:
-        - 'v*'
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:

@@ -15,6 +15,7 @@
 import json
 from datetime import datetime
 
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.utils import formats, translation
@@ -22,7 +23,6 @@ from django.utils import formats, translation
 from audit.models import Audit
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from .workbook.workbook import WorkbookExtractor
 
 

@@ -18,6 +18,7 @@ import re
 from contextlib import suppress
 
 import aiohttp
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
@@ -25,7 +26,6 @@ from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 from picker.models import Credential
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 
 GLOBAL_TIMEOUT = {}
 

@@ -18,14 +18,31 @@ from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.urls import re_path
 
-from picker.tests import create_credential
+from picker.models import Credential
 from stage.consumers import ExtractorConsumer, ConsoleClientConsumer
+
+
+@pytest.fixture
+def channel_layers():
+    from django.conf import settings
+    settings.CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
+
+
+def get_or_create_credential(congregation='LE', autologin='abc', username='abc', password='abc', display_name='The LE',
+                             extractor_url='www.abc.com', touch=False):
+    return Credential.objects.get_or_create(congregation=congregation, autologin=autologin,
+                                            username=username, password=password, display_name=display_name,
+                                            extractor_url=extractor_url, touch=touch)
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db
-async def test_extractor_consumer():
-    await database_sync_to_async(create_credential)()
+async def test_extractor_consumer(channel_layers):
+    await database_sync_to_async(get_or_create_credential)()
     application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
@@ -40,8 +57,8 @@ async def test_extractor_consumer():
 
 @pytest.mark.asyncio
 @pytest.mark.django_db
-async def test_console_client_consumer():
-    await database_sync_to_async(create_credential)()
+async def test_console_client_consumer(channel_layers):
+    await database_sync_to_async(get_or_create_credential)()
     application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")

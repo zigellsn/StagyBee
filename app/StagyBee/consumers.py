@@ -22,10 +22,13 @@ from django.conf import settings
 class RedisConnector(object):
 
     def __init__(self):
-        self._host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+        self._host = None
+        if "CONFIG" in settings.CHANNEL_LAYERS["default"]:
+            self._host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
 
     async def redis_connect(self):
-        return await aioredis.create_redis(self._host)
+        if self._host is not None:
+            return await aioredis.create_redis(self._host)
 
     @staticmethod
     async def redis_disconnect(redis):
@@ -34,6 +37,8 @@ class RedisConnector(object):
 
     async def connect_uri(self, group, channel_name):
         redis = await self.redis_connect()
+        if redis is None:
+            return
         await redis.sadd(group, channel_name)
         members = await redis.smembers(group)
         with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
@@ -45,6 +50,8 @@ class RedisConnector(object):
 
     async def disconnect_uri(self, group, channel_name):
         redis = await self.redis_connect()
+        if redis is None:
+            return
         await redis.srem(group, channel_name)
         count = await redis.scard(group)
         if count == 1:

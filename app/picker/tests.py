@@ -20,9 +20,9 @@ from picker.models import Credential
 
 def create_credential(congregation='LE', autologin='abc', username='abc', password='abc', display_name='The LE',
                       extractor_url='www.abc.com', touch=False):
-    return Credential.objects.get_or_create(congregation=congregation, autologin=autologin,
-                                            username=username, password=password, display_name=display_name,
-                                            extractor_url=extractor_url, touch=touch)
+    return Credential.objects.create(congregation=congregation, autologin=autologin,
+                                     username=username, password=password, display_name=display_name,
+                                     extractor_url=extractor_url, touch=touch)
 
 
 class PickerViewTests(TestCase):

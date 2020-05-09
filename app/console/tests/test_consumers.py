@@ -20,14 +20,24 @@ from django.contrib.auth import get_user_model
 from django.urls import re_path
 
 from console.consumers import ConsoleConsumer
-from picker.tests import create_credential
+from stage.tests.test_consumers import get_or_create_credential
+
+
+@pytest.fixture
+def channel_layers():
+    from django.conf import settings
+    settings.CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db
-async def test_console_consumer():
+async def test_console_consumer(channel_layers):
     test_user = await user()
-    await database_sync_to_async(create_credential)()
+    await database_sync_to_async(get_or_create_credential)()
     application = URLRouter([re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer)])
     communicator = WebsocketCommunicator(application, "/ws/de/console/LE/")
     communicator.scope['user'] = test_user

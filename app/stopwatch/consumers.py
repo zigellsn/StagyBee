@@ -13,13 +13,13 @@
 #  limitations under the License.
 from datetime import datetime
 
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
 
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from stopwatch.models import TimeEntry
 from .timer import Timer, GLOBAL_TIMERS
 

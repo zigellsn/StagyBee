@@ -21,14 +21,24 @@ from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.urls import re_path
 
-from picker.tests import create_credential
+from stage.tests.test_consumers import get_or_create_credential
 from stopwatch.consumers import CentralTimerConsumer
+
+
+@pytest.fixture
+def channel_layers():
+    from django.conf import settings
+    settings.CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db
-async def test_central_timer_consumer():
-    await database_sync_to_async(create_credential)()
+async def test_central_timer_consumer(channel_layers):
+    await database_sync_to_async(get_or_create_credential)()
     application = URLRouter([re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer)])
 
     communicator = WebsocketCommunicator(application, "/ws/central_timer/LE/")
