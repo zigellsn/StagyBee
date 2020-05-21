@@ -8,6 +8,8 @@ git clone https://github.com/zigellsn/StagyBee.git
 ```
 Change into the extracted directory.
 
+If running on Raspberry Pi, replace the Dockerfile for "extractor" in docker-compose.yml with 'Dockerfile.rpi'.
+
 ## Running in development
 Copy the file .env.docker.example to .env and adjust to your needs.
 ``` bash
@@ -70,6 +72,14 @@ chromium-browser --incognito --kiosk http://127.0.0.1:8000/picker/
 ```
 
 ## Use shutdown and reboot scripts
+
+---
+**DON'T USE SHUTDOWN SCRIPTS WHEN USING ONE SERVER FOR MULTIPLE INSTANCES SIMULTANEOUSLY!**
+
+To hide the shutdown icon in the UI, set **SHOW_SHUTDOWN_ICON=False** in app/.env.
+
+---
+
 Install inotify-tools if necessary.
 
 Set variable SHUTDOWN_SIGNAL in app/shutdown_interface.sh to the full path of the file app/shutdown_signal.
