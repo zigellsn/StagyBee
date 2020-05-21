@@ -42,7 +42,10 @@ Copy the file .env.docker.example to .env and adjust to your needs.
 cp app/.env.docker.example app/.env
 ```
 
-Change the value of DEBUG in .env to False, and don't forget to set the SECRET_KEY value!
+---
+**Don't forget to set the SECRET_KEY value!**
+
+---
 
 Create the directories "data" and "static".
 ``` bash
