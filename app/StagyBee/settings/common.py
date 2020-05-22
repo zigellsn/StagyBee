@@ -37,7 +37,7 @@ try:
 except FileNotFoundError:
     WB_LANGUAGE_SWITCHER = {}
 
-VERSION = "1.0.0-beta02"
+VERSION = "1.0.0-beta03"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 

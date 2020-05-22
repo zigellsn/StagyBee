@@ -51,7 +51,10 @@ Copy the file .env.example to .env and adjust to your needs.
 cp .env.example .env
 ```
 
+---
 Don't forget to set the SECRET_KEY value in .env!
+
+---
 
 To run StagyBee in a production setting use
 ```bash

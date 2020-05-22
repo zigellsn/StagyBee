@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="StagyBee 502 Message">
+    <meta name="keywords" content="StagyBee, stage, control">
+    <meta name="Copyright" content="Simon Zigelli"/>
+    <meta name="MSSmartTagsPreventParsing" content="true"/>
+    <title>Please wait... | StagyBee</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            font-style: normal;
+            font-weight: 400;
+            background-color: #1d1d1d !important;
+            color: #ffffff !important;
+        }
+
+        .display1 {
+            font-size: 2.25rem;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+<div class="display1">StagyBee</div>
+<div>&nbsp;</div>
+<span>Please wait...&nbsp;</span><span id="Timer">Timer</span>
+<script>
+    let TimerVal = 5;
+    let TimerSpan = document.getElementById("Timer");
+
+    function Countdown() {
+        setTimeout("Countdown()", 1000);
+        TimerSpan.innerHTML = TimerVal;
+        TimerVal = TimerVal - 1;
+        if (TimerVal < 0) {
+            TimerVal = 0;
+            location.reload();
+        }
+    }
+
+    Countdown();
+</script>
+</body>
+</html>
