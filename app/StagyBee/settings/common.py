@@ -1,4 +1,4 @@
-#  Copyright 2019 Simon Zigelli
+#  Copyright 2019-2020 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ try:
 except FileNotFoundError:
     WB_LANGUAGE_SWITCHER = {}
 
-VERSION = "1.0.0-rc01"
+VERSION = "1.0.0"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 

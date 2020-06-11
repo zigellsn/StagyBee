@@ -1,6 +1,6 @@
 {
   "name": "stagybee",
-  "version": "1.0.0-beta02",
+  "version": "1.0.0",
   "description": "",
   "private": true,
   "author": "Simon Zigelli",
@@ -9,24 +9,24 @@
     "start": "webpack-dev-server"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "autoprefixer": "^9.7.6",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "autoprefixer": "^9.8.0",
     "babel-loader": "^8.1.0",
-    "css-loader": "^3.5.1",
-    "extract-loader": "^5.0.1",
+    "css-loader": "^3.5.3",
+    "extract-loader": "^5.1.0",
     "file-loader": "^6.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
-    "sass": "^1.26.3",
+    "sass": "^1.26.8",
     "sass-loader": "^8.0.2",
-    "webpack": "^4.42.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "metro4": "^4.3.6",
-    "moment": "^2.24.0",
+    "metro4": "^4.3.7",
+    "moment": "^2.26.0",
     "normalize.css": "^8.0.1",
     "progressbar.js": "^1.1.0",
     "reconnecting-websocket": "^4.4.0"
