@@ -31,7 +31,7 @@ function console_client_ws(congregation_ws) {
 
     // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/console_client/${congregation_ws}/`,
     let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/console_client/' + congregation_ws + '/',
-        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+        null, {debug: true, maxReconnectionDelay: 3000, connectionTimeout: 5000, maxRetries: 100});
 
     function showAlert(alert) {
         if (alert['alert'] === 'scrim') {

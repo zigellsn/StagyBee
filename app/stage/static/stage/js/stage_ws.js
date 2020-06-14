@@ -33,7 +33,7 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
 
     // let mySocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/extractor/${congregation_ws}/`,
     let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/extractor/' + congregation_ws + '/',
-        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+        null, {debug: true, maxReconnectionDelay: 3000, connectionTimeout: 5000, maxRetries: 100});
 
     function setElements(activityVisibility, errorMessageVisibility, sumListenersContainerVisibility) {
         if (activity !== null)

@@ -38,7 +38,7 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
 
     // let centralTimerSocket = new ReconnectingWebSocket(`${protocol}${loc.host}/ws/central_timer/${congregation_ws}/`,
     let centralTimerSocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/central_timer/' + congregation_ws + '/',
-        null, {debug: true, reconnectInterval: 3000, timeoutInterval: 5000, maxReconnectAttempts: 100});
+        null, {debug: true, maxReconnectionDelay: 3000, connectionTimeout: 5000, maxRetries: 100});
 
     centralTimerSocket.onopen = function (_) {
         console.log('Timer WebSocket CONNECT successful');
@@ -133,8 +133,8 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
         if ('mode' in timer && (timer['mode'] === 'started') || timer['mode'] === 'running') {
             let value = timer['duration'];
             let start = moment(timer['start']);
+            let diff = moment().diff(start, 'millisecond');
             let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
-            let diff = (new Date).getTime() - start;
             line.set(diff / span);
             line.animate(1.0, {
                 duration: span - diff
@@ -168,4 +168,4 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
     }
 }
 
-export { timer_ws }
+export {timer_ws}
