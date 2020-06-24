@@ -17,6 +17,7 @@
 'use strict';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
+import Metro from "metro4"
 
 function console_ws(language, congregation_ws) {
     let submitTime = document.getElementById('submit_time');
@@ -116,7 +117,7 @@ function console_ws(language, congregation_ws) {
                     caption: gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
-                lv.children('.node').first().click();
+                lv.children('.node').first().trigger("click");
                 lv.on("node-click", function (e) {
                     let talkName = e.detail.node[0];
                     if (talkName.innerText === gettext('Benutzerdefiniert')) {
@@ -155,9 +156,9 @@ function console_ws(language, congregation_ws) {
         let lv = $('#talk_list');
         if (talk !== -1 && talk < lv[0].childNodes.length) {
             $('#submit_stop').removeClass("light").addClass("primary");
-            lv[0].childNodes[talk].click();
+            lv[0].childNodes[talk].trigger("click");
         } else
-            lv.children('.node').first().click();
+            lv.children('.node').first().trigger("click");
     }
 
     function removeAllListItems() {
@@ -204,7 +205,7 @@ function console_ws(language, congregation_ws) {
         submitStop.onclick = function (_) {
             if (running !== -1) {
                 centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
-                $('#talk_list').find('.current').next().click();
+                $('#talk_list').find('.current').next().trigger("click");
                 $('#submit_stop').removeClass("primary").addClass("light");
                 running = -1;
             }

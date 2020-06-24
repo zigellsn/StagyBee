@@ -119,7 +119,7 @@ function timer_ws(congregation_ws, reload, resetOnStop = false) {
                 },
                 from: {color: '#00AFF0'},
                 to: {color: '#CE352C'},
-                step: function (state, line, attachment) {
+                step: function (state, line, _) {
                     line.path.setAttribute('stroke', state.color);
                 },
             });

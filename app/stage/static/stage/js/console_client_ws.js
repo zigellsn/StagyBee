@@ -17,6 +17,7 @@
 'use strict';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
+import Metro from "metro4"
 
 function console_client_ws(congregation_ws) {
 

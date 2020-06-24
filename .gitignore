@@ -375,8 +375,8 @@ temp/
 
 fonts/
 bundle.css
-main.bundle.js*
-external.bundle.js*
+main*.js*
+external*.js*
 #
 
 # End of https://www.gitignore.io/api/django,python,pycharm
