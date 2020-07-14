@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.template import Context, Template
@@ -39,9 +40,12 @@ class NotificationTemplateTagTest(TestCase):
 
     def test_message_rendered(self):
         testuser = User.objects.create(username="testuser")
-        create_message("Test bla bla bla", 1, 30, True, timezone.now(), testuser, "Message!", "en")
-        create_message("Something bad", 5, 30, True, timezone.now(), testuser, "Oh no! Everything kaputt!", "")
-        create_message("Something very bad", 5, 30, True, timezone.now(), testuser, "Oh no! Desaster!", "de")
+        create_message("Test bla bla bla", 1, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
+                       "Message!", "en")
+        create_message("Something bad", 4, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
+                       "Oh no! Everything kaputt!", " ")
+        create_message("Something very bad", 4, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
+                       "Oh no! Desaster!", "de")
         context = Context({"Notification": "notification"})
         template_to_render = Template(
             "{% load notification %}"
@@ -50,4 +54,3 @@ class NotificationTemplateTagTest(TestCase):
         rendered_template = template_to_render.render(context)
         self.assertInHTML("Something bad", rendered_template)
         self.assertInHTML("Something very bad", rendered_template)
-        self.assertIn("mif-cancel", rendered_template)
