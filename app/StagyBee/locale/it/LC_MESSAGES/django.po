@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-24 15:24+0200\n"
+"POT-Creation-Date: 2020-07-14 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\notification\forms.py:37 .\notification\models.py:59
+msgid "Wichtigkeit"
+msgstr ""
+
+#: .\notification\forms.py:40
+#: .\templates\notification\notification_maintain_list.html:51
+msgid "Alle"
+msgstr ""
+
+#: .\notification\forms.py:41 .\notification\models.py:57
+#: .\templates\console\header.html:44 .\templates\console\header_rtl.html:44
+#: .\templates\notification\notification_maintain_list.html:10
+#: .\templates\picker\header.html:18 .\templates\picker\header_rtl.html:18
+msgid "Sprache"
+msgstr ""
+
+#: .\notification\forms.py:43 .\notification\models.py:60
+#: .\templates\notification\notification_maintain_list.html:9
+msgid "Gültig bis"
+msgstr ""
+
+#: .\notification\forms.py:47 .\notification\models.py:61
+#: .\templates\notification\notification_maintain_list.html:11
+msgid "Aktiv"
+msgstr ""
+
+#: .\notification\models.py:50
+msgid "Information"
+msgstr ""
+
+#: .\notification\models.py:51
+msgid "Wichtig"
+msgstr ""
+
+#: .\notification\models.py:52
+msgid "Dringend"
+msgstr ""
+
+#: .\notification\models.py:53
+msgid "Warnung"
+msgstr ""
+
+#: .\notification\models.py:55
+msgid "Betreff"
+msgstr ""
+
+#: .\notification\models.py:56 .\templates\audit\audit_list.html:11
+#: .\templates\notification\notification_maintain_list.html:8
+msgid "Nachricht"
+msgstr ""
 
 #: .\picker\models.py:96
 msgid "Zugriff auf Management Console"
@@ -40,10 +91,6 @@ msgstr ""
 
 #: .\templates\audit\audit_list.html:10
 msgid "User"
-msgstr ""
-
-#: .\templates\audit\audit_list.html:11
-msgid "Nachricht"
 msgstr ""
 
 #: .\templates\audit\audit_list.html:12
@@ -147,15 +194,49 @@ msgstr ""
 msgid "Einstellungen"
 msgstr ""
 
-#: .\templates\console\header.html:44 .\templates\console\header_rtl.html:44
-#: .\templates\picker\header.html:18 .\templates\picker\header_rtl.html:18
-#: .\templates\registration\header.html:9
-#: .\templates\registration\header_rtl.html:9
-msgid "Sprache"
-msgstr ""
-
 #: .\templates\console\header.html:57 .\templates\console\header_rtl.html:57
 msgid "Logout"
+msgstr ""
+
+#: .\templates\console\settings.html:11
+msgid "Passwort"
+msgstr ""
+
+#: .\templates\console\settings.html:14
+msgid "Passwort ändern"
+msgstr ""
+
+#: .\templates\console\settings.html:20
+msgid "Benachrichtigungen"
+msgstr ""
+
+#: .\templates\notification\notification_confirm_delete.html:7
+msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
+msgstr ""
+
+#: .\templates\notification\notification_confirm_delete.html:9
+#: .\templates\notification\notification_maintain_list.html:64
+msgid "Löschen"
+msgstr ""
+
+#: .\templates\notification\notification_form.html:9
+msgid "Speichern"
+msgstr ""
+
+#: .\templates\notification\notification_list.html:7
+msgid "Neue Informationen"
+msgstr ""
+
+#: .\templates\notification\notification_maintain_list.html:12
+msgid "Aktionen"
+msgstr ""
+
+#: .\templates\notification\notification_maintain_list.html:61
+msgid "Bearbeiten"
+msgstr ""
+
+#: .\templates\notification\notification_maintain_list.html:76
+msgid "Neu"
 msgstr ""
 
 #: .\templates\picker\header.html:6 .\templates\picker\header_rtl.html:6
@@ -178,25 +259,12 @@ msgstr "Scegli la riunione"
 msgid "JWConf Login Seite"
 msgstr "JWConf pagina di accesso"
 
-#: .\templates\picker\tiles.html:48
+#: .\templates\picker\tiles.html:51
 msgid "Nein"
 msgstr ""
 
-#: .\templates\picker\tiles.html:52
+#: .\templates\picker\tiles.html:55
 msgid "Ja"
-msgstr ""
-
-#: .\templates\registration\login.html:16
-#: .\templates\registration\login.html:20
-msgid "Log in"
-msgstr ""
-
-#: .\templates\registration\password_change_done.html:8
-msgid "Your password was changed."
-msgstr ""
-
-#: .\templates\registration\password_change_form.html:13
-msgid "Change my password"
 msgstr ""
 
 #: .\templates\stage\stage_extractor.html:25

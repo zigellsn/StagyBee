@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'picker.apps.PickerConfig',
     'audit.apps.AuditConfig',
     'stopwatch.apps.StopwatchConfig',
+    'notification.apps.NotificationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

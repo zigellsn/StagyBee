@@ -12,15 +12,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.urls import path, include
+from django.urls import path
 
-from .views import ConsoleView, ChooseConsoleView
+from .views import NotificationCreate, NotificationUpdate, NotificationDelete
 
-app_name = 'console'
+app_name = 'notification'
 
 urlpatterns = [
-    path('', ChooseConsoleView.as_view(), name='choose_console'),
-    path('<str:pk>/', ConsoleView.as_view(), name='console'),
-    path('audit/', include('audit.urls')),
-    path('timer/', include('stopwatch.urls')),
+    path('create/', NotificationCreate.as_view(), name='notification_create'),
+    path('update/<int:pk>/', NotificationUpdate.as_view(), name='notification_update'),
+    path('delete/<int:pk>/', NotificationDelete.as_view(), name='notification_delete'),
 ]

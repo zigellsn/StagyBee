@@ -12,13 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView, FormView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 

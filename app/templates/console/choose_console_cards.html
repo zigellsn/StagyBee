@@ -1,5 +1,5 @@
 {% extends 'console/choose_console_base.html' %}
-{% load utils i18n guardian_tags %}
+{% load utils i18n guardian_tags notification %}
 
 {% block content %}
     <div class="row mt-2">
@@ -7,7 +7,7 @@
             {% get_obj_perms request.user for congregation as "congregation_perms" %}
             {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms or "access_audit_log" in congregation_perms %}
                 <div class="cell-md-6">
-                    <div class="card bg-black fg-white">
+                    <div class="card bg-dark fg-white">
                         <div class="card-header {% if congregation.active == True %}bg-green{% else %}bg-gray{% endif %} fg-white">
                             <div class="icon">
                                 <span class="{% if congregation.active == True %}mif-star-full{% else %}mif-star-empty{% endif %} mif-4x"></span>
@@ -64,5 +64,8 @@
                 </div>
             {% endif %}
         {% endfor %}
+    </div>
+    <div>
+        {% notifications %}
     </div>
 {% endblock %}

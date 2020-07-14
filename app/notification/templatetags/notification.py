@@ -13,12 +13,25 @@
 #  limitations under the License.
 
 from django import template
-from django.urls import translate_url as django_translate_url
+from django.utils.translation import get_language
+
+from notification.models import Notification
 
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def translate_url(context, lang_code):
-    path = context.get('request').get_full_path()
-    return django_translate_url(path, lang_code)
+@register.inclusion_tag("notification/notification_list.html")
+def notifications():
+    notification_list = Notification.objects.by_state(locale=[get_language()])
+    return {"object_list": notification_list}
+
+
+@register.inclusion_tag("notification/notification.html")
+def notification(notification_object):
+    return {"object": notification_object}
+
+
+@register.inclusion_tag("notification/notification_maintain_list.html")
+def notifications_maintain():
+    notification_list = Notification.objects.all()
+    return {"object_list": notification_list}

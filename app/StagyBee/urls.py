@@ -15,6 +15,7 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
 from .views import redirect_root
@@ -28,7 +29,9 @@ urlpatterns += i18n_patterns(
     path('picker/', include('picker.urls')),
     path('receiver/', include('receiver.urls')),
     path('console/', include('console.urls')),
+    path('notification/', include('notification.urls')),
     path('admin/', admin.site.urls),
+    path('settings/', TemplateView.as_view(template_name="console/settings.html"), name='settings'),
     prefix_default_language=False
 )
 
@@ -39,5 +42,5 @@ if settings.DEBUG:
         pass
     else:
         urlpatterns = [
-            path('__debug__/', include(debug_toolbar.urls)),
-        ] + urlpatterns
+                          path('__debug__/', include(debug_toolbar.urls)),
+                      ] + urlpatterns
