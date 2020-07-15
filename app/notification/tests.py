@@ -16,12 +16,13 @@ from datetime import timedelta
 from django.contrib.auth.models import User
 from django.template import Context, Template
 from django.test import TestCase
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from notification.models import Notification
 
 
-def create_message(message, importance, max_duration, active, create_date, user, subject, locale):
+def create_message(message, subject, locale, importance, user, active=True,
+                   create_date=timezone.now(), max_duration=timezone.now() + timedelta(days=7)):
     return Notification.objects.create(message=message, importance=importance, max_duration=max_duration,
                                        active=active, create_date=create_date, user=user, subject=subject,
                                        locale=locale)
@@ -38,19 +39,32 @@ class NotificationTemplateTagTest(TestCase):
         rendered_template = template_to_render.render(context)
         self.assertEquals("\n", rendered_template)
 
-    def test_message_rendered(self):
-        testuser = User.objects.create(username="testuser")
-        create_message("Test bla bla bla", 1, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
-                       "Message!", "en")
-        create_message("Something bad", 4, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
-                       "Oh no! Everything kaputt!", " ")
-        create_message("Something very bad", 4, timezone.now() + timedelta(days=7), True, timezone.now(), testuser,
-                       "Oh no! Desaster!", "de")
+    def test_language_rendered(self):
+        test_user = User.objects.create(username="test_user")
+        create_message("Test bla bla bla", "Message!", "en", 1, test_user)
         context = Context({"Notification": "notification"})
         template_to_render = Template(
             "{% load notification %}"
             "{% notifications %}"
         )
-        rendered_template = template_to_render.render(context)
+        with translation.override("de"):
+            rendered_template = template_to_render.render(context)
+        self.assertEquals("\n", rendered_template)
+        with translation.override("en"):
+            rendered_template = template_to_render.render(context)
+        self.assertInHTML("Test bla bla bla", rendered_template)
+
+    def test_message_rendered(self):
+        test_user = User.objects.create(username="test_user")
+        create_message("Test bla bla bla", "Message!", "en", 1, test_user)
+        create_message("Something bad", "Oh no! Everything kaput!", " ", 2, test_user)
+        create_message("Something very bad", "Oh no! Disaster!", "de", 4, test_user)
+        context = Context({"Notification": "notification"})
+        template_to_render = Template(
+            "{% load notification %}"
+            "{% notifications %}"
+        )
+        with translation.override("de"):
+            rendered_template = template_to_render.render(context)
         self.assertInHTML("Something bad", rendered_template)
         self.assertInHTML("Something very bad", rendered_template)
