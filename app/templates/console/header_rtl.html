@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="app-bar-container mega mr-auto">
-        <div class="app-bar-container float-left">
+        <div class="app-bar-container float-left pt-3">
             {% if user.is_authenticated %}
                 <h6>
                     {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen,
