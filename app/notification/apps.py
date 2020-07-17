@@ -12,15 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.urls import path, include
+from django.apps import AppConfig
 
-from .views import ConsoleView, ChooseConsoleView
 
-app_name = 'console'
-
-urlpatterns = [
-    path('', ChooseConsoleView.as_view(), name='choose_console'),
-    path('<str:pk>/', ConsoleView.as_view(), name='console'),
-    path('audit/', include('audit.urls')),
-    path('timer/', include('stopwatch.urls')),
-]
+class NotificationConfig(AppConfig):
+    name = 'notification'

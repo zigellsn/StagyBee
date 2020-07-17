@@ -1,0 +1,81 @@
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<table class="table">
+    <thead>
+    <tr>
+        <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
+        <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Gültig bis" %}</th>
+        <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sprache" %}</th>
+        <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aktiv" %}</th>
+        <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aktionen" %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for notification in object_list %}
+        <tr>
+            <td>
+                <div>
+                    {% if notification.importance == 0 %}
+                        <span class="mif-quote" data-role="hint"
+                              data-hint-text="{{ notification.get_importance_display }}"
+                              data-hint-position="bottom"></span>
+                    {% endif %}
+                    {% if notification.importance == 1 %}
+                        <span class="mif-info" data-role="hint"
+                              data-hint-text="{{ notification.get_importance_display }}"
+                              data-hint-position="bottom"></span>
+                    {% endif %}
+                    {% if notification.importance == 2 %}
+                        <span class="mif-warning fg-red" data-role="hint"
+                              data-hint-text="{{ notification.get_importance_display }}"
+                              data-hint-position="bottom"></span>
+                    {% endif %}
+                    {% if notification.importance == 3 %}
+                        <span class="mif-cancel fg-red" data-role="hint"
+                              data-hint-text="{{ notification.get_importance_display }}"
+                              data-hint-position="bottom"></span>
+                    {% endif %}
+                    &nbsp;{{ notification.subject }}&nbsp;({{ notification.create_date|date }})<br>{{ notification.message }}
+                </div>
+            </td>
+            <td>
+                <div>{{ notification.max_duration }}</div>
+            </td>
+            <td>
+                {% if notification.locale != " " %}
+                    {% get_language_info for notification.locale as lang %}
+                {% endif %}
+                <div>{% if notification.locale  != " " %}{{ lang.name_translated }}{% else %}
+                    {% trans "Alle" %}{% endif %}</div>
+            </td>
+            <td>
+                <div><label for="active"></label>
+                    <input id="active" type="checkbox" data-role="switch" data-material="true"
+                           {% if notification.active %}checked{% endif %} readonly>
+                </div>
+            </td>
+            <td>
+                <a href="{% url 'notification:notification_update' notification.id %}">
+                    <div class="button primary"><span class="mif-pencil"></span>&nbsp;{% trans "Bearbeiten" %}</div>
+                </a>
+                <a href="{% url 'notification:notification_delete' notification.id %}">
+                    <div class="button primary"><span class="mif-bin"></span>&nbsp;{% trans "Löschen" %}</div>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <a href="{% url 'notification:notification_create' %}">
+                <div class="button primary"><span class="mif-note-add"></span>&nbsp;{% trans "Neu" %}</div>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>

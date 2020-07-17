@@ -1,0 +1,30 @@
+{% if object %}
+    <div class="frame active bg-dark fg-white">
+        <div class="bg-dark fg-white heading">
+            {% if object.importance == 0 %}
+                <span class="mif-quote" data-role="hint"
+                      data-hint-text="{{ object.get_importance_display }}"
+                      data-hint-position="bottom"></span>
+            {% endif %}
+            {% if object.importance == 1 %}
+                <span class="mif-info" data-role="hint"
+                      data-hint-text="{{ object.get_importance_display }}"
+                      data-hint-position="bottom"></span>
+            {% endif %}
+            {% if object.importance == 2 %}
+                <span class="mif-warning fg-red" data-role="hint"
+                      data-hint-text="{{ object.get_importance_display }}"
+                      data-hint-position="bottom"></span>
+            {% endif %}
+            {% if object.importance == 3 %}
+                <span class="mif-cancel fg-red" data-role="hint"
+                      data-hint-text="{{ object.get_importance_display }}"
+                      data-hint-position="bottom"></span>
+            {% endif %}
+            &nbsp;{{ object.subject }}&nbsp;({{ object.create_date|date }})
+        </div>
+        <div class="content">
+            {{ object.message }}
+        </div>
+    </div>
+{% endif %}

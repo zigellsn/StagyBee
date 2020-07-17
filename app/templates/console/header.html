@@ -29,10 +29,10 @@
                 </div>
             </div>
         {% endif %}
-        {% if no_settings == False or no_settings == None %}
+        {% if no_settings == False or no_settings == None or user.is_superuser %}
             <div class="app-bar-container float-right">
                 <div class="app-bar-item pl-4 pr-4 pt-2">
-                    <a href="{% url 'password_change' %}">
+                    <a href="{% url 'settings' %}">
                     <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
                           data-hint-position="bottom"></span>
                     </a>

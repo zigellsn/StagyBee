@@ -1,0 +1,27 @@
+{% extends 'console/choose_console_base.html' %}
+{% load i18n notification %}
+
+{% block content %}
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
+    {% get_available_languages as LANGUAGES %}
+    <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
+         data-material="true">
+        <div class="frame active">
+            <div class="bg-dark fg-white heading">{% trans "Passwort" %}</div>
+            <div class="content">
+                <a href="{% url 'password_change' %}">
+                    <div class="button primary">{% trans "Passwort ändern" %}</div>
+                </a>
+            </div>
+        </div>
+        {% if user.is_superuser %}
+            <div class="frame">
+                <div class="bg-dark fg-white heading">{% trans "Benachrichtigungen" %}</div>
+                <div class="content">
+                    {% notifications_maintain %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

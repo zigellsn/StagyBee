@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/console" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/app/audit" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/app/stopwatch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/app/notification" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/app/app/venv" />
       <excludeFolder url="file://$MODULE_DIR$/app/venv" />
     </content>

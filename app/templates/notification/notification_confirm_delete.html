@@ -1,0 +1,11 @@
+{% extends 'console/choose_console_base.html' %}
+{% load i18n notification %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>{% trans "Soll die folgende Benachrichtigung wirklich gelöscht werden?" %}</p><br>
+        {% notification object %}<br>
+        <input class="button primary" type="submit" value="{% trans "Löschen" %}">
+    </form>
+{% endblock %}

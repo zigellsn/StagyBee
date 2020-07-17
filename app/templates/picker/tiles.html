@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load static i18n notification %}
 
 {% block title %}Picker{% endblock %}
 
@@ -30,8 +30,11 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="pos-fixed fixed-bottom z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %} p-3">
+    <footer class="pos-fixed fixed-bottom">
         <div>
+            {% notifications %}
+        </div>
+        <div class="z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %} p-3">
             Version: {{ version }}, Hostname: {{ hostname }}, IP address: {{ ip }}
         </div>
     </footer>
