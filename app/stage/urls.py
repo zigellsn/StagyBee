@@ -13,7 +13,6 @@
 #  limitations under the License.
 
 from django.urls import path
-from django.views.i18n import JavaScriptCatalog
 
 from .views import StageView, StageFormView
 

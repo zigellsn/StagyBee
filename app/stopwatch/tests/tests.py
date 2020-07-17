@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
