@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright 2019-2020 Simon Zigelli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-@import '~normalize.css';
-@import '~metro4/build/css/metro-all.min.css';
-@import 'picker/static/picker/css/picker';
-@import 'console/static/console/css/console';
-@import 'stage/static/stage/css/stage';
-@import 'notification/static/notification/css/notification';
+.panel-content {
+  .notification_title {
+    font-size: 25px;
+    line-height: 1.1;
+    font-weight: 300;
+    margin: 5px 5px 5px 5px;
+  }
+}
