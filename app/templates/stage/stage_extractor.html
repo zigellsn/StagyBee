@@ -57,8 +57,8 @@
 
 {% block body_extra %}
     <script>
-        StagyBee.main.console_client_ws('{{ credential.congregation|escape }}');
-        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, true);
-        StagyBee.main.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
+        StagyBee.console_client_ws('{{ credential.congregation|escape }}');
+        StagyBee.timer_ws('{{ credential.congregation|escape }}', false, true);
+        StagyBee.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
     </script>
 {% endblock %}

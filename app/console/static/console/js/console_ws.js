@@ -19,7 +19,7 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Metro from "metro4"
 
-function console_ws(language, congregation_ws) {
+export function console_ws(language, congregation_ws) {
     let submitTime = document.getElementById('submit_time');
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
@@ -242,5 +242,3 @@ function console_ws(language, congregation_ws) {
             }
         };
 }
-
-export { console_ws }

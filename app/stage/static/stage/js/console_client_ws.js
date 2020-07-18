@@ -19,7 +19,7 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Metro from "metro4"
 
-function console_client_ws(congregation_ws) {
+export function console_client_ws(congregation_ws) {
 
     let scrimTrigger = false;
     let activity = null;
@@ -79,5 +79,3 @@ function console_client_ws(congregation_ws) {
         console.error('Console Client Socket closed unexpectedly');
     };
 }
-
-export { console_client_ws }

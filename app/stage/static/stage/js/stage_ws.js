@@ -18,7 +18,7 @@
 
 import ReconnectingWebSocket from "reconnecting-websocket";
 
-function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
+export function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
     let sumListenersNumber = document.getElementById('sumListenersNumber');
@@ -137,5 +137,3 @@ function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         console.error('Stage Socket closed unexpectedly');
     };
 }
-
-export { stage_ws }

@@ -22,15 +22,26 @@ module.exports = {
     // mode: 'development',
     mode: 'production',
     entry: {
-        external: ['./style.scss', 'metro4'],
-        main: ['./index.js']
+        main: ['./index.js', './style.scss']
     },
     output: {
         filename: 'js/[name].bundle.js',
-        libraryTarget: 'umd',
-        globalObject: 'this',
+        chunkFilename: 'js/[name].bundle.js',
+        libraryTarget: 'var',
         library: ['StagyBee', '[name]'],
         path: path.resolve(__dirname, 'StagyBee/static')
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                external: {
+                    test: /node_modules/,
+                    chunks: 'initial',
+                    name: 'external',
+                    enforce: true
+                },
+            }
+        }
     },
     devtool: 'source-map',
     module: {
@@ -63,14 +74,6 @@ module.exports = {
                 }
             ],
         },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules|dev/,
-                query: {
-                    presets: ['@babel/preset-env'],
-                },
-            },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
