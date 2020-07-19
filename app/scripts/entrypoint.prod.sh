@@ -23,6 +23,6 @@ fi
 
 python manage.py migrate --no-input
 python manage.py compilemessages --ignore venv
-python manage.py collectstatic --no-input --clear
+python manage.py collectstatic --no-input --clear --ignore stage/ --ignore notification/ --ignore picker/ --ignore stopwatch/ --ignore *.map
 
 exec "$@"
