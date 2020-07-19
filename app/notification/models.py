@@ -57,7 +57,7 @@ class Notification(models.Model):
     locale = models.CharField(default=" ", max_length=10, verbose_name=_("Sprache"))
     importance = models.IntegerField(choices=Importance.choices, default=Importance.INFORMATION,
                                      verbose_name=_("Wichtigkeit"))
-    max_duration = models.DateTimeField(verbose_name=_("Gültig bis"), null=True, blank=True)
+    max_duration = models.DateField(verbose_name=_("Gültig bis"), null=True, blank=True)
     active = models.BooleanField(verbose_name=_("Aktiv"))
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     create_date = models.DateTimeField(default=timezone.now)
