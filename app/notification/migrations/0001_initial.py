@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('message', models.TextField(blank=True, default='', verbose_name='Nachricht')),
                 ('locale', models.CharField(default=' ', max_length=10, verbose_name='Sprache')),
                 ('importance', models.IntegerField(choices=[(0, 'Information'), (1, 'Wichtig'), (2, 'Dringend'), (3, 'Warnung')], default=0, verbose_name='Wichtigkeit')),
-                ('max_duration', models.DateField(blank=True, null=True, verbose_name='Gültig bis')),
+                ('max_duration', models.DateTimeField(blank=True, null=True, verbose_name='Gültig bis')),
                 ('active', models.BooleanField(verbose_name='Aktiv')),
                 ('create_date', models.DateTimeField(default=django.utils.timezone.now)),
                 ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
