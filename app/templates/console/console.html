@@ -97,7 +97,7 @@
 
 {% block body_extra %}
     <script>
-        StagyBee.console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
-        StagyBee.timer_ws('{{ credential.congregation|escape }}', false, false);
+        StagyBee.main.console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
+        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, false);
     </script>
 {% endblock %}

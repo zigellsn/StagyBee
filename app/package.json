@@ -18,9 +18,12 @@
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "node-sass": "^4.14.1",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "@types/jquery": "^3.5.0"
   },
   "dependencies": {
     "metro4": "^4.3.10",

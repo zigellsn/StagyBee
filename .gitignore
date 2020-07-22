@@ -375,8 +375,14 @@ temp/
 
 fonts/
 bundle.css
-main*.js*
-external*.js*
+*.bundle.js
+*.js.map
+index.js
+time.js
+console_client_ws.js
+console_ws.js
+stage_ws.js
+timer_ws.js
 #
 
 # End of https://www.gitignore.io/api/django,python,pycharm

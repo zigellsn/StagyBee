@@ -19,7 +19,7 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Metro from "metro4"
 
-export function console_ws(language, congregation_ws) {
+export function console_ws(language: string, congregation_ws: string) {
     let submitTime = document.getElementById('submit_time');
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
@@ -84,7 +84,7 @@ export function console_ws(language, congregation_ws) {
                 let lv = $('#talk_list');
                 let pTimes = JSON.parse(times);
                 lv.data('listview').addGroup({
-                    caption: gettext('Leben-und-Dienst-Zusammenkunft')
+                    caption: django.gettext('Leben-und-Dienst-Zusammenkunft')
                 });
                 for (let k in pTimes) {
                     if (pTimes.hasOwnProperty(k)) {
@@ -100,34 +100,33 @@ export function console_ws(language, congregation_ws) {
                     }
                 }
                 lv.data('listview').addGroup({
-                    caption: gettext('Zusammenkunft für die Öffentlichkeit')
+                    caption: django.gettext('Zusammenkunft für die Öffentlichkeit')
                 });
                 lv.data('listview').add(null, {
-                    caption: gettext('Öffentlicher Vortrag (30 Min.)'),
+                    caption: django.gettext('Öffentlicher Vortrag (30 Min.)'),
                     content: 30
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').add(null, {
-                    caption: gettext('Wachtturm-Studium (60 Min.)'),
+                    caption: django.gettext('Wachtturm-Studium (60 Min.)'),
                     content: 60
                 }).addClass('bg-darkBlue-hover');
                 lv.data('listview').addGroup({
-                    caption: gettext('Benutzerdefiniert')
+                    caption: django.gettext('Benutzerdefiniert')
                 });
                 lv.data('listview').add(null, {
-                    caption: gettext('Benutzerdefiniert'),
+                    caption: django.gettext('Benutzerdefiniert'),
                     content: 10
                 }).addClass('bg-darkBlue-hover');
                 lv.children('.node').first().trigger("click");
                 lv.on("node-click", function (e) {
-                    let talkName = e.detail.node[0];
-                    if (talkName.innerText === gettext('Benutzerdefiniert')) {
+                    let talkName = e.detail['node'];
+                    if (talkName[0].innerText === django.gettext('Benutzerdefiniert')) {
                         customTalkName.style.display = 'block';
                     } else {
                         customTalkName.style.display = 'none';
                     }
-                    let t = talkName.querySelector('div.content').innerText;
+                    let t = (<HTMLElement>talkName[0].querySelector('div.content')).innerText;
                     $('#time').data('timepicker').time('0:' + t + ':0');
-
                 });
             }
             setRunningTalk(running);
@@ -135,13 +134,13 @@ export function console_ws(language, congregation_ws) {
         if ('type' in data && data['type'] === 'message' && 'message' in data) {
             if (data['message']['message'] === 'ACK') {
                 messageAcknowledgement.style.display = 'block';
-                let line = gettext('Nachricht vom %s bestätigt.');
-                messageAcknowledgement.innerText = interpolate(line, [data['message']['time']]);
+                let line = django.gettext('Nachricht vom %s bestätigt.');
+                messageAcknowledgement.innerText = django.interpolate(line, [data['message']['time']]);
             } else if (data['message']['message'] === 'status') {
                 if (data['message']['scrim']) {
-                    submitScrim.innerText = gettext('Verdunkelung aufheben')
+                    submitScrim.innerText = django.gettext('Verdunkelung aufheben')
                 } else {
-                    submitScrim.innerText = gettext('Bildschirm verdunkeln')
+                    submitScrim.innerText = django.gettext('Bildschirm verdunkeln')
                 }
                 refreshActivity.style.display = 'none';
             }
@@ -152,11 +151,11 @@ export function console_ws(language, congregation_ws) {
         console.error('Console WebSocket closed unexpectedly');
     };
 
-    function setRunningTalk(talk) {
+    function setRunningTalk(talk: number) {
         let lv = $('#talk_list');
         if (talk !== -1 && talk < lv[0].childNodes.length) {
             $('#submit_stop').removeClass("light").addClass("primary");
-            lv[0].childNodes[talk].trigger("click");
+            // lv[0].childNodes[talk].trigger("click");
         } else
             lv.children('.node').first().trigger("click");
     }
@@ -178,7 +177,7 @@ export function console_ws(language, congregation_ws) {
                 Metro.dialog.create({
                     title: 'Timer',
                     // content: `<div>${gettext('Bitte eine Zeit > 0 angeben.')}</div>`,
-                    content: '<div>' + gettext('Bitte eine Zeit > 0 angeben.') + '</div>',
+                    content: '<div>' + django.gettext('Bitte eine Zeit > 0 angeben.') + '</div>',
                     closeButton: true
                 });
                 return;
@@ -187,8 +186,8 @@ export function console_ws(language, congregation_ws) {
             let parent = talk.parentNode;
             let index = Array.prototype.indexOf.call(parent.children, talk) + 1;
             let talkName = talk.innerText;
-            if (talkName === gettext('Benutzerdefiniert')) {
-                talkName = talkNameInput.value
+            if (talkName === django.gettext('Benutzerdefiniert')) {
+                talkName = (<HTMLInputElement>talkNameInput).value
             }
             centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
             centralTimerSocket.send(JSON.stringify({
@@ -232,7 +231,7 @@ export function console_ws(language, congregation_ws) {
 
     if (submitText !== null)
         submitText.onclick = function (_) {
-            let message = document.getElementById('text_message').value;
+            let message = (<HTMLInputElement>document.getElementById('text_message')).value;
             if (message !== undefined && message !== '') {
                 consoleSocket.send(JSON.stringify({
                     'alert': 'message',

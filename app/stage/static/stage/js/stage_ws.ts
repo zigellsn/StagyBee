@@ -18,7 +18,7 @@
 
 import ReconnectingWebSocket from "reconnecting-websocket";
 
-export function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
+export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolean = false) {
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
     let sumListenersNumber = document.getElementById('sumListenersNumber');
@@ -35,7 +35,7 @@ export function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
     let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/extractor/' + congregation_ws + '/',
         null, {debug: true, maxReconnectionDelay: 3000, connectionTimeout: 5000, maxRetries: 100});
 
-    function setElements(activityVisibility, errorMessageVisibility, sumListenersContainerVisibility) {
+    function setElements(activityVisibility: string, errorMessageVisibility: string, sumListenersContainerVisibility: string) {
         if (activity !== null)
             activity.style.display = activityVisibility;
         if (errorMessage !== null)
@@ -49,7 +49,7 @@ export function stage_ws(congregation_ws, showOnlyRequestToSpeak = false) {
         setElements('', 'none', 'none');
     };
 
-    function parseNames(names, namesHtml, sumListeners) {
+    function parseNames(names: any, namesHtml: string, sumListeners: number) {
         names.sort(function (a, b) {
             if (a['familyName'] < b['familyName'])
                 return -1;

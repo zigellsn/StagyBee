@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import {console_client_ws} from './stage/static/stage/js/console_client_ws.js';
-import {console_ws} from './console/static/console/js/console_ws.js';
-import {startTime} from "./StagyBee/static/js/time.js";
-import {stage_ws} from './stage/static/stage/js/stage_ws.js';
-import {timer_ws} from './stopwatch/static/stopwatch/js/timer_ws.js';
+declare module 'django' {
+    export = django;
+}
 
-StagyBee.console_client_ws = console_client_ws;
-StagyBee.console_ws = console_ws;
-StagyBee.doStartTime = startTime;
-StagyBee.stage_ws = stage_ws;
-StagyBee.timer_ws = timer_ws;
+declare namespace django {
+    function gettext(name: string): string;
+
+    function interpolate(fmt: string, obj: Object): string;
+    function interpolate(fmt: string, obj: Object, named: boolean): string;
+}

@@ -20,7 +20,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import moment from "moment";
 import ProgressBar from "progressbar.js"
 
-export function timer_ws(congregation_ws, reload, resetOnStop = false) {
+export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: boolean = false) {
 
     let stopwatch = document.getElementById('stopwatch');
     let talk = document.getElementById('talk');
@@ -127,7 +127,7 @@ export function timer_ws(congregation_ws, reload, resetOnStop = false) {
 
     }
 
-    function showTimer(timer) {
+    function showTimer(timer: any) {
         if (line === undefined || timer === undefined)
             return;
         if ('mode' in timer && (timer['mode'] === 'started') || timer['mode'] === 'running') {
@@ -145,7 +145,7 @@ export function timer_ws(congregation_ws, reload, resetOnStop = false) {
         }
     }
 
-    function millisecondsToTime(ms) {
+    function millisecondsToTime(ms: number): string {
         if (ms < 0)
             ms *= -1;
         const seconds = Math.floor((ms / 1000) % 60);
@@ -159,11 +159,12 @@ export function timer_ws(congregation_ws, reload, resetOnStop = false) {
         ].join(':');
     }
 
-    function pad(i) {
+    function pad(i: number): string {
+        let padded: string = i.toString();
         if (i < 10) {
             // i = `0${i}`
-            i = '0' + i
+            padded = '0' + i;
         }
-        return i;
+        return padded;
     }
 }

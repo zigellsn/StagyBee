@@ -17,9 +17,9 @@
 'use strict';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
-import Metro from "metro4"
+import Metro from "metro4";
 
-export function console_client_ws(congregation_ws) {
+export function console_client_ws(congregation_ws: string) {
 
     let scrimTrigger = false;
     let activity = null;
@@ -34,7 +34,7 @@ export function console_client_ws(congregation_ws) {
     let mySocket = new ReconnectingWebSocket(protocol + loc.host + '/ws/console_client/' + congregation_ws + '/',
         null, {debug: true, maxReconnectionDelay: 3000, connectionTimeout: 5000, maxRetries: 100});
 
-    function showAlert(alert) {
+    function showAlert(alert: any) {
         if (alert['alert'] === 'scrim') {
             if (scrimTrigger) {
                 if (activity != null)
@@ -50,7 +50,7 @@ export function console_client_ws(congregation_ws) {
         } else if (alert['alert'] === 'message') {
             // Metro.infobox.create(`<h3>${gettext('Nachricht')}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
             let date = Date.now();
-            Metro.infobox.create('<h3>' + gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>',
+            Metro.infobox.create('<h3>' + django.gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>',
                 'default',
                 {
                     removeOnClose: true,

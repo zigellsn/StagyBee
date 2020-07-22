@@ -22,7 +22,7 @@ module.exports = {
     // mode: 'development',
     mode: 'production',
     entry: {
-        main: ['./index.js', './style.scss']
+        main: ['./style.scss', './index.ts']
     },
     output: {
         filename: 'js/[name].bundle.js',
@@ -43,37 +43,48 @@ module.exports = {
             }
         }
     },
+    externals: {
+        'django': 'window.django'
+    },
     devtool: 'source-map',
     module: {
-        rules: [{
-            test: /\.scss$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: 'css/bundle.css',
-                    },
-                },
-                {loader: 'extract-loader'},
-                {loader: 'css-loader'},
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: () => [autoprefixer()]
-                    }
-                },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        // Prefer Dart Sass
-                        implementation: require('sass'),
-                        sassOptions: {
-                            includePaths: ['./node_modules'],
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: [{
+                    loader: 'ts-loader',
+                }],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'css/bundle.css',
                         },
                     },
-                }
-            ],
-        },
+                    {loader: 'extract-loader'},
+                    {loader: 'css-loader'},
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () => [autoprefixer()]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            // Prefer Dart Sass
+                            implementation: require('sass'),
+                            sassOptions: {
+                                includePaths: ['./node_modules'],
+                            },
+                        },
+                    }
+                ],
+            },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
@@ -88,6 +99,9 @@ module.exports = {
                 ]
             }
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
         new MiniCssExtractPlugin({

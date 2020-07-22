@@ -37,10 +37,11 @@ export function startTime() {
     setTimeout(startTime, 500);
 }
 
-function pad(i) {
+function pad(i: number): string {
+    let padded: string = i.toString();
     if (i < 10) {
         // i = `0${i}`
-        i = '0' + i
+        padded = '0' + i;
     }
-    return i;
+    return padded;
 }
