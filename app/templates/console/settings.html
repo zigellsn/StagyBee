@@ -7,7 +7,15 @@
     {% get_available_languages as LANGUAGES %}
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
          data-material="true">
-        <div class="frame active">
+        {% if user.is_superuser %}
+            <div class="frame active">
+                <div class="bg-dark fg-white heading">{% trans "Benachrichtigungen" %}</div>
+                <div class="content">
+                    {% notifications_maintain %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="frame {% if not user.is_superuser %}active{% endif %}">
             <div class="bg-dark fg-white heading">{% trans "Passwort" %}</div>
             <div class="content">
                 <a href="{% url 'password_change' %}">
@@ -15,13 +23,5 @@
                 </a>
             </div>
         </div>
-        {% if user.is_superuser %}
-            <div class="frame">
-                <div class="bg-dark fg-white heading">{% trans "Benachrichtigungen" %}</div>
-                <div class="content">
-                    {% notifications_maintain %}
-                </div>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}

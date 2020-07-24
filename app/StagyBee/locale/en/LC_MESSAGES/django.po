@@ -182,11 +182,8 @@ msgid "Sende Nachricht"
 msgstr "Send message"
 
 #: .\templates\console\header.html:16 .\templates\console\header_rtl.html:16
-#, fuzzy, python-format
-#| msgid "Willkommen, %(username)s!"
-msgid ""
-"Willkommen,\n"
-"                        %(username)s!"
+#, python-format
+msgid "Willkommen, %(username)s!"
 msgstr "Welcome, %(username)s!"
 
 #: .\templates\console\header.html:26 .\templates\console\header_rtl.html:26
