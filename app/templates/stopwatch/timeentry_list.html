@@ -65,9 +65,11 @@
                     <td>{{ time_entry.duration }}</td>
                     <td>{{ time_entry.display_max_duration }}</td>
                     {% if "-" in time_entry.difference %}
-                        <td class="fg-red">{{ time_entry.difference }}</td>
+                        <td class="fg-red">{{ time_entry.difference }}
+                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div></td>
                     {% else %}
-                        <td class="fg-blue">{{ time_entry.difference }}</td>
+                        <td class="fg-blue">{{ time_entry.difference }}
+                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div></td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -79,5 +81,6 @@
 {% block body_extra %}
     <script>
         StagyBee.main.timer_ws('{{ congregation.congregation|escape }}', true, false);
+        StagyBee.main.bar('bar');
     </script>
 {% endblock %}

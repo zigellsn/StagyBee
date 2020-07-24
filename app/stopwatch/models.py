@@ -67,9 +67,11 @@ class TimeEntryManager(models.Manager):
             if td2 > td1:
                 difference = td2 - td1
                 time_entry.difference = __get_duration_string__(difference.seconds)
+                time_entry.percentage = str(difference / td2)
             else:
                 difference = td1 - td2
                 time_entry.difference = "-" + __get_duration_string__(difference.seconds)
+                time_entry.percentage = str((difference / td2) * -1.0)
         return time_entries
 
 

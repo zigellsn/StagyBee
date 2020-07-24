@@ -168,3 +168,46 @@ export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: 
         return padded;
     }
 }
+
+export function bar(id: string) {
+    $('#' + id).each(function () {
+        let percentage = $(this).data('percentage');
+        let thisBar = $(this).get(0);
+        if (thisBar === undefined || percentage === undefined)
+            return;
+        percentage = parseFloat(percentage);
+        let color;
+        if (percentage < 0.0) {
+            percentage = percentage * -1.0;
+            color = '#CE352C';
+        } else {
+            percentage = 1.0 - percentage;
+            color = '#00AFF0';
+        }
+
+        let bar = new ProgressBar.Line(thisBar, {
+            strokeWidth: 3,
+            easing: 'easeInOut',
+            duration: 1400,
+            color: color,
+            trailColor: '#ffffff',
+            trailWidth: 0.5,
+            svgStyle: {width: '100%', height: '100%'},
+            text: {
+                style: {
+                    color: color,
+                    position: 'relative',
+                    left: '0',
+                    top: '0',
+                    padding: 0,
+                    margin: 0,
+                    transform: null
+                },
+            },
+            step: (state, bar) => {
+                bar.setText(Math.round(bar.value() * 100) + ' %');
+            }
+        });
+        bar.animate(percentage);
+    });
+}
