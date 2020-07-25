@@ -31,7 +31,7 @@ class PickerView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         credentials = Credential.objects.all()
-        col, size = __get_tiles_configuration__(credentials)
+        col, size = __get_tiles_configuration__(credentials, settings.SHOW_LOGIN)
         if settings.RUN_IN_CONTAINER:
             context["ip"] = settings.EXTERNAL_IP
             context["hostname"] = settings.EXTERNAL_HOST_NAME
@@ -46,6 +46,7 @@ class PickerView(ListView):
         context["size"] = size
         context["col"] = col
         context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
+        context["show_login"] = settings.SHOW_LOGIN
         context["version"] = settings.VERSION
         return context
 
@@ -110,17 +111,30 @@ def __get_address__(port):
     return host_ip, host_name
 
 
-def __get_tiles_configuration__(credentials):
-    if credentials.count() == 1:
-        size = 2
-        col = 0
-    elif credentials.count() == 2:
-        size = 2
-        col = 0
-    elif credentials.count() == 3:
-        size = 3
-        col = 2
+def __get_tiles_configuration__(credentials, show_login):
+    if show_login:
+        if credentials.count() == 0 or credentials.count() == 1:
+            size = 2
+            col = 1
+        elif credentials.count() == 2:
+            size = 2
+            col = 0
+        elif credentials.count() == 3:
+            size = 3
+            col = 2
+        else:
+            size = 4
+            col = 3
     else:
-        size = 4
-        col = 3
+        if credentials.count() == 0:
+            size = 0
+        elif credentials.count() == 1:
+            size = 1
+        elif credentials.count() == 2:
+            size = 2
+        elif credentials.count() == 3:
+            size = 3
+        else:
+            size = 4
+        col = 0
     return col, size

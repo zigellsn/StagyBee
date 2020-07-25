@@ -98,14 +98,14 @@ class Credential(models.Model):
             ("access_audit_log", _("Zugriff auf Audit-Log")),
         )
 
-    congregation = models.CharField(max_length=200, primary_key=True)
-    autologin = models.CharField(max_length=128, default="", blank=True)
-    username = models.CharField(max_length=200, default="", blank=True)
-    password = models.CharField(max_length=200, default="", blank=True)
-    display_name = models.CharField(max_length=200, default="", blank=True)
+    congregation = models.CharField(max_length=200, primary_key=True, verbose_name=_("Versammlung"))
+    autologin = models.CharField(max_length=128, default="", blank=True, verbose_name=_("Auto-Login ID"))
+    username = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Username"))
+    password = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Passwort"))
+    display_name = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Anzeigename"))
     extractor_url = models.CharField(max_length=200, default="http://extractor:8080/", blank=True,
                                      verbose_name="Extractor URL")
-    touch = models.BooleanField(default=True)
+    touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
     show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
     send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))
 

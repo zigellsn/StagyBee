@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-14 11:44+0200\n"
+"POT-Creation-Date: 2020-07-25 10:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgid "Alle"
 msgstr ""
 
 #: .\notification\forms.py:41 .\notification\models.py:57
-#: .\templates\console\header.html:44 .\templates\console\header_rtl.html:44
+#: .\templates\console\header.html:43 .\templates\console\header_rtl.html:43
 #: .\templates\notification\notification_maintain_list.html:10
 #: .\templates\picker\header.html:18 .\templates\picker\header_rtl.html:18
 msgid "Sprache"
@@ -81,6 +81,32 @@ msgstr ""
 
 #: .\picker\models.py:98
 msgid "Zugriff auf Audit-Log"
+msgstr ""
+
+#: .\picker\models.py:101
+#, fuzzy
+#| msgid "Versammlung wählen"
+msgid "Versammlung"
+msgstr "Выберите встречу"
+
+#: .\picker\models.py:102
+msgid "Auto-Login ID"
+msgstr ""
+
+#: .\picker\models.py:103
+msgid "Username"
+msgstr ""
+
+#: .\picker\models.py:104 .\templates\console\settings.html:19
+msgid "Passwort"
+msgstr ""
+
+#: .\picker\models.py:105
+msgid "Anzeigename"
+msgstr ""
+
+#: .\picker\models.py:108
+msgid "Touch erlaubt"
 msgstr ""
 
 #: .\picker\models.py:109
@@ -183,33 +209,27 @@ msgstr ""
 
 #: .\templates\console\header.html:16 .\templates\console\header_rtl.html:16
 #, python-format
-msgid ""
-"Willkommen,\n"
-"                        %(username)s!"
+msgid "Willkommen, %(username)s!"
 msgstr ""
 
-#: .\templates\console\header.html:26 .\templates\console\header_rtl.html:26
+#: .\templates\console\header.html:25 .\templates\console\header_rtl.html:25
 msgid "Archiv"
 msgstr ""
 
-#: .\templates\console\header.html:36 .\templates\console\header_rtl.html:36
+#: .\templates\console\header.html:35 .\templates\console\header_rtl.html:35
 msgid "Einstellungen"
 msgstr ""
 
-#: .\templates\console\header.html:57 .\templates\console\header_rtl.html:57
+#: .\templates\console\header.html:56 .\templates\console\header_rtl.html:56
 msgid "Logout"
 msgstr ""
 
-#: .\templates\console\settings.html:11
-msgid "Passwort"
-msgstr ""
-
-#: .\templates\console\settings.html:14
-msgid "Passwort ändern"
-msgstr ""
-
-#: .\templates\console\settings.html:20
+#: .\templates\console\settings.html:12
 msgid "Benachrichtigungen"
+msgstr ""
+
+#: .\templates\console\settings.html:22
+msgid "Passwort ändern"
 msgstr ""
 
 #: .\templates\notification\notification_confirm_delete.html:7
@@ -253,19 +273,29 @@ msgstr ""
 msgid "Bist du sicher?"
 msgstr ""
 
-#: .\templates\picker\tiles.html:16
+#: .\templates\picker\tiles.html:17
+#, fuzzy
+#| msgid "Versammlung wählen"
+msgid "Keine Versammlung angelegt."
+msgstr "Выберите встречу"
+
+#: .\templates\picker\tiles.html:17
+msgid "Zum Anlegen hier klicken."
+msgstr ""
+
+#: .\templates\picker\tiles.html:19
 msgid "Versammlung wählen"
 msgstr "Выберите встречу"
 
-#: .\templates\picker\tiles.html:27
+#: .\templates\picker\tiles.html:31
 msgid "JWConf Login Seite"
 msgstr "JWConf Страница входа"
 
-#: .\templates\picker\tiles.html:51
+#: .\templates\picker\tiles.html:56
 msgid "Nein"
 msgstr ""
 
-#: .\templates\picker\tiles.html:55
+#: .\templates\picker\tiles.html:60
 msgid "Ja"
 msgstr ""
 

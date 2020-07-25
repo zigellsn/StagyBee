@@ -117,6 +117,7 @@ CHANNEL_LAYERS = {
 REDIS_EXPIRATION = env.int("REDIS_EXPIRATION", default=21600)
 EXTRACTOR_TIMEOUT = env.int("EXTRACTOR_TIMEOUT", default=120)
 SHOW_SHUTDOWN_ICON = env.bool("SHOW_SHUTDOWN_ICON", default=True)
+SHOW_LOGIN = env.bool("SHOW_LOGIN", default=True)
 RUN_IN_CONTAINER = env.bool("RUN_IN_CONTAINER", default=False)
 EXTERNAL_IP = env.str("EXTERNAL_IP", default='127.0.0.1:8000')
 EXTERNAL_HOST_NAME = env.str("EXTERNAL_HOST_NAME", default='stagybee')
