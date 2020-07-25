@@ -54,11 +54,19 @@
                     <td>{{ time_entry.display_max_duration }}</td>
                     {% if "-" in time_entry.difference %}
                         <td class="fg-red">{{ time_entry.difference }}
-                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div></td>
+                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                        </td>
                     {% else %}
                         <td class="fg-blue">{{ time_entry.difference }}
-                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div></td>
+                            &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                        </td>
                     {% endif %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="p_title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
