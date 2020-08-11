@@ -37,7 +37,7 @@ class NotificationTemplateTagTest(TestCase):
             "{% notifications %}"
         )
         rendered_template = template_to_render.render(context)
-        self.assertEquals("\n", rendered_template)
+        self.assertEqual("\n", rendered_template)
 
     def test_language_rendered(self):
         test_user = User.objects.create(username="test_user")
@@ -49,7 +49,7 @@ class NotificationTemplateTagTest(TestCase):
         )
         with translation.override("de"):
             rendered_template = template_to_render.render(context)
-        self.assertEquals("\n", rendered_template)
+        self.assertEqual("\n", rendered_template)
         with translation.override("en"):
             rendered_template = template_to_render.render(context)
         self.assertInHTML("Test bla bla bla", rendered_template)
