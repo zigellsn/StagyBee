@@ -53,7 +53,7 @@ async def __get_running_since__(congregation):
     if with_since:
         redis.close()
         await redis.wait_closed()
-        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], settings.DATETIME_FORMAT)
+        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], settings.REDIS_DATETIME_FORMAT)
 
 
 class CredentialQuerySet(QuerySet):

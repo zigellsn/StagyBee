@@ -163,7 +163,9 @@ LOCALE_PATHS = (
 
 TIME_ZONE = 'CET'
 
-DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
+
+REDIS_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
 USE_I18N = True
 

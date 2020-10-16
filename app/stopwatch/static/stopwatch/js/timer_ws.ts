@@ -17,7 +17,7 @@
 'use strict';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
-import moment from "moment";
+import { DateTime } from 'luxon';
 import ProgressBar from "progressbar.js"
 
 export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: boolean = false) {
@@ -132,8 +132,8 @@ export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: 
             return;
         if ('mode' in timer && (timer['mode'] === 'started') || timer['mode'] === 'running') {
             let value = timer['duration'];
-            let start = moment(timer['start']);
-            let diff = moment().diff(start, 'millisecond');
+            let start = DateTime.fromISO(timer['start']);
+            let diff = Math.abs(start.diffNow().milliseconds);
             let span = (parseInt(value['h']) * 3600000 + parseInt(value['m']) * 60000 + parseInt(value['s']) * 1000);
             line.set(diff / span);
             line.animate(1.0, {

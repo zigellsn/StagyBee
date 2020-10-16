@@ -17,12 +17,8 @@
     <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="reconnecting-websocket-iife" level="application" />
-    <orderEntry type="library" name="reconnecting-websocket" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="metro" level="application" />
     <orderEntry type="library" name="jquery-3.3.1" level="application" />
-    <orderEntry type="library" name="moment-with-locales" level="application" />
-    <orderEntry type="library" name="moment" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

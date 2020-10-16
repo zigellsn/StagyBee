@@ -15,12 +15,11 @@
  */
 
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    // mode: 'development',
-    mode: 'production',
+    mode: 'development',
+    // mode: 'production',
     entry: {
         main: ['./style.scss', './index.ts']
     },
@@ -65,12 +64,25 @@ module.exports = {
                             name: 'css/bundle.css',
                         },
                     },
-                    {loader: 'extract-loader'},
-                    {loader: 'css-loader'},
+                    {
+                        loader: 'extract-loader'
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: false
+                        }
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: () => [autoprefixer()]
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'autoprefixer'
+                                    ],
+                                ],
+                            },
                         }
                     },
                     {

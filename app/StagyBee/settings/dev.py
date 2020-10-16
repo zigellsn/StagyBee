@@ -25,6 +25,8 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
     try:
         import debug_toolbar
     except ImportError:
