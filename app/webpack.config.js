@@ -18,8 +18,8 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
-    // mode: 'production',
+    // mode: 'development',
+    mode: 'production',
     entry: {
         main: ['./style.scss', './index.ts']
     },
