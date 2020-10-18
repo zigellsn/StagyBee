@@ -13,8 +13,10 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/app" />
-    <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />
+    <content url="file://$MODULE_DIR$/app">
+      <excludeFolder url="file://$MODULE_DIR$/app/app/venv" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.9 (app)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="reconnecting-websocket-iife" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
