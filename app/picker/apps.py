@@ -4,7 +4,7 @@ import aioredis
 from django.apps import AppConfig
 from django.conf import settings
 
-REDIS_KEY = "stagybee::*"
+REDIS_KEY = "stagybee:*"
 
 
 async def initialize_redis():

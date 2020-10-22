@@ -21,7 +21,7 @@ from django.db import models
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-REDIS_KEY = "stagybee::console:congregation.console."
+REDIS_KEY = "stagybee:console:congregation.console."
 logger = logging.getLogger(__name__)
 
 
@@ -48,7 +48,7 @@ async def __get_active_congregations__():
 async def __get_running_since__(congregation):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
-    members = await redis.smembers(f"stagybee::console:congregation.console.{congregation}")
+    members = await redis.smembers(f"stagybee:console:congregation.console.{congregation}")
     with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
     if with_since:
         redis.close()

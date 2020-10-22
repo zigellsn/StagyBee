@@ -14,7 +14,8 @@
 
 {% block content %}
     {% if not object_list %}
-        <div class="p_title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
+        <div class="p_title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
+                href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
     {% trans "Versammlung wählen" as choose_congregation %}
     <div class="tiles-grid tiles-group size-{{ size }} pos-top-center"
@@ -22,7 +23,7 @@
         {% for credential in object_list %}
             <a href="{% url 'stage:stage' credential.congregation %}" data-role="tile"
                class="bg-indigo fg-white">
-                <span class="pos-absolute pos-center">{{ credential.display_name }}</span>
+                <span class="pos-absolute pos-center">{{ credential.display_name|default:credential.congregation }}</span>
             </a>
         {% endfor %}
         {% if show_login %}

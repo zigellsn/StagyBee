@@ -18,13 +18,13 @@ import re
 from contextlib import suppress
 
 import aiohttp
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from picker.models import Credential
 
 GLOBAL_TIMEOUT = {}
@@ -93,7 +93,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
 
     @staticmethod
     def __get_redis_key(congregation):
-        return f"stagybee::session:{generate_channel_group_name('stage', congregation)}"
+        return f"stagybee:session:{generate_channel_group_name('stage', congregation)}"
 
     async def __get_extractor_status(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -158,7 +158,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         if "session_id" in self.scope["url_route"]["kwargs"] and \
                 self.scope["url_route"]["kwargs"]["session_id"] is not None:
             count = await self._redis.disconnect_uri(redis_key, self.channel_name)
-            if count != 0:
+            if count != 0 and count is not None:
                 return
             try:
                 self.task = asyncio.create_task(
@@ -234,4 +234,4 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
 
     @staticmethod
     def __get_redis_key(congregation):
-        return f"stagybee::console:{generate_channel_group_name('console', congregation)}"
+        return f"stagybee:console:{generate_channel_group_name('console', congregation)}"
