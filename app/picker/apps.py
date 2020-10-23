@@ -8,10 +8,14 @@ REDIS_KEY = "stagybee:*"
 
 
 async def initialize_redis():
-    if "CONFIG" not in settings.CHANNEL_LAYERS["default"]:
+    await __initialize_redis("default")
+
+
+async def __initialize_redis(layer):
+    if "CONFIG" not in settings.CHANNEL_LAYERS[layer]:
         return
     try:
-        host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
+        host = settings.CHANNEL_LAYERS[layer]["CONFIG"]["hosts"][0]
         redis = await aioredis.create_redis(host)
         for key in await redis.keys(REDIS_KEY):
             await redis.delete(key)

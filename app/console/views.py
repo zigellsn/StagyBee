@@ -17,7 +17,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from picker.models import Credential
+from picker.models import Credential, is_active
 from .forms import CongregationForm
 
 
@@ -43,4 +43,9 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
     model = Credential
     return_403 = True
     permission_required = "access_console"
-    template_name = "console/console.html"
+
+    def get_template_names(self):
+        if is_active(self.get_object()):
+            return "console/console.html"
+        else:
+            return "console/console_not_ready.html"

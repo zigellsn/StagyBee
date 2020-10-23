@@ -25,19 +25,19 @@ REDIS_KEY = "stagybee:console:congregation.console."
 logger = logging.getLogger(__name__)
 
 
-async def __get_redis_congregations():
+async def __get_redis_congregations(congregation):
     host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
     redis = await aioredis.create_redis(host)
-    congregations = await redis.keys(REDIS_KEY + "*")
+    congregations = await redis.keys(REDIS_KEY + congregation)
     redis.close()
     await redis.wait_closed()
     return congregations
 
 
-async def __get_active_congregations__():
+async def __get_active_congregations__(congregation="*"):
     congregation_filter = []
     try:
-        congregation_filter = await __get_redis_congregations()
+        congregation_filter = await __get_redis_congregations(congregation)
     except():
         logger.error("Redis Server not available")
     finally:
@@ -54,6 +54,16 @@ async def __get_running_since__(congregation):
         redis.close()
         await redis.wait_closed()
         return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], settings.REDIS_DATETIME_FORMAT)
+
+
+def is_active(congregation):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    congregation_filter = loop.run_until_complete(__get_active_congregations__(congregation.congregation))
+    if congregation.congregation in congregation_filter:
+        return True
+    else:
+        return False
 
 
 class CredentialQuerySet(QuerySet):

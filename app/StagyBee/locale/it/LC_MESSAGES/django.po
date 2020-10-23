@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-25 16:23+0200\n"
+"POT-Creation-Date: 2020-10-23 15:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,49 +69,49 @@ msgstr ""
 msgid "Nachricht"
 msgstr ""
 
-#: .\picker\models.py:96
+#: .\picker\models.py:106
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:97
+#: .\picker\models.py:107
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:98
+#: .\picker\models.py:108
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:101
+#: .\picker\models.py:111
 #, fuzzy
 #| msgid "Versammlung wählen"
 msgid "Versammlung"
 msgstr "Scegli la riunione"
 
-#: .\picker\models.py:102
+#: .\picker\models.py:112
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:103
+#: .\picker\models.py:113
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:104 .\templates\console\settings.html:19
+#: .\picker\models.py:114 .\templates\console\settings.html:19
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:105
+#: .\picker\models.py:115
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:108
+#: .\picker\models.py:118
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:109
+#: .\picker\models.py:119
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:110
+#: .\picker\models.py:120
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -211,6 +211,14 @@ msgstr ""
 msgid "Sende Nachricht"
 msgstr ""
 
+#: .\templates\console\console_not_ready.html:5
+#, python-format
+msgid ""
+"Für die Versammlung\n"
+"        %(congregation_name)s läuft keine Bühnensession. Versuche es später "
+"nochmal."
+msgstr ""
+
 #: .\templates\console\header.html:16 .\templates\console\header_rtl.html:16
 #, python-format
 msgid "Willkommen, %(username)s!"
@@ -283,23 +291,23 @@ msgstr ""
 msgid "Keine Versammlung angelegt."
 msgstr "Scegli la riunione"
 
-#: .\templates\picker\tiles.html:17
+#: .\templates\picker\tiles.html:18
 msgid "Zum Anlegen hier klicken."
 msgstr ""
 
-#: .\templates\picker\tiles.html:19
+#: .\templates\picker\tiles.html:20
 msgid "Versammlung wählen"
 msgstr "Scegli la riunione"
 
-#: .\templates\picker\tiles.html:31
+#: .\templates\picker\tiles.html:32
 msgid "JWConf Login Seite"
 msgstr "JWConf pagina di accesso"
 
-#: .\templates\picker\tiles.html:56
+#: .\templates\picker\tiles.html:57
 msgid "Nein"
 msgstr ""
 
-#: .\templates\picker\tiles.html:60
+#: .\templates\picker\tiles.html:61
 msgid "Ja"
 msgstr ""
 

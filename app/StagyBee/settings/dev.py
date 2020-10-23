@@ -26,13 +26,8 @@ CSRF_COOKIE_SECURE = False
 
 if DEBUG:
 
-    CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels.layers.InMemoryChannelLayer"
-        },
-    }
-
     import mimetypes
+
     mimetypes.add_type("application/javascript", ".js", True)
     try:
         import debug_toolbar
