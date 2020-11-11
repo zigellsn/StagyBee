@@ -14,6 +14,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="pl-4 pr-4">
+        <div class="brand"><span class="h5">{{ congregation.display_name }}</span></div>
+    </div>
     <div><h3 id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></h3>
     </div>
     <table class="table">
