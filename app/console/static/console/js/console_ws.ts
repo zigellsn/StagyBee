@@ -155,7 +155,7 @@ export function console_ws(language: string, congregation_ws: string) {
         let lv = $('#talk_list');
         if (talk !== -1 && talk < lv[0].childNodes.length) {
             $('#submit_stop').removeClass("light").addClass("primary");
-            // lv[0].childNodes[talk].trigger("click");
+            lv.children('.node').eq(talk - 2).trigger("click");
         } else
             lv.children('.node').first().trigger("click");
     }
@@ -163,9 +163,11 @@ export function console_ws(language: string, congregation_ws: string) {
     function removeAllListItems() {
         let list = $('#talk_list');
         list.children('.node').each(function () {
+            // noinspection TypeScriptValidateJSTypes
             list.data('listview').del(this);
         });
         list.children('.node-group').each(function () {
+            // noinspection TypeScriptValidateJSTypes
             list.data('listview').del(this);
         });
     }

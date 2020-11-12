@@ -43,7 +43,7 @@ def get_or_create_credential(congregation='LE', autologin='abc', username='abc',
 @pytest.mark.django_db
 async def test_extractor_consumer(channel_layers):
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer)])
+    application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi())])
 
     communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
     communicator.scope["server"] = ["www", 8000]
@@ -59,7 +59,7 @@ async def test_extractor_consumer(channel_layers):
 @pytest.mark.django_db
 async def test_console_client_consumer(channel_layers):
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer)])
+    application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer.as_asgi())])
 
     communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")
     connected, _ = await communicator.connect()

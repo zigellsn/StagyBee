@@ -39,7 +39,7 @@ def channel_layers():
 @pytest.mark.django_db
 async def test_central_timer_consumer(channel_layers):
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer)])
+    application = URLRouter([re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer.as_asgi())])
 
     communicator = WebsocketCommunicator(application, "/ws/central_timer/LE/")
     connected, _ = await communicator.connect()

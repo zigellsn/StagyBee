@@ -38,7 +38,8 @@ def channel_layers():
 async def test_console_consumer(channel_layers):
     test_user = await user()
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer)])
+    application = URLRouter(
+        [re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer.as_asgi())])
     communicator = WebsocketCommunicator(application, "/ws/de/console/LE/")
     communicator.scope['user'] = test_user
     connected, _ = await communicator.connect()

@@ -11,13 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from datetime import datetime
-
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 
+from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 from stopwatch.models import TimeEntry
@@ -35,8 +36,8 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
         timer = GLOBAL_TIMERS.get(congregation)
         if timer is not None:
             context = timer.get_context()
-            start = datetime.strptime(context["start"], settings.DATETIME_FORMAT)
-            delta = datetime.now() - start
+            start = make_aware(parse_datetime(context["start"]))
+            delta = timezone.localtime(timezone.now()) - start
             await self.channel_layer.group_send(congregation_group_name,
                                                 {"timer": {"mode": "running",
                                                            "remaining": get_json_duration(delta.seconds),
@@ -53,8 +54,8 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
     async def timeout_callback(self, name, context, _):
         congregation_group_name = generate_channel_group_name("timer",
                                                               self.scope["url_route"]["kwargs"]["congregation"])
-        start = datetime.strptime(context["start"], settings.DATETIME_FORMAT)
-        delta = datetime.now() - start
+        start = make_aware(parse_datetime(context["start"]))
+        delta = timezone.localtime(timezone.now()) - start
         await self.channel_layer.group_send(congregation_group_name,
                                             {"timer": {"mode": "sync", "remaining": get_json_duration(delta.seconds),
                                                        "duration": context["duration"],
@@ -69,7 +70,7 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is None:
                 context = {"duration": text_data["duration"],
-                           "start": datetime.now().strftime(settings.DATETIME_FORMAT),
+                           "start": timezone.localtime(timezone.now()).strftime(settings.DATETIME_FORMAT),
                            "index": text_data["index"]}
                 GLOBAL_TIMERS[congregation] = Timer(1, self.timeout_callback, context=context,
                                                     timer_name=text_data["name"])
@@ -82,9 +83,10 @@ class CentralTimerConsumer(AsyncJsonRedisWebsocketConsumer):
             if timer is not None:
                 context = timer.get_context()
                 duration = get_duration(context["duration"])
+                start = make_aware(parse_datetime(context["start"]))
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
                 await database_sync_to_async(__persist_time_entry__)(credential, timer.get_timer_name(),
-                                                                     context["start"], duration)
+                                                                     start, duration)
                 timer.cancel()
                 GLOBAL_TIMERS.pop(congregation)
             await self.channel_layer.group_send(congregation_group_name,
@@ -99,7 +101,7 @@ def __get_congregation__(congregation):
 
 
 def __persist_time_entry__(congregation, talk, start, duration):
-    return TimeEntry.objects.create_time_entry(congregation, talk, start, datetime.now(), duration)
+    return TimeEntry.objects.create_time_entry(congregation, talk, start, timezone.now(), duration)
 
 
 def get_duration(duration):

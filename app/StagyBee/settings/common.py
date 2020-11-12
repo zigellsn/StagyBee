@@ -161,7 +161,7 @@ LOCALE_PATHS = (
     str(PROJECT_PACKAGE.joinpath('locale')),
 )
 
-TIME_ZONE = 'CET'
+TIME_ZONE = env.str("TIME_ZONE", default="Europe/Berlin")
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
 
