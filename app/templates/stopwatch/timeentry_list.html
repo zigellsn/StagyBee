@@ -62,9 +62,10 @@
                 {% for time_entry in object_list %}
                     <tr>
                         <td>{{ time_entry.talk }}</td>
-                        <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}
-                            Uhr{% endblocktrans %}</td>
-                        <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }} Uhr{% endblocktrans %}</td>
+{#                        <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}&nbsp;Uhr{% endblocktrans %}</td>#}
+{#                        <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}&nbsp;Uhr{% endblocktrans %}</td>#}
+                        <td>{{ time_entry.start|time:"TIME_FORMAT" }}</td>
+                        <td>{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
                         <td>{{ time_entry.duration }}</td>
                         <td>{{ time_entry.display_max_duration }}</td>
                         {% if "-" in time_entry.difference %}
