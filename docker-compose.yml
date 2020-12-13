@@ -5,7 +5,7 @@ services:
     build:
       context: python-base/
   db:
-    image: postgres:12.3-alpine
+    image: postgres:13.1-alpine
     volumes:
       - type: bind
         source: ./data
