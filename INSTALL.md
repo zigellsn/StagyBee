@@ -52,7 +52,7 @@ cp .env.example .env
 ```
 
 ---
-Don't forget to set the SECRET_KEY value in .env!
+**Don't forget to set the SECRET_KEY value in .env!**
 
 ---
 

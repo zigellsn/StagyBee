@@ -15,8 +15,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$/app">
       <excludeFolder url="file://$MODULE_DIR$/app/app/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/app/app/venv38" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (app)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (StagyBee)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="reconnecting-websocket-iife" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
