@@ -10,7 +10,7 @@
                     <div class="card inherit-colors">
                         <div class="card-header {% if congregation.active == True %}bg-green{% else %}bg-gray{% endif %}">
                             <div class="icon">
-                                <span class="{% if congregation.active == True %}mif-star-full{% else %}mif-star-empty{% endif %} mif-4x"></span>
+                                <span class="ml-1 mt-2 {% if congregation.active == True %}mif-star-full{% else %}mif-star-empty{% endif %} mif-4x"></span>
                             </div>
                             <div class="title">{{ congregation.display_name }}</div>
                             <div class="subtitle">

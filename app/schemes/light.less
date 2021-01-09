@@ -27,26 +27,26 @@
 @schemeFontSize: @fontSize;
 
 .scheme-builder(
-    @schemeBackground,
-    @schemeBackgroundSecondary,
-    @schemeTextColor,
-    @schemeTextColorSecondary,
-    @schemeControlColor,
-    @schemeControlTextColor,
-    @schemeFontFamily,
-    @schemeFontSize
+        @schemeBackground,
+        @schemeBackgroundSecondary,
+        @schemeTextColor,
+        @schemeTextColorSecondary,
+        @schemeControlColor,
+        @schemeControlTextColor,
+        @schemeFontFamily,
+        @schemeFontSize
 );
 
 .navview {
-    .navview-pane {
-        .navview-menu {
-            li {
-                &.active {
-                    &::before {
-                        background-color: @white;
-                    }
-                }
-            }
+  .navview-pane {
+    .navview-menu {
+      li {
+        &.active {
+          &::before {
+            background-color: @white;
+          }
         }
+      }
     }
+  }
 }
