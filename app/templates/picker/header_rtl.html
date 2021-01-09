@@ -1,47 +1,36 @@
+{% extends 'base_header_rtl.html' %}
 {% load i18n utils %}
-<header class="bg-dark fg-white d-flex flex-justify-between app-bar">
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
+
+{% block header_title %}StagyBee{% endblock %}
+
+{% block header_link %}{% url 'picker:picker' %}{% endblock %}
+
+{% block header_functions %}
     {% trans "Neu starten" as reboot %}
     {% trans "Herunterfahren" as shutdown %}
     {% trans "Bist du sicher?" as confirm %}
-
-    <div class="app-bar-container float-none">
-        <div class="app-bar-item pl-4 pr-4">
-            <a href="{% url 'picker:picker' %}" class="brand"><span class="display1">StagyBee</span></a>
-        </div>
+    <div class="app-bar-container float-left">
+        {% include "menu/scheme.html" %}
     </div>
-    <div class="app-bar-container mega mr-auto">
+    <div class="app-bar-container float-left">
+        {% include "menu/language.html" %}
+    </div>
+    {% if shutdown_icon %}
         <div class="app-bar-container float-left">
             <a href="#" class="app-bar-item dropdown-toggle marker-light">
-                <div class="mif-language mif-3x" data-role="hint" data-hint-text="{% trans "Sprache" %}"
-                     data-hint-position="bottom"></div>
+                <div class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
+                     data-hint-position="bottom">
+                </div>
             </a>
             <ul class="d-menu p-2" data-role="dropdown">
-                {% for lang_code, lang_name in LANGUAGES %}
-                    <li class="bg-blue-hover"><a href="{% translate_url lang_code %}"><span
-                            class="">{{ lang_name }}</span></a></li>
-                {% endfor %}
+                <li class="bg-blue-hover"><a href="#"
+                                             onclick="shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
+                </li>
+                <li class="bg-blue-hover"><a href="#"
+                                             onclick="shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
+                </li>
             </ul>
         </div>
-        {% if shutdown_icon %}
-            <div class="app-bar-container float-left">
-                <a href="#" class="app-bar-item dropdown-toggle marker-light">
-                    <div class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
-                         data-hint-position="bottom">
-                    </div>
-                </a>
-                <ul class="d-menu p-2" data-role="dropdown">
-                    <li class="bg-blue-hover"><a href="#"
-                                                 onclick="shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
-                    </li>
-                    <li class="bg-blue-hover"><a href="#"
-                                                 onclick="shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
-        <div class="app-bar-item pt-1 place-left"><samp><span class="text-leader" id="currentTime"></span></samp></div>
-    </div>
-</header>
+    {% endif %}
+{% endblock %}
+

@@ -1,64 +1,52 @@
+{% extends 'base_header_rtl.html' %}
 {% load i18n utils %}
-<header class="app-bar bg-dark fg-white d-flex flex-justify-between pl-4" data-role="appbar" data-role-appbar="true">
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
-    <div class="app-bar-container float-none">
-        <div class="app-bar-item pl-4 pr-4">
-            <a href="{% url 'console:choose_console' %}" class="brand"><span
-                    class="display1">StagyBee Console</span></a>
-        </div>
+
+{% block header_title %}StagyBee Console{% endblock %}
+
+{% block header_link %}{% url 'console:choose_console' %}{% endblock %}
+
+{% block header_functions %}
+    <div class="app-bar-container float-left pt-3">
+        {% if user.is_authenticated %}
+            <h6>
+                {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}
+                    !{% endblocktrans %}</h6>
+        {% endif %}
     </div>
-    <div class="app-bar-container mega mr-auto">
-        <div class="app-bar-container float-left pt-3">
-            {% if user.is_authenticated %}
-                <h6>
-                    {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}!{% endblocktrans %}</h6>
-            {% endif %}
-        </div>
-        {% if archive == True %}
-            <div class="app-bar-container float-left">
-                <div class="app-bar-item pl-4 pr-4 pt-2">
-                    {% now "Y" as year %}
-                    {% now "W" as week %}
-                    <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
-                    <span class="mif-history mif-3x" data-role="hint" data-hint-text="{% trans "Archiv" %}"
-                          data-hint-position="bottom"></span>
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-        {% if no_settings == False or no_settings == None or user.is_superuser %}
-            <div class="app-bar-container float-left">
-                <div class="app-bar-item pl-4 pr-4 pt-2">
-                    <a href="{% url 'settings' %}">
-                    <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
-                          data-hint-position="bottom"></span>
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-        <div class="app-bar-container float-left">
-            <a href="#" class="app-bar-item dropdown-toggle marker-light">
-                <div class="mif-language mif-3x" data-role="hint" data-hint-text="{% trans "Sprache" %}"
-                     data-hint-position="bottom"></div>
-            </a>
-            <ul class="d-menu p-2" data-role="dropdown">
-                {% for lang_code, lang_name in LANGUAGES %}
-                    <li class="bg-blue-hover"><a href="{% translate_url lang_code %}"><span
-                            class="">{{ lang_name }}</span></a></li>
-                {% endfor %}
-            </ul>
-        </div>
+    {% if archive == True %}
         <div class="app-bar-container float-left">
             <div class="app-bar-item pl-4 pr-4 pt-2">
-                <a href="{% url 'logout' %}">
-                    <span class="mif-exit mif-3x" data-role="hint" data-hint-text="{% trans "Logout" %}"
+                {% now "Y" as year %}
+                {% now "W" as week %}
+                <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
+                    <span class="mif-history mif-3x" data-role="hint" data-hint-text="{% trans "Archiv" %}"
                           data-hint-position="bottom"></span>
                 </a>
             </div>
         </div>
-        <div class="app-bar-item pt-1 place-left"><samp><span class="text-leader" id="currentTime"></span></samp>
+    {% endif %}
+    {% if no_settings == False or no_settings == None or user.is_superuser %}
+        <div class="app-bar-container float-left">
+            <div class="app-bar-item pl-4 pr-4 pt-2">
+                <a href="{% url 'settings' %}">
+                    <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
+                          data-hint-position="bottom"></span>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+    <div class="app-bar-container float-left">
+        {% include "menu/scheme.html" %}
+    </div>
+    <div class="app-bar-container float-left">
+        {% include "menu/language.html" %}
+    </div>
+    <div class="app-bar-container float-left">
+        <div class="app-bar-item pl-4 pr-4 pt-2">
+            <a href="{% url 'logout' %}">
+                    <span class="mif-exit mif-3x" data-role="hint" data-hint-text="{% trans "Logout" %}"
+                          data-hint-position="bottom"></span>
+            </a>
         </div>
     </div>
-</header>
+{% endblock %}

@@ -70,7 +70,6 @@ export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: 
                 remaining.text(millisecondsToTime(0));
                 remaining.removeClass('fg-red');
                 remaining.removeClass('timesUp');
-                remaining.addClass('fg-white');
                 stopwatch.innerText = millisecondsToTime(0);
             }
             showTimer(message)
@@ -91,10 +90,8 @@ export function timer_ws(congregation_ws: string, reload: boolean, resetOnStop: 
                     remaining.text(millisecondsToTime(rem));
                     remaining.removeClass('fg-red');
                     remaining.removeClass('timesUp');
-                    remaining.addClass('fg-white');
                 } else {
                     remaining.text('-' + millisecondsToTime(rem));
-                    remaining.removeClass('fg-white');
                     remaining.addClass('timesUp');
                     remaining.addClass('fg-red');
                 }

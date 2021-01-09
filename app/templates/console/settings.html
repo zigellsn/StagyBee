@@ -9,14 +9,14 @@
          data-material="true">
         {% if user.is_superuser %}
             <div class="frame active">
-                <div class="bg-dark fg-white heading">{% trans "Benachrichtigungen" %}</div>
+                <div class="inherit-colors heading">{% trans "Benachrichtigungen" %}</div>
                 <div class="content">
                     {% notifications_maintain %}
                 </div>
             </div>
         {% endif %}
         <div class="frame {% if not user.is_superuser %}active{% endif %}">
-            <div class="bg-dark fg-white heading">{% trans "Passwort" %}</div>
+            <div class="inherit-colors heading">{% trans "Passwort" %}</div>
             <div class="content">
                 <a href="{% url 'password_change' %}">
                     <div class="button primary">{% trans "Passwort ändern" %}</div>

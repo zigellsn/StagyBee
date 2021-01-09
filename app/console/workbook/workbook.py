@@ -48,7 +48,7 @@ class WorkbookExtractor:
         while last_monday <= end_date:
             next_sunday = last_monday + relativedelta(days=6)
             if last_monday.year >= 2020:
-                url = self.__get_2020_url__(last_monday, next_sunday)
+                url = self.__get_2020_url__(last_monday, next_sunday, last_monday.year)
             else:
                 url = self.__get_url__(last_monday, next_sunday)
 
@@ -84,6 +84,24 @@ class WorkbookExtractor:
             10: "October",
             11: "November",
             12: "December"
+        }
+        return switcher.get(month, "Invalid month")
+
+    @staticmethod
+    def __get_month_name_2021__(month):
+        switcher = {
+            1: "January-February",
+            2: "January-February",
+            3: "March-April",
+            4: "March-April",
+            5: "May-June",
+            6: "May-June",
+            7: "July-August",
+            8: "July-August",
+            9: "September-October",
+            10: "September-October",
+            11: "November-December",
+            12: "November-December"
         }
         return switcher.get(month, "Invalid month")
 
@@ -149,20 +167,23 @@ class WorkbookExtractor:
                   f"{prefix}-{month.lower()}{last_monday.day}-{next_month.lower()}{next_sunday.day}/"
         return url
 
-    def __get_2020_url__(self, last_monday, next_sunday):
-        # prefix = "Our-Christian-Life-and-Ministry-Schedule-for"
+    def __get_2020_url__(self, last_monday, next_sunday, year):
         prefix = "Life-and-Ministry-Meeting-Schedule-for"
         month = self.__get_month_name__(last_monday.month)
+        if year <= 2020:
+            month_root = self.__get_month_name__(last_monday.month)
+        else:
+            month_root = self.__get_month_name_2021__(last_monday.month)
         if last_monday.month == next_sunday.month:
-            url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+            url = f"{self.PREFIX}/{month_root.lower()}-{last_monday.year}-mwb/" \
                   f"{prefix}-{month}-{last_monday.day}-{next_sunday.day}-{last_monday.year}/"
         else:
             next_month = self.__get_month_name__(next_sunday.month)
             if last_monday.year == next_sunday.year:
-                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                url = f"{self.PREFIX}/{month_root.lower()}-{last_monday.year}-mwb/" \
                       f"{prefix}-{month}-{last_monday.day}-{next_month}-{next_sunday.day}-{last_monday.year}/"
             else:
-                url = f"{self.PREFIX}/{month.lower()}-{last_monday.year}-mwb/" \
+                url = f"{self.PREFIX}/{month_root.lower()}-{last_monday.year}-mwb/" \
                       f"{prefix}-{month}-{last_monday.day}-{last_monday.year}-{next_month}-{next_sunday.day}-" \
                       f"{next_sunday.year}/"
         return url

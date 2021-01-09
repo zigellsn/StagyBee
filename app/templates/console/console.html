@@ -10,7 +10,7 @@
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
          data-material="true">
         <div class="frame active">
-            <div class="bg-dark fg-white heading">{% trans "Stoppuhr" %}</div>
+            <div class="inherit-colors heading">{% trans "Stoppuhr" %}</div>
             <div class="content">
                 <div>
                     <table class="table">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="pt-4">
                     <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
-                    <ul class="bg-dark fg-white" data-role="listview" data-view="list" data-select-node="true"
+                    <ul data-role="listview" data-view="list" data-select-node="true"
                         id="talk_list">
                     </ul>
                 </div>
@@ -53,7 +53,7 @@
                         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
                         <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
                                data-hours="false"
-                               id="time" class="bg-dark fg-white"/>
+                               id="time" />
                     </div>
                 </div>
                 <div class="pt-4">
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="frame">
-            <div class="bg-dark fg-white heading">{% trans "Bildschirmsteuerung" %}</div>
+            <div class="inherit-colors heading">{% trans "Bildschirmsteuerung" %}</div>
             <div class="content">
                 <table class="table" style="width:20%">
                     <tr>
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="frame">
-            <div class="bg-dark fg-white heading">{% trans "Textnachricht" %}</div>
+            <div class="inherit-colors heading">{% trans "Textnachricht" %}</div>
             <div class="content">
                 <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
                 <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>

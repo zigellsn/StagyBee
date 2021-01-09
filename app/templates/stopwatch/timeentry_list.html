@@ -22,10 +22,10 @@
             <thead>
             <tr>
                 <th>
-                    <div class="fg-white text-center">{% trans "Abgelaufen" %}</div>
+                    <div class="text-center">{% trans "Abgelaufen" %}</div>
                 </th>
                 <th>
-                    <div class="fg-white text-center">{% trans "Übrig" %}</div>
+                    <div class="text-center">{% trans "Übrig" %}</div>
                 </th>
             </tr>
             </thead>
@@ -50,12 +50,12 @@
                    data-empty-table-title="">
                 <thead>
                 <tr>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
-                    <th class="fg-white {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
+                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody>

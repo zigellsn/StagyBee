@@ -15,13 +15,13 @@
  */
 
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FileManagerPlugin = require("filemanager-webpack-plugin");
 
-module.exports = {
+const mainConfig = {
     // mode: 'development',
     mode: 'production',
     entry: {
-        main: ['./style.scss', './index.ts']
+        main: ['./style.scss', './index.ts'],
     },
     output: {
         filename: 'js/[name].bundle.js',
@@ -115,9 +115,61 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
+};
+
+const schemes = {
+    // mode: 'development',
+    mode: 'production',
+    entry: {
+        dark: './schemes/dark.less',
+        light: './schemes/light.less',
+    },
+    output: {
+        path: path.resolve(__dirname, 'StagyBee/static'),
+        filename: '[name].scheme.js',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'css/[name].css',
+                        },
+                    },
+                    {
+                        loader: 'extract-loader'
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: false
+                        }
+                    },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            lessOptions: {
+                                strictMath: true,
+                                paths: [path.resolve(__dirname, "node_modules")],
+                            },
+                        },
+                    },
+                ],
+            },
+        ],
+    },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].bundle.css',
+        new FileManagerPlugin({
+            events: {
+                onEnd: {
+                    delete: [path.resolve(__dirname, 'StagyBee/static/dark.scheme.js'), path.resolve(__dirname, 'StagyBee/static/light.scheme.js')]
+                }
+            }
         }),
     ],
-};
+}
+
+module.exports = [mainConfig, schemes];

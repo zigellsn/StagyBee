@@ -1,0 +1,15 @@
+{% load i18n utils %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
+
+<a href="#" class="app-bar-item dropdown-toggle marker-light">
+    <div class="mif-language mif-3x" data-role="hint" data-hint-text="{% trans "Sprache" %}"
+         data-hint-position="bottom"></div>
+</a>
+<ul class="d-menu p-2" data-role="dropdown">
+    {% for lang_code, lang_name in LANGUAGES %}
+        <li class="bg-blue-hover"><a href="{% translate_url lang_code %}"><span
+                class="">{{ lang_name }}</span></a></li>
+    {% endfor %}
+</ul>

@@ -13,7 +13,8 @@ media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
-/app/static
+**/static/css/*
+**/static/fonts/*
 junit
 
 ### Django.Python Stack ###
@@ -373,8 +374,6 @@ typings/
 tmp/
 temp/
 
-fonts/
-bundle.css
 *.bundle.js
 *.js.map
 index.js

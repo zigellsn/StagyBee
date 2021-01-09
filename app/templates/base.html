@@ -17,14 +17,27 @@
     <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "css/bundle.css" %}" type="text/css">
+    <link rel="stylesheet" id="color-scheme" href="{% static "css/dark.css" %}" type="text/css">
     {% block head_extra %}{% endblock head_extra %}
     <style>
         .app-bar-menu li {
             list-style: none !important;
         }
     </style>
+    <script>
+        function toggleColorScheme() {
+            let scheme;
+            let id = $("#color-scheme");
+            if (id.attr("href") === '{% static "css/dark.css" %}')
+                scheme = '{% static "css/light.css" %}';
+            else
+                scheme = '{% static "css/dark.css" %}';
+            id.attr("href", scheme);
+            Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+        }
+    </script>
 </head>
-<body class="fg-white bg-dark" onload="StagyBee.main.startTime();" id="body">
+<body onload="StagyBee.main.startTime();" id="body">
 <noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
 {% block header %}
 {% endblock %}

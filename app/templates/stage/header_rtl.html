@@ -1,4 +1,4 @@
-<header class="app-bar bg-dark fg-white d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
+<header class="app-bar d-flex flex-justify-between" data-role="appbar" data-role-appbar="true">
     <div class="app-bar-container float-none">
         <div class="app-bar-item pl-4 pr-4 pt-2">
             {% if credential.touch %}
@@ -18,7 +18,11 @@
             <span class="display1">{{ credential.display_name }}</span>
         </div>
         <div class="app-bar-container mr-auto" id="clock">
-            <div class="app-bar-item pt-1 place-left"><samp><span class="text-leader" id="currentTime"></span></samp>
+            <div class="app-bar-container float-left">
+                {% include "menu/scheme.html" %}
+            </div>
+            <div class="app-bar-item pt-1 place-left">
+                <samp><span class="text-leader" id="currentTime"></span></samp>
             </div>
         </div>
     {% endif %}
