@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="bg-dark fg-white h2">{% trans 'Log in' %}</div>
+    <div class="h2">{% trans 'Log in' %}</div>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}

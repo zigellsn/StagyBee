@@ -1,6 +1,6 @@
 {% if object %}
-    <div class="frame active bg-dark fg-white">
-        <div class="bg-dark fg-white heading">
+    <div class="frame active">
+        <div class="heading">
             {% if object.importance == 0 %}
                 <span class="mif-quote" data-role="hint"
                       data-hint-text="{{ object.get_importance_display }}"
