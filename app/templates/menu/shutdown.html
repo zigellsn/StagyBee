@@ -1,0 +1,20 @@
+{% load i18n %}
+{% trans "Neu starten" as reboot %}
+{% trans "Herunterfahren" as shutdown %}
+{% trans "Bist du sicher?" as confirm %}
+
+<div class="app-bar-container">
+    <a href="#" class="app-bar-item dropdown-toggle marker-light">
+        <span class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
+             data-hint-position="bottom">
+        </span>
+    </a>
+    <ul class="d-menu" data-role="dropdown">
+        <li class="bg-blue-hover"><a href="#"
+                                     onclick="shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}')">{{ reboot }}</a>
+        </li>
+        <li class="bg-blue-hover"><a href="#"
+                                     onclick="shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}')">{{ shutdown }}</a>
+        </li>
+    </ul>
+</div>

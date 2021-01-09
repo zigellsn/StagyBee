@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load i18n %}
 
 {% block title %}{% trans 'Log in' %}{% endblock %}
 
 {% block header %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% if LANGUAGE_BIDI %}
-        {% include "registration/header_rtl.html" %}
-    {% else %}
-        {% include "registration/header.html" %}
-    {% endif %}
+    {% include "registration/header.html" %}
 {% endblock %}
 
 {% block content %}

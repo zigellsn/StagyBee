@@ -1,16 +1,11 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
 {% block header %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% if LANGUAGE_BIDI %}
-        {% include "console/header_rtl.html" %}
-    {% else %}
-        {% include "console/header.html" %}
-    {% endif %}
+    {% include "console/header.html" %}
 {% endblock %}
 
 {% block content %}

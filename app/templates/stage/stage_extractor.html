@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load i18n %}
 
 {% block title %}Stage{% endblock %}
 
@@ -12,16 +12,10 @@
 {% endblock %}
 
 {% block header %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% if LANGUAGE_BIDI %}
-        {% include "stage/header_rtl.html" %}
-    {% else %}
-        {% include "stage/header.html" %}
-    {% endif %}
+    {% include "stage/header.html" %}
 {% endblock %}
 
 {% block content %}
-    {% load static %}
     {% trans "Zuhörer gesamt:" as sum_listeners %}
     <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
                                                                                         id="sumListenersNumber"></span>

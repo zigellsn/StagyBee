@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
-{% load static i18n notification admin_urls %}
+{% load i18n notification admin_urls %}
 
 {% block title %}Picker{% endblock %}
 
 {% block header %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% if LANGUAGE_BIDI %}
-        {% include "picker/header_rtl.html" %}
-    {% else %}
-        {% include "picker/header.html" %}
-    {% endif %}
+    {% include "picker/header.html" %}
 {% endblock %}
 
 {% block content %}

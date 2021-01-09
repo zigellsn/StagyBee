@@ -1,0 +1,35 @@
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<header class="app-bar pr-4 pl-4" data-role="appbar" data-role-appbar="true">
+    {% if credential.touch %}
+        <a class="brand order-1" onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
+           href="{% url 'picker:picker' %}">
+            {% if LANGUAGE_BIDI %}
+                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
+            {% else %}
+                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+            {% endif %}
+        </a>
+    {% else %}
+        <a class="brand order-1" href="{% url 'picker:picker' %}">
+            {% if LANGUAGE_BIDI %}
+                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
+            {% else %}
+                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+            {% endif %}
+        </a>
+    {% endif %}
+
+    {% if not credential.touch %}
+        <span class="text-leader pl-4 pr-4 order-2">{{ credential.display_name }}</span>
+        {% if LANGUAGE_BIDI %}
+            <div class="app-bar-container order-3 mr-auto">
+        {% else %}
+            <div class="app-bar-container order-3 ml-auto">
+        {% endif %}
+    {% block header_functions %}
+    {% endblock %}
+    <samp class="text-leader" id="currentTime"></samp>
+    </div>
+    {% endif %}
+</header>

@@ -1,14 +1,17 @@
-<header class="app-bar d-flex flex-justify-between pr-4" data-role="appbar" data-role-appbar="true">
-    <div class="app-bar-container float-none">
-        <div class="app-bar-item pl-4 pr-4">
-            <a href="{% block header_link %}{% endblock %}" class="brand"><span
-                    class="display1">{% block header_title %}{% endblock %}</span></a>
-        </div>
-    </div>
-    <div class="app-bar-container mega ml-auto">
-        {% block header_functions %}
-        {% endblock %}
-        <div class="app-bar-item pt-1 place-left"><samp><span class="text-leader" id="currentTime"></span></samp>
-        </div>
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<header class="app-bar pr-4 pl-4" data-role="appbar" data-role-appbar="true">
+    <a class="brand no-hover order-1" href="{% block header_link %}{% endblock %}">
+        <span class="text-leader">{% block header_title %}{% endblock %}</span>
+    </a>
+    {% if LANGUAGE_BIDI %}
+        <div class="app-bar-container order-1 mr-auto">
+    {% else %}
+        <div class="app-bar-container order-2 ml-auto">
+    {% endif %}
+    {% block header_functions %}
+    {% endblock %}
+    <samp class="text-leader" id="currentTime"></samp>
     </div>
 </header>
+

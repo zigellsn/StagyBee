@@ -1,16 +1,10 @@
 {% extends 'base.html' %}
-{% load static i18n %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% load i18n %}
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
 {% block header %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    {% if LANGUAGE_BIDI %}
-        {% include "console/header_rtl.html" %}
-    {% else %}
-        {% include "console/header.html" %}
-    {% endif %}
+    {% include "console/header.html" %}
 {% endblock %}
 
 {% block content %}
@@ -62,8 +56,8 @@
                 {% for time_entry in object_list %}
                     <tr>
                         <td>{{ time_entry.talk }}</td>
-{#                        <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}&nbsp;Uhr{% endblocktrans %}</td>#}
-{#                        <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}&nbsp;Uhr{% endblocktrans %}</td>#}
+                        {#                        <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}&nbsp;Uhr{% endblocktrans %}</td>#}
+                        {#                        <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}&nbsp;Uhr{% endblocktrans %}</td>#}
                         <td>{{ time_entry.start|time:"TIME_FORMAT" }}</td>
                         <td>{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
                         <td>{{ time_entry.duration }}</td>

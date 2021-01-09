@@ -1,15 +1,10 @@
 {% extends 'base_header.html' %}
-{% load i18n utils %}
 
 {% block header_title %}StagyBee{% endblock %}
 
 {% block header_link %}{% url 'login' as header_link %}{% endblock %}
 
 {% block header_functions %}
-    <div class="app-bar-container float-right">
-        {% include "menu/scheme.html" %}
-    </div>
-    <div class="app-bar-container float-right">
-        {% include "menu/language.html" %}
-    </div>
+    {% include "menu/scheme.html" %}
+    {% include "menu/language.html" %}
 {% endblock %}

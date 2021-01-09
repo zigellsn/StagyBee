@@ -1,52 +1,36 @@
 {% extends 'base_header.html' %}
-{% load i18n utils %}
+{% load i18n %}
 
 {% block header_title %}StagyBee Console{% endblock %}
 
 {% block header_link %}{% url 'console:choose_console' %}{% endblock %}
 
 {% block header_functions %}
-    <div class="app-bar-container float-right pt-3">
-        {% if user.is_authenticated %}
-            <h6>
-                {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}
-                    !{% endblocktrans %}</h6>
-        {% endif %}
-    </div>
+    {% if user.is_authenticated %}
+        <span class="text-leader2 pl-4 pr-4">
+            {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}
+                !{% endblocktrans %}
+        </span>
+    {% endif %}
     {% if archive == True %}
-        <div class="app-bar-container float-right">
-            <div class="app-bar-item pl-4 pr-4 pt-2">
-                {% now "Y" as year %}
-                {% now "W" as week %}
-                <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
-                    <span class="mif-history mif-3x" data-role="hint" data-hint-text="{% trans "Archiv" %}"
-                          data-hint-position="bottom"></span>
-                </a>
-            </div>
-        </div>
+        {% now "Y" as year %}
+        {% now "W" as week %}
+        <a class="app-bar-item"
+           href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
+            <span class="mif-history mif-3x" data-role="hint" data-hint-text="{% trans "Archiv" %}"
+                  data-hint-position="bottom"></span>
+        </a>
     {% endif %}
     {% if no_settings == False or no_settings == None or user.is_superuser %}
-        <div class="app-bar-container float-right">
-            <div class="app-bar-item pl-4 pr-4 pt-2">
-                <a href="{% url 'settings' %}">
-                    <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
-                          data-hint-position="bottom"></span>
-                </a>
-            </div>
-        </div>
+        <a class="app-bar-item" href="{% url 'settings' %}">
+            <span class="mif-cog mif-3x" data-role="hint" data-hint-text="{% trans "Einstellungen" %}"
+                  data-hint-position="bottom"></span>
+        </a>
     {% endif %}
-    <div class="app-bar-container float-right">
-        {% include "menu/scheme.html" %}
-    </div>
-    <div class="app-bar-container float-right">
-        {% include "menu/language.html" %}
-    </div>
-    <div class="app-bar-container float-right">
-        <div class="app-bar-item pl-4 pr-4 pt-2">
-            <a href="{% url 'logout' %}">
-                    <span class="mif-exit mif-3x" data-role="hint" data-hint-text="{% trans "Logout" %}"
-                          data-hint-position="bottom"></span>
-            </a>
-        </div>
-    </div>
+    {% include "menu/scheme.html" %}
+    {% include "menu/language.html" %}
+    <a class="app-bar-item" href="{% url 'logout' %}">
+        <span class="mif-exit mif-3x" data-role="hint" data-hint-text="{% trans "Logout" %}"
+              data-hint-position="bottom"></span>
+    </a>
 {% endblock %}
