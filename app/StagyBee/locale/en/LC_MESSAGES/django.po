@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-13 10:07+0100\n"
+"POT-Creation-Date: 2021-01-10 17:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,9 +27,8 @@ msgid "Alle"
 msgstr "All languages"
 
 #: .\notification\forms.py:41 .\notification\models.py:57
-#: .\templates\console\header.html:43 .\templates\console\header_rtl.html:43
+#: .\templates\menu\language.html:8
 #: .\templates\notification\notification_maintain_list.html:10
-#: .\templates\picker\header.html:18 .\templates\picker\header_rtl.html:18
 msgid "Sprache"
 msgstr "Language"
 
@@ -121,12 +120,20 @@ msgid "Sendezeit"
 msgstr "Send time"
 
 #: .\templates\audit\audit_list.html:32
-#: .\templates\stopwatch\timeentry_archive_week.html:70
-#: .\templates\stopwatch\timeentry_list.html:84
+#: .\templates\stopwatch\timeentry_archive_week.html:65
+#: .\templates\stopwatch\timeentry_list.html:77
 msgid "Keine Einträge vorhanden"
 msgstr "No entries"
 
-#: .\templates\base.html:28
+#: .\templates\base.html:40 .\templates\menu\scheme.html:5
+msgid "Dunkles Design"
+msgstr "Dark mode"
+
+#: .\templates\base.html:44 .\templates\menu\scheme.html:5
+msgid "Helles Design"
+msgstr "Light mode"
+
+#: .\templates\base.html:55
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr "You need to enable JavaScript to run this app."
 
@@ -162,24 +169,24 @@ msgstr "Proceed to audit log..."
 
 #: .\templates\console\console.html:13 .\templates\console\console.html:53
 #: .\templates\stopwatch\timeentry_archive_week.html:5
-#: .\templates\stopwatch\timeentry_list.html:5
+#: .\templates\stopwatch\timeentry_list.html:4
 msgid "Stoppuhr"
 msgstr "Stopwatch"
 
 #: .\templates\console\console.html:20
-#: .\templates\stopwatch\timeentry_list.html:25
+#: .\templates\stopwatch\timeentry_list.html:18
 msgid "Abgelaufen"
 msgstr "Elapsed"
 
 #: .\templates\console\console.html:23
-#: .\templates\stopwatch\timeentry_list.html:28
+#: .\templates\stopwatch\timeentry_list.html:21
 msgid "Übrig"
 msgstr "Time left"
 
 #: .\templates\console\console.html:42
-#: .\templates\stopwatch\timeentry_archive_week.html:41
-#: .\templates\stopwatch\timeentry_list.html:19
-#: .\templates\stopwatch\timeentry_list.html:53
+#: .\templates\stopwatch\timeentry_archive_week.html:36
+#: .\templates\stopwatch\timeentry_list.html:13
+#: .\templates\stopwatch\timeentry_list.html:46
 msgid "Aufgabe"
 msgstr "Talk"
 
@@ -187,27 +194,27 @@ msgstr "Talk"
 msgid "Titel"
 msgstr "Title"
 
-#: .\templates\console\console.html:61
+#: .\templates\console\console.html:60
 msgid "Start"
 msgstr "Time"
 
-#: .\templates\console\console.html:62
+#: .\templates\console\console.html:61
 msgid "Stopp"
 msgstr "Stop"
 
-#: .\templates\console\console.html:68
+#: .\templates\console\console.html:67
 msgid "Bildschirmsteuerung"
 msgstr "Display control"
 
-#: .\templates\console\console.html:77
+#: .\templates\console\console.html:76
 msgid "Bildschirm verdunkeln"
 msgstr "Mute stage display"
 
-#: .\templates\console\console.html:87 .\templates\console\console.html:89
+#: .\templates\console\console.html:86 .\templates\console\console.html:88
 msgid "Textnachricht"
 msgstr "Text message"
 
-#: .\templates\console\console.html:94
+#: .\templates\console\console.html:93
 msgid "Sende Nachricht"
 msgstr "Send message"
 
@@ -221,20 +228,19 @@ msgstr ""
 "There is no stage session running for congregation %(congregation_name)s. "
 "Please try again later."
 
-#: .\templates\console\header.html:16 .\templates\console\header_rtl.html:16
-#, python-format
-msgid "Willkommen, %(username)s!"
-msgstr "Welcome, %(username)s!"
+#: .\templates\console\header.html:11
+msgid "Willkommen,&nbsp;%(username)s!"
+msgstr "Welcome,&nbsp;%(username)s!"
 
-#: .\templates\console\header.html:25 .\templates\console\header_rtl.html:25
+#: .\templates\console\header.html:19
 msgid "Archiv"
 msgstr "Proceed to archive..."
 
-#: .\templates\console\header.html:35 .\templates\console\header_rtl.html:35
+#: .\templates\console\header.html:25
 msgid "Einstellungen"
 msgstr "Settings"
 
-#: .\templates\console\header.html:56 .\templates\console\header_rtl.html:56
+#: .\templates\console\header.html:32
 msgid "Logout"
 msgstr "Logout"
 
@@ -245,6 +251,18 @@ msgstr "Text message"
 #: .\templates\console\settings.html:22
 msgid "Passwort ändern"
 msgstr "Change password"
+
+#: .\templates\menu\shutdown.html:2
+msgid "Neu starten"
+msgstr "Restart"
+
+#: .\templates\menu\shutdown.html:3
+msgid "Herunterfahren"
+msgstr "Shutdown"
+
+#: .\templates\menu\shutdown.html:4
+msgid "Bist du sicher?"
+msgstr "Are you sure?"
 
 #: .\templates\notification\notification_confirm_delete.html:7
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
@@ -275,92 +293,173 @@ msgstr "Edit"
 msgid "Neu"
 msgstr "New"
 
-#: .\templates\picker\header.html:6 .\templates\picker\header_rtl.html:6
-msgid "Neu starten"
-msgstr "Restart"
-
-#: .\templates\picker\header.html:7 .\templates\picker\header_rtl.html:7
-msgid "Herunterfahren"
-msgstr "Shutdown"
-
-#: .\templates\picker\header.html:8 .\templates\picker\header_rtl.html:8
-msgid "Bist du sicher?"
-msgstr "Are you sure?"
-
-#: .\templates\picker\tiles.html:17
+#: .\templates\picker\tiles.html:12
 msgid "Keine Versammlung angelegt."
 msgstr "No congregation available."
 
-#: .\templates\picker\tiles.html:18
+#: .\templates\picker\tiles.html:13
 msgid "Zum Anlegen hier klicken."
 msgstr "Click here to create a new one."
 
-#: .\templates\picker\tiles.html:20
+#: .\templates\picker\tiles.html:15
 msgid "Versammlung wählen"
 msgstr "Choose Congregation"
 
-#: .\templates\picker\tiles.html:32
+#: .\templates\picker\tiles.html:27
 msgid "JWConf Login Seite"
 msgstr "JWConf Login Page"
 
-#: .\templates\picker\tiles.html:57
+#: .\templates\picker\tiles.html:52
 msgid "Nein"
 msgstr "No"
 
-#: .\templates\picker\tiles.html:61
+#: .\templates\picker\tiles.html:56
 msgid "Ja"
 msgstr "Yes"
 
-#: .\templates\stage\stage_extractor.html:25
+#: .\templates\registration\login.html:4 .\templates\registration\login.html:11
+#: .\templates\registration\login.html:24
+#: .\templates\registration\password_reset_complete.html:15
+msgid "Log in"
+msgstr ""
+
+#: .\templates\registration\login.html:28
+msgid "Forgotten your password or username?"
+msgstr ""
+
+#: .\templates\registration\password_change_done.html:10
+msgid "Your password was changed."
+msgstr ""
+
+#: .\templates\registration\password_change_form.html:24
+#: .\templates\registration\password_reset_confirm.html:28
+msgid "Change my password"
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:13
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:14
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:20
+msgid "New password:"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:25
+msgid "Confirm password:"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:34
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:14
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:15
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:8
+msgid "Your username, in case you’ve forgotten:"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: .\templates\registration\password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:13
+msgid ""
+"Forgotten your password? Enter your email address below, and we’ll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:18
+msgid "Email address:"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:21
+msgid "Reset my password"
+msgstr ""
+
+#: .\templates\stage\stage_extractor.html:19
 msgid "Zuhörer gesamt:"
 msgstr "Listeners total:"
 
-#: .\templates\stage\stage_extractor.html:30
+#: .\templates\stage\stage_extractor.html:24
 msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
 msgstr "Establishing connection to extractor service..."
 
-#: .\templates\stage\stage_extractor.html:35
+#: .\templates\stage\stage_extractor.html:29
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr "Extractor service not running or not reachable"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:20
+#: .\templates\stopwatch\timeentry_archive_week.html:15
 msgid "Kalenderwoche"
 msgstr "Week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:25
+#: .\templates\stopwatch\timeentry_archive_week.html:20
 msgid "Vorherige KW:"
 msgstr "Previous week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:25
-#: .\templates\stopwatch\timeentry_archive_week.html:31
+#: .\templates\stopwatch\timeentry_archive_week.html:20
+#: .\templates\stopwatch\timeentry_archive_week.html:26
 msgid "Jahr"
 msgstr "of year"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:31
+#: .\templates\stopwatch\timeentry_archive_week.html:26
 msgid "Nächste KW:"
 msgstr "Next week"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:42
-#: .\templates\stopwatch\timeentry_list.html:54
+#: .\templates\stopwatch\timeentry_archive_week.html:37
+#: .\templates\stopwatch\timeentry_list.html:47
 msgid "Startzeit"
 msgstr "Time"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:43
-#: .\templates\stopwatch\timeentry_list.html:55
+#: .\templates\stopwatch\timeentry_archive_week.html:38
+#: .\templates\stopwatch\timeentry_list.html:48
 msgid "Endezeit"
 msgstr "Send time"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:44
-#: .\templates\stopwatch\timeentry_list.html:56
+#: .\templates\stopwatch\timeentry_archive_week.html:39
+#: .\templates\stopwatch\timeentry_list.html:49
 msgid "Dauer"
 msgstr "Timespan"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:45
-#: .\templates\stopwatch\timeentry_list.html:57
+#: .\templates\stopwatch\timeentry_archive_week.html:40
+#: .\templates\stopwatch\timeentry_list.html:50
 msgid "Maximale Dauer"
 msgstr "Maximum timespan"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:46
-#: .\templates\stopwatch\timeentry_list.html:58
+#: .\templates\stopwatch\timeentry_archive_week.html:41
+#: .\templates\stopwatch\timeentry_list.html:51
 msgid "Differenz"
 msgstr "Difference"

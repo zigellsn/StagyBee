@@ -8,8 +8,7 @@
 {% block header_functions %}
     {% if user.is_authenticated %}
         <span class="text-leader2 pl-4 pr-4">
-            {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen, {{ username }}
-                !{% endblocktrans %}
+            {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen,&nbsp;{{ username }}!{% endblocktrans %}
         </span>
     {% endif %}
     {% if archive == True %}

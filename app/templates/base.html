@@ -37,9 +37,11 @@
             if (id.attr("href") === '{% static "css/dark.css" %}') {
                 scheme = '{% static "css/light.css" %}';
                 icon.removeClass("mif-sun4").addClass("mif-sun")
+                icon.attr("data-hint-text", "{% trans "Dunkles Design" %}")
             } else {
                 scheme = '{% static "css/dark.css" %}';
                 icon.removeClass("mif-sun").addClass("mif-sun4")
+                icon.attr("data-hint-text", "{% trans "Helles Design" %}")
             }
             id.attr("href", scheme);
             Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
