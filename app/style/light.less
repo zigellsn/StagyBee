@@ -37,18 +37,33 @@
         @schemeFontSize
 );
 
-@keyframes timesUpPulse {
-  0% {
-    text-shadow: 0 0 15px rgba(234, 70, 59, 0.9);
-  }
-
-  100% {
-    text-shadow: 0 0 70px rgba(234, 70, 59, 0);
-  }
-}
-
 .timesUp {
-  animation: timesUpPulse 1s infinite;
-  // -webkit-text-stroke: 1px white;
-  -webkit-text-fill-color: rgb(234, 70, 59);
+  color: #000000;
+  animation: timesUpPulse .75s ease-out infinite;
+  text-shadow: 0 0 5px #f00, 0 0 7px #000;
 }
+
+@keyframes timesUpPulse {
+  from {
+    text-shadow: 0 0 10px #000,
+    0 0 10px #000,
+    0 0 25px #000,
+    0 0 25px #000,
+    0 0 25px #000,
+    0 0 25px #000,
+    0 0 25px #000,
+    0 0 25px #000,
+    0 0 50px #000,
+    0 0 50px #000,
+    0 0 50px #7B96B8,
+    0 0 150px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+      0px -10px 100px #7B96B8,
+      0px -10px 100px #7B96B8;
+  }
+}
+
+

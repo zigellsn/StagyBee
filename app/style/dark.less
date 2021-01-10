@@ -41,18 +41,32 @@
   background-color: @schemeBackground;
 }
 
-@keyframes timesUpPulse {
-  0% {
-    text-shadow: 0 0 15px rgba(206, 53, 44, 0.9);
-  }
-
-  100% {
-    text-shadow: 0 0 70px rgba(206, 53, 44, 0);
-  }
+.timesUp {
+  color: #ff0000;
+  -webkit-text-stroke: 1px black;
+  animation: timesUpPulse .75s ease-out infinite;
+  text-shadow: 0 0 5px #ff0000, 0 0 7px #fff;
 }
 
-.timesUp {
-  animation: timesUpPulse 1s infinite;
-  -webkit-text-stroke: 1px black;
-  -webkit-text-fill-color: rgb(206, 53, 44);
+@keyframes timesUpPulse {
+  from {
+    text-shadow: 0 0 10px #fff,
+    0 0 10px #fff,
+    0 0 25px #fff,
+    0 0 25px #fff,
+    0 0 25px #fff,
+    0 0 25px #fff,
+    0 0 25px #fff,
+    0 0 25px #fff,
+    0 0 50px #fff,
+    0 0 50px #fff,
+    0 0 50px #7B96B8,
+    0 0 150px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+    0 10px 100px #7B96B8,
+      0px -10px 100px #7B96B8,
+      0px -10px 100px #7B96B8;
+  }
 }
