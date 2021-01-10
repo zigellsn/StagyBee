@@ -58,7 +58,7 @@ export function console_ws(language: string, congregation_ws: string) {
         }
         if ('type' in data && data['type'] === 'timer' && 'mode' in data['timer'] && data['timer']['mode'] === 'running') {
             setRunningTalk(data['timer']['index']);
-            $('#submit_stop').removeClass("disabled").addClass("primary");
+            $('#submit_stop').removeClass("disabled").addClass("bg-control");
         }
     };
 
@@ -154,7 +154,7 @@ export function console_ws(language: string, congregation_ws: string) {
     function setRunningTalk(talk: number) {
         let lv = $('#talk_list');
         if (talk !== -1 && talk < lv[0].childNodes.length) {
-            $('#submit_stop').removeClass("disabled").addClass("primary");
+            $('#submit_stop').removeClass("disabled").addClass("bg-control");
             lv.children('.node').eq(talk - 2).trigger("click");
         } else
             lv.children('.node').first().trigger("click");
@@ -199,7 +199,7 @@ export function console_ws(language: string, congregation_ws: string) {
                 'index': index
             }));
             running = index;
-            $('#submit_stop').removeClass("disabled").addClass("primary");
+            $('#submit_stop').removeClass("disabled").addClass("bg-control");
         };
 
     if (submitStop !== null)
@@ -207,7 +207,7 @@ export function console_ws(language: string, congregation_ws: string) {
             if (running !== -1) {
                 centralTimerSocket.send(JSON.stringify({'timer': 'stop'}));
                 $('#talk_list').find('.current').next().trigger("click");
-                $('#submit_stop').removeClass("primary").addClass("disabled");
+                $('#submit_stop').removeClass("bg-control").addClass("disabled");
                 running = -1;
             }
         };
