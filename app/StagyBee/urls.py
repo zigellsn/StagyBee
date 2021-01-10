@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
@@ -18,12 +19,13 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
-from .views import redirect_root
+from .views import redirect_root, toggle_scheme
 
 urlpatterns = []
 urlpatterns += i18n_patterns(
     path('', redirect_root),
     path('', include('django.contrib.auth.urls')),
+    path('toggle_scheme/', toggle_scheme),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('stage/', include('stage.urls')),
     path('picker/', include('picker.urls')),

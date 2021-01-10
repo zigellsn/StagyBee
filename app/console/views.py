@@ -29,6 +29,13 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, ListView):
         congregation = form.cleaned_data["congregation"].congregation
         return HttpResponseRedirect(f"/console/{congregation}")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
+        return context
+
     def get_queryset(self):
         return Credential.objects.active()
 
@@ -43,6 +50,13 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
     model = Credential
     return_403 = True
     permission_required = "access_console"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
+        return context
 
     def get_template_names(self):
         if is_active(self.get_object()):

@@ -34,6 +34,9 @@ class TimerView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["congregation"] = self.credentials
         context["archive"] = True
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
         return context
 
     def get_permission_object(self):
@@ -61,6 +64,9 @@ class ArchiveView(PermissionRequiredMixin, WeekArchiveView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["congregation"] = self.credentials
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
         return context
 
     def get_permission_object(self):

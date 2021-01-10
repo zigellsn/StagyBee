@@ -48,6 +48,9 @@ class PickerView(ListView):
         context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
         context["show_login"] = settings.SHOW_LOGIN
         context["version"] = settings.VERSION
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
         return context
 
 

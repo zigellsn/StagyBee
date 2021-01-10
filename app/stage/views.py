@@ -32,6 +32,13 @@ class StageView(DetailView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
+        return context
+
     def get_template_names(self):
         if self.get_object().touch:
             return "stage/stage.html"
@@ -45,6 +52,13 @@ class StageFormView(DetailView):
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "dark" not in self.request.session:
+            self.request.session["dark"] = True
+        context["dark"] = self.request.session["dark"]
+        return context
 
     @method_decorator(xframe_options_exempt)
     def dispatch(self, *args, **kwargs):

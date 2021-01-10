@@ -1,6 +1,6 @@
 {% load i18n %}
 
 <a class="app-bar-item">
-    <span class="mif-sun mif-3x" data-role="hint" data-hint-text="{% trans "Toggle scheme" %}"
+    <span id="scheme-icon" class="{% if dark %}mif-sun4{% else %}mif-sun{% endif %} mif-3x" data-role="hint" data-hint-text="{% trans "Toggle scheme" %}"
           data-hint-position="bottom" onclick="toggleColorScheme()"></span>
 </a>

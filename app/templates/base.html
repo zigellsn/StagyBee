@@ -17,7 +17,12 @@
     <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "css/bundle.css" %}" type="text/css">
-    <link rel="stylesheet" id="color-scheme" href="{% static "css/dark.css" %}" type="text/css">
+    {% if dark %}
+        <link rel="stylesheet" id="color-scheme" href="{% static "css/dark.css" %}" type="text/css">
+    {% else %}
+        <link rel="stylesheet" id="color-scheme" href="{% static "css/light.css" %}" type="text/css">
+    {% endif %}
+
     {% block head_extra %}{% endblock head_extra %}
     <style>
         .app-bar-menu li {
@@ -28,12 +33,19 @@
         function toggleColorScheme() {
             let scheme;
             let id = $("#color-scheme");
-            if (id.attr("href") === '{% static "css/dark.css" %}')
+            let icon = $("#scheme-icon");
+            if (id.attr("href") === '{% static "css/dark.css" %}') {
                 scheme = '{% static "css/light.css" %}';
-            else
+                icon.removeClass("mif-sun4").addClass("mif-sun")
+            } else {
                 scheme = '{% static "css/dark.css" %}';
+                icon.removeClass("mif-sun").addClass("mif-sun4")
+            }
             id.attr("href", scheme);
             Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+            $.post('/toggle_scheme/', function (data) {
+                alert(data);
+            });
         }
     </script>
 </head>

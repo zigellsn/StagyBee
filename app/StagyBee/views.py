@@ -12,8 +12,18 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 def redirect_root(request):
     return HttpResponseRedirect('/login/')
+
+
+@csrf_exempt
+def toggle_scheme(request):
+    if "dark" not in request.session:
+        request.session["dark"] = True
+    else:
+        request.session["dark"] = not request.session["dark"]
+    return HttpResponse(status=200)
