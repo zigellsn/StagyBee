@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-@import (once) "node_modules/metro4/source/include/vars";
-@import (once) "node_modules/metro4/source/schemes/builder/builder";
+@import (once) "~metro4/source/include/vars";
+@import (once) "~metro4/source/schemes/builder/builder";
 
 @schemeBackground: #1d1d1d;
 @schemeBackgroundSecondary: #1d1d1d;
 @schemeTextColor: #ffffff;
 @schemeTextColorSecondary: #464646;
-@schemeControlColor: #ffffff;
-@schemeControlTextColor: #1d1d1d;
+@schemeControlColor: #0366d6;
+@schemeControlTextColor: #ffffff;
 @schemeFontFamily: @fontName;
 @schemeFontSize: @fontSize;
 
@@ -37,27 +37,22 @@
         @schemeFontSize
 );
 
-.navview {
-  .navview-pane {
-    .navview-menu {
-      li {
-        &.active {
-          &::before {
-            background-color: @white;
-          }
-        }
-      }
-    }
-  }
-}
-
 .app-bar {
   background-color: @schemeBackground;
-  color: @schemeControlColor;
 }
 
-.app-bar {
-  .dropdown-toggle::before {
-    border-color: @schemeControlColor;
+@keyframes timesUpPulse {
+  0% {
+    text-shadow: 0 0 15px rgba(206, 53, 44, 0.9);
   }
+
+  100% {
+    text-shadow: 0 0 70px rgba(206, 53, 44, 0);
+  }
+}
+
+.timesUp {
+  animation: timesUpPulse 1s infinite;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color: rgb(206, 53, 44);
 }

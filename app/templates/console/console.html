@@ -5,7 +5,7 @@
     {% get_current_language as LANGUAGE_CODE %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
     <div class="pl-4 pr-4">
-        <div><h4>{{ credential.display_name }}</h4></div>
+        <span class="display1">{{ credential.display_name }}</span>
     </div>
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
          data-material="true">
@@ -58,7 +58,7 @@
                 <div class="pt-4">
                     <a href="#" class="button primary" id="submit_time"><span
                             class="mif-play"></span>{% trans "Start" %}</a>
-                    <a href="#" class="button light" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}
+                    <a href="#" class="button disabled" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}
                     </a>
                 </div>
             </div>

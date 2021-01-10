@@ -16,12 +16,13 @@
 
 const path = require('path');
 const FileManagerPlugin = require("filemanager-webpack-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const mainConfig = {
     // mode: 'development',
     mode: 'production',
     entry: {
-        main: ['./style.scss', './index.ts'],
+        main: ['./style/style.scss', './index.ts'],
     },
     output: {
         filename: 'js/[name].bundle.js',
@@ -40,7 +41,11 @@ const mainConfig = {
                     enforce: true
                 },
             }
-        }
+        },
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+        ],
     },
     externals: {
         'django': 'window.django'
@@ -56,7 +61,7 @@ const mainConfig = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -91,7 +96,7 @@ const mainConfig = {
                             // Prefer Dart Sass
                             implementation: require('sass'),
                             sassOptions: {
-                                includePaths: ['./node_modules'],
+                                includePaths: [path.resolve(__dirname, "node_modules")],
                             },
                         },
                     }
@@ -121,12 +126,18 @@ const schemes = {
     // mode: 'development',
     mode: 'production',
     entry: {
-        dark: './schemes/dark.less',
-        light: './schemes/light.less',
+        dark: './style/dark.less',
+        light: './style/light.less',
     },
     output: {
         path: path.resolve(__dirname, 'StagyBee/static'),
         filename: '[name].scheme.js',
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+        ],
     },
     module: {
         rules: [

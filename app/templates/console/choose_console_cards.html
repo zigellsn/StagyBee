@@ -8,7 +8,7 @@
             {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms or "access_audit_log" in congregation_perms %}
                 <div class="cell-md-6">
                     <div class="card inherit-colors">
-                        <div class="card-header {% if congregation.active == True %}bg-green{% else %}bg-gray{% endif %}">
+                        <div class="card-header {% if congregation.active == True %}bg-control{% else %}bg-gray{% endif %}">
                             <div class="icon">
                                 <span class="ml-1 mt-2 {% if congregation.active == True %}mif-star-full{% else %}mif-star-empty{% endif %} mif-4x"></span>
                             </div>

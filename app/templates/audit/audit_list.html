@@ -4,13 +4,13 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div class="pl-4 pr-4">
-        <div><h4>{{ congregation.display_name }}</h4></div>
+        <span class="display1">{{ congregation.display_name }}</span>
         <table class="table">
             <thead>
             <tr>
-                <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "User" %}</th>
-                <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
-                <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sendezeit" %}</th>
+                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "User" %}</th>
+                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
+                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sendezeit" %}</th>
             </tr>
             </thead>
             <tbody>

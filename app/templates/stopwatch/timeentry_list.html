@@ -9,16 +9,15 @@
 
 {% block content %}
     <div class="pl-4 pr-4">
-        <div><h4>{{ congregation.display_name }}</h4></div>
-        <div><h3 id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></h3>
-        </div>
+        <span class="display1">{{ congregation.display_name }}</span>
+        <span class="text-leader pt-8 pb-8" id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></span>
         <table class="table">
             <thead>
             <tr>
-                <th>
+                <th class="fg-control">
                     <div class="text-center">{% trans "Abgelaufen" %}</div>
                 </th>
-                <th>
+                <th class="fg-control">
                     <div class="text-center">{% trans "Übrig" %}</div>
                 </th>
             </tr>
@@ -44,12 +43,12 @@
                    data-empty-table-title="">
                 <thead>
                 <tr>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
-                    <th class="{% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
+                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody>

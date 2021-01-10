@@ -1,5 +1,5 @@
-/*
- * Copyright 2019-2020 Simon Zigelli
+/*!
+ * Copyright 2019-2021 Simon Zigelli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,16 @@
 
 @import '~normalize.css/normalize.css';
 @import '~metro4/build/css/metro-all.min.css';
-@import 'picker/static/picker/css/picker';
-@import 'console/static/console/css/console';
-@import 'stage/static/stage/css/stage';
-@import 'notification/static/notification/css/notification';
+
+main {
+  padding-bottom: 20px !important;
+}
+
+body {
+  padding-top: 64px;
+}
+
+@import '../picker/static/picker/css/picker';
+@import '../console/static/console/css/console';
+@import '../stage/static/stage/css/stage';
+@import '../notification/static/notification/css/notification';

@@ -102,7 +102,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             return
         if "session_id" in self.scope["url_route"]["kwargs"] and \
                 self.scope["url_route"]["kwargs"]["session_id"] is not None:
-            url = f"{self.extractor_url}api/status/{self.scope['url_route']['kwargs']['session_id']}/"
+            url = f"{self.extractor_url}api/status/{self.scope['url_route']['kwargs']['session_id']}"
             try:
                 self.task = asyncio.create_task(
                     self.__get_request(url))
@@ -137,7 +137,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
                        "password": credentials.password,
                        "url": url}
         try:
-            self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe/", payload))
+            self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe", payload))
             await self.task
         except aiohttp.ClientError:
             await self.send_json("extractor_not_available")
@@ -163,7 +163,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             try:
                 self.task = asyncio.create_task(
                     self.__delete_request(
-                        f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['session_id']}/"))
+                        f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['session_id']}"))
                 await self.task
             except aiohttp.ClientError:
                 await self.send_json("extractor_not_available")

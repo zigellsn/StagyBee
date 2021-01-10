@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@import (once) "node_modules/metro4/source/include/vars";
-@import (once) "node_modules/metro4/source/schemes/builder/builder";
+@import (once) "~metro4/source/include/vars";
+@import (once) "~metro4/source/schemes/builder/builder";
 
 @schemeBackground: #ffffff;
 @schemeBackgroundSecondary: #f5f5f5;
@@ -36,17 +36,3 @@
         @schemeFontFamily,
         @schemeFontSize
 );
-
-.navview {
-  .navview-pane {
-    .navview-menu {
-      li {
-        &.active {
-          &::before {
-            background-color: @white;
-          }
-        }
-      }
-    }
-  }
-}
