@@ -99,13 +99,13 @@
             <div class="inherit-colors heading">{% trans "Livedaten" %}</div>
             <div class="content">
                 {% trans "Zuhörer gesamt:" as sum_listeners %}
-                <div id="sumListeners"><span>{{ sum_listeners }}&nbsp;</span><span id="sumListenersNumber"></span>
+                <div id="sumListeners">
+                    {% trans "Meldungen:" as sum_request_to_speak %}
+                    <span>{{ sum_listeners }}&nbsp;</span><span id="sumListenersNumber"></span>
+                    <span>{{ sum_request_to_speak }}&nbsp;</span><span id="sumRequestToSpeakNumber"></span>
                 </div>
-                {% trans "Meldungen:" as sum_request_to_speak %}
-                <div id="sumListeners"><span>{{ sum_request_to_speak }}&nbsp;</span><span
-                        id="sumRequestToSpeakNumber"></span>
-                </div>
-                <div>{% blocktrans with since=credential.since|time:"TIME_FORMAT" %}Seit&nbsp;{{ since }}&nbsp;Uhr{% endblocktrans %}</div>
+                <div>{% blocktrans with since=credential.since|time:"TIME_FORMAT" %}Seit&nbsp;{{ since }}&nbsp;
+                    Uhr{% endblocktrans %}</div>
                 <div>{% if dark %}{% qr_from_text timer_url dark_color="white" size=12 version=6 %}{% else %}
                     {% qr_from_text timer_url dark_color="black" size=12 version=6 %}{% endif %}</div>
             </div>
