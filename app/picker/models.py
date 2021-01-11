@@ -66,6 +66,12 @@ def is_active(congregation):
         return False
 
 
+def get_running_since(congregation):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    return loop.run_until_complete(__get_running_since__(congregation.congregation))
+
+
 class CredentialQuerySet(QuerySet):
 
     def active(self):

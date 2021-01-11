@@ -13,11 +13,13 @@
 #  limitations under the License.
 
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from picker.models import Credential, is_active
+from StagyBee.views import set_host
+from picker.models import Credential, is_active, get_running_since
 from .forms import CongregationForm
 
 
@@ -56,6 +58,9 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
         if "dark" not in self.request.session:
             self.request.session["dark"] = True
         context["dark"] = self.request.session["dark"]
+        set_host(self.request, context)
+        path = reverse("console:stopwatch:timer", args=[context["object"].congregation])
+        context["timer_url"] = f'{self.request.scheme}://{context["ip"]}{path}'
         return context
 
     def get_template_names(self):
@@ -63,3 +68,8 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
             return "console/console.html"
         else:
             return "console/console_not_ready.html"
+
+    def get_object(self, queryset=None):
+        congregation = super().get_object(queryset)
+        congregation.since = get_running_since(congregation)
+        return congregation

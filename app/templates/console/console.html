@@ -1,5 +1,5 @@
 {% extends 'console/choose_console_base.html' %}
-{% load i18n %}
+{% load i18n qr_code %}
 
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
@@ -52,13 +52,14 @@
                     <div class="pt-4">
                         <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
                         <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
-                               data-hours="false" id="time" />
+                               data-hours="false" id="time"/>
                     </div>
                 </div>
                 <div class="pt-4">
                     <a href="#" class="button bg-control" id="submit_time"><span
                             class="mif-play"></span>{% trans "Start" %}</a>
-                    <a href="#" class="button disabled" id="submit_stop"><span class="mif-stop"></span>{% trans "Stopp" %}
+                    <a href="#" class="button disabled" id="submit_stop"><span
+                            class="mif-stop"></span>{% trans "Stopp" %}
                     </a>
                 </div>
             </div>
@@ -94,6 +95,21 @@
                 </div>
             </div>
         </div>
+        <div class="frame">
+            <div class="inherit-colors heading">{% trans "Livedaten" %}</div>
+            <div class="content">
+                {% trans "Zuhörer gesamt:" as sum_listeners %}
+                <div id="sumListeners"><span>{{ sum_listeners }}&nbsp;</span><span id="sumListenersNumber"></span>
+                </div>
+                {% trans "Meldungen:" as sum_request_to_speak %}
+                <div id="sumListeners"><span>{{ sum_request_to_speak }}&nbsp;</span><span
+                        id="sumRequestToSpeakNumber"></span>
+                </div>
+                <div>{% blocktrans with since=credential.since|time:"TIME_FORMAT" %}Seit&nbsp;{{ since }}&nbsp;Uhr{% endblocktrans %}</div>
+                <div>{% if dark %}{% qr_from_text timer_url dark_color="white" size=12 version=6 %}{% else %}
+                    {% qr_from_text timer_url dark_color="black" size=12 version=6 %}{% endif %}</div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -102,5 +118,6 @@
     <script>
         StagyBee.main.console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
         StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, false);
+        StagyBee.main.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
     </script>
 {% endblock %}

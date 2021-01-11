@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'stage',
     'receiver',
     'console',
+    'qr_code',
     'picker.apps.PickerConfig',
     'audit.apps.AuditConfig',
     'stopwatch.apps.StopwatchConfig',

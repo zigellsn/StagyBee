@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-10 17:34+0100\n"
+"POT-Creation-Date: 2021-01-11 20:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,47 +68,47 @@ msgstr ""
 msgid "Nachricht"
 msgstr ""
 
-#: .\picker\models.py:106
+#: .\picker\models.py:112
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:107
+#: .\picker\models.py:113
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:108
+#: .\picker\models.py:114
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:111
+#: .\picker\models.py:117
 msgid "Versammlung"
 msgstr ""
 
-#: .\picker\models.py:112
+#: .\picker\models.py:118
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:113
+#: .\picker\models.py:119
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:114 .\templates\console\settings.html:19
+#: .\picker\models.py:120 .\templates\console\settings.html:19
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:115
+#: .\picker\models.py:121
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:118
+#: .\picker\models.py:124
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:119
+#: .\picker\models.py:125
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:120
+#: .\picker\models.py:126
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "Helles Design"
 msgstr ""
 
-#: .\templates\base.html:55
+#: .\templates\base.html:77
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr ""
 
@@ -196,24 +196,43 @@ msgstr ""
 msgid "Start"
 msgstr "شروع"
 
-#: .\templates\console\console.html:61
+#: .\templates\console\console.html:62
 msgid "Stopp"
 msgstr "توقف"
 
-#: .\templates\console\console.html:67
+#: .\templates\console\console.html:68
 msgid "Bildschirmsteuerung"
 msgstr ""
 
-#: .\templates\console\console.html:76
+#: .\templates\console\console.html:77
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\templates\console\console.html:86 .\templates\console\console.html:88
+#: .\templates\console\console.html:87 .\templates\console\console.html:89
 msgid "Textnachricht"
 msgstr ""
 
-#: .\templates\console\console.html:93
+#: .\templates\console\console.html:94
 msgid "Sende Nachricht"
+msgstr ""
+
+#: .\templates\console\console.html:99
+msgid "Livedaten"
+msgstr ""
+
+#: .\templates\console\console.html:101
+#: .\templates\stage\stage_extractor.html:19
+msgid "Zuhörer gesamt:"
+msgstr ""
+
+#: .\templates\console\console.html:104
+#: .\templates\stage\stage_extractor.html:19
+msgid "Meldungen:"
+msgstr ""
+
+#: .\templates\console\console.html:108
+#, python-format
+msgid "Seit&nbsp;%(since)s&nbsp;Uhr"
 msgstr ""
 
 #: .\templates\console\console_not_ready.html:5
@@ -408,15 +427,11 @@ msgstr ""
 msgid "Reset my password"
 msgstr ""
 
-#: .\templates\stage\stage_extractor.html:19
-msgid "Zuhörer gesamt:"
-msgstr ""
-
-#: .\templates\stage\stage_extractor.html:24
+#: .\templates\stage\stage_extractor.html:27
 msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
 msgstr ""
 
-#: .\templates\stage\stage_extractor.html:29
+#: .\templates\stage\stage_extractor.html:32
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr ""
 

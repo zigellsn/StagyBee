@@ -22,6 +22,7 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
     let listeners = document.getElementById('listeners');
     let sumListenersContainer = document.getElementById('sumListeners');
     let sumListenersNumber = document.getElementById('sumListenersNumber');
+    let sumRequestToSpeakNumber = document.getElementById('sumRequestToSpeakNumber');
     let activity = document.getElementById('activity');
     let errorMessage = document.getElementById('errorMessage');
 
@@ -49,7 +50,9 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
         setElements('', 'none', 'none');
     };
 
-    function parseNames(names: any, namesHtml: string, sumListeners: number) {
+    function parseNames(names: any, namesHtml: string) {
+        let sumListeners: number = 0;
+        let sumRequestToSpeak: number = 0;
         names.sort(function (a, b) {
             if (a['familyName'] < b['familyName'])
                 return -1;
@@ -77,6 +80,7 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
             }
             if (element['requestToSpeak'] === true && element['speaking'] === false) {
                 speak = 'bg-blue requestToSpeak';
+                sumRequestToSpeak += 1;
             } else if (element['speaking'] === true) {
                 speak = 'bg-green';
             } else {
@@ -90,16 +94,18 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
             if ((showOnlyRequestToSpeak && element['requestToSpeak'] === true) || !showOnlyRequestToSpeak)
                 namesHtml = namesHtml + '<div class="button primary large ' + speak + ' fg-black m-1" data-size="wide"><span class="ml-1"><span class="' + listenerType + '"></span>&nbsp;' + fullName + '&nbsp;</span><span class="badge inline">' + element['listenerCount'] + '</span></div>';
             // namesHtml = `${namesHtml}<div class="button primary large ${speak} fg-black m-1" data-size="wide"><span class="ml-1">${fullName}&nbsp;</span><span class="badge inline">${element['listenerCount']}</span></div>`;
-            if (typeof element['listenerCount'] === 'string')
-                sumListeners += parseInt(element['listenerCount']);
-            else
-                sumListeners += parseInt(element['listenerCount']);
+            sumListeners += parseInt(element['listenerCount']);
         }
         let new_element = document.createElement('div');
         new_element.innerHTML = namesHtml;
-        listeners.innerHTML = '';
-        listeners.appendChild(new_element);
-        sumListenersNumber.textContent = sumListeners.toString();
+        if (listeners !== null) {
+            listeners.innerHTML = '';
+            listeners.appendChild(new_element);
+        }
+        if (sumListenersNumber !== null)
+            sumListenersNumber.textContent = sumListeners.toString();
+        if (sumRequestToSpeakNumber !== null)
+            sumRequestToSpeakNumber.textContent = sumRequestToSpeak.toString();
     }
 
     mySocket.onmessage = function (e) {
@@ -107,7 +113,8 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
         let namesHtml = '';
         if (data === 'extractor_not_available') {
             setElements('none', '', 'none');
-            listeners.innerHTML = '';
+            if (listeners !== null)
+                listeners.innerHTML = '';
             return;
         }
         if (data === 'subscribed_to_extractor') {
@@ -119,17 +126,17 @@ export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolea
                 setElements('none', 'none', '');
             else {
                 setElements('none', '', 'none');
-                listeners.innerHTML = '';
+                if (listeners !== null)
+                    listeners.innerHTML = '';
             }
             return;
         }
         if ('names' in data) {
             setElements('none', 'none', '');
 
-            let sumListeners = 0;
             let names = data['names'];
             if (names !== undefined)
-                parseNames(names, namesHtml, sumListeners);
+                parseNames(names, namesHtml);
         }
     };
 

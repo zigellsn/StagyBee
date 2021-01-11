@@ -16,9 +16,12 @@
 {% endblock %}
 
 {% block content %}
-    {% trans "Zuhörer gesamt:" as sum_listeners %}
+    {% trans "Zuhörer gesamt:" as sum_listeners %}{% trans "Meldungen:" as sum_request_to_speak %}
     <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
                                                                                         id="sumListenersNumber"></span>
+        <span class="display1">&nbsp;-&nbsp;</span>
+    <span class="display1">{{ sum_request_to_speak }}&nbsp;</span><span class="display1"
+                                                                                        id="sumRequestToSpeakNumber"></span>
     </div>
     <div id="listeners"></div>
     {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." as connect %}

@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import socket
 from subprocess import call
 from sys import platform
 
@@ -21,6 +20,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView
 from django.views.generic.base import View
 
+from StagyBee.views import set_host
 from .models import Credential
 
 
@@ -32,17 +32,7 @@ class PickerView(ListView):
         context = super().get_context_data(**kwargs)
         credentials = Credential.objects.all()
         col, size = __get_tiles_configuration__(credentials, settings.SHOW_LOGIN)
-        if settings.RUN_IN_CONTAINER:
-            context["ip"] = settings.EXTERNAL_IP
-            context["hostname"] = settings.EXTERNAL_HOST_NAME
-        else:
-            host_ip, host_name = __get_address__(self.request.get_port())
-            context["hostname"] = host_name
-            port = self.request.get_port()
-            if port == 80 or port == 443:
-                context["ip"] = host_ip
-            else:
-                context["ip"] = f"{host_ip}:{port}"
+        set_host(self.request, context)
         context["size"] = size
         context["col"] = col
         context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
@@ -88,30 +78,6 @@ def __write_signal_file__(filename, mode):
     f = open(filename, "w")
     f.write(mode)
     f.close()
-
-
-# Origin: https://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib by Jamieson Becker,
-# Public domain.
-def __get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        s.connect(('10.255.255.255', 1))
-        ip = s.getsockname()[0]
-    except socket.error:
-        ip = '127.0.0.1'
-    finally:
-        s.close()
-    return ip
-
-
-def __get_address__(port):
-    host_name, host_ip, host_ipv6 = "", "", ""
-    try:
-        host_name = socket.getfqdn()
-        host_ip = __get_ip()
-    except socket.error:
-        print("Unable to get Hostname and IP")
-    return host_ip, host_name
 
 
 def __get_tiles_configuration__(credentials, show_login):
