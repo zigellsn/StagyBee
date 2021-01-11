@@ -45,9 +45,31 @@
             }
             id.attr("href", scheme);
             Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
-            $.post('/toggle_scheme/', function (data) {
-                alert(data);
-            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== "") {
+                    let cookies = document.cookie.split(";");
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === name + "=") {
+                            cookieValue = decodeURIComponent(
+                                cookie.substring(name.length + 1)
+                            );
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            let xhr = new XMLHttpRequest();
+            xhr.onerror = function () {
+                console.error(xhr.responseText);
+            }
+            xhr.open('POST', '/toggle_scheme/', true);
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
+            xhr.send();
         }
     </script>
 </head>
