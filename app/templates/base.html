@@ -32,19 +32,33 @@
     <script>
         function toggleColorScheme() {
             let scheme;
-            let id = $("#color-scheme");
-            let icon = $("#scheme-icon");
-            if (id.attr("href") === '{% static "css/dark.css" %}') {
-                scheme = '{% static "css/light.css" %}';
-                icon.removeClass("mif-sun4").addClass("mif-sun")
-                icon.attr("data-hint-text", "{% trans "Dunkles Design" %}")
-            } else {
-                scheme = '{% static "css/dark.css" %}';
-                icon.removeClass("mif-sun").addClass("mif-sun4")
-                icon.attr("data-hint-text", "{% trans "Helles Design" %}")
+            let id = $('#color-scheme');
+            let icon = $('#scheme-icon');
+            let qrCode = $('.qrline');
+
+            if (id !== null) {
+                if (id.attr('href') === '{% static "css/dark.css" %}') {
+                    scheme = '{% static "css/light.css" %}';
+                    if (icon !== null) {
+                        icon.removeClass('mif-sun4').addClass('mif-sun');
+                        icon.attr('data-hint-text', "{% trans "Dunkles Design" %}");
+                    }
+                    if (qrCode !== null) {
+                        qrCode.attr('stroke', '#000');
+                    }
+                } else {
+                    scheme = '{% static "css/dark.css" %}';
+                    if (icon !== null) {
+                        icon.removeClass('mif-sun').addClass('mif-sun4');
+                        icon.attr('data-hint-text', "{% trans "Helles Design" %}");
+                    }
+                    if (qrCode !== null) {
+                        qrCode.attr('stroke', '#fff');
+                    }
+                }
+                id.attr("href", scheme);
+                Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
             }
-            id.attr("href", scheme);
-            Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
 
             function getCookie(name) {
                 let cookieValue = null;

@@ -20,13 +20,14 @@
     <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
                                                                                         id="sumListenersNumber"></span>
         <span class="display1">&nbsp;-&nbsp;</span>
-    <span class="display1">{{ sum_request_to_speak }}&nbsp;</span><span class="display1"
-                                                                                        id="sumRequestToSpeakNumber"></span>
+        <span class="display1">{{ sum_request_to_speak }}&nbsp;</span><span class="display1"
+                                                                            id="sumRequestToSpeakNumber"></span>
     </div>
     <div id="listeners"></div>
     {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." as connect %}
     <div class="pos-fixed pos-center" id="activity">
-        <span class="pos-fixed pos-center" style="margin-top: -74px" data-role="activity" data-type="ring"></span>
+        <span id="ring" class="pos-fixed pos-center" style="margin-top: -74px" data-role="activity" data-type="ring"
+              data-style="dark"></span>
         <div>{{ connect }}</div>
     </div>
     {% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." as error_message %}
