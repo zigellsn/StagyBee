@@ -144,6 +144,7 @@ class WorkbookExtractor:
             clean = await self.__clean_html__(line, regex[2])
             if clean is None or clean == "":
                 continue
+            clean = re.sub(regex[3], "", clean)
             times_tmp = re.search(regex[0], clean)
             if not times_tmp:
                 continue
