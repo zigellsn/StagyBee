@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 20:49+0100\n"
+"POT-Creation-Date: 2021-01-15 21:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,20 +125,12 @@ msgstr "Send time"
 msgid "Keine Einträge vorhanden"
 msgstr "No entries"
 
-#: .\templates\base.html:40 .\templates\menu\scheme.html:5
-msgid "Dunkles Design"
-msgstr "Dark mode"
-
-#: .\templates\base.html:44 .\templates\menu\scheme.html:5
-msgid "Helles Design"
-msgstr "Light mode"
-
-#: .\templates\base.html:77
+#: .\templates\base.html:33
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr "You need to enable JavaScript to run this app."
 
 # python-format
-#: .\templates\console\choose_console_cards.html:18
+#: .\templates\console\choose_console_cards.html:22
 #, python-format
 msgid ""
 "Seit&nbsp;\n"
@@ -147,23 +139,23 @@ msgstr ""
 "Since&nbsp;%(since)s\n"
 "                            "
 
-#: .\templates\console\choose_console_cards.html:21
+#: .\templates\console\choose_console_cards.html:25
 msgid "Nicht eingewählt"
 msgstr "Not active"
 
-#: .\templates\console\choose_console_cards.html:30
+#: .\templates\console\choose_console_cards.html:34
 msgid "Zur Console..."
 msgstr "Proceed to console..."
 
-#: .\templates\console\choose_console_cards.html:38
+#: .\templates\console\choose_console_cards.html:42
 msgid "Zur Stoppuhr..."
 msgstr "Proceed to stopwatch..."
 
-#: .\templates\console\choose_console_cards.html:49
+#: .\templates\console\choose_console_cards.html:53
 msgid "Zum Archiv..."
 msgstr "Proceed to archive..."
 
-#: .\templates\console\choose_console_cards.html:57
+#: .\templates\console\choose_console_cards.html:61
 msgid "Zum Audit-Log..."
 msgstr "Proceed to audit log..."
 
@@ -222,21 +214,27 @@ msgstr "Send message"
 msgid "Livedaten"
 msgstr "Live data"
 
-#: .\templates\console\console.html:101
-#: .\templates\stage\stage_extractor.html:19
-msgid "Zuhörer gesamt:"
-msgstr "Listeners total:"
-
-#: .\templates\console\console.html:104
-#: .\templates\stage\stage_extractor.html:19
-#| msgid "Zeige nur Meldungen"
+#: .\templates\console\console.html:106
+#: .\templates\stage\stage_extractor.html:11
 msgid "Meldungen:"
 msgstr "Request to speak:"
 
-#: .\templates\console\console.html:108
-#, python-format
-msgid "Seit&nbsp;%(since)s&nbsp;Uhr"
-msgstr ""
+#: .\templates\console\console.html:107
+#: .\templates\stage\stage_extractor.html:11
+msgid "Zuhörer gesamt:"
+msgstr "Listeners total:"
+
+#: .\templates\console\console.html:109
+msgid "Status"
+msgstr "Status"
+
+#: .\templates\console\console.html:120
+msgid "Seit"
+msgstr "Since"
+
+#: .\templates\console\console.html:131
+msgid "Link zur Stoppuhrsession"
+msgstr "Link to Stopwatch session"
 
 #: .\templates\console\console_not_ready.html:5
 #, python-format
@@ -272,6 +270,14 @@ msgstr "Text message"
 #: .\templates\console\settings.html:22
 msgid "Passwort ändern"
 msgstr "Change password"
+
+#: .\templates\menu\scheme.html:5
+msgid "Helles Design"
+msgstr "Light mode"
+
+#: .\templates\menu\scheme.html:5
+msgid "Dunkles Design"
+msgstr "Dark mode"
 
 #: .\templates\menu\shutdown.html:2
 msgid "Neu starten"
@@ -330,112 +336,11 @@ msgstr "Choose Congregation"
 msgid "JWConf Login Seite"
 msgstr "JWConf Login Page"
 
-#: .\templates\picker\tiles.html:52
-msgid "Nein"
-msgstr "No"
-
-#: .\templates\picker\tiles.html:56
-msgid "Ja"
-msgstr "Yes"
-
-#: .\templates\registration\login.html:4 .\templates\registration\login.html:11
-#: .\templates\registration\login.html:24
-#: .\templates\registration\password_reset_complete.html:15
-msgid "Log in"
-msgstr ""
-
-#: .\templates\registration\login.html:28
-msgid "Forgotten your password or username?"
-msgstr ""
-
-#: .\templates\registration\password_change_done.html:10
-msgid "Your password was changed."
-msgstr ""
-
-#: .\templates\registration\password_change_form.html:24
-#: .\templates\registration\password_reset_confirm.html:28
-msgid "Change my password"
-msgstr ""
-
-#: .\templates\registration\password_reset_complete.html:13
-msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
-
-#: .\templates\registration\password_reset_confirm.html:14
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
-msgstr ""
-
-#: .\templates\registration\password_reset_confirm.html:20
-msgid "New password:"
-msgstr ""
-
-#: .\templates\registration\password_reset_confirm.html:25
-msgid "Confirm password:"
-msgstr ""
-
-#: .\templates\registration\password_reset_confirm.html:34
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-
-#: .\templates\registration\password_reset_done.html:14
-msgid ""
-"We’ve emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly."
-msgstr ""
-
-#: .\templates\registration\password_reset_done.html:15
-msgid ""
-"If you don’t receive an email, please make sure you’ve entered the address "
-"you registered with, and check your spam folder."
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:2
-#, python-format
-msgid ""
-"You're receiving this email because you requested a password reset for your "
-"user account at %(site_name)s."
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:4
-msgid "Please go to the following page and choose a new password:"
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:8
-msgid "Your username, in case you’ve forgotten:"
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:10
-msgid "Thanks for using our site!"
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:12
-#, python-format
-msgid "The %(site_name)s team"
-msgstr ""
-
-#: .\templates\registration\password_reset_form.html:13
-msgid ""
-"Forgotten your password? Enter your email address below, and we’ll email "
-"instructions for setting a new one."
-msgstr ""
-
-#: .\templates\registration\password_reset_form.html:18
-msgid "Email address:"
-msgstr ""
-
-#: .\templates\registration\password_reset_form.html:21
-msgid "Reset my password"
-msgstr ""
-
-#: .\templates\stage\stage_extractor.html:27
+#: .\templates\stage\stage_extractor.html:19
 msgid "Verbindung zu Extraktor-Dienst wird aufgebaut..."
 msgstr "Establishing connection to extractor service..."
 
-#: .\templates\stage\stage_extractor.html:32
+#: .\templates\stage\stage_extractor.html:25
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr "Extractor service not running or not reachable"
 
@@ -480,3 +385,9 @@ msgstr "Maximum timespan"
 #: .\templates\stopwatch\timeentry_list.html:51
 msgid "Differenz"
 msgstr "Difference"
+
+#~ msgid "Nein"
+#~ msgstr "No"
+
+#~ msgid "Ja"
+#~ msgstr "Yes"

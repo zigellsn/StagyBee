@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import logging
 from datetime import datetime
 
 import aioredis
@@ -66,6 +67,7 @@ class AsyncJsonRedisWebsocketConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.logger = logging.getLogger("django.request")
         self._redis = RedisConnector()
 
     def set_redis(self, redis):

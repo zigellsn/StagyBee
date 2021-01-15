@@ -2,7 +2,7 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <header class="app-bar pr-4 pl-4" data-role="appbar" data-role-appbar="true">
     {% if credential.touch %}
-        <a class="brand order-1" onclick="RedirectPage('frame', 'https://jwconf.org/index.php?logout')"
+        <a class="brand order-1" onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
            href="{% url 'picker:picker' %}">
             {% if LANGUAGE_BIDI %}
                 <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>

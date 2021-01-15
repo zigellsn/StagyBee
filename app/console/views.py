@@ -60,7 +60,7 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
         context["dark"] = self.request.session["dark"]
         set_host(self.request, context)
         path = reverse("console:stopwatch:timer", args=[context["object"].congregation])
-        context["timer_url"] = f'{self.request.scheme}://{context["ip"]}{path}'
+        context["timer_url"] = f"{self.request.scheme}://{context['ip']}{path}"
         return context
 
     def get_template_names(self):

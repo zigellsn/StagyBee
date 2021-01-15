@@ -17,77 +17,19 @@
     <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "css/bundle.css" %}" type="text/css">
-    {% if dark %}
-        <link rel="stylesheet" id="color-scheme" href="{% static "css/dark.css" %}" type="text/css">
-    {% else %}
-        <link rel="stylesheet" id="color-scheme" href="{% static "css/light.css" %}" type="text/css">
-    {% endif %}
-
+    <link rel="stylesheet" id="color-scheme"
+          href="{% if dark %}{% static "css/dark.css" %}{% else %}{% static "css/light.css" %}{% endif %}"
+          type="text/css">
     {% block head_extra %}{% endblock head_extra %}
     <style>
         .app-bar-menu li {
             list-style: none !important;
         }
     </style>
-    <script>
-        function toggleColorScheme() {
-            let scheme;
-            let id = $('#color-scheme');
-            let icon = $('#scheme-icon');
-            let qrCode = $('.qrline');
-
-            if (id !== null) {
-                if (id.attr('href') === '{% static "css/dark.css" %}') {
-                    scheme = '{% static "css/light.css" %}';
-                    if (icon !== null) {
-                        icon.removeClass('mif-sun4').addClass('mif-sun');
-                        icon.attr('data-hint-text', "{% trans "Dunkles Design" %}");
-                    }
-                    if (qrCode !== null) {
-                        qrCode.attr('stroke', '#000');
-                    }
-                } else {
-                    scheme = '{% static "css/dark.css" %}';
-                    if (icon !== null) {
-                        icon.removeClass('mif-sun').addClass('mif-sun4');
-                        icon.attr('data-hint-text', "{% trans "Helles Design" %}");
-                    }
-                    if (qrCode !== null) {
-                        qrCode.attr('stroke', '#fff');
-                    }
-                }
-                id.attr("href", scheme);
-                Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
-            }
-
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== "") {
-                    let cookies = document.cookie.split(";");
-                    for (let i = 0; i < cookies.length; i++) {
-                        let cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === name + "=") {
-                            cookieValue = decodeURIComponent(
-                                cookie.substring(name.length + 1)
-                            );
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-
-            let xhr = new XMLHttpRequest();
-            xhr.onerror = function () {
-                console.error(xhr.responseText);
-            }
-            xhr.open('POST', '/toggle_scheme/', true);
-            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
-            xhr.send();
-        }
-    </script>
 </head>
-<body onload="StagyBee.main.startTime();" id="body">
+{% block body %}
+    <body onload="StagyBee.main.startTime();" id="body">
+{% endblock %}
 <noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
 {% block header %}{% endblock %}
 <div class="container-fluid">

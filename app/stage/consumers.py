@@ -158,6 +158,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         if "session_id" in self.scope["url_route"]["kwargs"] and \
                 self.scope["url_route"]["kwargs"]["session_id"] is not None:
             count = await self._redis.disconnect_uri(redis_key, self.channel_name)
+            self.logger.info(f"Extractor STATUS {count} listeners")
             if count != 0 and count is not None:
                 return
             try:
@@ -180,6 +181,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
     async def __post_request(self, url, payload):
         async with aiohttp.ClientSession() as session:
             async with session.post(url, json=payload) as response:
+                self.logger.info(f"Extractor POST {url}")
                 return await response.json()
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
@@ -187,6 +189,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
     async def __delete_request(self, url):
         async with aiohttp.ClientSession() as session:
             async with session.delete(url) as response:
+                self.logger.info(f"Extractor DELETE {url}")
                 return await response.json()
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
@@ -194,6 +197,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
     async def __get_request(self, url):
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
+                self.logger.info(f"Extractor GET {url}")
                 return await response.json()
 
 
@@ -212,6 +216,7 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         congregation_channel_group = generate_channel_group_name("console", congregation)
         count = await self._redis.disconnect_uri(self.__get_redis_key(congregation), self.channel_name)
+        self.logger.info(f"Extractor STATUS {count} listeners")
         if count == 0:
             await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)

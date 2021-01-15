@@ -1,6 +1,10 @@
 {% extends 'console/choose_console_base.html' %}
 {% load i18n guardian_tags notification %}
 
+{% block body %}
+    <body onload="StagyBee.main.startTime();StagyBee.main.reloadOnNavigateBack()" id="body">
+{% endblock %}
+
 {% block content %}
     <div class="row mt-2">
         {% for congregation in object_list %}

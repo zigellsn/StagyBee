@@ -377,7 +377,7 @@ temp/
 *.bundle.js
 *.js.map
 index.js
-time.js
+global.js
 console_client_ws.js
 console_ws.js
 stage_ws.js

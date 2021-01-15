@@ -3,14 +3,6 @@
 
 {% block title %}Stage{% endblock %}
 
-{% block head_extra %}
-    <script>
-        function RedirectPage(element, url) {
-            window.frames[element].location = url;
-        }
-    </script>
-{% endblock %}
-
 {% block header %}
     {% include "stage/header.html" %}
 {% endblock %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-16 19:47+0100\n"
+"POT-Creation-Date: 2021-01-15 21:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,46 +18,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\console\static\console\console_ws.js:79
+#: .\StagyBee\static\js\main.bundle.js:102
+msgid "Dunkles Design"
+msgstr ""
+
+#: .\StagyBee\static\js\main.bundle.js:112
+msgid "Helles Design"
+msgstr ""
+
+#: .\StagyBee\static\js\main.bundle.js:140
+msgid "Nein"
+msgstr ""
+
+#: .\StagyBee\static\js\main.bundle.js:144
+msgid "Ja"
+msgstr ""
+
+#: .\StagyBee\static\js\main.bundle.js:240
+#: .\console\static\console\js\console_ws.js:80
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr "جزوهٔ کار و آموزش"
 
-#: .\console\static\console\console_ws.js:95
+#: .\StagyBee\static\js\main.bundle.js:256
+#: .\console\static\console\js\console_ws.js:96
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:98
+#: .\StagyBee\static\js\main.bundle.js:259
+#: .\console\static\console\js\console_ws.js:99
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:102
+#: .\StagyBee\static\js\main.bundle.js:263
+#: .\console\static\console\js\console_ws.js:103
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:106
-#: .\console\static\console\console_ws.js:109
-#: .\console\static\console\console_ws.js:115
-#: .\console\static\console\console_ws.js:181
+#: .\StagyBee\static\js\main.bundle.js:267
+#: .\StagyBee\static\js\main.bundle.js:270
+#: .\StagyBee\static\js\main.bundle.js:276
+#: .\StagyBee\static\js\main.bundle.js:344
+#: .\console\static\console\js\console_ws.js:107
+#: .\console\static\console\js\console_ws.js:110
+#: .\console\static\console\js\console_ws.js:116
+#: .\console\static\console\js\console_ws.js:182
 msgid "Benutzerdefiniert"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:130
+#: .\StagyBee\static\js\main.bundle.js:291
+#: .\console\static\console\js\console_ws.js:131
 #, javascript-format
 msgid "Nachricht vom %s bestätigt."
 msgstr ""
 
-#: .\console\static\console\console_ws.js:134
+#: .\StagyBee\static\js\main.bundle.js:296
+#: .\console\static\console\js\console_ws.js:136
 msgid "Verdunkelung aufheben"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:136
+#: .\StagyBee\static\js\main.bundle.js:299
+#: .\console\static\console\js\console_ws.js:139
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\console\static\console\console_ws.js:172
+#: .\StagyBee\static\js\main.bundle.js:335
+#: .\console\static\console\js\console_ws.js:173
 msgid "Bitte eine Zeit > 0 angeben."
 msgstr ""
 
-#: .\stage\static\stage\console_client_ws.js:48
+#: .\StagyBee\static\js\main.bundle.js:498
+#: .\stage\static\stage\js\console_client_ws.js:52
 msgid "Nachricht"
 msgstr ""

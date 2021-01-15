@@ -1,7 +1,8 @@
-{% load i18n %}
+{% load static i18n %}
 
 <a class="app-bar-item">
     <span id="scheme-icon" class="{% if dark %}mif-sun4{% else %}mif-sun{% endif %} mif-3x" data-role="hint"
           data-hint-text="{% if dark %}{% trans "Helles Design" %}{% else %}{% trans "Dunkles Design" %}{% endif %}"
-          data-hint-position="bottom" onclick="toggleColorScheme()"></span>
+          data-hint-position="bottom"
+          onclick="StagyBee.main.toggleColorScheme('{% static "css/dark.css" %}', '{% static "css/light.css" %}');"></span>
 </a>

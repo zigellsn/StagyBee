@@ -40,27 +40,3 @@
         </div>
     </footer>
 {% endblock %}
-
-{% block body_extra %}
-    <script>
-        function shutdownDialogActions(dialogTitle, target) {
-            Metro.dialog.create({
-                title: dialogTitle,
-                content: "<div>{{ confirm }}</div>",
-                actions: [
-                    {
-                        caption: "{% trans "Nein" %}",
-                        cls: "js-dialog-close alert"
-                    },
-                    {
-                        caption: "{% trans "Ja" %}",
-                        cls: "js-dialog-close",
-                        onclick: function () {
-                            window.location.href = target;
-                        }
-                    }
-                ]
-            });
-        }
-    </script>
-{% endblock %}
