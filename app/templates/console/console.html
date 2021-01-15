@@ -98,16 +98,41 @@
         <div class="frame">
             <div class="inherit-colors heading">{% trans "Livedaten" %}</div>
             <div class="content">
-                {% trans "Zuhörer gesamt:" as sum_listeners %}
-                <div id="sumListeners">
-                    {% trans "Meldungen:" as sum_request_to_speak %}
-                    <span>{{ sum_listeners }}&nbsp;</span><span id="sumListenersNumber"></span>
-                    <span>{{ sum_request_to_speak }}&nbsp;</span><span id="sumRequestToSpeakNumber"></span>
-                </div>
-                <div>{% blocktrans with since=credential.since|time:"TIME_FORMAT" %}Seit&nbsp;{{ since }}&nbsp;
-                    Uhr{% endblocktrans %}</div>
-                <div>{% if dark %}{% qr_from_text timer_url dark_color="white" size=12 version=6 %}{% else %}
-                    {% qr_from_text timer_url dark_color="black" size=12 version=6 %}{% endif %}</div>
+                <table style="width: 100%;">
+                    <tbody>
+                    <tr>
+                        <td style="width: 75%; vertical-align: top; border-right: 1px solid;">
+                            <div id="sumListeners">
+                                {% trans "Meldungen:" as sum_request_to_speak %}
+                                {% trans "Zuhörer gesamt:" as sum_listeners %}
+                                <table class="text-leader2" style="width: 25%">
+                                    <caption style="border-bottom: 1px solid"><span class="text-leader">Status</span></caption>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ sum_listeners }}</td>
+                                        <td><span id="sumListenersNumber"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ sum_request_to_speak }}&nbsp</td>
+                                        <td><span id="sumRequestToSpeakNumber"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Seit" %}</td>
+                                        <td>{{ credential.since|time:"TIME_FORMAT" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="text-align: center; vertical-align: center; width: 25%">
+                            <div>
+                                {% if dark %}{% qr_from_text timer_url dark_color="white" size=12 version=6 %}{% else %}
+                                    {% qr_from_text timer_url dark_color="black" size=12 version=6 %}{% endif %}</div>
+                            <div>{% trans "Link zur Stoppuhrsession" %}</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
