@@ -115,10 +115,12 @@ export function loadColorScheme(darkStyle: string, lightStyle: string) {
             let id = $('#color-scheme');
             if (id !== null) {
                 let mode = xhr.response.toLowerCase() !== 'false';
-                let scheme = setColorScheme(mode, darkStyle, lightStyle);
-                id.attr("href", scheme);
-                Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
-                console.log(xhr.response);
+                let actualStyle = id.attr('href')
+                if ((actualStyle === darkStyle && mode === false) || actualStyle === lightStyle && mode === true) {
+                    let scheme = setColorScheme(mode, darkStyle, lightStyle);
+                    id.attr("href", scheme);
+                    Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+                }
             }
         }
     }

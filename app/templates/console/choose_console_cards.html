@@ -1,8 +1,8 @@
 {% extends 'console/choose_console_base.html' %}
 {% load i18n guardian_tags notification %}
 
-{% block body %}
-    <body onload="StagyBee.main.startTime();StagyBee.main.reloadOnNavigateBack()" id="body">
+{% block body_extra %}
+    <script type="application/javascript">StagyBee.main.reloadOnNavigateBack();</script>
 {% endblock %}
 
 {% block content %}
