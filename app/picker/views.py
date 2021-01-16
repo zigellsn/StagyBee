@@ -20,7 +20,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView
 from django.views.generic.base import View
 
-from StagyBee.views import set_host
+from StagyBee.views import set_host, get_scheme
 from .models import Credential
 
 
@@ -38,9 +38,7 @@ class PickerView(ListView):
         context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
         context["show_login"] = settings.SHOW_LOGIN
         context["version"] = settings.VERSION
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
 

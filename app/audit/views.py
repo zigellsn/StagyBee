@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from guardian.mixins import PermissionRequiredMixin
 
+from StagyBee.views import get_scheme
 from picker.models import Credential
 from .models import Audit
 
@@ -32,9 +33,7 @@ class AuditView(PermissionRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context["congregation"] = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
     def get_queryset(self):

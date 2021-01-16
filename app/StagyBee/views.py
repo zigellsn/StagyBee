@@ -17,17 +17,47 @@ import socket
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 
+from console.models import UserPreferences
+
 
 def redirect_root(request):
     return HttpResponseRedirect('/login/')
 
 
 def toggle_scheme(request):
-    if "dark" not in request.session:
-        request.session["dark"] = True
+    user = request.user
+    if user.is_authenticated:
+        try:
+            preferences = UserPreferences.objects.get(user=user)
+            preferences.dark_mode = not preferences.dark_mode
+            preferences.save()
+            request.session["dark"] = preferences.dark_mode
+        except UserPreferences.DoesNotExist:
+            UserPreferences.objects.create(user=user, dark_mode=True)
+            request.session["dark"] = True
     else:
-        request.session["dark"] = not request.session["dark"]
+        if "dark" not in request.session:
+            request.session["dark"] = True
+        else:
+            request.session["dark"] = not request.session["dark"]
     return HttpResponse(status=200)
+
+
+def get_scheme(request):
+    if request.user.is_authenticated:
+        try:
+            preferences = UserPreferences.objects.get(user=request.user)
+            dark = preferences.dark_mode
+        except UserPreferences.DoesNotExist:
+            UserPreferences.objects.create(user=request.user, dark_mode=True)
+            dark = True
+    else:
+        if "dark" in request.session:
+            dark = request.session["dark"]
+        else:
+            request.session["dark"] = True
+            dark = True
+    return dark
 
 
 def set_host(request, context):

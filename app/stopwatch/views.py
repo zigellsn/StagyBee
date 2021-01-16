@@ -16,8 +16,9 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, WeekArchiveView
 from guardian.mixins import PermissionRequiredMixin
 
-from .models import TimeEntry
+from StagyBee.views import get_scheme
 from picker.models import Credential
+from .models import TimeEntry
 
 
 class TimerView(PermissionRequiredMixin, ListView):
@@ -34,9 +35,7 @@ class TimerView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["congregation"] = self.credentials
         context["archive"] = True
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
     def get_permission_object(self):
@@ -64,9 +63,7 @@ class ArchiveView(PermissionRequiredMixin, WeekArchiveView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["congregation"] = self.credentials
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
     def get_permission_object(self):

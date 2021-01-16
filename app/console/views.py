@@ -18,7 +18,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from StagyBee.views import set_host
+from StagyBee.views import set_host, get_scheme
 from picker.models import Credential, is_active, get_running_since
 from .forms import CongregationForm
 
@@ -33,9 +33,8 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
+
         return context
 
     def get_queryset(self):
@@ -55,9 +54,7 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         set_host(self.request, context)
         path = reverse("console:stopwatch:timer", args=[context["object"].congregation])
         context["timer_url"] = f"{self.request.scheme}://{context['ip']}{path}"

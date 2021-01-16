@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import DetailView
 
+from StagyBee.views import get_scheme
 from picker.models import Credential
 
 
@@ -34,9 +35,7 @@ class StageView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
     def get_template_names(self):
@@ -55,9 +54,7 @@ class StageFormView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if "dark" not in self.request.session:
-            self.request.session["dark"] = True
-        context["dark"] = self.request.session["dark"]
+        context["dark"] = get_scheme(self.request)
         return context
 
     @method_decorator(xframe_options_exempt)
