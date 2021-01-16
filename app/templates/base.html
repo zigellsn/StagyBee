@@ -52,6 +52,7 @@
 <script src="{% static "js/external.bundle.js" %}" type="text/javascript"></script>
 <script src="{% static "js/main.bundle.js" %}" type="text/javascript"></script>
 <script src="{% url 'javascript-catalog' %}" type="text/javascript"></script>
+<script type="application/javascript">StagyBee.main.loadColorScheme('{% static "css/dark.css" %}', '{% static "css/light.css" %}');</script>
 {% block body_extra %}{% endblock body_extra %}
 </body>
 </html>

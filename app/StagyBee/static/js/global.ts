@@ -60,51 +60,83 @@ export function reloadOnNavigateBack() {
     }
 }
 
-export function toggleColorScheme(darkStyle: string, lightStyle: string) {
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            let cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === name + "=") {
-                    cookieValue = decodeURIComponent(
-                        cookie.substring(name.length + 1)
-                    );
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
+function setColorScheme(dark: boolean, darkStyle: string, lightStyle: string): string {
     let scheme;
-    let id = $('#color-scheme');
     let icon = $('#scheme-icon');
     let qrCode = $('.qrline');
 
+    if (!dark) {
+        scheme = lightStyle;
+        if (icon !== null) {
+            icon.removeClass('mif-sun4').addClass('mif-sun');
+            icon.attr('data-hint-text', django.gettext('Dunkles Design'));
+        }
+        if (qrCode !== null) {
+            qrCode.attr('stroke', '#000');
+        }
+    } else {
+        scheme = darkStyle;
+        if (icon !== null) {
+            icon.removeClass('mif-sun').addClass('mif-sun4');
+            icon.attr('data-hint-text', django.gettext('Helles Design'));
+        }
+        if (qrCode !== null) {
+            qrCode.attr('stroke', '#fff');
+        }
+    }
+    return scheme;
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        let cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+export function loadColorScheme(darkStyle: string, lightStyle: string) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.onerror = function () {
+        console.error(xhr.responseText);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let id = $('#color-scheme');
+            if (id !== null) {
+                let mode = xhr.response.toLowerCase() !== 'false';
+                let scheme = setColorScheme(mode, darkStyle, lightStyle);
+                id.attr("href", scheme);
+                Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+                console.log(xhr.response);
+            }
+        }
+    }
+    xhr.open('GET', '/scheme/', true);
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
+    xhr.send();
+}
+
+
+export function toggleColorScheme(darkStyle: string, lightStyle: string) {
+
+    let id = $('#color-scheme');
     if (id !== null) {
+        let scheme
         if (id.attr('href') === darkStyle) {
-            scheme = lightStyle;
-            if (icon !== null) {
-                icon.removeClass('mif-sun4').addClass('mif-sun');
-                icon.attr('data-hint-text', django.gettext('Dunkles Design'))
-                ;
-            }
-            if (qrCode !== null) {
-                qrCode.attr('stroke', '#000');
-            }
+            scheme = setColorScheme(false, darkStyle, lightStyle);
         } else {
-            scheme = darkStyle;
-            if (icon !== null) {
-                icon.removeClass('mif-sun').addClass('mif-sun4');
-                icon.attr('data-hint-text', django.gettext('Helles Design'))
-                ;
-            }
-            if (qrCode !== null) {
-                qrCode.attr('stroke', '#fff');
-            }
+            scheme = setColorScheme(true, darkStyle, lightStyle);
         }
         id.attr("href", scheme);
         Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");

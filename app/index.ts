@@ -17,6 +17,7 @@
 import {console_client_ws} from './stage/static/stage/js/console_client_ws';
 import {console_ws} from './console/static/console/js/console_ws';
 import {reloadOnNavigateBack} from './StagyBee/static/js/global';
+import {loadColorScheme} from './StagyBee/static/js/global';
 import {toggleColorScheme} from './StagyBee/static/js/global';
 import {startTime} from './StagyBee/static/js/global';
 import {RedirectPage} from './StagyBee/static/js/global';
@@ -28,6 +29,7 @@ export {
     console_client_ws,
     console_ws,
     reloadOnNavigateBack,
+    loadColorScheme,
     toggleColorScheme,
     startTime,
     RedirectPage,

@@ -19,13 +19,14 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
-from .views import redirect_root, toggle_scheme
+from .views import redirect_root, toggle_scheme, scheme
 
 urlpatterns = []
 urlpatterns += i18n_patterns(
     path('', redirect_root),
     path('', include('django.contrib.auth.urls')),
     path('toggle_scheme/', toggle_scheme),
+    path('scheme/', scheme),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('stage/', include('stage.urls')),
     path('picker/', include('picker.urls')),
