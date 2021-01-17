@@ -17,6 +17,7 @@
 'use strict';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
+import { DateTime } from 'luxon';
 import Metro from "metro4";
 
 export function console_client_ws(congregation_ws: string) {
@@ -49,7 +50,7 @@ export function console_client_ws(congregation_ws: string) {
             scrimTrigger = !scrimTrigger;
         } else if (alert['alert'] === 'message') {
             // Metro.infobox.create(`<h3>${gettext('Nachricht')}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
-            let date = Date.now();
+            let date = DateTime.local().toMillis()
             Metro.infobox.create('<h3>' + django.gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>',
                 'default',
                 {

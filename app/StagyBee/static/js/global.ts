@@ -17,6 +17,7 @@
 'use strict';
 
 import Metro from "metro4"
+import { DateTime } from 'luxon';
 
 export function startTime() {
 
@@ -29,23 +30,23 @@ export function startTime() {
         return padded;
     }
 
-    let now = new Date();
+    let now = DateTime.local();
     let element = document.getElementById('currentTime');
     if (element != null)
         // element.innerHTML = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        element.innerHTML = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+        element.innerHTML = pad(now.hour) + ':' + pad(now.minute) + ':' + pad(now.second);
     element = document.getElementById('currentHour');
     if (element != null)
         // element.innerHTML = `${pad(now.getHours())}`;
-        element.innerHTML = pad(now.getHours());
+        element.innerHTML = pad(now.hour);
     element = document.getElementById('currentMinute');
     if (element != null)
         // element.innerHTML = `${pad(now.getMinutes())}`;
-        element.innerHTML = pad(now.getMinutes());
+        element.innerHTML = pad(now.minute);
     element = document.getElementById('currentSecond');
     if (element != null)
         // element.innerHTML = `${pad(now.getSeconds())}`;
-        element.innerHTML = pad(now.getSeconds());
+        element.innerHTML = pad(now.second);
     setTimeout(startTime, 500);
 }
 
@@ -128,7 +129,6 @@ export function loadColorScheme(darkStyle: string, lightStyle: string) {
     xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
     xhr.send();
 }
-
 
 export function toggleColorScheme(darkStyle: string, lightStyle: string) {
 
