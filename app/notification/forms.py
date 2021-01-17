@@ -33,7 +33,7 @@ class NotificationForm(forms.ModelForm):
 
     message = CharField(widget=forms.Textarea)
     message.widget.attrs.update({"data-role": "textarea",
-                                 "data-clear-button-icon": "<span class='mif-cancel'></span>"})
+                                 "data-clear-button-icon": "<span class='fg-control mif-cancel'></span>"})
     importance = ChoiceField(choices=Notification.Importance.choices, label=_("Wichtigkeit"))
     importance.widget.attrs.update({"data-role": "select"})
     locales = settings.LANGUAGES.copy()

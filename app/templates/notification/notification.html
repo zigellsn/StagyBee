@@ -1,6 +1,6 @@
 {% if object %}
     <div class="frame active">
-        <div class="heading">
+        <div class="inherit-colors heading">
             {% if object.importance == 0 %}
                 <span class="mif-quote" data-role="hint"
                       data-hint-text="{{ object.get_importance_display }}"
@@ -21,9 +21,9 @@
                       data-hint-text="{{ object.get_importance_display }}"
                       data-hint-position="bottom"></span>
             {% endif %}
-            &nbsp;{{ object.subject }}&nbsp;({{ object.create_date|date }})
+            &nbsp;<span class="fg-control">{{ object.subject }}</span>&nbsp;<span class="fg-control">({{ object.create_date|date }})</span>
         </div>
-        <div class="content">
+        <div class="content fg-control">
             {{ object.message }}
         </div>
     </div>

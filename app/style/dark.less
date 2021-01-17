@@ -43,7 +43,7 @@
 
 .timesUp {
   color: #ff0000;
-  -webkit-text-stroke: 1px black;
+  -webkit-text-stroke: 1px @schemeBackground;
   animation: timesUpPulse .75s ease-out infinite;
   text-shadow: 0 0 5px #ff0000, 0 0 7px #fff;
 }
@@ -69,4 +69,21 @@
       0px -10px 100px #7B96B8,
       0px -10px 100px #7B96B8;
   }
+}
+
+.dropdown-toggle:before {
+  border-left: @schemeControlTextColor 1px solid;
+  border-bottom: @schemeControlTextColor 1px solid;
+}
+
+.select .drop-container {
+  background-color: @schemeBackground;
+}
+
+.select .option-list {
+  background-color: @schemeBackground;
+}
+
+.default-icon-calendar {
+  color: @schemeControlTextColor;
 }
