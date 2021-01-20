@@ -67,7 +67,7 @@ class AsyncJsonRedisWebsocketConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.logger = logging.getLogger("django.request")
+        self.logger = logging.getLogger(__name__)
         self._redis = RedisConnector()
 
     def set_redis(self, redis):

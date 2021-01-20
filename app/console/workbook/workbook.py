@@ -26,7 +26,7 @@ class WorkbookExtractor:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.logger = logging.getLogger("django.request")
+        self.logger = logging.getLogger(__name__)
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
         self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                           "Chrome/79.0.3945.130 Safari/537.36"

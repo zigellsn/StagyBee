@@ -23,7 +23,7 @@ from django.views.generic.base import View
 
 from stage.consumers import generate_channel_group_name
 
-logger = logging.getLogger("django.request")
+logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
