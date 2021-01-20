@@ -18,7 +18,7 @@
     <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "css/bundle.css" %}" type="text/css">
     <link rel="stylesheet" id="color-scheme"
-          href="{% if dark %}{% static "css/dark.css" %}{% else %}{% static "css/light.css" %}{% endif %}"
+          href="{% if dark or dark == None %}{% static "css/dark.css" %}{% else %}{% static "css/light.css" %}{% endif %}"
           type="text/css">
     {% block head_extra %}{% endblock head_extra %}
     <style>
