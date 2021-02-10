@@ -21,16 +21,15 @@ from django.views.i18n import JavaScriptCatalog
 from console.views import SettingsView, StartupView
 from .views import redirect_root, toggle_scheme, scheme
 
-urlpatterns = []
+urlpatterns = [path('receiver/', include('receiver.urls')),
+               path('toggle_scheme/', toggle_scheme),
+               path('scheme/', scheme)]
 urlpatterns += i18n_patterns(
     path('', redirect_root),
     path('', include('django.contrib.auth.urls')),
-    path('toggle_scheme/', toggle_scheme),
-    path('scheme/', scheme),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('stage/', include('stage.urls')),
     path('picker/', include('picker.urls')),
-    path('receiver/', include('receiver.urls')),
     path('console/', include('console.urls')),
     path('startup/', StartupView.as_view(), name='startup'),
     path('notification/', include('notification.urls')),
