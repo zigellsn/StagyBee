@@ -13,8 +13,11 @@
 #  limitations under the License.
 
 from django import forms
-from django.forms import ModelChoiceField
+from django.conf import settings
+from django.forms import ModelChoiceField, ChoiceField
+from django.utils.translation import gettext_lazy as _
 
+from console.models import UserPreferences
 from picker.models import Credential
 
 
@@ -30,3 +33,13 @@ class CongregationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CongregationForm, self).__init__(*args, **kwargs)
         self.fields["congregation"].queryset = Credential.objects.active()
+
+
+class LanguageForm(forms.ModelForm):
+    class Meta:
+        model = UserPreferences
+        fields = ["locale"]
+
+    locales = settings.LANGUAGES.copy()
+    locale = ChoiceField(choices=locales, label=_("Bevorzugte Sprache"))
+    locale.widget.attrs.update({"data-role": "select"})

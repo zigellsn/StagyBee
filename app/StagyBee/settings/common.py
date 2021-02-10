@@ -84,7 +84,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -93,7 +93,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ROOT_URLCONF = 'StagyBee.urls'
-LOGIN_REDIRECT_URL = '/console/'
+LOGIN_REDIRECT_URL = '/startup'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
@@ -140,15 +140,9 @@ KEEP_TIMER_DAYS = env.int("KEEP_TIMER_DAYS", default=30)
 RECEIVER_HOST = env.str('RECEIVER_HOST', default='')
 RECEIVER_PORT = env.int('RECEIVER_PORT', default=0)
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
     'default': env.db_url(default='sqlite:///db.sqlite3')
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -164,9 +158,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in env.list('LANGUAGES', default=['de:German', 'en:English'])]
 
@@ -187,9 +178,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/assets')

@@ -23,5 +23,16 @@
                 </a>
             </div>
         </div>
+        <div class="frame">
+            <div class="inherit-colors heading">{% trans "Sprache" %}</div>
+            <div class="content">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br>
+                    <input class="button primary" type="submit" value="{% trans "Speichern" %}">
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

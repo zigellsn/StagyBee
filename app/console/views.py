@@ -13,14 +13,27 @@
 #  limitations under the License.
 
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy, translate_url
+from django.utils import translation
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import FormMixin
+from django.views.generic.base import View
+from django.views.generic.edit import FormMixin, UpdateView
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from StagyBee.views import set_host, get_scheme
 from picker.models import Credential, is_active, get_running_since
-from .forms import CongregationForm
+from .forms import CongregationForm, LanguageForm
+from .models import UserPreferences
+
+
+class StartupView(LoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        preferences = UserPreferences.objects.get(user=request.user)
+        cur_language = translation.get_language()
+        if cur_language != preferences.locale:
+            translation.activate(preferences.locale)
+        return HttpResponseRedirect(f"/{preferences.locale}/console/")
 
 
 class ChooseConsoleView(LoginRequiredMixin, FormMixin, ListView):
@@ -70,3 +83,26 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
         congregation = super().get_object(queryset)
         congregation.since = get_running_since(congregation)
         return congregation
+
+
+class SettingsView(LoginRequiredMixin, UpdateView):
+    template_name = "console/settings.html"
+    form_class = LanguageForm
+    success_url = reverse_lazy("settings")
+    model = UserPreferences
+
+    def get_object(self, queryset=None):
+        return UserPreferences.objects.get(user=self.request.user)
+
+    def form_valid(self, form):
+        locale = form.cleaned_data["locale"]
+        try:
+            preferences = UserPreferences.objects.get(user=self.request.user)
+            preferences.locale = locale
+            preferences.save()
+            cur_language = translation.get_language()
+            if cur_language != locale:
+                translation.activate(locale)
+        except UserPreferences.DoesNotExist:
+            UserPreferences.objects.create_user_preferences(user=self.request.user, dark_mode=True, locale=locale)
+        return super().form_valid(form)
