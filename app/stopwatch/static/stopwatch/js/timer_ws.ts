@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-'use strict';
-
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { DateTime } from 'luxon';
 import ProgressBar from "progressbar.js"

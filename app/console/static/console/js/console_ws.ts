@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-'use strict';
-
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Metro from "metro4"
 

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-'use strict';
-
 import ReconnectingWebSocket from "reconnecting-websocket";
 
 export function stage_ws(congregation_ws: string, showOnlyRequestToSpeak: boolean = false) {
