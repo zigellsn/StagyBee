@@ -1,5 +1,7 @@
 FROM node:15-slim AS build
 
+ENV RUN_MODE=production
+
 COPY . .
 
 RUN npm install && \

@@ -18,9 +18,16 @@ const path = require('path');
 const FileManagerPlugin = require("filemanager-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
+let runMode = process.env.RUN_MODE;
+let devTool = '';
+if (runMode === undefined || runMode === '') {
+    runMode = 'development';
+    devTool = 'source-map';
+}
+
 const mainConfig = {
     // mode: 'development',
-    mode: 'production',
+    mode: runMode,
     entry: {
         main: ['./style/style.scss', './index.ts'],
     },
@@ -50,7 +57,7 @@ const mainConfig = {
     externals: {
         'django': 'window.django'
     },
-    // devtool: 'source-map',
+    devtool: devTool,
     module: {
         rules: [
             {
@@ -124,7 +131,7 @@ const mainConfig = {
 
 const schemes = {
     // mode: 'development',
-    mode: 'production',
+    mode: runMode,
     entry: {
         dark: './style/dark.less',
         light: './style/light.less',
