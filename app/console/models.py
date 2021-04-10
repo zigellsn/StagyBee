@@ -21,7 +21,7 @@ from django.utils.translation import gettext_lazy as _, get_language
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
     current_language = get_language()
-    if created:
+    if created and current_language is not None:
         UserPreferences.objects.create(user=instance, dark_mode=True, locale=current_language)
 
 

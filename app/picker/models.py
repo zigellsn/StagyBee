@@ -1,4 +1,4 @@
-#  Copyright 2019-2020 Simon Zigelli
+#  Copyright 2019-2021 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -60,6 +60,8 @@ def is_active(congregation):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     congregation_filter = loop.run_until_complete(__get_active_congregations__(congregation.congregation))
+    if not loop.is_closed():
+        loop.close()
     if congregation.congregation in congregation_filter:
         return True
     else:

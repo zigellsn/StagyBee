@@ -1,4 +1,4 @@
-#  Copyright 2019-2020 Simon Zigelli
+#  Copyright 2019-2021 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ from django.utils.translation import gettext_lazy as _
 # Needed for now when using Python 3.8 on Windows
 from environ import environ
 
-if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.minor == 8:
+if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.minor >= 8:
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
@@ -143,6 +143,8 @@ RECEIVER_PORT = env.int('RECEIVER_PORT', default=0)
 DATABASES = {
     'default': env.db_url(default='sqlite:///db.sqlite3')
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

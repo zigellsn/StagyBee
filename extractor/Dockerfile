@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-slim
 
-ENV EXTRACTOR_VERSION 1.0.7
+ENV EXTRACTOR_VERSION 1.0.8
 ENV KTOR_USER ktor
 ENV HOME /home/$KTOR_USER
 RUN set -ex \
@@ -14,7 +14,7 @@ RUN set -ex \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home $KTOR_USER \
     && mkdir $HOME/app \
-    && cp /StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}"/lib/StagyBeeExtractor.jar $HOME/app \
+    && cp /StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}"/lib/StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}".jar $HOME/app \
     && chown -R $KTOR_USER $HOME/app \
     && rm -rf /StagyBeeExtractor \
     && rm /StagyBeeExtractor.tar
@@ -25,4 +25,5 @@ USER $KTOR_USER
 EXPOSE 8080
 EXPOSE 9090
 
-ENTRYPOINT [ "java", "-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-XX:InitialRAMFraction=2", "-XX:MinRAMFraction=2", "-XX:MaxRAMFraction=2", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=100", "-XX:+UseStringDeduplication", "-jar", "StagyBeeExtractor.jar" ]
+COPY ./scripts/entrypoint.sh $HOME/
+ENTRYPOINT [ "/home/ktor/entrypoint.sh" ]

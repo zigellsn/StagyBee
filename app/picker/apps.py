@@ -49,3 +49,5 @@ class PickerConfig(AppConfig):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(initialize_redis())
+        if not loop.is_closed():
+            loop.close()
