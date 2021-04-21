@@ -71,26 +71,9 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v
 Open [http://127.0.0.1/picker/](http://127.0.0.1/picker/) (or [http://127.0.0.1:8000/picker/](http://127.0.0.1:8000/picker/) 
 in development). E.g.:
 ```bash
-chromium-browser --incognito --kiosk http://127.0.0.1:8000/picker/
+chromium-browser --incognito --kiosk http://127.0.0.1/picker/
 ```
 
 ## Use shutdown and reboot scripts
 
----
-**DON'T USE SHUTDOWN SCRIPTS WHEN USING ONE SERVER FOR MULTIPLE INSTANCES SIMULTANEOUSLY!**
-
-To hide the shutdown icon in the UI, set **SHOW_SHUTDOWN_ICON=False** in app/.env.
-
----
-
-Install inotify-tools if necessary.
-
-Set variable SHUTDOWN_SIGNAL in app/shutdown_interface.sh to the full path of the file app/shutdown_signal.
-
-Then run
-``` bash
-sudo cp app/scripts/shutdown_interface.sh /usr/bin/
-sudo cp app/scripts/shutdown_stagybee.service /etc/systemd/system/
-sudo systemctl start shutdown_stagybee.service
-sudo systemctl enable shutdown_stagybee.service
-```
+To hide the shutdown icon in the UI, set `SHOW_SHUTDOWN_ICON=False` in `app/.env`.

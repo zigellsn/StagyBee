@@ -18,9 +18,9 @@ import sys
 from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
-# Needed for now when using Python 3.8 on Windows
 from environ import environ
 
+# Needed for now when using Python 3.8 on Windows
 if sys.platform == 'win32' and sys.version_info.major == 3 and sys.version_info.minor >= 8:
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

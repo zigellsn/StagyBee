@@ -86,3 +86,7 @@ Open [http://127.0.0.1:8000/picker/](http://127.0.0.1:8000/picker/). E.g.:
 ```bash
 chromium-browser --incognito --kiosk http://127.0.0.1:8000/picker/
 ```
+
+## Use shutdown and reboot scripts
+
+To hide the shutdown icon in the UI, set `SHOW_SHUTDOWN_ICON=False` in `app/.env`.

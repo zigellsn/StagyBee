@@ -16,7 +16,7 @@
 
 'use strict';
 
-import Metro from "metro4"
+import Metro from 'metro4'
 import { DateTime } from 'luxon';
 
 export function startTime() {
@@ -51,7 +51,7 @@ export function startTime() {
 }
 
 export function reloadOnNavigateBack() {
-    let perfEntries = performance.getEntriesByType("navigation");
+    let perfEntries = performance.getEntriesByType('navigation');
     for (let i = 0; i < perfEntries.length; i++) {
         let p = perfEntries[i];
         if ('type' in p && p['type'] === 'back_forward') {
@@ -90,11 +90,11 @@ function setColorScheme(dark: boolean, darkStyle: string, lightStyle: string): s
 
 function getCookie(name) {
     let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-        let cookies = document.cookie.split(";");
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             let cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
+            if (cookie.substring(0, name.length + 1) === name + '=') {
                 cookieValue = decodeURIComponent(
                     cookie.substring(name.length + 1)
                 );
@@ -119,14 +119,14 @@ export function loadColorScheme(darkStyle: string, lightStyle: string) {
                 let actualStyle = id.attr('href')
                 if ((actualStyle === darkStyle && mode === false) || actualStyle === lightStyle && mode === true) {
                     let scheme = setColorScheme(mode, darkStyle, lightStyle);
-                    id.attr("href", scheme);
-                    Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+                    id.attr('href', scheme);
+                    Metro.utils.addCssRule(Metro.sheet, '.app-bar-menu li', 'list-style: none!important;');
                 }
             }
         }
     }
     xhr.open('GET', '/scheme/', true);
-    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
+    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
     xhr.send();
 }
 
@@ -140,8 +140,8 @@ export function toggleColorScheme(darkStyle: string, lightStyle: string) {
         } else {
             scheme = setColorScheme(true, darkStyle, lightStyle);
         }
-        id.attr("href", scheme);
-        Metro.utils.addCssRule(Metro.sheet, ".app-bar-menu li", "list-style: none!important;");
+        id.attr('href', scheme);
+        Metro.utils.addCssRule(Metro.sheet, '.app-bar-menu li', 'list-style: none!important;');
     }
 
     let xhr = new XMLHttpRequest();
@@ -149,7 +149,7 @@ export function toggleColorScheme(darkStyle: string, lightStyle: string) {
         console.error(xhr.responseText);
     }
     xhr.open('POST', '/toggle_scheme/', true);
-    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"))
+    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
     xhr.send();
 }
 
@@ -160,15 +160,15 @@ export function RedirectPage(element, url) {
 export function shutdownDialogActions(dialogTitle, target) {
     Metro.dialog.create({
         title: dialogTitle,
-        content: "<div>{{ confirm }}</div>",
+        content: '<div>' + django.gettext('Bist du sicher?') + '</div>',
         actions: [
             {
                 caption: django.gettext('Nein'),
-                cls: "js-dialog-close alert"
+                cls: 'js-dialog-close alert'
             },
             {
                 caption: django.gettext('Ja'),
-                cls: "js-dialog-close",
+                cls: 'js-dialog-close',
                 onclick: function () {
                     window.location.href = target;
                 }

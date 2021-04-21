@@ -26,27 +26,27 @@ from stage.consumers import generate_channel_group_name
 logger = logging.getLogger(__name__)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class ReceiverView(View):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        event = request.META.get('HTTP_X_STAGYBEE_EXTRACTOR_EVENT')
+        event = request.META.get("HTTP_X_STAGYBEE_EXTRACTOR_EVENT")
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("stage", kwargs.get("pk"))
-        if event == 'listeners':
+        if event == "listeners":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
                 {"type": "extractor_listeners", "listeners": request.body},
             )
-            return HttpResponse('success')
-        elif event == 'status':
+            return HttpResponse(content="success", status=202)
+        elif event == "status":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
                 {"type": "extractor_status", "status": request.body},
             )
-            return HttpResponse('success')
-        elif event == 'meta':
-            return HttpResponse('success')
+            return HttpResponse(content="success", status=202)
+        elif event == "meta":
+            return HttpResponse(content="success", status=200)
 
         return HttpResponse(status=204)

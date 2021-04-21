@@ -12,9 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from subprocess import call
-from sys import platform
-
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import ListView
@@ -46,36 +43,16 @@ class ShutdownView(View):
 
     @staticmethod
     def get(request):
-        if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
-                "aix") or platform.startswith("cygwin"):
-            if settings.RUN_IN_CONTAINER:
-                __write_signal_file__("shutdown_signal", "shutdown")
-            else:
-                call(["sh scripts/shutdown.sh", "-h", "now"], shell=False)
-        elif platform.startswith("win32"):
-            call(["scripts/shutdown.bat", "-h"], shell=False)
-        return HttpResponse("Shutdown in progress")
+        # TODO: Call StagyBeeShutdown server
+        return HttpResponse(content="Shutdown in progress", status=202)
 
 
 class RebootView(View):
 
     @staticmethod
     def get(request):
-        if platform.startswith("freebsd") or platform.startswith("linux") or platform.startswith(
-                "aix") or platform.startswith("cygwin"):
-            if settings.RUN_IN_CONTAINER:
-                __write_signal_file__("shutdown_signal", "reboot")
-            else:
-                call(["sh scripts/shutdown.sh", "-r"], shell=False)
-        elif platform.startswith("win32"):
-            call(["scripts/shutdown.bat", "-r"], shell=False)
-        return HttpResponse("Reboot in progress")
-
-
-def __write_signal_file__(filename, mode):
-    f = open(filename, "w")
-    f.write(mode)
-    f.close()
+        # TODO: Call StagyBeeShutdown server
+        return HttpResponse(content="Reboot in progress", status=202)
 
 
 def __get_tiles_configuration__(credentials, show_login):
