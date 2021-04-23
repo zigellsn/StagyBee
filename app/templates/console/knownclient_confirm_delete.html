@@ -5,7 +5,7 @@
     <form method="post">
         {% csrf_token %}
         <p>{% trans "Soll folgender Client wirklich gelöscht werden?" %}</p><br>
-        {{ object.alias }} ({{ object.uri }})<br>
+        {{ object.alias }}&nbsp;({{ object.uri }})<br>
         <input class="button primary" type="submit" value="{% trans "Löschen" %}">
     </form>
 {% endblock %}

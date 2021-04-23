@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-10 11:41+0100\n"
+"POT-Creation-Date: 2021-04-23 20:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,8 +29,18 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\console\forms.py:44
+#: .\console\forms.py:47
 msgid "Bevorzugte Sprache"
+msgstr ""
+
+#: .\console\forms.py:56 .\console\models.py:53
+#: .\templates\console\knownclient_maintain_list.html:9
+msgid "Client URI"
+msgstr ""
+
+#: .\console\forms.py:57 .\console\models.py:54
+#: .\templates\console\knownclient_maintain_list.html:8
+msgid "Alias Name"
 msgstr ""
 
 #: .\console\models.py:40 .\templates\menu\scheme.html:5
@@ -38,10 +48,22 @@ msgid "Dunkles Design"
 msgstr ""
 
 #: .\console\models.py:41 .\notification\forms.py:41
-#: .\notification\models.py:57 .\templates\console\settings.html:27
+#: .\notification\models.py:57 .\templates\console\settings.html:33
 #: .\templates\menu\language.html:8
 #: .\templates\notification\notification_maintain_list.html:10
 msgid "Sprache"
+msgstr ""
+
+#: .\console\models.py:55
+msgid "Token"
+msgstr ""
+
+#: .\console\views.py:154 .\picker\views.py:64
+msgid "Herunterfahren-Anfrage erfolgreich gesendet"
+msgstr ""
+
+#: .\console\views.py:173 .\picker\views.py:83
+msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
 #: .\notification\forms.py:37 .\notification\models.py:59
@@ -88,49 +110,49 @@ msgstr ""
 msgid "Nachricht"
 msgstr ""
 
-#: .\picker\models.py:112
+#: .\picker\models.py:114
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:113
+#: .\picker\models.py:115
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:114
+#: .\picker\models.py:116
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:117
+#: .\picker\models.py:119
 #, fuzzy
 #| msgid "Versammlung wählen"
 msgid "Versammlung"
 msgstr "Выберите встречу"
 
-#: .\picker\models.py:118
+#: .\picker\models.py:120
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:119
+#: .\picker\models.py:121
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:120 .\templates\console\settings.html:19
+#: .\picker\models.py:122 .\templates\console\settings.html:25
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:121
+#: .\picker\models.py:123
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:124
+#: .\picker\models.py:126
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:125
+#: .\picker\models.py:127
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:126
+#: .\picker\models.py:128
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -281,42 +303,61 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: .\templates\console\knownclient_confirm_delete.html:7
+msgid "Soll folgender Client wirklich gelöscht werden?"
+msgstr ""
+
+#: .\templates\console\knownclient_confirm_delete.html:9
+#: .\templates\console\knownclient_maintain_list.html:26
+#: .\templates\notification\notification_confirm_delete.html:9
+#: .\templates\notification\notification_maintain_list.html:64
+msgid "Löschen"
+msgstr ""
+
+#: .\templates\console\knownclient_form.html:10
+#: .\templates\console\settings.html:39
+#: .\templates\notification\notification_form.html:9
+msgid "Speichern"
+msgstr ""
+
+#: .\templates\console\knownclient_maintain_list.html:23
+#: .\templates\notification\notification_maintain_list.html:61
+msgid "Bearbeiten"
+msgstr ""
+
+#: .\templates\console\knownclient_maintain_list.html:30
+#: .\templates\menu\shutdown.html:3
+msgid "Herunterfahren"
+msgstr ""
+
+#: .\templates\console\knownclient_maintain_list.html:34
+#: .\templates\menu\shutdown.html:2
+msgid "Neu starten"
+msgstr ""
+
+#: .\templates\console\knownclient_maintain_list.html:44
+#: .\templates\notification\notification_maintain_list.html:76
+msgid "Neu"
+msgstr ""
+
 #: .\templates\console\settings.html:12
 msgid "Benachrichtigungen"
 msgstr ""
 
-#: .\templates\console\settings.html:22
-msgid "Passwort ändern"
+#: .\templates\console\settings.html:18
+msgid "Bekannte Clients"
 msgstr ""
 
-#: .\templates\console\settings.html:33
-#: .\templates\notification\notification_form.html:9
-msgid "Speichern"
+#: .\templates\console\settings.html:28
+msgid "Passwort ändern"
 msgstr ""
 
 #: .\templates\menu\scheme.html:5
 msgid "Helles Design"
 msgstr ""
 
-#: .\templates\menu\shutdown.html:2
-msgid "Neu starten"
-msgstr ""
-
-#: .\templates\menu\shutdown.html:3
-msgid "Herunterfahren"
-msgstr ""
-
-#: .\templates\menu\shutdown.html:4
-msgid "Bist du sicher?"
-msgstr ""
-
 #: .\templates\notification\notification_confirm_delete.html:7
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
-msgstr ""
-
-#: .\templates\notification\notification_confirm_delete.html:9
-#: .\templates\notification\notification_maintain_list.html:64
-msgid "Löschen"
 msgstr ""
 
 #: .\templates\notification\notification_list.html:7
@@ -325,14 +366,6 @@ msgstr ""
 
 #: .\templates\notification\notification_maintain_list.html:12
 msgid "Aktionen"
-msgstr ""
-
-#: .\templates\notification\notification_maintain_list.html:61
-msgid "Bearbeiten"
-msgstr ""
-
-#: .\templates\notification\notification_maintain_list.html:76
-msgid "Neu"
 msgstr ""
 
 #: .\templates\picker\tiles.html:12

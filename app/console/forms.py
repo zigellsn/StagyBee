@@ -11,14 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import aiohttp
-from asgiref.sync import async_to_sync
 from django import forms
 from django.conf import settings
 from django.forms import ModelChoiceField, ChoiceField, CharField
 from django.utils.translation import gettext_lazy as _
-from tenacity import retry_if_exception_type, retry, stop_after_delay, wait_random_exponential, RetryError
+from tenacity import RetryError
 
+from StagyBee.utils import get_request
 from console.models import UserPreferences, KnownClient
 from picker.models import Credential
 
@@ -59,7 +60,7 @@ class KnownClientForm(forms.ModelForm):
         if not super().is_valid():
             return False
         try:
-            task = async_to_sync(self.__get_request)(self.instance.uri + "/token")
+            task = get_request(self.instance.uri + "/token")
         except aiohttp.ClientError:
             return False
         except RetryError:
@@ -67,10 +68,3 @@ class KnownClientForm(forms.ModelForm):
         else:
             self.instance.token = task
             return True
-
-    @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
-           stop=stop_after_delay(15))
-    async def __get_request(self, url):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, ssl=False) as response:
-                return await response.read()

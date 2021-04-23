@@ -25,11 +25,13 @@
                 <a href="{% url 'console:knownclient_delete' knownclient.id %}">
                     <div class="button primary"><span class="mif-bin"></span>&nbsp;{% trans "Löschen" %}</div>
                 </a>
-                <a href="{% url 'console:knownclient_shutdown' knownclient.id %}">
-                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Shut down" %}</div>
+                <a href="#"
+                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Herunterfahren" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:knownclient_shutdown' knownclient.id %}');">
+                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Herunterfahren" %}</div>
                 </a>
-                <a href="{% url 'console:knownclient_reboot' knownclient.id %}">
-                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Reboot" %}</div>
+                <a href="#"
+                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Neu starten" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:knownclient_reboot' knownclient.id %}');">
+                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Neu starten" %}</div>
                 </a>
             </td>
         </tr>

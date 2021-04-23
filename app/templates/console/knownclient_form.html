@@ -4,8 +4,10 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <br>
-        <input class="button primary" type="submit" value="{% trans "Speichern" %}">
+        <div class="container-fluid">
+            {{ form.as_p }}
+            <br>
+            <input class="button primary" type="submit" value="{% trans "Speichern" %}">
+        </div>
     </form>
 {% endblock %}
