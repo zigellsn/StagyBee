@@ -1,0 +1,47 @@
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<table class="table">
+    <thead>
+    <tr>
+        <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Alias Name" %}</th>
+        <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Client URI" %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for knownclient in object_list %}
+        <tr>
+            <td>
+                <div>{{ knownclient.alias }}</div>
+            </td>
+            <td>
+                <div>{{ knownclient.uri }}</div>
+            </td>
+            <td>
+                <a href="{% url 'console:knownclient_update' knownclient.id %}">
+                    <div class="button primary"><span class="mif-pencil"></span>&nbsp;{% trans "Bearbeiten" %}</div>
+                </a>
+                <a href="{% url 'console:knownclient_delete' knownclient.id %}">
+                    <div class="button primary"><span class="mif-bin"></span>&nbsp;{% trans "Löschen" %}</div>
+                </a>
+                <a href="{% url 'console:knownclient_shutdown' knownclient.id %}">
+                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Shut down" %}</div>
+                </a>
+                <a href="{% url 'console:knownclient_reboot' knownclient.id %}">
+                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Reboot" %}</div>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td>
+            <a href="{% url 'console:knownclient_create' %}">
+                <div class="button primary"><span class="mif-note-add"></span>&nbsp;{% trans "Neu" %}</div>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>

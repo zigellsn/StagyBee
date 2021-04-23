@@ -16,6 +16,3 @@ services:
       - type: bind
         source: ./app
         target: /home/pyuser
-      - type: bind
-        source: ./app/shutdown_signal
-        target: /home/pyuser/shutdown_signal

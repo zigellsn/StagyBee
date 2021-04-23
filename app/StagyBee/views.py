@@ -65,7 +65,7 @@ def get_scheme(request):
 
 
 def set_host(request, context):
-    if settings.RUN_IN_CONTAINER:
+    if settings.EXTERNAL_IP is not None and settings.EXTERNAL_HOST_NAME is not None:
         context["ip"] = settings.EXTERNAL_IP
         context["hostname"] = settings.EXTERNAL_HOST_NAME
     else:

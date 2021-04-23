@@ -41,3 +41,17 @@ class UserPreferences(models.Model):
     locale = models.CharField(max_length=10, verbose_name=_("Sprache"), default="en")
 
     objects = PreferencesManager()
+
+
+class KnownClientManager(models.Manager):
+
+    def create_known_client(self, uri, alias, token):
+        return self.create(uri=uri, alias=alias, token=token)
+
+
+class KnownClient(models.Model):
+    uri = models.TextField(verbose_name=_("Client URI"), unique=True)
+    alias = models.TextField(verbose_name=_("Alias Name"), default="Client")
+    token = models.BinaryField(max_length=64, verbose_name=_("Token"))
+
+    objects = KnownClientManager()

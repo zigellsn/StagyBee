@@ -1,5 +1,5 @@
 {% extends 'console/choose_console_base.html' %}
-{% load i18n notification %}
+{% load i18n notification known_clients %}
 
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
@@ -12,6 +12,12 @@
                 <div class="inherit-colors heading">{% trans "Benachrichtigungen" %}</div>
                 <div class="content">
                     {% notifications_maintain %}
+                </div>
+            </div>
+            <div class="frame">
+                <div class="inherit-colors heading">{% trans "Bekannte Clients" %}</div>
+                <div class="content">
+                    {% known_clients_maintain %}
                 </div>
             </div>
         {% endif %}

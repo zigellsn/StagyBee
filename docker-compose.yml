@@ -37,7 +37,3 @@ services:
       - redis
       - db
       - extractor
-    volumes:
-      - type: bind
-        source: ./app/shutdown_signal
-        target: /home/pyuser/shutdown_signal
