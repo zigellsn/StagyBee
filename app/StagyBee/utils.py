@@ -32,7 +32,7 @@ def get_client_ip(request):
 async def get_request(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url, ssl=False) as response:
-            return await response.read()
+            return await response.read(), response.status
 
 
 @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
@@ -41,4 +41,4 @@ async def get_request(url):
 async def post_request(url, payload):
     async with aiohttp.ClientSession() as session:
         async with session.post(url=url, data=payload, ssl=False) as response:
-            return await response.read()
+            return await response.read(), response.status

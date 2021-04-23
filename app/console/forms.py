@@ -57,14 +57,21 @@ class KnownClientForm(forms.ModelForm):
     alias = CharField(label=_("Alias Name"))
 
     def is_valid(self):
+        status = 0
         if not super().is_valid():
             return False
         try:
-            task = get_request(self.instance.uri + "/token")
+            (task, status) = get_request(self.instance.uri + "/token")
         except aiohttp.ClientError:
+            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}"])
             return False
         except RetryError:
+            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}"])
             return False
         else:
-            self.instance.token = task
-            return True
+            if status != 200:
+                self.add_error("uri", [_("Kein Token vom Client empfangen."), f"{_('HTTP Status')} {str(status)}"])
+                return False
+            else:
+                self.instance.token = task
+                return True

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-23 20:30+0200\n"
+"POT-Creation-Date: 2021-04-23 21:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,14 @@ msgstr ""
 #: .\console\forms.py:57 .\console\models.py:54
 #: .\templates\console\knownclient_maintain_list.html:8
 msgid "Alias Name"
+msgstr ""
+
+#: .\console\forms.py:66 .\console\forms.py:69
+msgid "Client hat nicht geantwortet."
+msgstr ""
+
+#: .\console\forms.py:73
+msgid "Kein Token vom Client empfangen."
 msgstr ""
 
 #: .\console\models.py:40 .\templates\menu\scheme.html:5
@@ -323,11 +331,13 @@ msgstr ""
 msgid "Bearbeiten"
 msgstr ""
 
+#: .\templates\console\knownclient_maintain_list.html:29
 #: .\templates\console\knownclient_maintain_list.html:30
 #: .\templates\menu\shutdown.html:3
 msgid "Herunterfahren"
 msgstr ""
 
+#: .\templates\console\knownclient_maintain_list.html:33
 #: .\templates\console\knownclient_maintain_list.html:34
 #: .\templates\menu\shutdown.html:2
 msgid "Neu starten"
