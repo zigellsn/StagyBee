@@ -10,16 +10,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='knownclient',
+            name='uri',
+            field=models.TextField(verbose_name='Client URI', primary_key=False),
+        ),
         migrations.AddField(
             model_name='knownclient',
             name='id',
             field=models.AutoField(auto_created=True, default=1, primary_key=True, serialize=False, verbose_name='ID'),
             preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='knownclient',
-            name='uri',
-            field=models.TextField(verbose_name='Client URI'),
         ),
         migrations.AlterUniqueTogether(
             name='knownclient',

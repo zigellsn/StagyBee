@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-15 21:21+0100\n"
+"POT-Creation-Date: 2021-04-25 11:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,75 +27,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\StagyBee\static\js\main.bundle.js:102
+#: .\StagyBee\static\js\global.js:72 .\StagyBee\static\js\main.bundle.js:97
 msgid "Dunkles Design"
 msgstr "Dark mode"
 
-#: .\StagyBee\static\js\main.bundle.js:112
+#: .\StagyBee\static\js\global.js:82 .\StagyBee\static\js\main.bundle.js:107
 msgid "Helles Design"
 msgstr "Light mode"
 
-#: .\StagyBee\static\js\main.bundle.js:140
+#: .\StagyBee\static\js\global.js:160 .\StagyBee\static\js\main.bundle.js:185
 msgid "Nein"
-msgstr "Yes"
-
-#: .\StagyBee\static\js\main.bundle.js:144
-msgid "Ja"
 msgstr "No"
 
-#: .\StagyBee\static\js\main.bundle.js:240
+#: .\StagyBee\static\js\global.js:164 .\StagyBee\static\js\main.bundle.js:189
+msgid "Ja"
+msgstr "Yes"
+
+#: .\StagyBee\static\js\main.bundle.js:182
+msgid "Bist du sicher?"
+msgstr "Are you sure?"
+
+#: .\StagyBee\static\js\main.bundle.js:288
 #: .\console\static\console\js\console_ws.js:80
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr "Life and Ministry Meeting"
 
-#: .\StagyBee\static\js\main.bundle.js:256
+#: .\StagyBee\static\js\main.bundle.js:304
 #: .\console\static\console\js\console_ws.js:96
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr "Public Meeting"
 
-#: .\StagyBee\static\js\main.bundle.js:259
+#: .\StagyBee\static\js\main.bundle.js:307
 #: .\console\static\console\js\console_ws.js:99
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr "Public talk (30 min.)"
 
-#: .\StagyBee\static\js\main.bundle.js:263
+#: .\StagyBee\static\js\main.bundle.js:311
 #: .\console\static\console\js\console_ws.js:103
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr "Watchtower Study (60 min.)"
 
-#: .\StagyBee\static\js\main.bundle.js:267
-#: .\StagyBee\static\js\main.bundle.js:270
-#: .\StagyBee\static\js\main.bundle.js:276
-#: .\StagyBee\static\js\main.bundle.js:344
+#: .\StagyBee\static\js\main.bundle.js:315
+#: .\StagyBee\static\js\main.bundle.js:318
+#: .\StagyBee\static\js\main.bundle.js:324
+#: .\StagyBee\static\js\main.bundle.js:392
 #: .\console\static\console\js\console_ws.js:107
 #: .\console\static\console\js\console_ws.js:110
 #: .\console\static\console\js\console_ws.js:116
-#: .\console\static\console\js\console_ws.js:182
+#: .\console\static\console\js\console_ws.js:184
 msgid "Benutzerdefiniert"
 msgstr "Custom"
 
-#: .\StagyBee\static\js\main.bundle.js:291
+#: .\StagyBee\static\js\main.bundle.js:339
 #: .\console\static\console\js\console_ws.js:131
 #, javascript-format
 msgid "Nachricht vom %s bestätigt."
 msgstr "Message from %s acknowledged."
 
-#: .\StagyBee\static\js\main.bundle.js:296
+#: .\StagyBee\static\js\main.bundle.js:344
 #: .\console\static\console\js\console_ws.js:136
 msgid "Verdunkelung aufheben"
 msgstr "Unmute stage display"
 
-#: .\StagyBee\static\js\main.bundle.js:299
+#: .\StagyBee\static\js\main.bundle.js:347
 #: .\console\static\console\js\console_ws.js:139
 msgid "Bildschirm verdunkeln"
 msgstr "Mute stage display"
 
-#: .\StagyBee\static\js\main.bundle.js:335
-#: .\console\static\console\js\console_ws.js:173
+#: .\StagyBee\static\js\main.bundle.js:383
+#: .\console\static\console\js\console_ws.js:175
 msgid "Bitte eine Zeit > 0 angeben."
 msgstr "Please provide a time span > 0."
 
-#: .\StagyBee\static\js\main.bundle.js:498
-#: .\stage\static\stage\js\console_client_ws.js:52
+#: .\StagyBee\static\js\main.bundle.js:555
+#: .\stage\static\stage\js\console_client_ws.js:53
 msgid "Nachricht"
 msgstr "Message"
