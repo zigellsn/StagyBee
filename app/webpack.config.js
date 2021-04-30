@@ -129,7 +129,6 @@ const mainConfig = {
 };
 
 const schemes = {
-    // mode: 'development',
     mode: runMode,
     entry: {
         dark: './style/dark.less',
@@ -145,6 +144,7 @@ const schemes = {
             new CssMinimizerPlugin(),
         ],
     },
+    devtool: devTool,
     module: {
         rules: [
             {

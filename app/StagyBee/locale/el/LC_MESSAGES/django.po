@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-23 21:04+0200\n"
+"POT-Creation-Date: 2021-04-30 14:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,25 +27,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\console\forms.py:47
+#: .\console\forms.py:49
 msgid "Bevorzugte Sprache"
 msgstr ""
 
-#: .\console\forms.py:56 .\console\models.py:53
+#: .\console\forms.py:58 .\console\models.py:53
 #: .\templates\console\knownclient_maintain_list.html:9
 msgid "Client URI"
 msgstr ""
 
-#: .\console\forms.py:57 .\console\models.py:54
+#: .\console\forms.py:59 .\console\models.py:54
 #: .\templates\console\knownclient_maintain_list.html:8
 msgid "Alias Name"
 msgstr ""
 
-#: .\console\forms.py:66 .\console\forms.py:69
+#: .\console\forms.py:69 .\console\forms.py:72
 msgid "Client hat nicht geantwortet."
 msgstr ""
 
-#: .\console\forms.py:73
+#: .\console\forms.py:76
+msgid "Zertifikat ist ungültig."
+msgstr ""
+
+#: .\console\forms.py:80
 msgid "Kein Token vom Client empfangen."
 msgstr ""
 
@@ -64,11 +68,15 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: .\console\views.py:154 .\picker\views.py:64
+#: .\console\models.py:56
+msgid "Zertifikatsdatei"
+msgstr ""
+
+#: .\console\views.py:155 .\picker\views.py:64
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:173 .\picker\views.py:83
+#: .\console\views.py:175 .\picker\views.py:83
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 

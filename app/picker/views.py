@@ -55,7 +55,7 @@ class ShutdownView(View):
         client = KnownClient.objects.filter(uri__contains=ip)
         if len(client) == 1:
             try:
-                post_request(client[0].uri + "/shutdown", client[0].token)
+                post_request(client[0].uri + "/shutdown", payload=client[0].token, certificate=client[0].cert_file)
             except aiohttp.ClientError:
                 return HttpResponseRedirect("/picker")
             except RetryError:
@@ -74,7 +74,7 @@ class RebootView(View):
         client = KnownClient.objects.filter(uri__contains=ip)
         if len(client) == 1:
             try:
-                post_request(client[0].uri + "/reboot", client[0].token)
+                post_request(client[0].uri + "/reboot", payload=client[0].token, certificate=client[0].cert_file)
             except aiohttp.ClientError:
                 return HttpResponseRedirect("/picker")
             except RetryError:

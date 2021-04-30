@@ -145,7 +145,8 @@ class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            post_request(context["object"].uri + "/shutdown", context["object"].token)
+            post_request(context["object"].uri + "/shutdown", payload=context["object"].token,
+                         certificate=context["object"].cert_file)
         except aiohttp.ClientError as err:
             context["message"] = str(err.args)
         except RetryError as err:
@@ -164,7 +165,8 @@ class KnownClientReboot(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            post_request(context["object"].uri + "/reboot", context["object"].token)
+            post_request(context["object"].uri + "/reboot", payload=context["object"].token,
+                         certificate=context["object"].cert_file)
         except aiohttp.ClientError as err:
             context["message"] = str(err.args)
         except RetryError as err:

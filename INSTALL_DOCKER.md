@@ -20,6 +20,7 @@ Create the directories "data" and "static".
 ``` bash
 mkdir data
 mkdir static
+mkdir files
 ```
 
 Then run
@@ -51,7 +52,10 @@ Create the directories "data" and "static".
 ``` bash
 mkdir data
 mkdir static
+mkdir files
 ```
+
+Provide key.pem and crt.pem files in ./nginx/certs/
 
 Then run
 ``` bash

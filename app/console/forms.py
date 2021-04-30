@@ -12,10 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from ssl import SSLError
+
 import aiohttp
 from django import forms
 from django.conf import settings
-from django.forms import ModelChoiceField, ChoiceField, CharField
+from django.forms import ModelChoiceField, ChoiceField, CharField, URLField
 from django.utils.translation import gettext_lazy as _
 from tenacity import RetryError
 
@@ -51,9 +53,9 @@ class LanguageForm(forms.ModelForm):
 class KnownClientForm(forms.ModelForm):
     class Meta:
         model = KnownClient
-        fields = ["uri", "alias"]
+        fields = ["uri", "alias", "cert_file"]
 
-    uri = CharField(label=_("Client URI"))
+    uri = URLField(label=_("Client URI"), empty_value="https://")
     alias = CharField(label=_("Alias Name"))
 
     def is_valid(self):
@@ -61,12 +63,18 @@ class KnownClientForm(forms.ModelForm):
         if not super().is_valid():
             return False
         try:
-            (task, status) = get_request(self.instance.uri + "/token")
-        except aiohttp.ClientError:
-            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}"])
+            (task, status) = get_request(self.instance.uri + "/token", self.instance.cert_file.file)
+        except aiohttp.ClientError as err:
+            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}", str(err)])
             return False
-        except RetryError:
-            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}"])
+        except RetryError as err:
+            self.add_error("uri", [_("Client hat nicht geantwortet."), f"{_('HTTP Status')} {str(status)}", str(err)])
+            return False
+        except SSLError as err:
+            self.add_error("cert_file", [_("Zertifikat ist ungültig."), str(err)])
+            return False
+        except UnicodeDecodeError as err:
+            self.add_error("cert_file", [_("Zertifikat ist ungültig."), str(err)])
             return False
         else:
             if status != 200:

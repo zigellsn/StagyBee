@@ -45,13 +45,14 @@ class UserPreferences(models.Model):
 
 class KnownClientManager(models.Manager):
 
-    def create_known_client(self, uri, alias, token):
-        return self.create(uri=uri, alias=alias, token=token)
+    def create_known_client(self, uri, alias, token, cert_file):
+        return self.create(uri=uri, alias=alias, token=token, cert_file=cert_file)
 
 
 class KnownClient(models.Model):
-    uri = models.TextField(verbose_name=_("Client URI"), unique=True)
+    uri = models.URLField(verbose_name=_("Client URI"), unique=True)
     alias = models.TextField(verbose_name=_("Alias Name"), default="Client")
     token = models.BinaryField(max_length=64, verbose_name=_("Token"))
+    cert_file = models.FileField(upload_to="certs", verbose_name=_("Zertifikatsdatei"), blank=False)
 
     objects = KnownClientManager()

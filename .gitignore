@@ -374,6 +374,8 @@ typings/
 tmp/
 temp/
 
+files/
+
 *.bundle.js*
 *.js.map
 index.js
