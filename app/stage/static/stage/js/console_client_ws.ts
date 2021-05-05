@@ -49,7 +49,7 @@ export function console_client_ws(congregation_ws: string) {
         } else if (alert['alert'] === 'message') {
             // Metro.infobox.create(`<h3>${gettext('Nachricht')}</h3><p style="font-size:20px">${alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>`, 'default', {
             let date = DateTime.local().toMillis()
-            Metro.infobox.create('<h3>' + django.gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>',
+            Metro.infobox.create('<h3>' + django.gettext('Nachricht') + '</h3><p style="font-size:20px">' + alert['value'].replace(/\r\n|\r|\n/g, '<br />') + '</p>',
                 'default',
                 {
                     removeOnClose: true,

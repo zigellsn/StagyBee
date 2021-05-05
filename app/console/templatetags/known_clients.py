@@ -20,7 +20,7 @@ from console.models import KnownClient
 register = template.Library()
 
 
-@register.inclusion_tag("console/knownclient_maintain_list.html")
+@register.inclusion_tag("console/knownclient_list.html")
 def known_clients_maintain():
     known_client_list = KnownClient.objects.all()
     return {"object_list": known_client_list}

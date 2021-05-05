@@ -136,8 +136,9 @@ SHOW_LOGIN = env.bool("SHOW_LOGIN", default=True)
 EXTERNAL_IP = env.str("EXTERNAL_IP", default=None)
 EXTERNAL_HOST_NAME = env.str("EXTERNAL_HOST_NAME", default=None)
 KEEP_TIMER_DAYS = env.int("KEEP_TIMER_DAYS", default=30)
-RECEIVER_HOST = env.str('RECEIVER_HOST', default='')
-RECEIVER_PORT = env.int('RECEIVER_PORT', default=0)
+RECEIVER_PROTOCOL = env.str("RECEIVER_PROTOCOL", default="http")
+RECEIVER_HOST = env.str("RECEIVER_HOST", default="")
+RECEIVER_PORT = env.int("RECEIVER_PORT", default=0)
 
 DATABASES = {
     'default': env.db_url(default='sqlite:///db.sqlite3')

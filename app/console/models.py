@@ -50,9 +50,17 @@ class KnownClientManager(models.Manager):
 
 
 class KnownClient(models.Model):
-    uri = models.URLField(verbose_name=_("Client URI"), unique=True)
+    class Meta:
+        ordering = ["alias", "uri"]
+        verbose_name = _("Bekannter Client")
+        verbose_name_plural = _("Bekannte Clients")
+
+    uri = models.URLField(verbose_name=_("Client URL"), unique=True)
     alias = models.TextField(verbose_name=_("Alias Name"), default="Client")
     token = models.BinaryField(max_length=64, verbose_name=_("Token"))
     cert_file = models.FileField(upload_to="certs", verbose_name=_("Zertifikatsdatei"), blank=False)
 
     objects = KnownClientManager()
+
+    def __str__(self):
+        return f"{self.alias} ({self.uri})"

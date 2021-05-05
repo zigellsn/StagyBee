@@ -42,8 +42,8 @@ async def __initialize_redis(layer):
 
 
 class PickerConfig(AppConfig):
-    name = 'picker'
-    verbose_name = "Picker"
+    name = "picker"
+    verbose_name = "JWConf Picker"
 
     def ready(self):
         loop = asyncio.new_event_loop()

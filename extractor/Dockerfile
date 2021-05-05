@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-slim
 
-ENV EXTRACTOR_VERSION 1.0.8
+ENV EXTRACTOR_VERSION 1.0.9
 ENV KTOR_USER ktor
 ENV HOME /home/$KTOR_USER
 RUN set -ex \
@@ -8,22 +8,20 @@ RUN set -ex \
     wget \
     ca-certificates' \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
-    && wget -O StagyBeeExtractor.tar https://github.com/zigellsn/StagyBeeExtractor/releases/download/v"${EXTRACTOR_VERSION}"/StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}".tar \
+    && wget -O StagyBeeExtractor.tar https://github.com/zigellsn/StagyBeeExtractor/releases/download/v"${EXTRACTOR_VERSION}"/StagyBeeExtractor-"${EXTRACTOR_VERSION}".tar \
     && tar -xvf StagyBeeExtractor.tar \
     && apt-get purge -y --auto-remove $buildDeps \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home $KTOR_USER \
     && mkdir $HOME/app \
-    && cp /StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}"/lib/StagyBeeExtractor-shadow-"${EXTRACTOR_VERSION}".jar $HOME/app \
+    && cp -R /StagyBeeExtractor-"${EXTRACTOR_VERSION}"/* $HOME/app \
     && chown -R $KTOR_USER $HOME/app \
     && rm -rf /StagyBeeExtractor \
     && rm /StagyBeeExtractor.tar
 
-WORKDIR $HOME/app
 USER $KTOR_USER
+WORKDIR $HOME/app/bin
 
-EXPOSE 8080
-EXPOSE 9090
+EXPOSE 8443
 
-COPY ./scripts/entrypoint.sh $HOME/
-ENTRYPOINT [ "/home/ktor/entrypoint.sh" ]
+ENTRYPOINT [ "./StagyBeeExtractor" ]

@@ -13,14 +13,14 @@
 #  limitations under the License.
 
 from django.contrib import admin
-from guardian.admin import GuardedModelAdmin
+from django.contrib.admin import ModelAdmin
 
-from .forms import CredentialForm
-from .models import Credential
-
-
-class CredentialAdmin(GuardedModelAdmin):
-    form = CredentialForm
+from .forms import KnownClientForm
+from .models import KnownClient
 
 
-admin.site.register(Credential, CredentialAdmin)
+class KnownClientAdmin(ModelAdmin):
+    form = KnownClientForm
+
+
+admin.site.register(KnownClient, KnownClientAdmin)

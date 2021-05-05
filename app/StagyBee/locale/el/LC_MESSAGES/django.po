@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-30 14:22+0200\n"
+"POT-Creation-Date: 2021-05-05 12:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,25 +31,23 @@ msgstr ""
 msgid "Bevorzugte Sprache"
 msgstr ""
 
-#: .\console\forms.py:58 .\console\models.py:53
-#: .\templates\console\knownclient_maintain_list.html:9
+#: .\console\forms.py:58
 msgid "Client URI"
 msgstr ""
 
-#: .\console\forms.py:59 .\console\models.py:54
-#: .\templates\console\knownclient_maintain_list.html:8
+#: .\console\forms.py:59 .\console\models.py:59
 msgid "Alias Name"
 msgstr ""
 
-#: .\console\forms.py:69 .\console\forms.py:72
+#: .\console\forms.py:68 .\console\forms.py:71
 msgid "Client hat nicht geantwortet."
 msgstr ""
 
-#: .\console\forms.py:76
+#: .\console\forms.py:74 .\console\forms.py:77
 msgid "Zertifikat ist ungültig."
 msgstr ""
 
-#: .\console\forms.py:80
+#: .\console\forms.py:81
 msgid "Kein Token vom Client empfangen."
 msgstr ""
 
@@ -58,25 +56,37 @@ msgid "Dunkles Design"
 msgstr ""
 
 #: .\console\models.py:41 .\notification\forms.py:41
-#: .\notification\models.py:57 .\templates\console\settings.html:33
+#: .\notification\models.py:57 .\templates\console\settings.html:27
 #: .\templates\menu\language.html:8
 #: .\templates\notification\notification_maintain_list.html:10
 msgid "Sprache"
 msgstr ""
 
 #: .\console\models.py:55
-msgid "Token"
+msgid "Bekannter Client"
 msgstr ""
 
 #: .\console\models.py:56
+msgid "Bekannte Clients"
+msgstr ""
+
+#: .\console\models.py:58
+msgid "Client URL"
+msgstr ""
+
+#: .\console\models.py:60
+msgid "Token"
+msgstr ""
+
+#: .\console\models.py:61
 msgid "Zertifikatsdatei"
 msgstr ""
 
-#: .\console\views.py:155 .\picker\views.py:64
+#: .\console\views.py:129 .\picker\views.py:64
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:175 .\picker\views.py:83
+#: .\console\views.py:149 .\picker\views.py:83
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
@@ -124,47 +134,55 @@ msgstr ""
 msgid "Nachricht"
 msgstr ""
 
-#: .\picker\models.py:114
-msgid "Zugriff auf Management Console"
+#: .\picker\models.py:112
+msgid "JWConf Verbindung"
 msgstr ""
 
-#: .\picker\models.py:115
-msgid "Zugriff auf Stoppuhr"
+#: .\picker\models.py:113
+msgid "JWConf Verbindungen"
 msgstr ""
 
 #: .\picker\models.py:116
+msgid "Zugriff auf Management Console"
+msgstr ""
+
+#: .\picker\models.py:117
+msgid "Zugriff auf Stoppuhr"
+msgstr ""
+
+#: .\picker\models.py:118
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:119
+#: .\picker\models.py:121
 msgid "Versammlung"
 msgstr ""
 
-#: .\picker\models.py:120
+#: .\picker\models.py:122
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:121
+#: .\picker\models.py:123
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:122 .\templates\console\settings.html:25
+#: .\picker\models.py:124 .\templates\console\settings.html:19
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:123
+#: .\picker\models.py:125
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:126
+#: .\picker\models.py:127
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:127
+#: .\picker\models.py:128
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:128
+#: .\picker\models.py:129
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
@@ -315,63 +333,38 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: .\templates\console\knownclient_confirm_delete.html:7
-msgid "Soll folgender Client wirklich gelöscht werden?"
-msgstr ""
-
-#: .\templates\console\knownclient_confirm_delete.html:9
-#: .\templates\console\knownclient_maintain_list.html:26
-#: .\templates\notification\notification_confirm_delete.html:9
-#: .\templates\notification\notification_maintain_list.html:64
-msgid "Löschen"
-msgstr ""
-
-#: .\templates\console\knownclient_form.html:10
-#: .\templates\console\settings.html:39
-#: .\templates\notification\notification_form.html:9
-msgid "Speichern"
-msgstr ""
-
-#: .\templates\console\knownclient_maintain_list.html:23
-#: .\templates\notification\notification_maintain_list.html:61
-msgid "Bearbeiten"
-msgstr ""
-
-#: .\templates\console\knownclient_maintain_list.html:29
-#: .\templates\console\knownclient_maintain_list.html:30
-#: .\templates\menu\shutdown.html:3
-msgid "Herunterfahren"
-msgstr ""
-
-#: .\templates\console\knownclient_maintain_list.html:33
-#: .\templates\console\knownclient_maintain_list.html:34
-#: .\templates\menu\shutdown.html:2
-msgid "Neu starten"
-msgstr ""
-
-#: .\templates\console\knownclient_maintain_list.html:44
-#: .\templates\notification\notification_maintain_list.html:76
-msgid "Neu"
-msgstr ""
-
 #: .\templates\console\settings.html:12
 msgid "Benachrichtigungen"
 msgstr ""
 
-#: .\templates\console\settings.html:18
-msgid "Bekannte Clients"
+#: .\templates\console\settings.html:22
+msgid "Passwort ändern"
 msgstr ""
 
-#: .\templates\console\settings.html:28
-msgid "Passwort ändern"
+#: .\templates\console\settings.html:33
+#: .\templates\notification\notification_form.html:9
+msgid "Speichern"
 msgstr ""
 
 #: .\templates\menu\scheme.html:5
 msgid "Helles Design"
 msgstr ""
 
+#: .\templates\menu\shutdown.html:2
+msgid "Neu starten"
+msgstr ""
+
+#: .\templates\menu\shutdown.html:3
+msgid "Herunterfahren"
+msgstr ""
+
 #: .\templates\notification\notification_confirm_delete.html:7
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
+msgstr ""
+
+#: .\templates\notification\notification_confirm_delete.html:9
+#: .\templates\notification\notification_maintain_list.html:64
+msgid "Löschen"
 msgstr ""
 
 #: .\templates\notification\notification_list.html:7
@@ -380,6 +373,14 @@ msgstr ""
 
 #: .\templates\notification\notification_maintain_list.html:12
 msgid "Aktionen"
+msgstr ""
+
+#: .\templates\notification\notification_maintain_list.html:61
+msgid "Bearbeiten"
+msgstr ""
+
+#: .\templates\notification\notification_maintain_list.html:76
+msgid "Neu"
 msgstr ""
 
 #: .\templates\picker\tiles.html:12

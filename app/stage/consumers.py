@@ -123,12 +123,14 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
         receiver_host = settings.RECEIVER_HOST
-        if receiver_host == 0:
-            receiver_host = self.scope['server'][1]
+        if receiver_host == "":
+            receiver_host = self.scope["server"][1]
         receiver_port = settings.RECEIVER_PORT
         if receiver_port == 0:
-            receiver_port = self.scope['server'][1]
-        url = f"http://{receiver_host}:{receiver_port}/receiver/{congregation}/"
+            receiver_port = self.scope["server"][1]
+        receiver_protocol = settings.RECEIVER_PROTOCOL
+        # TODO: Get protocol from request
+        url = f"{receiver_protocol}://{receiver_host}:{receiver_port}/receiver/{congregation}/"
         if credentials.autologin is not None and credentials.autologin != "":
             payload = {"id": credentials.autologin, "url": url}
         else:
@@ -180,7 +182,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
            stop=stop_after_delay(15))
     async def __post_request(self, url, payload):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=payload) as response:
+            async with session.post(url, ssl=False, json=payload) as response:
                 self.logger.info(f"Extractor POST {url}")
                 return await response.json()
 
@@ -188,7 +190,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
            stop=stop_after_delay(15))
     async def __delete_request(self, url):
         async with aiohttp.ClientSession() as session:
-            async with session.delete(url) as response:
+            async with session.delete(url, ssl=False) as response:
                 self.logger.info(f"Extractor DELETE {url}")
                 return await response.json()
 
@@ -196,7 +198,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
            stop=stop_after_delay(15))
     async def __get_request(self, url):
         async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
+            async with session.get(url, ssl=False) as response:
                 self.logger.info(f"Extractor GET {url}")
                 return await response.json()
 

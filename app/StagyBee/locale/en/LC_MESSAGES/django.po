@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-30 14:22+0200\n"
+"POT-Creation-Date: 2021-05-05 12:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,25 +30,19 @@ msgstr ""
 msgid "Bevorzugte Sprache"
 msgstr "Preferred language"
 
-#: .\console\forms.py:58 .\console\models.py:53
-#: .\templates\console\knownclient_maintain_list.html:9
-msgid "Client URI"
-msgstr "Client URI"
-
-#: .\console\forms.py:59 .\console\models.py:54
-#: .\templates\console\knownclient_maintain_list.html:8
+#: .\console\forms.py:59 .\console\models.py:59
 msgid "Alias Name"
 msgstr "Alias name"
 
-#: .\console\forms.py:69 .\console\forms.py:72
+#: .\console\forms.py:68 .\console\forms.py:71
 msgid "Client hat nicht geantwortet."
 msgstr "Client did not respond."
 
-#: .\console\forms.py:76
+#: .\console\forms.py:74 .\console\forms.py:77
 msgid "Zertifikat ist ungültig."
 msgstr "Certificate is invalid."
 
-#: .\console\forms.py:80
+#: .\console\forms.py:81
 msgid "Kein Token vom Client empfangen."
 msgstr "No token received from client."
 
@@ -57,25 +51,38 @@ msgid "Dunkles Design"
 msgstr "Dark mode"
 
 #: .\console\models.py:41 .\notification\forms.py:41
-#: .\notification\models.py:57 .\templates\console\settings.html:33
+#: .\notification\models.py:57 .\templates\console\settings.html:27
 #: .\templates\menu\language.html:8
 #: .\templates\notification\notification_maintain_list.html:10
 msgid "Sprache"
 msgstr "Language"
 
 #: .\console\models.py:55
+msgid "Bekannter Client"
+msgstr "Known client"
+
+#: .\console\models.py:56
+msgid "Bekannte Clients"
+msgstr "Known clients"
+
+#: .\console\models.py:58
+#: .\console\forms.py:58
+msgid "Client URL"
+msgstr "Client URL"
+
+#: .\console\models.py:60
 msgid "Token"
 msgstr "Token"
 
-#: .\console\models.py:56
+#: .\console\models.py:61
 msgid "Zertifikatsdatei"
 msgstr "Certificate File"
 
-#: .\console\views.py:155 .\picker\views.py:64
+#: .\console\views.py:129 .\picker\views.py:64
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr "Shutdown in progress"
 
-#: .\console\views.py:175 .\picker\views.py:83
+#: .\console\views.py:149 .\picker\views.py:83
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr "Reboot in progress"
 
@@ -123,47 +130,55 @@ msgstr "Subject"
 msgid "Nachricht"
 msgstr "Message"
 
-#: .\picker\models.py:114
+#: .\picker\models.py:112
+msgid "JWConf Verbindung"
+msgstr "JWConf Credential"
+
+#: .\picker\models.py:113
+msgid "JWConf Verbindungen"
+msgstr "JWConf Credentials"
+
+#: .\picker\models.py:116
 msgid "Zugriff auf Management Console"
 msgstr "Access Management Console"
 
-#: .\picker\models.py:115
+#: .\picker\models.py:117
 msgid "Zugriff auf Stoppuhr"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:116
+#: .\picker\models.py:118
 msgid "Zugriff auf Audit-Log"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:119
+#: .\picker\models.py:121
 msgid "Versammlung"
 msgstr "Congregation"
 
-#: .\picker\models.py:120
+#: .\picker\models.py:122
 msgid "Auto-Login ID"
 msgstr "Auto-login ID"
 
-#: .\picker\models.py:121
+#: .\picker\models.py:123
 msgid "Username"
 msgstr "username"
 
-#: .\picker\models.py:122 .\templates\console\settings.html:25
+#: .\picker\models.py:124 .\templates\console\settings.html:19
 msgid "Passwort"
 msgstr "Password"
 
-#: .\picker\models.py:123
+#: .\picker\models.py:125
 msgid "Anzeigename"
 msgstr "Display name"
 
-#: .\picker\models.py:126
+#: .\picker\models.py:127
 msgid "Touch erlaubt"
 msgstr "Allow touch"
 
-#: .\picker\models.py:127
+#: .\picker\models.py:128
 msgid "Zeige nur Meldungen"
 msgstr "Show requests to speak only"
 
-#: .\picker\models.py:128
+#: .\picker\models.py:129
 msgid "Sende Zeiten an Bühne"
 msgstr "Send times to stage"
 
@@ -319,64 +334,39 @@ msgstr "Settings"
 msgid "Logout"
 msgstr "Logout"
 
-#: .\templates\console\knownclient_confirm_delete.html:7
-msgid "Soll folgender Client wirklich gelöscht werden?"
-msgstr "Do you really want to delete the following client?"
-
-#: .\templates\console\knownclient_confirm_delete.html:9
-#: .\templates\console\knownclient_maintain_list.html:26
-#: .\templates\notification\notification_confirm_delete.html:9
-#: .\templates\notification\notification_maintain_list.html:64
-msgid "Löschen"
-msgstr "Delete"
-
-#: .\templates\console\knownclient_form.html:10
-#: .\templates\console\settings.html:39
-#: .\templates\notification\notification_form.html:9
-msgid "Speichern"
-msgstr "Save"
-
-#: .\templates\console\knownclient_maintain_list.html:23
-#: .\templates\notification\notification_maintain_list.html:61
-msgid "Bearbeiten"
-msgstr "Edit"
-
-#: .\templates\console\knownclient_maintain_list.html:29
-#: .\templates\console\knownclient_maintain_list.html:30
-#: .\templates\menu\shutdown.html:3
-msgid "Herunterfahren"
-msgstr "Shutdown"
-
-#: .\templates\console\knownclient_maintain_list.html:33
-#: .\templates\console\knownclient_maintain_list.html:34
-#: .\templates\menu\shutdown.html:2
-msgid "Neu starten"
-msgstr "Restart"
-
-#: .\templates\console\knownclient_maintain_list.html:44
-#: .\templates\notification\notification_maintain_list.html:76
-msgid "Neu"
-msgstr "New"
-
 #: .\templates\console\settings.html:12
 msgid "Benachrichtigungen"
 msgstr "Text message"
 
-#: .\templates\console\settings.html:18
-msgid "Bekannte Clients"
-msgstr "Known clients"
-
-#: .\templates\console\settings.html:28
+#: .\templates\console\settings.html:22
 msgid "Passwort ändern"
 msgstr "Change password"
+
+#: .\templates\console\settings.html:33
+#: .\templates\notification\notification_form.html:9
+msgid "Speichern"
+msgstr "Save"
 
 #: .\templates\menu\scheme.html:5
 msgid "Helles Design"
 msgstr "Light mode"
 
+#: .\templates\menu\shutdown.html:2
+msgid "Neu starten"
+msgstr "Restart"
+
+#: .\templates\menu\shutdown.html:3
+msgid "Herunterfahren"
+msgstr "Shutdown"
+
 #: .\templates\notification\notification_confirm_delete.html:7
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
 msgstr "Do you really want to delete the following notification?"
+
+#: .\templates\notification\notification_confirm_delete.html:9
+#: .\templates\notification\notification_maintain_list.html:64
+msgid "Löschen"
+msgstr "Delete"
 
 #: .\templates\notification\notification_list.html:7
 msgid "Neue Informationen"
@@ -385,6 +375,14 @@ msgstr "New information"
 #: .\templates\notification\notification_maintain_list.html:12
 msgid "Aktionen"
 msgstr "Actions"
+
+#: .\templates\notification\notification_maintain_list.html:61
+msgid "Bearbeiten"
+msgstr "Edit"
+
+#: .\templates\notification\notification_maintain_list.html:76
+msgid "Neu"
+msgstr "New"
 
 #: .\templates\picker\tiles.html:12
 msgid "Keine Versammlung angelegt."
@@ -451,6 +449,9 @@ msgstr "Maximum timespan"
 #: .\templates\stopwatch\timeentry_list.html:51
 msgid "Differenz"
 msgstr "Difference"
+
+#~ msgid "Soll folgender Client wirklich gelöscht werden?"
+#~ msgstr "Do you really want to delete the following client?"
 
 #~ msgid "Bist du sicher?"
 #~ msgstr "Are you sure?"

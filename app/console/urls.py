@@ -14,8 +14,7 @@
 
 from django.urls import path, include
 
-from .views import ConsoleView, ChooseConsoleView, KnownClientCreate, KnownClientDelete, KnownClientUpdate, \
-    KnownClientReboot, KnownClientShutdown
+from .views import ConsoleView, ChooseConsoleView, KnownClientReboot, KnownClientShutdown
 
 app_name = "console"
 
@@ -24,9 +23,6 @@ urlpatterns = [
     path("<str:pk>/", ConsoleView.as_view(), name="console"),
     path("audit/", include("audit.urls")),
     path("timer/", include("stopwatch.urls")),
-    path("knownclient/create/", KnownClientCreate.as_view(), name="knownclient_create"),
-    path("knownclient/update/<int:pk>/", KnownClientUpdate.as_view(), name="knownclient_update"),
-    path("knownclient/delete/<int:pk>/", KnownClientDelete.as_view(), name="knownclient_delete"),
-    path("knownclient/shutdown/<int:pk>/", KnownClientShutdown.as_view(), name="knownclient_shutdown"),
-    path("knownclient/reboot/<int:pk>/", KnownClientReboot.as_view(), name="knownclient_reboot"),
+    path("knownclient/shutdown/<int:pk>/", KnownClientShutdown.as_view(), name="known_client_shutdown"),
+    path("knownclient/reboot/<int:pk>/", KnownClientReboot.as_view(), name="known_client_reboot"),
 ]

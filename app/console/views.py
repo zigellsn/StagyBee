@@ -113,32 +113,6 @@ class SettingsView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class KnownClientCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    model = KnownClient
-    form_class = KnownClientForm
-    success_url = reverse_lazy("settings")
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-
-class KnownClientUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = KnownClient
-    form_class = KnownClientForm
-    success_url = reverse_lazy("settings")
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-
-class KnownClientDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = KnownClient
-    success_url = reverse_lazy("settings")
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-
 class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = KnownClient
 
