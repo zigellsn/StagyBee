@@ -124,12 +124,11 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             self.extractor_url = self.extractor_url + "/"
         receiver_host = settings.RECEIVER_HOST
         if receiver_host == "":
-            receiver_host = self.scope["server"][1]
+            receiver_host = self.scope["server"][0]
         receiver_port = settings.RECEIVER_PORT
         if receiver_port == 0:
             receiver_port = self.scope["server"][1]
         receiver_protocol = settings.RECEIVER_PROTOCOL
-        # TODO: Get protocol from request
         url = f"{receiver_protocol}://{receiver_host}:{receiver_port}/receiver/{congregation}/"
         if credentials.autologin is not None and credentials.autologin != "":
             payload = {"id": credentials.autologin, "url": url}
