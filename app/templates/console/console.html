@@ -4,7 +4,7 @@
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
-    <div class="pl-4 pr-4">
+    <div>
         <span class="display1">{{ credential.display_name }}</span>
     </div>
     <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"

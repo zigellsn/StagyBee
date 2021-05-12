@@ -31,11 +31,11 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="pos-fixed fixed-bottom">
-        <div class="pl-3 pr-3">
+    <footer class="pos-fixed fixed-bottom pr-1-sx pl-1-sx pr-4-md pl-4-md pb-4-md pb-1-sx">
+        <div>
             {% notifications %}
         </div>
-        <div class="z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %} p-3">
+        <div class="z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %}">
             Version: {{ version }}, Hostname: {{ hostname }}, IP address: {{ ip }}
         </div>
     </footer>

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
-<header class="app-bar pr-4 pl-4" data-role="appbar" data-role-appbar="true">
+<header class="app-bar pr-1-sx pl-1-sx pr-4-md pl-4-md" data-role="appbar" data-role-appbar="true">
     {% if credential.touch %}
         <a class="brand order-1" onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
            href="{% url 'picker:picker' %}">
@@ -21,7 +21,7 @@
     {% endif %}
 
     {% if not credential.touch %}
-        <span class="text-leader pl-4 pr-4 order-2">{{ credential.display_name }}</span>
+        <span class="text-leader pr-1-sx pl-1-sx pr-4-md pl-4-md order-2">{{ credential.display_name }}</span>
         {% if LANGUAGE_BIDI %}
             <div class="app-bar-container order-3 mr-auto">
         {% else %}

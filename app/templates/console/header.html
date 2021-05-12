@@ -7,7 +7,7 @@
 
 {% block header_functions %}
     {% if user.is_authenticated %}
-        <span class="text-leader2 pl-4 pr-4">
+        <span class="text-leader2 pr-1-sx pl-1-sx pr-4-md pl-4-md">
             {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen,&nbsp;{{ username }}!{% endblocktrans %}
         </span>
     {% endif %}
