@@ -22,3 +22,5 @@ if "symmetric_encryption_keys" not in CHANNEL_LAYERS["default"]["CONFIG"]:
     CHANNEL_LAYERS["default"]["CONFIG"]["symmetric_encryption_keys"] = [SECRET_KEY]
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+SESSION_COOKIE_AGE = 43200
