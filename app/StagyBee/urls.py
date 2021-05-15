@@ -17,16 +17,17 @@ from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
 
 from console.views import SettingsView, StartupView
-from .views import redirect_root, SchemeView, ToggleSchemeView
+from .views import SchemeView, ToggleSchemeView
 
 urlpatterns = [path("receiver/", include("receiver.urls")),
                path("toggle_scheme/", ToggleSchemeView.as_view()),
                path("scheme/", SchemeView.as_view())]
 urlpatterns += i18n_patterns(
-    path("", redirect_root),
+    path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
     path("", include("django.contrib.auth.urls")),
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),

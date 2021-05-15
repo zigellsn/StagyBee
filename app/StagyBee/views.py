@@ -15,14 +15,10 @@
 import socket
 
 from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.views.generic.base import ContextMixin, View
 
 from console.models import UserPreferences
-
-
-def redirect_root(request):
-    return HttpResponseRedirect('/login/')
 
 
 class SchemeMixin(ContextMixin):
