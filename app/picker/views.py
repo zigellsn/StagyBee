@@ -21,12 +21,12 @@ from django.views.generic.base import View
 from tenacity import RetryError
 
 from StagyBee.utils import post_request, get_client_ip
-from StagyBee.views import set_host, get_scheme
+from StagyBee.views import set_host, SchemeMixin
 from console.models import KnownClient
 from .models import Credential
 
 
-class PickerView(ListView):
+class PickerView(SchemeMixin, ListView):
     model = Credential
     template_name = "picker/tiles.html"
 
@@ -39,7 +39,6 @@ class PickerView(ListView):
         context["col"] = col
         context["show_login"] = settings.SHOW_LOGIN
         context["version"] = settings.VERSION
-        context["dark"] = get_scheme(self.request)
         ip = get_client_ip(self.request)
         client = KnownClient.objects.filter(uri__contains=ip)
         if len(client) == 1:

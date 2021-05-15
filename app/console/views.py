@@ -20,18 +20,18 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import View
-from django.views.generic.edit import FormMixin, UpdateView, CreateView, DeleteView
+from django.views.generic.edit import FormMixin, UpdateView
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from tenacity import RetryError
 
 from StagyBee.utils import post_request
-from StagyBee.views import set_host, get_scheme
+from StagyBee.views import set_host, SchemeMixin
 from picker.models import Credential, is_active, get_running_since
-from .forms import CongregationForm, LanguageForm, KnownClientForm
+from .forms import CongregationForm, LanguageForm
 from .models import UserPreferences, KnownClient
 
 
-class StartupView(LoginRequiredMixin, View):
+class StartupView(LoginRequiredMixin, SchemeMixin, View):
 
     def dispatch(self, request, *args, **kwargs):
         preferences = UserPreferences.objects.get(user=request.user)
@@ -41,19 +41,13 @@ class StartupView(LoginRequiredMixin, View):
         return HttpResponseRedirect(f"/{preferences.locale}/console/")
 
 
-class ChooseConsoleView(LoginRequiredMixin, FormMixin, ListView):
+class ChooseConsoleView(LoginRequiredMixin, FormMixin, SchemeMixin, ListView):
     template_name = 'console/choose_console.html'
     form_class = CongregationForm
 
     def form_valid(self, form):
         congregation = form.cleaned_data["congregation"].congregation
         return HttpResponseRedirect(f"/console/{congregation}")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["dark"] = get_scheme(self.request)
-
-        return context
 
     def get_queryset(self):
         return Credential.objects.active()
@@ -65,14 +59,13 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, ListView):
             return "console/choose_console.html"
 
 
-class ConsoleView(PermissionRequiredMixin, DetailView):
+class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
     model = Credential
     return_403 = True
     permission_required = "access_console"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["dark"] = get_scheme(self.request)
         set_host(self.request, context)
         path = reverse("console:stopwatch:timer", args=[context["object"].congregation])
         context["timer_url"] = f"{self.request.scheme}://{context['ip']}{path}"
@@ -90,7 +83,7 @@ class ConsoleView(PermissionRequiredMixin, DetailView):
         return congregation
 
 
-class SettingsView(LoginRequiredMixin, UpdateView):
+class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):
     template_name = "console/settings.html"
     form_class = LanguageForm
     success_url = reverse_lazy("settings")
@@ -113,7 +106,7 @@ class SettingsView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, DetailView):
     model = KnownClient
 
     def get_context_data(self, **kwargs):
@@ -133,7 +126,7 @@ class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.is_superuser
 
 
-class KnownClientReboot(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class KnownClientReboot(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, DetailView):
     model = KnownClient
 
     def get_context_data(self, **kwargs):

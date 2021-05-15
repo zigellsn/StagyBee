@@ -17,11 +17,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import DetailView
 
-from StagyBee.views import get_scheme
+from StagyBee.views import SchemeMixin
 from picker.models import Credential
 
 
-class StageView(DetailView):
+class StageView(SchemeMixin, DetailView):
     model = Credential
 
     def setup(self, request, *args, **kwargs):
@@ -33,11 +33,6 @@ class StageView(DetailView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["dark"] = get_scheme(self.request)
-        return context
-
     def get_template_names(self):
         if self.get_object().touch:
             return "stage/stage.html"
@@ -45,17 +40,12 @@ class StageView(DetailView):
             return "stage/stage_extractor.html"
 
 
-class StageFormView(DetailView):
+class StageFormView(SchemeMixin, DetailView):
     model = Credential
     template_name = "stage/stage_form.html"
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["dark"] = get_scheme(self.request)
-        return context
 
     @method_decorator(xframe_options_exempt)
     def dispatch(self, *args, **kwargs):

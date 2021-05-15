@@ -16,12 +16,12 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from guardian.mixins import PermissionRequiredMixin
 
-from StagyBee.views import get_scheme
+from StagyBee.views import SchemeMixin
 from picker.models import Credential
 from .models import Audit
 
 
-class AuditView(PermissionRequiredMixin, ListView):
+class AuditView(PermissionRequiredMixin, SchemeMixin, ListView):
     model = Audit
     return_403 = True
     permission_required = "access_audit_log"
@@ -33,7 +33,6 @@ class AuditView(PermissionRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context["congregation"] = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
-        context["dark"] = get_scheme(self.request)
         return context
 
     def get_queryset(self):

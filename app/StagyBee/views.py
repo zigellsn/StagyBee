@@ -16,6 +16,7 @@ import socket
 
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic.base import ContextMixin, View
 
 from console.models import UserPreferences
 
@@ -24,44 +25,56 @@ def redirect_root(request):
     return HttpResponseRedirect('/login/')
 
 
-def scheme(request):
-    dark = get_scheme(request)
-    return HttpResponse(dark, status=200)
+class SchemeMixin(ContextMixin):
 
-
-def toggle_scheme(request):
-    if request.user.is_authenticated:
-        try:
-            preferences = UserPreferences.objects.get(user=request.user)
-            preferences.dark_mode = not preferences.dark_mode
-            preferences.save()
-            request.session["dark"] = preferences.dark_mode
-        except UserPreferences.DoesNotExist:
-            UserPreferences.objects.create(user=request.user, dark_mode=True)
-            request.session["dark"] = True
-    else:
-        if "dark" not in request.session:
-            request.session["dark"] = True
+    @staticmethod
+    def get_scheme(request):
+        if request.user.is_authenticated:
+            try:
+                preferences = UserPreferences.objects.get(user=request.user)
+                dark = preferences.dark_mode
+            except UserPreferences.DoesNotExist:
+                UserPreferences.objects.create(user=request.user, dark_mode=True)
+                dark = True
         else:
-            request.session["dark"] = not request.session["dark"]
-    return HttpResponse(status=200)
+            if "dark" in request.session:
+                dark = request.session["dark"]
+            else:
+                request.session["dark"] = True
+                dark = True
+        return dark
+
+    def get_context_data(self, **kwargs):
+        if "dark" not in kwargs:
+            kwargs["dark"] = self.get_scheme(self.request)
+        return super().get_context_data(**kwargs)
 
 
-def get_scheme(request):
-    if request.user.is_authenticated:
-        try:
-            preferences = UserPreferences.objects.get(user=request.user)
-            dark = preferences.dark_mode
-        except UserPreferences.DoesNotExist:
-            UserPreferences.objects.create(user=request.user, dark_mode=True)
-            dark = True
-    else:
-        if "dark" in request.session:
-            dark = request.session["dark"]
+class SchemeView(SchemeMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        dark = SchemeMixin.get_scheme(request)
+        return HttpResponse(dark, status=200)
+
+
+class ToggleSchemeView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            try:
+                preferences = UserPreferences.objects.get(user=request.user)
+                preferences.dark_mode = not preferences.dark_mode
+                preferences.save()
+                request.session["dark"] = preferences.dark_mode
+            except UserPreferences.DoesNotExist:
+                UserPreferences.objects.create(user=request.user, dark_mode=True)
+                request.session["dark"] = True
         else:
-            request.session["dark"] = True
-            dark = True
-    return dark
+            if "dark" not in request.session:
+                request.session["dark"] = True
+            else:
+                request.session["dark"] = not request.session["dark"]
+        return HttpResponse(status=200)
 
 
 def set_host(request, context):
