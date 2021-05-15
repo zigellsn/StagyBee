@@ -50,7 +50,7 @@ class SchemeMixin(ContextMixin):
         return super().get_context_data(**kwargs)
 
 
-class SchemeView(SchemeMixin, View):
+class SchemeView(View):
 
     def dispatch(self, request, *args, **kwargs):
         dark = SchemeMixin.get_scheme(request)
