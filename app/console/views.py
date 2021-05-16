@@ -13,7 +13,6 @@
 #  limitations under the License.
 
 import aiohttp
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
@@ -106,8 +105,10 @@ class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):
         return super().form_valid(form)
 
 
-class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, DetailView):
+class KnownClientShutdown(PermissionRequiredMixin, SchemeMixin, DetailView):
     model = KnownClient
+    return_403 = True
+    permission_required = "control_client"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,12 +123,11 @@ class KnownClientShutdown(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, 
             context["message"] = _("Herunterfahren-Anfrage erfolgreich gesendet")
         return context
 
-    def test_func(self):
-        return self.request.user.is_superuser
 
-
-class KnownClientReboot(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, DetailView):
+class KnownClientReboot(PermissionRequiredMixin, SchemeMixin, DetailView):
     model = KnownClient
+    return_403 = True
+    permission_required = "control_client"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -141,6 +141,3 @@ class KnownClientReboot(LoginRequiredMixin, UserPassesTestMixin, SchemeMixin, De
         else:
             context["message"] = _("Neustart-Anfrage erfolgreich gesendet")
         return context
-
-    def test_func(self):
-        return self.request.user.is_superuser

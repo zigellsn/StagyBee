@@ -22,12 +22,20 @@
             <td>
                 <a href="#"
                    onclick="StagyBee.main.shutdownDialogActions('{% trans "Herunterfahren" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_shutdown' knownclient.id %}');">
-                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Herunterfahren" %}</div>
+                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Herunterfahren" %}
+                    </div>
                 </a>
                 <a href="#"
                    onclick="StagyBee.main.shutdownDialogActions('{% trans "Neu starten" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_reboot' knownclient.id %}');">
-                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Neu starten" %}</div>
+                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Neu starten" %}
+                    </div>
                 </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">
+                <div class="p_title text-center">{% trans "Keine Einträge vorhanden" %}</div>
             </td>
         </tr>
     {% endfor %}

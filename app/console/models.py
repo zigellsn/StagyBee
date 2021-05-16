@@ -54,6 +54,9 @@ class KnownClient(models.Model):
         ordering = ["alias", "uri"]
         verbose_name = _("Bekannter Client")
         verbose_name_plural = _("Bekannte Clients")
+        permissions = (
+            ("control_client", _("Client steuern")),
+        )
 
     uri = models.URLField(verbose_name=_("Client URL"), unique=True)
     alias = models.TextField(verbose_name=_("Alias Name"), default="Client")

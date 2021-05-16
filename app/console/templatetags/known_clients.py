@@ -13,14 +13,13 @@
 #  limitations under the License.
 
 from django import template
-from django.utils.http import urlencode
-
-from console.models import KnownClient
+from guardian.shortcuts import get_objects_for_user
 
 register = template.Library()
 
 
-@register.inclusion_tag("console/knownclient_list.html")
-def known_clients_maintain():
-    known_client_list = KnownClient.objects.all()
+@register.inclusion_tag("console/knownclient_list.html", takes_context=True)
+def known_clients_control(context):
+    request = context["request"]
+    known_client_list = get_objects_for_user(request.user, "console.control_client")
     return {"object_list": known_client_list}

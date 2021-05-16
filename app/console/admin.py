@@ -13,13 +13,13 @@
 #  limitations under the License.
 
 from django.contrib import admin
-from django.contrib.admin import ModelAdmin
+from guardian.admin import GuardedModelAdmin
 
 from .forms import KnownClientForm
 from .models import KnownClient
 
 
-class KnownClientAdmin(ModelAdmin):
+class KnownClientAdmin(GuardedModelAdmin):
     form = KnownClientForm
 
 

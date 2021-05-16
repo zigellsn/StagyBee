@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-05 12:59+0200\n"
+"POT-Creation-Date: 2021-05-16 10:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,11 +31,13 @@ msgstr ""
 msgid "Bevorzugte Sprache"
 msgstr ""
 
-#: .\console\forms.py:58
-msgid "Client URI"
+#: .\console\forms.py:58 .\console\models.py:61
+#: .\templates\console\knownclient_list.html:9
+msgid "Client URL"
 msgstr ""
 
-#: .\console\forms.py:59 .\console\models.py:59
+#: .\console\forms.py:59 .\console\models.py:62
+#: .\templates\console\knownclient_list.html:8
 msgid "Alias Name"
 msgstr ""
 
@@ -56,7 +58,7 @@ msgid "Dunkles Design"
 msgstr ""
 
 #: .\console\models.py:41 .\notification\forms.py:41
-#: .\notification\models.py:57 .\templates\console\settings.html:27
+#: .\notification\models.py:57 .\templates\console\settings.html:33
 #: .\templates\menu\language.html:8
 #: .\templates\notification\notification_maintain_list.html:10
 msgid "Sprache"
@@ -66,27 +68,27 @@ msgstr "زبان"
 msgid "Bekannter Client"
 msgstr ""
 
-#: .\console\models.py:56
+#: .\console\models.py:56 .\templates\console\settings.html:18
 msgid "Bekannte Clients"
 msgstr ""
 
 #: .\console\models.py:58
-msgid "Client URL"
+msgid "Client steuern"
 msgstr ""
 
-#: .\console\models.py:60
+#: .\console\models.py:63
 msgid "Token"
 msgstr ""
 
-#: .\console\models.py:61
+#: .\console\models.py:64
 msgid "Zertifikatsdatei"
 msgstr ""
 
-#: .\console\views.py:129 .\picker\views.py:64
+#: .\console\views.py:122 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:149 .\picker\views.py:83
+#: .\console\views.py:142 .\picker\views.py:82
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
@@ -166,7 +168,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:124 .\templates\console\settings.html:19
+#: .\picker\models.py:124 .\templates\console\settings.html:25
 msgid "Passwort"
 msgstr ""
 
@@ -334,29 +336,38 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: .\templates\console\knownclient_list.html:10
+#: .\templates\notification\notification_maintain_list.html:12
+msgid "Aktionen"
+msgstr ""
+
+#: .\templates\console\knownclient_list.html:24
+#: .\templates\console\knownclient_list.html:25
+#: .\templates\menu\shutdown.html:3
+msgid "Herunterfahren"
+msgstr ""
+
+#: .\templates\console\knownclient_list.html:28
+#: .\templates\console\knownclient_list.html:29
+#: .\templates\menu\shutdown.html:2
+msgid "Neu starten"
+msgstr ""
+
 #: .\templates\console\settings.html:12
 msgid "Benachrichtigungen"
 msgstr ""
 
-#: .\templates\console\settings.html:22
+#: .\templates\console\settings.html:28
 msgid "Passwort ändern"
 msgstr ""
 
-#: .\templates\console\settings.html:33
+#: .\templates\console\settings.html:39
 #: .\templates\notification\notification_form.html:9
 msgid "Speichern"
 msgstr ""
 
 #: .\templates\menu\scheme.html:5
 msgid "Helles Design"
-msgstr ""
-
-#: .\templates\menu\shutdown.html:2
-msgid "Neu starten"
-msgstr ""
-
-#: .\templates\menu\shutdown.html:3
-msgid "Herunterfahren"
 msgstr ""
 
 #: .\templates\notification\notification_confirm_delete.html:7
@@ -370,10 +381,6 @@ msgstr ""
 
 #: .\templates\notification\notification_list.html:7
 msgid "Neue Informationen"
-msgstr ""
-
-#: .\templates\notification\notification_maintain_list.html:12
-msgid "Aktionen"
 msgstr ""
 
 #: .\templates\notification\notification_maintain_list.html:61

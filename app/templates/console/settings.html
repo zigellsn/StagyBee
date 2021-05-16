@@ -14,14 +14,14 @@
                     {% notifications_maintain %}
                 </div>
             </div>
-            <div class="frame">
-                <div class="inherit-colors heading">{% trans "Bekannte Clients" %}</div>
-                <div class="content">
-                    {% known_clients_maintain %}
-                </div>
-            </div>
         {% endif %}
         <div class="frame {% if not user.is_superuser %}active{% endif %}">
+            <div class="inherit-colors heading">{% trans "Bekannte Clients" %}</div>
+            <div class="content">
+                {% known_clients_control %}
+            </div>
+        </div>
+        <div class="frame">
             <div class="inherit-colors heading">{% trans "Passwort" %}</div>
             <div class="content">
                 <a href="{% url 'password_change' %}">
