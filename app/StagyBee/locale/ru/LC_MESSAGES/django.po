@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-16 10:08+0200\n"
+"POT-Creation-Date: 2021-05-16 11:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Bekannter Client"
 msgstr ""
 
-#: .\console\models.py:56 .\templates\console\settings.html:18
+#: .\console\models.py:56 .\templates\console\settings.html:19
 msgid "Bekannte Clients"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Zertifikatsdatei"
 msgstr ""
 
-#: .\console\views.py:122 .\picker\views.py:63
+#: .\console\views.py:123 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
@@ -201,6 +201,8 @@ msgid "Sendezeit"
 msgstr ""
 
 #: .\templates\audit\audit_list.html:32
+#: .\templates\console\knownclient_list.html:38
+#: .\templates\notification\notification_maintain_list.html:71
 #: .\templates\stopwatch\timeentry_archive_week.html:65
 #: .\templates\stopwatch\timeentry_list.html:77
 msgid "Keine Einträge vorhanden"
@@ -350,8 +352,8 @@ msgstr ""
 msgid "Herunterfahren"
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:28
 #: .\templates\console\knownclient_list.html:29
+#: .\templates\console\knownclient_list.html:30
 #: .\templates\menu\shutdown.html:2
 msgid "Neu starten"
 msgstr ""
@@ -367,6 +369,22 @@ msgstr ""
 #: .\templates\console\settings.html:39
 #: .\templates\notification\notification_form.html:9
 msgid "Speichern"
+msgstr ""
+
+#: .\templates\console\settings.html:44
+msgid "Hilfe und Rechtliches"
+msgstr ""
+
+#: .\templates\console\settings.html:47
+msgid "Readme und Hilfe"
+msgstr ""
+
+#: .\templates\console\settings.html:48
+msgid "Lizenzvertrag"
+msgstr ""
+
+#: .\templates\console\settings.html:49
+msgid "Probleme melden"
 msgstr ""
 
 #: .\templates\menu\scheme.html:5
@@ -390,7 +408,7 @@ msgstr ""
 msgid "Bearbeiten"
 msgstr ""
 
-#: .\templates\notification\notification_maintain_list.html:76
+#: .\templates\notification\notification_maintain_list.html:82
 msgid "Neu"
 msgstr ""
 
