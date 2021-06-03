@@ -1,6 +1,6 @@
 psycopg2-binary==2.8.6
-django-environ==0.4.5
-django==3.2.3
+django-environ-2==2.1.0
+django==3.2.4
 channels==3.0.3
 channels-redis[cryptography]==3.2.0
 asgiref==3.3.4
