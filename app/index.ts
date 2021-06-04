@@ -16,14 +16,16 @@
 
 import {console_client_ws} from './stage/static/stage/js/console_client_ws';
 import {console_ws} from './console/static/console/js/console_ws';
-import {reloadOnNavigateBack} from './StagyBee/static/js/global';
-import {loadColorScheme} from './StagyBee/static/js/global';
-import {toggleColorScheme} from './StagyBee/static/js/global';
-import {startTime} from './StagyBee/static/js/global';
-import {RedirectPage} from './StagyBee/static/js/global';
-import {shutdownDialogActions} from './StagyBee/static/js/global';
+import {
+    loadColorScheme,
+    RedirectPage,
+    reloadOnNavigateBack,
+    shutdownDialogActions,
+    startTime,
+    toggleColorScheme
+} from './StagyBee/static/stagybee/js/global';
 import {stage_ws} from './stage/static/stage/js/stage_ws';
-import {timer_ws, bar} from './stopwatch/static/stopwatch/js/timer_ws';
+import {bar, timer_ws} from './stopwatch/static/stopwatch/js/timer_ws';
 
 export {
     console_client_ws,
