@@ -34,6 +34,6 @@ RUN mkdir -p $HOME/static && \
 USER pyuser
 
 COPY --chown=pyuser:users . .
-COPY --from=build --chown=pyuser:users /StagyBee/static ./static
+COPY --from=build --chown=pyuser:users /StagyBee/static ./StagyBee/static
 
 ENTRYPOINT ["/home/pyuser/scripts/entrypoint.prod.sh"]
