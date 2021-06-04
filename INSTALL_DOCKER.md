@@ -24,7 +24,7 @@ mkdir files
 ```
 
 ---
-- **It is recommended to restrict access to the directory `files` on file system level!**
+- **It is recommended to restrict access to the directory `./files` on file system level!**
 ---
 
 Then run
