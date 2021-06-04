@@ -31,4 +31,5 @@ jobs:
           python app/manage.py test ./app
           pytest app/stage/tests/test_consumers.py app/console/tests/test_consumers.py app/stopwatch/tests/test_consumers.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         env:
+          DEBUG: on
           PYTHONUNBUFFERED: 1
