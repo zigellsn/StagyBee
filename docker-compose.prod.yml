@@ -30,7 +30,7 @@ services:
     volumes:
       - type: bind
         source: ./static
-        target: /home/pyuser/StagyBee/static
+        target: /home/pyuser/static
       - type: bind
         source: ./files
         target: /home/pyuser/files

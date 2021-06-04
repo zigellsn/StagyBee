@@ -4,5 +4,3 @@
 .env.example
 .env.docker.example
 shutdown*.*
-static/
-files/

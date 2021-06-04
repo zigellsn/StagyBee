@@ -12,7 +12,7 @@ if [ -e ".env" ]; then
 fi
 
 if [ "${SQL_ENGINE}" = "django.db.backends.postgresql" ]; then
-    echo "Waiting for postgres..."
+    echo "Waiting for PostgreSQL..."
 
     while ! nc -z "${SQL_HOST}" "${SQL_PORT}"; do
       sleep 0.1
