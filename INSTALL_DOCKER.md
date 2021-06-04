@@ -23,6 +23,10 @@ mkdir static
 mkdir files
 ```
 
+---
+- **It is recommended to restrict access to the directory `files` on file system level!**
+---
+
 Then run
 ``` bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
@@ -56,6 +60,11 @@ mkdir files
 ```
 
 Provide key.pem and crt.pem files in ./nginx/certs/
+
+---
+- **It is recommended to restrict access to the directory `./files` on file system level!**
+- **It is recommended to restrict access to the directory `./nginx/certs/` on file system level!**
+---
 
 Then run
 ``` bash
