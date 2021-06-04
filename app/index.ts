@@ -23,7 +23,7 @@ import {
     shutdownDialogActions,
     startTime,
     toggleColorScheme
-} from './StagyBee/static/stagybee/js/global';
+} from './StagyBee/static/js/global';
 import {stage_ws} from './stage/static/stage/js/stage_ws';
 import {bar, timer_ws} from './stopwatch/static/stopwatch/js/timer_ws';
 

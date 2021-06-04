@@ -35,7 +35,7 @@ const mainConfig = {
         chunkFilename: 'js/[name].bundle.js',
         libraryTarget: 'var',
         library: ['StagyBee', '[name]'],
-        path: path.resolve(__dirname, 'StagyBee/static/stagybee')
+        path: path.resolve(__dirname, 'StagyBee/static')
     },
     optimization: {
         splitChunks: {
@@ -135,7 +135,7 @@ const schemes = {
         light: './style/light.less',
     },
     output: {
-        path: path.resolve(__dirname, 'StagyBee/static/stagybee'),
+        path: path.resolve(__dirname, 'StagyBee/static'),
         filename: '[name].scheme.js',
     },
     optimization: {
@@ -182,7 +182,7 @@ const schemes = {
         new FileManagerPlugin({
             events: {
                 onEnd: {
-                    delete: [path.resolve(__dirname, 'StagyBee/static/stagybee/dark.scheme.js'), path.resolve(__dirname, 'StagyBee/static/stagybee/light.scheme.js')]
+                    delete: [path.resolve(__dirname, 'StagyBee/static/dark.scheme.js'), path.resolve(__dirname, 'StagyBee/static/light.scheme.js')]
                 }
             }
         }),
