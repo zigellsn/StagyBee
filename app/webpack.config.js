@@ -81,7 +81,8 @@ const mainConfig = {
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: false
+                            sourceMap: false,
+                            esModule: false
                         }
                     },
                     {
