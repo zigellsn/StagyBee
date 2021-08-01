@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import {console_client_ws} from './stage/static/stage/js/console_client_ws';
 import {console_ws} from './console/static/console/js/console_ws';
 import {
     loadColorScheme,
@@ -24,11 +23,9 @@ import {
     startTime,
     toggleColorScheme
 } from './StagyBee/static/js/global';
-import {stage_ws} from './stage/static/stage/js/stage_ws';
 import {bar, timer_ws} from './stopwatch/static/stopwatch/js/timer_ws';
 
 export {
-    console_client_ws,
     console_ws,
     reloadOnNavigateBack,
     loadColorScheme,
@@ -36,7 +33,6 @@ export {
     startTime,
     RedirectPage,
     shutdownDialogActions,
-    stage_ws,
     timer_ws,
     bar
 }

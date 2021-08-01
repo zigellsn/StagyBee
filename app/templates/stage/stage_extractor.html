@@ -8,24 +8,21 @@
 {% endblock %}
 
 {% block content %}
-    {% trans "Zuhörer gesamt:" as sum_listeners %}{% trans "Meldungen:" as sum_request_to_speak %}
-    <div id="sumListeners"><span class="display1">{{ sum_listeners }}&nbsp;</span><span class="display1"
-                                                                                        id="sumListenersNumber"></span>
-        <span class="display1">&nbsp;-&nbsp;</span>
-        <span class="display1">{{ sum_request_to_speak }}&nbsp;</span><span class="display1"
-                                                                            id="sumRequestToSpeakNumber"></span>
+    <div hx-ws="connect:/ws/console_client/{{ credential.congregation|escape }}/">
+        <div id="scrim"></div>
     </div>
-    <div id="listeners"></div>
-    {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." as connect %}
-    <div class="pos-fixed pos-center" id="activity">
-        <span id="ring" class="pos-fixed pos-center" style="margin-top: -74px" data-role="activity" data-type="ring"
-              data-style="dark"></span>
-        <div>{{ connect }}</div>
+    <div hx-ws="connect:/ws/extractor/{{ credential.congregation|escape }}/">
+        <div id="sum-listeners"></div>
+        <div id="listeners"></div>
+        <div class="pos-fixed pos-center" id="activity"></div>
     </div>
-    {% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." as error_message %}
-    <div class="pos-fixed pos-center" id="errorMessage" style="display:none">
-        <span class="mif-cancel mif-5x fg-red pos-fixed pos-center" style="margin-top: -74px"></span>
-        <div>{{ error_message }}</div>
+    <div id="alert-box" class="info-box" data-role="infobox" data-on-close="$('#alert-form').trigger('submit');">
+        <div hx-ws="connect:/ws/console_client/{{ credential.congregation|escape }}/">
+            <div id="alert"></div>
+            <form id="alert-form" hx-ws="send">
+                <input type="hidden" name="message" value="ACK">
+            </form>
+        </div>
     </div>
 {% endblock %}
 
@@ -47,8 +44,10 @@
 
 {% block body_extra %}
     <script>
-        StagyBee.main.console_client_ws('{{ credential.congregation|escape }}');
+        htmx.on("htmx:load", function (evt) {
+            if (evt.target.id === 'alert')
+                $('#alert-box').data('infobox').open();
+        });
         StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, true);
-        StagyBee.main.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
     </script>
 {% endblock %}

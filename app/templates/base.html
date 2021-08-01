@@ -52,6 +52,13 @@
 <script src="{% static "stagybee/js/external.bundle.js" %}" type="text/javascript"></script>
 <script src="{% static "stagybee/js/main.bundle.js" %}" type="text/javascript"></script>
 <script src="{% url 'javascript-catalog' %}" type="text/javascript"></script>
+<script src="https://unpkg.com/htmx.org@1.5.0"></script>
+<script>
+  document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+  })
+</script>
+<script>htmx.logAll();</script>
 <script type="application/javascript">StagyBee.main.loadColorScheme('{% static "stagybee/css/dark.css" %}', '{% static "stagybee/css/light.css" %}');</script>
 {% block body_extra %}{% endblock body_extra %}
 </body>

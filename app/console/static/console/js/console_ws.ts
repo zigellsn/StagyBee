@@ -22,8 +22,8 @@ export function console_ws(language: string, congregation_ws: string) {
     let submitStop = document.getElementById('submit_stop');
     let submitText = document.getElementById('submit_text');
     let submitScrim = document.getElementById('submit_scrim');
-    let refreshActivity = document.getElementById('refresh_activity');
-    let submitRefresh = document.getElementById('submit_refresh');
+    // let refreshActivity = document.getElementById('refresh_activity');
+    // let submitRefresh = document.getElementById('submit_refresh');
     let customTalkName = document.getElementById('custom_talk');
     let messageAcknowledgement = document.getElementById('messageAcknowledgement');
     let talkNameInput = document.getElementById('talk_name');
@@ -64,7 +64,7 @@ export function console_ws(language: string, congregation_ws: string) {
         console.log('Console WebSocket CONNECT successful');
         customTalkName.style.display = 'none';
         messageAcknowledgement.style.display = 'none';
-        refreshActivity.style.display = 'none';
+        // refreshActivity.style.display = 'none';
         removeAllListItems();
         consoleSocket.send(JSON.stringify({
             'alert': 'status'
@@ -140,7 +140,7 @@ export function console_ws(language: string, congregation_ws: string) {
                 } else {
                     submitScrim.innerText = django.gettext('Bildschirm verdunkeln')
                 }
-                refreshActivity.style.display = 'none';
+                // refreshActivity.style.display = 'none';
             }
         }
     };
@@ -215,19 +215,19 @@ export function console_ws(language: string, congregation_ws: string) {
             consoleSocket.send(JSON.stringify({
                 'alert': 'scrim'
             }));
-            refreshActivity.style.display = 'block';
-            consoleSocket.send(JSON.stringify({
-                'alert': 'status'
-            }));
+            // refreshActivity.style.display = 'block';
+            // consoleSocket.send(JSON.stringify({
+            //     'alert': 'status'
+            // }));
         };
 
-    if (submitRefresh !== null)
-        submitRefresh.onclick = function (_) {
-            consoleSocket.send(JSON.stringify({
-                'alert': 'status'
-            }));
-            refreshActivity.style.display = 'block';
-        };
+    // if (submitRefresh !== null)
+    //     submitRefresh.onclick = function (_) {
+    //         consoleSocket.send(JSON.stringify({
+    //             'alert': 'status'
+    //         }));
+    //         // refreshActivity.style.display = 'block';
+    //     };
 
     if (submitText !== null)
         submitText.onclick = function (_) {

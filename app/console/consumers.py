@@ -25,6 +25,8 @@ from picker.models import Credential
 from stage.consumers import generate_channel_group_name
 from .workbook.workbook import WorkbookExtractor
 
+# TODO: Translation!
+
 
 class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
 
@@ -33,6 +35,8 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
         if user.is_anonymous or not user.is_authenticated:
             await self.close()
             return
+        if "scrim" not in self.scope["url_route"]["kwargs"] or self.scope["url_route"]["kwargs"]["scrim"] is None:
+            self.scope["url_route"]["kwargs"]["scrim"] = False
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
             generate_channel_group_name("console", congregation),
@@ -63,7 +67,14 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
                 credential = await database_sync_to_async(__get_congregation__)(congregation)
                 await database_sync_to_async(__persist_audit_log__)(self.scope["user"],
                                                                     credential, text_data)
-            message_type = "alert"
+            if text_data["alert"] == "message":
+                message_type = "alert"
+            else:
+                message_type = text_data["alert"]
+
+            if text_data["alert"] == "scrim":
+                self.scope["url_route"]["kwargs"]["scrim"] = not self.scope["url_route"]["kwargs"]["scrim"]
+                text_data["value"] = self.scope["url_route"]["kwargs"]["scrim"]
         else:
             return
         await self.channel_layer.group_send(congregation_group_name, {"type": message_type, message_type: text_data})
@@ -72,14 +83,20 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
         await self.send_json(event)
 
     async def alert(self, event):
+        pass
+
+    async def scrim(self, event):
+        pass
+
+    async def status(self, event):
         await self.send_json(event)
 
     async def timer(self, event):
         await self.send_json(event)
 
     async def message(self, event):
-        if event["message"]["message"] == "ACK":
-            time = datetime.fromtimestamp(event["message"]["time"] / 1000)
+        if json.loads(event["message"])["message"] == "ACK":
+            time = datetime.now()
             old_lang = translation.get_language()
             translation.activate(self.scope["url_route"]["kwargs"]["language"])
             event["message"]["time"] = formats.date_format(time, "DATETIME_FORMAT")

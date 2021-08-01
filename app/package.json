@@ -34,6 +34,7 @@
     "luxon": "^2.0.1",
     "normalize.css": "^8.0.1",
     "progressbar.js": "^1.1.0",
+    "htmx.org": "^1.5.0",
     "reconnecting-websocket": "^4.4.0"
   }
 }

@@ -22,12 +22,14 @@ from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
+from StagyBee.consumers import AsyncRedisWebsocketConsumer
 from picker.models import Credential
 
 GLOBAL_TIMEOUT = {}
+# TODO: Translation!
 
 
 def generate_channel_group_name(function, congregation):
@@ -35,7 +37,7 @@ def generate_channel_group_name(function, congregation):
     return f"congregation.{function}.{con}"
 
 
-class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
+class ExtractorConsumer(AsyncRedisWebsocketConsumer):
 
     async def connect(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -64,25 +66,69 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
 
     async def extractor_listeners(self, event):
         await self.__restart_waiter()
-        await self.send_json(event["listeners"])
+        new_content = json.loads(event["listeners"])["names"]
+        listener_count = 0
+        request_to_speak_count = 0
+        new_content = sorted(new_content, key=lambda x: (x["familyName"].lower(), x["givenName"].lower()))
+        listeners = ""
+        for name in new_content:
+            listener_count = listener_count + name["listenerCount"]
+
+            if name["familyName"] == "" and name["givenName"] == "":
+                continue
+            if name["familyName"] == "":
+                complete_name = name["givenName"]
+            elif name["givenName"] == "":
+                complete_name = name["familyName"]
+            else:
+                # TODO: Name order
+                complete_name = f"{name['familyName']}, {name['givenName']}"
+
+            if name["requestToSpeak"] and not name["speaking"]:
+                speak = "bg-blue requestToSpeak"
+                request_to_speak_count = request_to_speak_count + 1
+            elif name["speaking"]:
+                speak = "bg-green"
+            else:
+                speak = "bg-gray"
+
+            if name['listenerType'] <= 3:
+                listener_type = "mif-phone"
+            else:
+                listener_type = "mif-tablet"
+
+            if (self.show_only_request_to_speak and name["requestToSpeak"]) or not self.show_only_request_to_speak:
+                listeners = f"{listeners}<div class=\"button primary large {speak} fg-black m-1\" " \
+                            f"data-size=\"wide\"><span class=\"ml-1\"><span class=\"{listener_type}\"><" \
+                            f"/span>&nbsp;{complete_name}&nbsp;</span><span class=\"badge inline\">" \
+                            f"{name['listenerCount']}</span></div> "
+
+        await self.send("<div id=\"sum-listeners\"><span class=\"display1\">Zuhörer gesamt:&nbsp;</span><span "
+                        f"class=\"display1\" id=\"sumListenersNumber\">{listener_count}</span><span "
+                        "class=\"display1\">&nbsp;-&nbsp;</span><span "
+                        "class=\"display1\">Meldungen:&nbsp;</span><span class=\"display1\" "
+                        f"id=\"sumRequestToSpeakNumber\">{request_to_speak_count}</span></div>"
+                        "<div id=\"activity\"></div>"
+                        f"<div id=\"listeners\">{listeners}</div>")
 
     async def extractor_status(self, event):
-        await self.send_json(event["status"])
-
-    async def encode_json(self, content):
-        if type(content) == bytes:
-            new_content = json.loads(content)
-            if type(new_content) == dict:
-                return json.dumps(new_content)
-            return new_content
+        if not event["status"]["running"]:
+            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span id=\"ring\" class=\"pos-fixed "
+                            "pos-center\" style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
+                            "data-style=\"dark\"></span><div>Verbindung zu Extraktor-Dienst wird aufgebaut...</div>"
+                            "</div><div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
         else:
-            return await super().encode_json(content=content)
+            await self.send("<div id=\"activity\"></div>")
 
     async def __waiter(self):
         await asyncio.sleep(settings.EXTRACTOR_TIMEOUT)
         reachable = await self.__get_extractor_status()
         if not reachable:
-            await self.send_json("extractor_not_available")
+            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
+                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
+                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
+                            "<div id=\"listeners\"></div>"
+                            "<div id=\"sum-listeners\"></div>")
 
     async def __restart_waiter(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -100,6 +146,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
+        self.show_only_request_to_speak = credentials.show_only_request_to_speak
         if "session_id" in self.scope["url_route"]["kwargs"] and \
                 self.scope["url_route"]["kwargs"]["session_id"] is not None:
             url = f"{self.extractor_url}api/status/{self.scope['url_route']['kwargs']['session_id']}"
@@ -115,10 +162,15 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
                 return True
 
     async def __connect_to_extractor(self, redis_key):
+        await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span id=\"ring\" class=\"pos-fixed "
+                        "pos-center\" style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
+                        "data-style=\"dark\"></span><div>Verbindung zu Extraktor-Dienst wird aufgebaut...</div></div>"
+                        "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
+        self.show_only_request_to_speak = credentials.show_only_request_to_speak
         self.extractor_url = credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
@@ -141,14 +193,25 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe", payload))
             await self.task
         except aiohttp.ClientError:
-            await self.send_json("extractor_not_available")
+            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
+                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
+                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
+                            "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
         except RetryError:
-            await self.send_json("extractor_not_available")
+            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
+                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
+                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
+                            "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
         else:
             success = self.task.result()["success"]
             if success:
                 self.scope["url_route"]["kwargs"]["session_id"] = self.task.result()["sessionId"]
-                await self.send_json("subscribed_to_extractor")
+                await self.send("<div id=\"sum-listeners\"><span class=\"display1\">Zuhörer gesamt:&nbsp;</span><span "
+                                "class=\"display1\" id=\"sumListenersNumber\"></span><span "
+                                "class=\"display1\">&nbsp;-&nbsp;</span><span "
+                                "class=\"display1\">Meldungen:&nbsp;</span><span class=\"display1\" "
+                                "id=\"sumRequestToSpeakNumber\"></span></div>"
+                                "<div id=\"activity\"></div>")
             await self._redis.connect_uri(redis_key, self.channel_name)
 
     async def __disconnect_from_extractor(self, redis_key):
@@ -168,13 +231,21 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
                         f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['session_id']}"))
                 await self.task
             except aiohttp.ClientError:
-                await self.send_json("extractor_not_available")
+                await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
+                                "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
+                                "-74px\"></span>"
+                                "<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
+                                "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
             except RetryError:
-                await self.send_json("extractor_not_available")
+                await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
+                                "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
+                                "-74px\"></span>"
+                                "<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
+                                "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
             else:
                 success = self.task.result()["success"]
                 if success:
-                    await self.send_json("unsubscribed_from_extractor")
+                    await self.send("unsubscribed_from_extractor")
                     self.scope["url_route"]["kwargs"]["session_id"] = None
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
@@ -202,7 +273,7 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
                 return await response.json()
 
 
-class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
+class ConsoleClientConsumer(AsyncRedisWebsocketConsumer):
 
     async def connect(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -223,20 +294,36 @@ class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
         raise StopConsumer()
 
-    async def receive_json(self, text_data, **kwargs):
+    async def websocket_receive(self, text_data):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         congregation_channel_group = generate_channel_group_name("console", congregation)
-        if "message" in text_data:
-            await self.channel_layer.group_send(congregation_channel_group, {"type": "message", "message": text_data})
+        if "text" in text_data and "message" in text_data["text"]:
+            await self.channel_layer.group_send(congregation_channel_group,
+                                                {"type": "message", "message": text_data["text"]})
 
     async def alert(self, event):
-        await self.send_json(event)
+        if "alert" in event:
+            message_alert = "<div id=\"alert\"><span class=\"button square closer\"></span><div " \
+                            f"class=\"info-box-content\"><h3>{_('Nachricht')}</h3><p>{event['alert']['value']}" \
+                            "</p></div></div>"
+            await self.send(text_data=message_alert)
+
+    async def scrim(self, event):
+        if "scrim" in event:
+            if event["scrim"]["value"]:
+                message_alert = "<div id=\"scrim\"><div id=\"overlay\" style=\"display: block;\"></div></div>"
+            else:
+                message_alert = "<div id=\"scrim\"></div>"
+            await self.send(text_data=message_alert)
 
     async def timer(self, event):
-        await self.send_json(event)
+        pass
 
     async def message(self, event):
-        await self.send_json(event)
+        pass
+
+    async def status(self, event):
+        pass
 
     @staticmethod
     def __get_redis_key(congregation):
