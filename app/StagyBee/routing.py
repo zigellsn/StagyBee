@@ -16,17 +16,22 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
+from django.urls import re_path
 
 from console import routing as console_routing
 from stage import routing as stage_routing
 from stopwatch import routing as stopwatch_routing
 
 urlpatterns = stage_routing.websocket_urlpatterns
-urlpatterns += console_routing.websocket_urlpatterns
 urlpatterns += stopwatch_routing.websocket_urlpatterns
 
+http_urlpatterns = stage_routing.http_urlpatterns + console_routing.http_urlpatterns + [
+    re_path(r"", get_asgi_application())]
+
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
+    "http": AuthMiddlewareStack(
+        URLRouter(http_urlpatterns)
+    ),
     "websocket": AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             URLRouter(urlpatterns)

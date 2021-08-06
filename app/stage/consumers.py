@@ -25,11 +25,10 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
-from StagyBee.consumers import AsyncRedisWebsocketConsumer
+from StagyBee.consumers import AsyncRedisHttpConsumer
 from picker.models import Credential
 
 GLOBAL_TIMEOUT = {}
-# TODO: Translation!
 
 
 def generate_channel_group_name(function, congregation):
@@ -37,22 +36,31 @@ def generate_channel_group_name(function, congregation):
     return f"congregation.{function}.{con}"
 
 
-class ExtractorConsumer(AsyncRedisWebsocketConsumer):
+class ExtractorConsumer(AsyncRedisHttpConsumer):
 
-    async def connect(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.task = None
+
+    async def handle(self, body):
+        await self.send_headers(headers=[
+            (b"Cache-Control", b"no-cache"),
+            (b"Content-Type", b"text/event-stream"),
+            (b"Transfer-Encoding", b"chunked"),
+        ])
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
             generate_channel_group_name("stage", congregation),
             self.channel_name
         )
-        await self.accept()
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
             timeout.cancel()
             GLOBAL_TIMEOUT.pop(congregation)
+        await self.send_body("".encode("utf-8"), more_body=True)
         await self.__connect_to_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
 
-    async def disconnect(self, close_code):
+    async def disconnect(self):
         if self.task is not None and not self.task.done():
             self.task.cancel()
             with suppress(asyncio.CancelledError):
@@ -101,34 +109,37 @@ class ExtractorConsumer(AsyncRedisWebsocketConsumer):
                 listeners = f"{listeners}<div class=\"button primary large {speak} fg-black m-1\" " \
                             f"data-size=\"wide\"><span class=\"ml-1\"><span class=\"{listener_type}\"><" \
                             f"/span>&nbsp;{complete_name}&nbsp;</span><span class=\"badge inline\">" \
-                            f"{name['listenerCount']}</span></div> "
+                            f"{name['listenerCount']}</span></div>"
 
-        await self.send("<div id=\"sum-listeners\"><span class=\"display1\">Zuhörer gesamt:&nbsp;</span><span "
-                        f"class=\"display1\" id=\"sumListenersNumber\">{listener_count}</span><span "
-                        "class=\"display1\">&nbsp;-&nbsp;</span><span "
-                        "class=\"display1\">Meldungen:&nbsp;</span><span class=\"display1\" "
-                        f"id=\"sumRequestToSpeakNumber\">{request_to_speak_count}</span></div>"
-                        "<div id=\"activity\"></div>"
-                        f"<div id=\"listeners\">{listeners}</div>")
+        await self.send_body(
+            f"event: sum-listeners\ndata: <div><span class=\"display1\">{_('Zuhörer gesamt:&nbsp;')}</span><span "
+            f"class=\"display1\">{listener_count}</span><span class=\"display1\">&nbsp;-&nbsp;</span><span "
+            f"class=\"display1\">{_('Meldungen:&nbsp;')}</span><span class=\"display1\">"
+            f"{request_to_speak_count}</span></div>\n\n "
+            "event: activity\ndata: <div></div>\n\n"
+            f"event: listeners\ndata: <div>{listeners}</div>\n\n".encode("utf-8"), more_body=True)
 
     async def extractor_status(self, event):
-        if not event["status"]["running"]:
-            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span id=\"ring\" class=\"pos-fixed "
-                            "pos-center\" style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
-                            "data-style=\"dark\"></span><div>Verbindung zu Extraktor-Dienst wird aufgebaut...</div>"
-                            "</div><div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+        if not json.loads(event["status"])["running"]:
+            await self.send_body(
+                "event: activity\ndata: <div class=\"pos-fixed pos-center\"><span class=\"pos-fixed pos-center\" "
+                "style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
+                f"data-style=\"dark\"></span><div>{_('Verbindung zu Extraktor-Dienst wird aufgebaut...')}"
+                "</div></div>\n\n "
+                "event: listeners\ndata: <div></div>\n\n"
+                "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
         else:
-            await self.send("<div id=\"activity\"></div>")
+            await self.send_body("<div id=\"activity\"></div>\n\n".encode("utf-8"), more_body=True)
 
     async def __waiter(self):
         await asyncio.sleep(settings.EXTRACTOR_TIMEOUT)
         reachable = await self.__get_extractor_status()
         if not reachable:
-            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
-                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
-                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
-                            "<div id=\"listeners\"></div>"
-                            "<div id=\"sum-listeners\"></div>")
+            await self.send_body("event: activity\ndata: <div class=\"pos-fixed pos-center\"><span class=\"mif-cancel "
+                                 "mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: -74px\"></span><div>"
+                                 f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
+                                 "event: listeners\ndata: <div></div>\n\n"
+                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
 
     async def __restart_waiter(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -162,10 +173,13 @@ class ExtractorConsumer(AsyncRedisWebsocketConsumer):
                 return True
 
     async def __connect_to_extractor(self, redis_key):
-        await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span id=\"ring\" class=\"pos-fixed "
-                        "pos-center\" style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
-                        "data-style=\"dark\"></span><div>Verbindung zu Extraktor-Dienst wird aufgebaut...</div></div>"
-                        "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+        await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\"><span class=\"pos-fixed "
+                             f"pos-center\" style=\"margin-top: -74px\" data-role=\"activity\" data-type=\"ring\" "
+                             f"data-style=\"dark\"></span><div>"
+                             f"{_('Verbindung zu Extraktor-Dienst wird aufgebaut...')}</div></div>\n\n"
+                             "event: listeners\ndata: <div></div>\n\n"
+                             "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
+                             more_body=True)
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
@@ -193,25 +207,30 @@ class ExtractorConsumer(AsyncRedisWebsocketConsumer):
             self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe", payload))
             await self.task
         except aiohttp.ClientError:
-            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
-                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
-                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
-                            "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+            await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\"><span "
+                                 f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
+                                 f" -74px\"></span><div>"
+                                 f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
+                                 "event: listeners\ndata: <div></div>\n\n"
+                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
+                                 more_body=True)
         except RetryError:
-            await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
-                            "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
-                            "-74px\"></span>""<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
-                            "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+            await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\" ><span "
+                                 f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
+                                 f" -74px\"></span><div>"
+                                 f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
+                                 "event: listeners\ndata: <div></div>\n\n"
+                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
+                                 more_body=True)
         else:
             success = self.task.result()["success"]
             if success:
                 self.scope["url_route"]["kwargs"]["session_id"] = self.task.result()["sessionId"]
-                await self.send("<div id=\"sum-listeners\"><span class=\"display1\">Zuhörer gesamt:&nbsp;</span><span "
-                                "class=\"display1\" id=\"sumListenersNumber\"></span><span "
-                                "class=\"display1\">&nbsp;-&nbsp;</span><span "
-                                "class=\"display1\">Meldungen:&nbsp;</span><span class=\"display1\" "
-                                "id=\"sumRequestToSpeakNumber\"></span></div>"
-                                "<div id=\"activity\"></div>")
+                await self.send_body(
+                    f"event: sum-listeners\ndata: <div><span class=\"display1\">{_('Zuhörer gesamt:&nbsp;')}</span"
+                    f"><span class=\"display1\"></span><span class=\"display1\">&nbsp;-&nbsp;</span><span "
+                    f"class=\"display1\">{_('Meldungen:&nbsp;')}</span><span class=\"display1\"></span></div>\n\n"
+                    "event: activity\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
             await self._redis.connect_uri(redis_key, self.channel_name)
 
     async def __disconnect_from_extractor(self, redis_key):
@@ -231,21 +250,25 @@ class ExtractorConsumer(AsyncRedisWebsocketConsumer):
                         f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['session_id']}"))
                 await self.task
             except aiohttp.ClientError:
-                await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
-                                "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
-                                "-74px\"></span>"
-                                "<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
-                                "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+                await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\"><span "
+                                     f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
+                                     f" -74px\"></span><div>"
+                                     f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
+                                     "event: listeners\ndata: <div></div>\n\n"
+                                     "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
+                                     more_body=True)
             except RetryError:
-                await self.send("<div class=\"pos-fixed pos-center\" id=\"activity\"><span "
-                                "class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: "
-                                "-74px\"></span>"
-                                "<div>Extraktor-Dienst läuft nicht oder ist nicht erreichbar.</div></div>"
-                                "<div id=\"listeners\"></div><div id=\"sum-listeners\"></div>")
+                await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\" ><span "
+                                     f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
+                                     f" -74px\"></span><div>"
+                                     f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
+                                     "event: listeners\ndata: <div></div>\n\n"
+                                     "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
+                                     more_body=True)
             else:
                 success = self.task.result()["success"]
                 if success:
-                    await self.send("unsubscribed_from_extractor")
+                    await self.send_body("data: unsubscribed_from_extractor\n\n".encode("utf-8"), more_body=True)
                     self.scope["url_route"]["kwargs"]["session_id"] = None
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
@@ -273,18 +296,25 @@ class ExtractorConsumer(AsyncRedisWebsocketConsumer):
                 return await response.json()
 
 
-class ConsoleClientConsumer(AsyncRedisWebsocketConsumer):
+class ConsoleClientConsumer(AsyncRedisHttpConsumer):
 
-    async def connect(self):
+    async def handle(self, body):
+        await self.send_headers(headers=[
+            (b"Cache-Control", b"no-cache"),
+            (b"Content-Type", b"text/event-stream"),
+            (b"Transfer-Encoding", b"chunked"),
+        ])
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        if "scrim" not in self.scope["url_route"]["kwargs"] or self.scope["url_route"]["kwargs"]["scrim"] is None:
+            self.scope["url_route"]["kwargs"]["scrim"] = False
         await self.channel_layer.group_add(
             generate_channel_group_name("console", congregation),
             self.channel_name
         )
-        await self.accept()
+        await self.send_body("".encode("utf-8"), more_body=True)
         await self._redis.connect_uri(self.__get_redis_key(congregation), self.channel_name)
 
-    async def disconnect(self, close_code):
+    async def disconnect(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         congregation_channel_group = generate_channel_group_name("console", congregation)
         count = await self._redis.disconnect_uri(self.__get_redis_key(congregation), self.channel_name)
@@ -292,29 +322,23 @@ class ConsoleClientConsumer(AsyncRedisWebsocketConsumer):
         if count == 0:
             await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
         await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
-        raise StopConsumer()
-
-    async def websocket_receive(self, text_data):
-        congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        congregation_channel_group = generate_channel_group_name("console", congregation)
-        if "text" in text_data and "message" in text_data["text"]:
-            await self.channel_layer.group_send(congregation_channel_group,
-                                                {"type": "message", "message": text_data["text"]})
 
     async def alert(self, event):
         if "alert" in event:
-            message_alert = "<div id=\"alert\"><span class=\"button square closer\"></span><div " \
-                            f"class=\"info-box-content\"><h3>{_('Nachricht')}</h3><p>{event['alert']['value']}" \
-                            "</p></div></div>"
-            await self.send(text_data=message_alert)
+            message_alert = "event: alert\ndata: <div><span class=\"button square closer\"></span><div " \
+                            f"class=\"info-box-content\"><h3>{_('Nachricht')}</h3><p>" \
+                            f"{event['alert']['value'].decode('utf-8')}</p></div></div>\n\n"
+            await self.send_body(message_alert.encode("utf-8"), more_body=True)
 
     async def scrim(self, event):
         if "scrim" in event:
-            if event["scrim"]["value"]:
-                message_alert = "<div id=\"scrim\"><div id=\"overlay\" style=\"display: block;\"></div></div>"
+            if not self.scope["url_route"]["kwargs"]["scrim"]:
+                message_alert = "event: scrim\ndata: <div id=\"overlay\" style=\"display: block;\"></div>\n\n"
             else:
-                message_alert = "<div id=\"scrim\"></div>"
-            await self.send(text_data=message_alert)
+                message_alert = "event: scrim\ndata: \n\n"
+
+            self.scope["url_route"]["kwargs"]["scrim"] = not self.scope["url_route"]["kwargs"]["scrim"]
+            await self.send_body(message_alert.encode("utf-8"), more_body=True)
 
     async def timer(self, event):
         pass

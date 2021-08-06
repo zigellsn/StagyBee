@@ -12,75 +12,41 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import json
 from datetime import datetime
 
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
-from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.utils import formats, translation
+from django.utils.translation import gettext_lazy as _
 
+from StagyBee.consumers import AsyncRedisHttpConsumer
 from audit.models import Audit
 from picker.models import Credential
 from stage.consumers import generate_channel_group_name
-from .workbook.workbook import WorkbookExtractor
-
-# TODO: Translation!
 
 
-class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
+class ConsoleConsumer(AsyncRedisHttpConsumer):
 
-    async def connect(self):
+    async def handle(self, body):
+        await self.send_headers(headers=[
+            (b"Cache-Control", b"no-cache"),
+            (b"Content-Type", b"text/event-stream"),
+            (b"Transfer-Encoding", b"chunked"),
+        ])
         user = self.scope['user']
         if user.is_anonymous or not user.is_authenticated:
-            await self.close()
-            return
-        if "scrim" not in self.scope["url_route"]["kwargs"] or self.scope["url_route"]["kwargs"]["scrim"] is None:
-            self.scope["url_route"]["kwargs"]["scrim"] = False
+            raise StopConsumer()
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
             generate_channel_group_name("console", congregation),
             self.channel_name
         )
-        await self.accept()
-        workbook_extractor = WorkbookExtractor()
-        urls = workbook_extractor.create_urls(datetime.today(), datetime.today())
-        times = await workbook_extractor.get_workbooks(urls, self.scope["url_route"]["kwargs"]["language"])
-        if times is not None:
-            dump = json.dumps(times)
-            message = {"type": "times",
-                       "times": dump}
-            await self.send_json(message)
+        await self.send_body("".encode("utf-8"), more_body=True)
 
-    async def disconnect(self, close_code):
+    async def disconnect(self):
         await self.channel_layer.group_discard(
             generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
-        raise StopConsumer()
-
-    async def receive_json(self, text_data, **kwargs):
-        congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        congregation_group_name = generate_channel_group_name("console", congregation)
-        if "alert" in text_data:
-            if text_data["alert"] == "message":
-                credential = await database_sync_to_async(__get_congregation__)(congregation)
-                await database_sync_to_async(__persist_audit_log__)(self.scope["user"],
-                                                                    credential, text_data)
-            if text_data["alert"] == "message":
-                message_type = "alert"
-            else:
-                message_type = text_data["alert"]
-
-            if text_data["alert"] == "scrim":
-                self.scope["url_route"]["kwargs"]["scrim"] = not self.scope["url_route"]["kwargs"]["scrim"]
-                text_data["value"] = self.scope["url_route"]["kwargs"]["scrim"]
-        else:
-            return
-        await self.channel_layer.group_send(congregation_group_name, {"type": message_type, message_type: text_data})
-
-    async def exit(self, event):
-        await self.send_json(event)
 
     async def alert(self, event):
         pass
@@ -89,19 +55,24 @@ class ConsoleConsumer(AsyncJsonRedisWebsocketConsumer):
         pass
 
     async def status(self, event):
-        await self.send_json(event)
+        pass
 
     async def timer(self, event):
-        await self.send_json(event)
+        pass
+
+    async def exit(self, event):
+        pass
 
     async def message(self, event):
-        if json.loads(event["message"])["message"] == "ACK":
+        text = ""
+        if event["message"]["message"] == "ACK":
             time = datetime.now()
             old_lang = translation.get_language()
             translation.activate(self.scope["url_route"]["kwargs"]["language"])
-            event["message"]["time"] = formats.date_format(time, "DATETIME_FORMAT")
+            time = formats.date_format(time, "DATETIME_FORMAT")
             translation.activate(old_lang)
-        await self.send_json(event)
+            text = f"event: message\ndata: {_('Nachricht vom %s bestätigt.') % time}\n\n"
+        await self.send_body(text.encode("utf-8"), more_body=True)
 
     @staticmethod
     def __get_redis_key(congregation):

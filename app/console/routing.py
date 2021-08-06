@@ -16,6 +16,6 @@ from django.urls import re_path
 
 from console.consumers import ConsoleConsumer
 
-websocket_urlpatterns = [
+http_urlpatterns = [
     re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer.as_asgi())
 ]

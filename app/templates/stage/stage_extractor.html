@@ -8,21 +8,23 @@
 {% endblock %}
 
 {% block content %}
-    <div hx-ws="connect:/ws/console_client/{{ credential.congregation|escape }}/">
-        <div id="scrim"></div>
+    <div hx-sse="connect:/ws/console_client/{{ credential.congregation|escape }}/">
+        <div hx-sse="swap:scrim"></div>
     </div>
-    <div hx-ws="connect:/ws/extractor/{{ credential.congregation|escape }}/">
-        <div id="sum-listeners"></div>
-        <div id="listeners"></div>
-        <div class="pos-fixed pos-center" id="activity"></div>
-    </div>
-    <div id="alert-box" class="info-box" data-role="infobox" data-on-close="$('#alert-form').trigger('submit');">
-        <div hx-ws="connect:/ws/console_client/{{ credential.congregation|escape }}/">
-            <div id="alert"></div>
-            <form id="alert-form" hx-ws="send">
-                <input type="hidden" name="message" value="ACK">
-            </form>
+
+    <div id="alert-box" class="info-box" data-role="infobox">
+        <div hx-sse="connect:/ws/console_client/{{ credential.congregation|escape }}/">
+            <div hx-sse="swap:alert"></div>
         </div>
+        <form id="alert-form" hx-trigger="close from:#alert-box"
+              hx-post="{% url 'console:message_ack' credential.congregation %}">
+            <input type="hidden" name="message" value="ACK">
+        </form>
+    </div>
+    <div hx-sse="connect:/ws/extractor/{{ credential.congregation|escape }}/">
+        <div hx-sse="swap:sum-listeners"></div>
+        <div hx-sse="swap:listeners"></div>
+        <div hx-sse="swap:activity"></div>
     </div>
 {% endblock %}
 
@@ -44,8 +46,8 @@
 
 {% block body_extra %}
     <script>
-        htmx.on("htmx:load", function (evt) {
-            if (evt.target.id === 'alert')
+        htmx.on("htmx:sseMessage", function (evt) {
+            if (evt.detail.type === 'alert')
                 $('#alert-box').data('infobox').open();
         });
         StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, true);
