@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n l10n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
@@ -50,19 +50,22 @@
                         <td>{{ time_entry.duration }}</td>
                         <td>{{ time_entry.display_max_duration }}</td>
                         {% if "-" in time_entry.difference %}
-                            <td class="fg-red">{{ time_entry.difference }}
-                                &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                            <td class="fg-red">
+                                <div>{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-red fg-gray" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% else %}
-                            <td class="fg-blue">{{ time_entry.difference }}
-                                &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                            <td class="fg-blue">
+                                <div>{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-blue" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% endif %}
+
                     </tr>
                 {% empty %}
                     <tr>
                         <td colspan="6">
-                            <div class="p_title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                            <div class="p-title text-center">{% trans "Keine Einträge vorhanden" %}</div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -70,10 +73,4 @@
             </table>
         </div>
     </div>
-{% endblock %}
-
-{% block body_extra %}
-    <script>
-        StagyBee.main.bar('bar');
-    </script>
 {% endblock %}

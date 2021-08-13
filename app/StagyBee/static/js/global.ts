@@ -50,17 +50,6 @@ export function startTime() {
     setTimeout(startTime, 500);
 }
 
-export function reloadOnNavigateBack() {
-    let perfEntries = performance.getEntriesByType('navigation');
-    for (let i = 0; i < perfEntries.length; i++) {
-        let p = perfEntries[i];
-        if ('type' in p && p['type'] === 'back_forward') {
-            location.reload();
-            break;
-        }
-    }
-}
-
 function setColorScheme(dark: boolean, darkStyle: string, lightStyle: string): string {
     let scheme;
     let icon = $('#scheme-icon');

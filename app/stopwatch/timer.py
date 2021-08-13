@@ -43,6 +43,9 @@ class Timer:
     def get_context(self):
         return self._context
 
+    def set_callback(self, callback):
+        self._callback = callback
+
     def get_timer_name(self):
         return self._name
 

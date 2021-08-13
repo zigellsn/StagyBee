@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n l10n %}
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
@@ -8,9 +8,10 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+    <div hx-ws="connect:/ws/central_timer/{{ congregation.congregation|escape }}/">
         <span class="display1">{{ congregation.display_name }}</span>
-        <span class="text-leader pt-8 pb-8" id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk_number">{{ talk }}</span></i></span>
+        <div class="text-leader pt-8 pb-8" id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk-name-caption"></span></i>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -25,13 +26,13 @@
             <tbody>
             <tr>
                 <th>
-                    <div class="pt-4">
-                        <samp style="font-size:72px" id="stopwatch">00:00:00</samp>
+                    <div class="pt-4" style="font-size:72px;">
+                        <span style="font-family: monospace;" id="stopwatch">00:00:00</span>
                     </div>
                 </th>
                 <th>
-                    <div class="pt-4">
-                        <samp style="font-size:72px" id="remaining">00:00:00</samp>
+                    <div class="pt-4" style="font-size:72px;">
+                        <span style="font-family: monospace;" id="remaining">00:00:00</span>
                     </div>
                 </th>
             </tr>
@@ -51,7 +52,7 @@
                     <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="next" hx-swap-oob="beforeend">
                 {% for time_entry in object_list %}
                     <tr>
                         <td>{{ time_entry.talk }}</td>
@@ -62,19 +63,21 @@
                         <td>{{ time_entry.duration }}</td>
                         <td>{{ time_entry.display_max_duration }}</td>
                         {% if "-" in time_entry.difference %}
-                            <td class="fg-red">{{ time_entry.difference }}
-                                &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                            <td class="fg-red">
+                                <div>{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-red fg-gray" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% else %}
-                            <td class="fg-blue">{{ time_entry.difference }}
-                                &nbsp;<div id="bar" data-percentage="{{ time_entry.percentage }}"></div>
+                            <td class="fg-blue">
+                                <div>{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-blue" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% endif %}
                     </tr>
                 {% empty %}
-                    <tr>
+                    <tr id="no-entries" hx-swap-oob="outerHTML">
                         <td colspan="6">
-                            <div class="p_title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                            <div class="p-title text-center">{% trans "Keine Einträge vorhanden" %}</div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -82,11 +85,4 @@
             </table>
         </div>
     </div>
-{% endblock %}
-
-{% block body_extra %}
-    <script>
-        StagyBee.main.timer_ws('{{ congregation.congregation|escape }}', true, false);
-        StagyBee.main.bar('bar');
-    </script>
 {% endblock %}

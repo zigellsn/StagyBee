@@ -9,7 +9,7 @@
 
 {% block content %}
     {% if not object_list %}
-        <div class="p_title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
+        <div class="p-title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
                 href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
     {% trans "Versammlung wählen" as choose_congregation %}

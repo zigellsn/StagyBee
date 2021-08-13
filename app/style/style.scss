@@ -25,6 +25,14 @@ body {
   padding-top: 64px;
 }
 
+.htmx-settling ul {
+  opacity: 0;
+}
+
+ul {
+ transition: opacity 300ms ease-in;
+}
+
 @import '../picker/static/picker/css/picker';
 @import '../console/static/console/css/console';
 @import '../stage/static/stage/css/stage';

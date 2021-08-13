@@ -93,7 +93,7 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                 complete_name = f"{name['familyName']}, {name['givenName']}"
 
             if name["requestToSpeak"] and not name["speaking"]:
-                speak = "bg-blue requestToSpeak"
+                speak = "bg-blue request-to-speak"
                 request_to_speak_count = request_to_speak_count + 1
             elif name["speaking"]:
                 speak = "bg-green"
@@ -117,7 +117,10 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
             f"class=\"display1\">{_('Meldungen:&nbsp;')}</span><span class=\"display1\">"
             f"{request_to_speak_count}</span></div>\n\n "
             "event: activity\ndata: <div></div>\n\n"
-            f"event: listeners\ndata: <div>{listeners}</div>\n\n".encode("utf-8"), more_body=True)
+            f"event: listeners\ndata: <div>{listeners}</div>\n\n"
+            f"event: listeners-count\ndata: <div>{listener_count}</div>\n\n"
+            f"event: request-to-speak-count\ndata: <div>{request_to_speak_count}</div>\n\n".encode("utf-8"),
+            more_body=True)
 
     async def extractor_status(self, event):
         if not json.loads(event["status"])["running"]:
@@ -127,7 +130,9 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                 f"data-style=\"dark\"></span><div>{_('Verbindung zu Extraktor-Dienst wird aufgebaut...')}"
                 "</div></div>\n\n "
                 "event: listeners\ndata: <div></div>\n\n"
-                "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
+                "event: sum-listeners\ndata:<div></div>\n\n"
+                "event: listeners-count\ndata: <div></div>\n\n"
+                "event: request-to-speak-count\ndata: <div></div>\n\n".encode("utf-8"), more_body=True)
         else:
             await self.send_body("<div id=\"activity\"></div>\n\n".encode("utf-8"), more_body=True)
 
@@ -139,7 +144,9 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                                  "mif-5x fg-red pos-fixed pos-center\" style=\"margin-top: -74px\"></span><div>"
                                  f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
                                  "event: listeners\ndata: <div></div>\n\n"
-                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
+                                 "event: sum-listeners\ndata:<div></div>\n\n"
+                                 "event: listeners-count\ndata: <div></div>\n\n"
+                                 "event: request-to-speak-count\ndata: <div></div>\n\n".encode("utf-8"), more_body=True)
 
     async def __restart_waiter(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -178,8 +185,9 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                              f"data-style=\"dark\"></span><div>"
                              f"{_('Verbindung zu Extraktor-Dienst wird aufgebaut...')}</div></div>\n\n"
                              "event: listeners\ndata: <div></div>\n\n"
-                             "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
-                             more_body=True)
+                             "event: sum-listeners\ndata:<div></div>\n\n"
+                             "event: listeners-count\ndata: <div></div>\n\n"
+                             "event: request-to-speak-count\ndata: <div></div>\n\n".encode("utf-8"), more_body=True)
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
@@ -212,25 +220,29 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                                  f" -74px\"></span><div>"
                                  f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
                                  "event: listeners\ndata: <div></div>\n\n"
-                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
-                                 more_body=True)
+                                 "event: sum-listeners\ndata:<div></div>\n\n"
+                                 "event: listeners-count\ndata: <div></div>\n\n"
+                                 "event: request-to-speak-count\ndata: <div></div>\n\n".encode("utf-8"), more_body=True)
         except RetryError:
             await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\" ><span "
                                  f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
                                  f" -74px\"></span><div>"
                                  f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
                                  "event: listeners\ndata: <div></div>\n\n"
-                                 "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
-                                 more_body=True)
+                                 "event: sum-listeners\ndata:<div></div>\n\n"
+                                 "event: listeners-count\ndata: <div></div>\n\n"
+                                 "event: request-to-speak-count\ndata: <div></div>\n\n".encode("utf-8"), more_body=True)
         else:
             success = self.task.result()["success"]
             if success:
                 self.scope["url_route"]["kwargs"]["session_id"] = self.task.result()["sessionId"]
                 await self.send_body(
                     f"event: sum-listeners\ndata: <div><span class=\"display1\">{_('Zuhörer gesamt:&nbsp;')}</span"
-                    f"><span class=\"display1\"></span><span class=\"display1\">&nbsp;-&nbsp;</span><span "
-                    f"class=\"display1\">{_('Meldungen:&nbsp;')}</span><span class=\"display1\"></span></div>\n\n"
-                    "event: activity\ndata:<div></div>\n\n".encode("utf-8"), more_body=True)
+                    f"><span class=\"display1\">0</span><span class=\"display1\">&nbsp;-&nbsp;</span><span "
+                    f"class=\"display1\">{_('Meldungen:&nbsp;')}</span><span class=\"display1\">0</span></div>\n\n"
+                    "event: activity\ndata:<div></div>\n\n"
+                    "event: listeners-count\ndata: <div>0</div>\n\n"
+                    "event: request-to-speak-count\ndata: <div>0</div>\n\n".encode("utf-8"), more_body=True)
             await self._redis.connect_uri(redis_key, self.channel_name)
 
     async def __disconnect_from_extractor(self, redis_key):
@@ -255,20 +267,27 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
                                      f" -74px\"></span><div>"
                                      f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
                                      "event: listeners\ndata: <div></div>\n\n"
-                                     "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
-                                     more_body=True)
+                                     "event: sum-listeners\ndata:<div></div>\n\n"
+                                     "event: listeners-count\ndata: <div></div>\n\n"
+                                     "event: request-to-speak-count\ndata: <div></div>\n\n"
+                                     .encode("utf-8"), more_body=True)
             except RetryError:
                 await self.send_body(f"event: activity\ndata: <div class=\"pos-fixed pos-center\" ><span "
                                      f"class=\"mif-cancel mif-5x fg-red pos-fixed pos-center\" style=\"margin-top:"
                                      f" -74px\"></span><div>"
                                      f"{_('Extraktor-Dienst läuft nicht oder ist nicht erreichbar.')}</div></div>\n\n"
                                      "event: listeners\ndata: <div></div>\n\n"
-                                     "event: sum-listeners\ndata:<div></div>\n\n".encode("utf-8"),
-                                     more_body=True)
+                                     "event: sum-listeners\ndata:<div></div>\n\n"
+                                     "event: listeners-count\ndata: <div></div>\n\n"
+                                     "event: request-to-speak-count\ndata: <div></div>\n\n"
+                                     .encode("utf-8"), more_body=True)
             else:
                 success = self.task.result()["success"]
                 if success:
-                    await self.send_body("data: unsubscribed_from_extractor\n\n".encode("utf-8"), more_body=True)
+                    await self.send_body("data: unsubscribed_from_extractor\n\n"
+                                         "event: listeners-count\ndata: <div></div>\n\n"
+                                         "event: request-to-speak-count\ndata: <div></div>\n\n"
+                                         .encode("utf-8"), more_body=True)
                     self.scope["url_route"]["kwargs"]["session_id"] = None
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),

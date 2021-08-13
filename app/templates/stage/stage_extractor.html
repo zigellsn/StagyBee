@@ -34,10 +34,15 @@
             <div id="timer" class="wrapper">
                 <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
                 </div>
-                <div id="timer_overlay">
-                    <samp class="text-leader" id="stopwatch">00:00:00</samp>
-                    <samp class="text-leader">&nbsp;|&nbsp;</samp>
-                    <samp class="text-leader" id="remaining">00:00:00</samp>
+
+                <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/" class="progress">
+                    <div id="pb" class="progress-bar" style="width:0">
+                </div>
+
+                <div id="timer-overlay" class="text-leader">
+                    <span id="stopwatch" style="font-family: monospace;">00:00:00</span>
+                    <span style="font-family: monospace;">&nbsp;|&nbsp;</span>
+                    <span id="remaining" style="font-family: monospace;">00:00:00</span>
                 </div>
             </div>
         {% endif %}
@@ -50,6 +55,5 @@
             if (evt.detail.type === 'alert')
                 $('#alert-box').data('infobox').open();
         });
-        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, true);
     </script>
 {% endblock %}

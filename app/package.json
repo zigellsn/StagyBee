@@ -24,17 +24,15 @@
     "css-minimizer-webpack-plugin": "^3.0.2",
     "ts-loader": "^9.2.5",
     "typescript": "^4.3.5",
-    "webpack": "^5.48.0",
+    "webpack": "^5.49.0",
     "webpack-cli": "^4.7.2",
     "@types/jquery": "^3.5.6",
-    "@types/luxon": "^1.27.1"
+    "@types/luxon": "^2.0.0"
   },
   "dependencies": {
     "metro4": "^4.5.0",
-    "luxon": "^2.0.1",
+    "luxon": "^2.0.2",
     "normalize.css": "^8.0.1",
-    "progressbar.js": "^1.1.0",
-    "htmx.org": "^1.5.0",
-    "reconnecting-websocket": "^4.4.0"
+    "htmx.org": "^1.5.0"
   }
 }

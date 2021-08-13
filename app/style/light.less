@@ -37,13 +37,13 @@
         @schemeFontSize
 );
 
-.timesUp {
+.times-up {
   color: #000000;
-  animation: timesUpPulse .75s ease-out infinite;
+  animation: times-up-pulse .75s ease-out infinite;
   text-shadow: 0 0 5px #f00, 0 0 7px #000;
 }
 
-@keyframes timesUpPulse {
+@keyframes times-up-pulse {
   from {
     text-shadow: 0 0 10px #000,
     0 0 10px #000,
@@ -66,4 +66,26 @@
   }
 }
 
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: @schemeBackground;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
 
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: @schemeControlColor;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}

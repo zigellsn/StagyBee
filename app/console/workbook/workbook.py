@@ -17,6 +17,7 @@ import logging
 import re
 
 import aiohttp
+from aiohttp import ClientConnectorError
 from dateutil.relativedelta import relativedelta, MO
 
 from StagyBee.settings import WB_LANGUAGE_SWITCHER
@@ -36,7 +37,10 @@ class WorkbookExtractor:
             weeks = await asyncio.gather(
                 *[self.__extract__(session, url, my_date, language) for my_date, url in urls.items()],
                 return_exceptions=True)
-            weeks_dict = {i[0]: i[1] for i in weeks if i}
+            if len(weeks) == 1 and isinstance(weeks[0], ClientConnectorError):
+                weeks_dict = {}
+            else:
+                weeks_dict = {i[0]: i[1] for i in weeks if i}
         await session.close()
         return weeks_dict
 

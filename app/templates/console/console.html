@@ -12,52 +12,64 @@
         <div class="frame active">
             <div class="inherit-colors heading">{% trans "Stoppuhr" %}</div>
             <div class="content">
-                <div>
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>
-                                <div>{% trans "Abgelaufen" %}</div>
-                            </th>
-                            <th>
-                                <div>{% trans "Übrig" %}</div>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <div>
-                                    <samp style="font-size:32px" id="stopwatch">00:00:00</samp>
-                                </div>
-                            </th>
-                            <th>
-                                <div>
-                                    <samp style="font-size:32px" id="remaining">00:00:00</samp>
-                                </div>
-                            </th>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pt-4" hx-get="{% url 'console:workbook_today' %}" hx-trigger="load"></div>
-
-                <div id="custom-talk" style="display: none;">
-                    <div class="pt-4">
-                        <label for="talk_name" class="pt-4">{% trans "Titel" %}</label>
-                        <input type="text" data-role="input" data-default-value="{% trans "Titel" %}" id="talk_name">
+                <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/">
+                    <div>
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>
+                                    <div>{% trans "Abgelaufen" %}</div>
+                                </th>
+                                <th>
+                                    <div>{% trans "Übrig" %}</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div style="font-size:32px">
+                                        <span style="font-family: monospace;" id="stopwatch">00:00:00</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div style="font-size:32px">
+                                        <span style="font-family: monospace;" id="remaining">00:00:00</span>
+                                    </div>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="pt-4">
-                        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
-                        <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
-                               data-hours="false" id="time"/>
+
+                    <div class="pt-4" hx-get="{% url 'console:workbook_today' %}" hx-trigger="load">
+                        <ul style="text-align: center;">
+                            <li style="display: inline-block;">
+                                <span data-role="activity" data-type="ring" data-style="dark"></span>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <div class="pt-4">
-                    <a href="#" class="button bg-control" id="submit_time"><span
-                            class="mif-play"></span>{% trans "Start" %}</a>
-                    <a href="#" class="button disabled" id="submit_stop"><span
-                            class="mif-stop"></span>{% trans "Stopp" %}
-                    </a>
+
+                    <form hx-ws="send:submit">
+                        <div id="custom-talk" style="display: none;">
+                            <div class="pt-4">
+                                <label for="talk-name" class="pt-4">{% trans "Titel" %}</label>
+                                <input type="text" data-role="input" data-default-value="{% trans "Titel" %}"
+                                       id="talk-name" name="talk-name">
+                            </div>
+                            <div class="pt-4">
+                                <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
+                                <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
+                                       data-hours="false" id="time" name="duration"/>
+                            </div>
+                        </div>
+                        <div class="pt-4">
+                            <button type="submit" name="action" value="timer-start" class="button"><span
+                                    class="mif-play"></span>{% trans "Start" %}</button>
+                            <button id="timer-stop" type="submit" name="action" value="timer-stop"
+                                    class="button disabled" onclick="$('.current').next().trigger('click')">
+                                <span class="mif-stop"></span>{% trans "Stopp" %}</button>
+                        </div>
+                        <input type="hidden" id="talk-index" name="index" value="0"/>
+                    </form>
                 </div>
             </div>
         </div>
@@ -81,7 +93,8 @@
                 <form>
                     <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
                     <textarea name="message" data-role="textarea" class="mt-2" id="text_message"></textarea>
-                    <div hx-sse="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation }}/ swap:message" class="pt-4">
+                    <div hx-sse="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation }}/ swap:message"
+                         class="pt-4">
                     </div>
                     <div class="pt-4">
                         <button hx-post="{% url 'console:message' credential.congregation %}" hx-trigger="click"
@@ -98,7 +111,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 75%; vertical-align: top; border-right: 1px solid;">
-                            <div id="sumListeners">
+                            <div id="sumListeners" hx-sse="connect:/ws/extractor/{{ credential.congregation|escape }}/">
                                 {% trans "Meldungen:" as sum_request_to_speak %}
                                 {% trans "Zuhörer gesamt:" as sum_listeners %}
                                 <table class="text-leader2" style="width: 25%">
@@ -107,11 +120,11 @@
                                     <tbody>
                                     <tr>
                                         <td>{{ sum_listeners }}</td>
-                                        <td><span id="sumListenersNumber"></span></td>
+                                        <td><div hx-sse="swap:listeners-count"></div></td>
                                     </tr>
                                     <tr>
-                                        <td>{{ sum_request_to_speak }}&nbsp</td>
-                                        <td><span id="sumRequestToSpeakNumber"></span></td>
+                                        <td>{{ sum_request_to_speak }}</td>
+                                        <td><div hx-sse="swap:request-to-speak-count"></div></td>
                                     </tr>
                                     <tr>
                                         <td>{% trans "Seit" %}</td>
@@ -137,22 +150,24 @@
 {% endblock %}
 
 {% block body_extra %}
-    {% get_current_language as LANGUAGE_CODE %}
     <script>
-        {#StagyBee.main.console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');#}
-        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, false);
-
+        htmx.on('htmx:afterSettle', function (evt) {
+            if ('pathInfo' in evt.detail && 'finalPath' in evt.detail['pathInfo'] &&
+                evt.detail['pathInfo']['finalPath'] !== undefined && evt.detail['pathInfo']['finalPath'].includes('workbook')) {
+                $(`li[data-index='${$('#talk-index')[0].value}']`).trigger('click')
+            }
+        });
+    </script>
+    <script>
         function doClick(el) {
             if (arguments[0][0].dataset['caption'] === 'Benutzerdefiniert') {
                 document.getElementById('custom-talk').style.display = 'block';
             } else {
                 document.getElementById('custom-talk').style.display = 'none';
             }
-            //let talk = $('#talk-list').find('.current')[0];
-            let talk = $('#talk-list').data('listview').getSelected();
-            console.log(talk)
-            console.log(arguments);
-            console.log(arguments[0][0].dataset['content']);
+            $('#time').data('timepicker').time('0:' + arguments[0][0].dataset['content'] + ':0');
+            $('#talk-name')[0].value = arguments[0][0].dataset['caption'];
+            $('#talk-index')[0].value = arguments[0][0].dataset['index'];
         }
     </script>
 {% endblock %}

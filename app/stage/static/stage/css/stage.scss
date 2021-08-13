@@ -50,7 +50,7 @@
   }
 }
 
-@keyframes requestToSpeakPulse {
+@keyframes request-to-speak-pulse {
   0% {
     box-shadow: 0 0 15px 0 rgba(80, 155, 255, 0.9);
   }
@@ -60,8 +60,8 @@
   }
 }
 
-.requestToSpeak {
-  animation: requestToSpeakPulse 1s infinite;
+.request-to-speak {
+  animation: request-to-speak-pulse 1s infinite;
 }
 
 #container {
@@ -100,7 +100,7 @@
   top: -35px;
 }
 
-#timer_overlay {
+#timer-overlay {
   position: absolute;
   top: -5px;
   left: 50%;

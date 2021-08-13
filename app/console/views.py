@@ -63,6 +63,13 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, SchemeMixin, ListView):
         else:
             return "console/choose_console.html"
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response.headers["Cache-Control"] = "no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
+
 
 class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
     model = Credential
@@ -86,6 +93,13 @@ class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
         congregation = super().get_object(queryset)
         congregation.since = get_running_since(congregation)
         return congregation
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response.headers["Cache-Control"] = "no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
 
 
 class ConsoleActionView(PermissionRequiredMixin, View):
@@ -129,18 +143,19 @@ class WorkbookView(LoginRequiredMixin, View):
         today = datetime.today()
         urls = workbook_extractor.create_urls(today, today)
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
-        talk_list = "<label for=\"talk-list\" class=\"pt-4\">Aufgabe</label><ul data-role=\"listview\" " \
-                    "data-view=\"list\" data-select-node=\"true\" data-on-node-click=\"doClick\" id=\"talk-list\"><li " \
-                    f"data-caption=\"{_('Leben-und-Dienst-Zusammenkunft')}\">"
-        if times is not None:
-            talk_list = f"{talk_list}<ul>"
+        talk_list = "<label for=\"c\" class=\"pt-4\">Aufgabe</label><ul data-role=\"listview\" " \
+                    "data-view=\"list\" data-select-node=\"true\" data-on-node-click=\"doClick\" id=\"talk-list\">"
+        i = 0
+        if times is not None and times != {}:
+            talk_list = f"{talk_list}<li data-caption=\"{_('Leben-und-Dienst-Zusammenkunft')}\"><ul>"
             selected = " current current-select"
             for talk in list(times.values())[0]:
                 talk_list = f"{talk_list}<li class=\"bg-darkBlue-hover{selected}\" data-caption=\"{talk[1]}\" " \
-                            f"data-content=\"{talk[0]}\"></li>"
+                            f"data-content=\"{talk[0]}\" data-index=\"{i}\"></li>"
+                i = i + 1
                 selected = ""
-            talk_list = f"{talk_list}</ul>"
-        talk_list = f"{talk_list}</li>"
+            talk_list = f"{talk_list}</ul></li>"
+
         talk_list = f"{talk_list}<li data-caption=\"{_('Zusammenkunft für die Öffentlichkeit')}\"><ul><li " \
                     f"class=\"bg-darkBlue-hover\" data-caption=\"{_('Öffentlicher Vortrag (30 Min.)')}\" " \
                     f"data-content=\"30\"></li><li class=\"bg-darkBlue-hover\" data-caption=\"" \
