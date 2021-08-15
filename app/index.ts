@@ -19,7 +19,8 @@ import {
     RedirectPage,
     shutdownDialogActions,
     startTime,
-    toggleColorScheme
+    toggleColorScheme,
+    htmx,
 } from './StagyBee/static/js/global';
 
 export {
@@ -28,4 +29,5 @@ export {
     startTime,
     RedirectPage,
     shutdownDialogActions,
+    htmx,
 }

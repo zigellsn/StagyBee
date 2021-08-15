@@ -13,6 +13,9 @@
             <div class="inherit-colors heading">{% trans "Stoppuhr" %}</div>
             <div class="content">
                 <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/">
+                    <div class="text-leader pt-8 pb-8" id="talk">{% trans "Aufgabe" %}&nbsp;<i><span
+                            id="talk-name-caption"></span></i>
+                    </div>
                     <div>
                         <table class="table">
                             <tbody>
@@ -120,11 +123,15 @@
                                     <tbody>
                                     <tr>
                                         <td>{{ sum_listeners }}</td>
-                                        <td><div hx-sse="swap:listeners-count"></div></td>
+                                        <td>
+                                            <div hx-sse="swap:listeners-count"></div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>{{ sum_request_to_speak }}</td>
-                                        <td><div hx-sse="swap:request-to-speak-count"></div></td>
+                                        <td>
+                                            <div hx-sse="swap:request-to-speak-count"></div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>{% trans "Seit" %}</td>
@@ -151,7 +158,7 @@
 
 {% block body_extra %}
     <script>
-        htmx.on('htmx:afterSettle', function (evt) {
+        StagyBee.main.htmx().on('htmx:afterSettle', function (evt) {
             if ('pathInfo' in evt.detail && 'finalPath' in evt.detail['pathInfo'] &&
                 evt.detail['pathInfo']['finalPath'] !== undefined && evt.detail['pathInfo']['finalPath'].includes('workbook')) {
                 $(`li[data-index='${$('#talk-index')[0].value}']`).trigger('click')

@@ -51,7 +51,7 @@
 
 {% block body_extra %}
     <script>
-        htmx.on("htmx:sseMessage", function (evt) {
+        StagyBee.main.htmx().on("htmx:sseMessage", function (evt) {
             if (evt.detail.type === 'alert')
                 $('#alert-box').data('infobox').open();
         });

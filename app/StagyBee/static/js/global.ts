@@ -16,8 +16,13 @@
 
 'use strict';
 
+import htmx from 'htmx.org'
 import Metro from 'metro4'
 import { DateTime } from 'luxon';
+
+export function htmx() {
+    return htmx
+}
 
 export function startTime() {
 
