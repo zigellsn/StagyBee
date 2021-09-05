@@ -378,6 +378,7 @@ files/
 
 *.bundle.js*
 *.js.map
+*.min.js
 index.js
 global.js
 console_client_ws.js

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-@import '~normalize.css/normalize.css';
-@import '~metro4/build/css/metro-all.min.css';
+//@import '~normalize.css/normalize.css';
+//@import '~metro4/build/css/metro-all.min.css';
 
 main {
   padding-bottom: 20px !important;
 }
 
-body {
-  padding-top: 64px;
-}
+//body {
+//  padding-top: 64px;
+//}
 
 .htmx-settling ul {
   opacity: 0;

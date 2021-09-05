@@ -158,7 +158,7 @@
 
 {% block body_extra %}
     <script>
-        StagyBee.main.htmx().on('htmx:afterSettle', function (evt) {
+        htmx.on('htmx:afterSettle', function (evt) {
             if ('pathInfo' in evt.detail && 'finalPath' in evt.detail['pathInfo'] &&
                 evt.detail['pathInfo']['finalPath'] !== undefined && evt.detail['pathInfo']['finalPath'].includes('workbook')) {
                 $(`li[data-index='${$('#talk-index')[0].value}']`).trigger('click')

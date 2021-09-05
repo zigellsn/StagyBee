@@ -2,18 +2,20 @@
 {% trans "Neu starten" as reboot %}
 {% trans "Herunterfahren" as shutdown %}
 
-<div class="app-bar-container">
-    <a href="#" class="app-bar-item dropdown-toggle marker-light">
-        <span class="mif-switch mif-3x" data-role="hint" data-hint-text="{{ shutdown }}"
-              data-hint-position="bottom">
-        </span>
-    </a>
-    <ul class="d-menu" data-role="dropdown">
-        <li class="bg-blue-hover"><a href="#"
-                                     onclick="StagyBee.main.shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}');">{{ reboot }}</a>
+<div class="dropdown">
+    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"></path>
+        </svg>
+    </div>
+    <ul class="dropdown-menu absolute hidden text-white pt-1">
+        <li><a href="#" class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+               onclick="StagyBee.main.shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}');">{{ reboot }}</a>
         </li>
-        <li class="bg-blue-hover"><a href="#"
-                                     onclick="StagyBee.main.shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}');">{{ shutdown }}</a>
+        <li><a href="#" class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+               onclick="StagyBee.main.shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}');">{{ shutdown }}</a>
         </li>
     </ul>
 </div>

@@ -16,13 +16,8 @@
 
 'use strict';
 
-import htmx from 'htmx.org'
-import Metro from 'metro4'
+// import Metro from 'metro4'
 import { DateTime } from 'luxon';
-
-export function htmx() {
-    return htmx
-}
 
 export function startTime() {
 
@@ -55,118 +50,26 @@ export function startTime() {
     setTimeout(startTime, 500);
 }
 
-function setColorScheme(dark: boolean, darkStyle: string, lightStyle: string): string {
-    let scheme;
-    let icon = $('#scheme-icon');
-    let qrCode = $('.qrline');
-
-    if (!dark) {
-        scheme = lightStyle;
-        if (icon !== null) {
-            icon.removeClass('mif-sun4').addClass('mif-sun');
-            icon.attr('data-hint-text', django.gettext('Dunkles Design'));
-        }
-        if (qrCode !== null) {
-            qrCode.attr('stroke', '#000');
-        }
-    } else {
-        scheme = darkStyle;
-        if (icon !== null) {
-            icon.removeClass('mif-sun').addClass('mif-sun4');
-            icon.attr('data-hint-text', django.gettext('Helles Design'));
-        }
-        if (qrCode !== null) {
-            qrCode.attr('stroke', '#fff');
-        }
-    }
-    return scheme;
-}
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        let cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + '=') {
-                cookieValue = decodeURIComponent(
-                    cookie.substring(name.length + 1)
-                );
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-export function loadColorScheme(darkStyle: string, lightStyle: string) {
-
-    let xhr = new XMLHttpRequest();
-    xhr.onerror = function () {
-        console.error(xhr.responseText);
-    }
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            let id = $('#color-scheme');
-            if (id !== null) {
-                let mode = xhr.response.toLowerCase() !== 'false';
-                let actualStyle = id.attr('href')
-                if ((actualStyle === darkStyle && mode === false) || actualStyle === lightStyle && mode === true) {
-                    let scheme = setColorScheme(mode, darkStyle, lightStyle);
-                    id.attr('href', scheme);
-                    Metro.utils.addCssRule(Metro.sheet, '.app-bar-menu li', 'list-style: none!important;');
-                }
-            }
-        }
-    }
-    xhr.open('GET', '/scheme/', true);
-    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
-    xhr.send();
-}
-
-export function toggleColorScheme(darkStyle: string, lightStyle: string) {
-
-    let id = $('#color-scheme');
-    if (id !== null) {
-        let scheme
-        if (id.attr('href') === darkStyle) {
-            scheme = setColorScheme(false, darkStyle, lightStyle);
-        } else {
-            scheme = setColorScheme(true, darkStyle, lightStyle);
-        }
-        id.attr('href', scheme);
-        Metro.utils.addCssRule(Metro.sheet, '.app-bar-menu li', 'list-style: none!important;');
-    }
-
-    let xhr = new XMLHttpRequest();
-    xhr.onerror = function () {
-        console.error(xhr.responseText);
-    }
-    xhr.open('POST', '/toggle_scheme/', true);
-    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
-    xhr.send();
-}
-
 export function RedirectPage(element, url) {
     window.frames[element].location = url;
 }
 
-export function shutdownDialogActions(dialogTitle, target) {
-    Metro.dialog.create({
-        title: dialogTitle,
-        content: '<div>' + django.gettext('Bist du sicher?') + '</div>',
-        actions: [
-            {
-                caption: django.gettext('Nein'),
-                cls: 'js-dialog-close alert'
-            },
-            {
-                caption: django.gettext('Ja'),
-                cls: 'js-dialog-close',
-                onclick: function () {
-                    window.location.href = target;
-                }
-            }
-        ]
-    });
-}
+// export function shutdownDialogActions(dialogTitle, target) {
+//     Metro.dialog.create({
+//         title: dialogTitle,
+//         content: '<div>' + django.gettext('Bist du sicher?') + '</div>',
+//         actions: [
+//             {
+//                 caption: django.gettext('Nein'),
+//                 cls: 'js-dialog-close alert'
+//             },
+//             {
+//                 caption: django.gettext('Ja'),
+//                 cls: 'js-dialog-close',
+//                 onclick: function () {
+//                     window.location.href = target;
+//                 }
+//             }
+//         ]
+//     });
+// }

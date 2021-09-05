@@ -14,13 +14,37 @@
  * limitations under the License.
  */
 
-declare module 'django' {
-    export = django;
+@import '../picker/static/picker/css/picker.scss';
+@import '../console/static/console/css/console.scss';
+@import '../stage/static/stage/css/stage.scss';
+
+@tailwind base;
+@tailwind components;
+
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
 
-declare namespace django {
-    function gettext(name: string): string;
+@tailwind utilities;
 
-    function interpolate(fmt: string, obj: Object): string;
-    function interpolate(fmt: string, obj: Object, named: boolean): string;
+@layer components {
+  .btn {
+    @apply px-4 py-2 bg-blue-600 text-white rounded;
+  }
+}
+
+main {
+  padding-bottom: 20px !important;
+}
+
+/*body {*/
+/*  padding-top: 64px;*/
+/*}*/
+
+.htmx-settling ul {
+  opacity: 0;
+}
+
+ul {
+ transition: opacity 300ms ease-in;
 }

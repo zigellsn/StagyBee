@@ -1,35 +1,59 @@
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
-<header class="app-bar pr-1-sx pl-1-sx pr-4-md pl-4-md" data-role="appbar" data-role-appbar="true">
-    {% if credential.touch %}
-        <a class="brand order-1" onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
-           href="{% url 'picker:picker' %}">
-            {% if LANGUAGE_BIDI %}
-                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
+<header class="bg-blue-500 dark:bg-black">
+    <nav class="flex justify-between w-full bg-blue dark:bg-black text-white p-4">
+        <div class="md:items-start md:w-auto flex">
+            {% if credential.touch %}
+                <a onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
+                   href="{% url 'picker:picker' %}">
+                    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+                        {% if LANGUAGE_BIDI %}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                        {% endif %}
+                    </div>
+                </a>
             {% else %}
-                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
+                <a class="brand order-1" href="{% url 'picker:picker' %}">
+                    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+                        {% if LANGUAGE_BIDI %}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                        {% endif %}
+                    </div>
+                </a>
             {% endif %}
-        </a>
-    {% else %}
-        <a class="brand order-1" href="{% url 'picker:picker' %}">
-            {% if LANGUAGE_BIDI %}
-                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
-            {% else %}
-                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
-            {% endif %}
-        </a>
-    {% endif %}
+        </div>
 
-    {% if not credential.touch %}
-        <span class="text-leader pr-1-sx pl-1-sx pr-4-md pl-4-md order-2">{{ credential.display_name }}</span>
-        {% if LANGUAGE_BIDI %}
-            <div class="app-bar-container order-3 mr-auto">
-        {% else %}
-            <div class="app-bar-container order-3 ml-auto">
+        {% if not credential.touch %}
+            <div class="md:items-start md:w-auto flex">
+                <span class="font-semibold tracking-tight text-xl pt-1 block">{{ credential.display_name }}</span>
+            </div>
+
+            <div class="md:items-end md:w-auto flex">
+                <div class="flex text-sm">
+                    {% block header_functions %}
+                    {% endblock %}
+                </div>
+            </div>
         {% endif %}
-    {% block header_functions %}
-    {% endblock %}
-    <span style="font-family: monospace;" class="text-leader" id="currentTime"></span>
-    </div>
-    {% endif %}
+    </nav>
 </header>

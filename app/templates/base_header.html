@@ -1,17 +1,18 @@
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
-<header class="app-bar pr-1-sx pl-1-sx pr-4-md pl-4-md" data-role="appbar" data-role-appbar="true">
-    <a class="brand no-hover order-1" href="{% block header_link %}{% endblock %}">
-        <span class="text-leader">{% block header_title %}{% endblock %}</span>
-    </a>
-    {% if LANGUAGE_BIDI %}
-        <div class="app-bar-container order-1 mr-auto">
-    {% else %}
-        <div class="app-bar-container order-2 ml-auto">
-    {% endif %}
-    {% block header_functions %}
-    {% endblock %}
-    <span style="font-family: monospace;" class="text-leader" id="currentTime"></span>
-    </div>
+<header class="bg-blue-500 dark:bg-black">
+    <nav class="flex justify-between w-full bg-blue dark:bg-black text-white p-4">
+        <a href="{% block header_link %}{% endblock %}">
+            <span class="font-semibold text-xl tracking-tight pt-1 block">{% block header_title %}{% endblock %}</span>
+        </a>
+
+        <div class="md:items-center md:w-auto flex">
+            <div class="flex text-sm">
+                {% block header_functions %}
+                {% endblock %}
+            </div>
+            {% include "menu/clock.html" %}
+        </div>
+    </nav>
 </header>
 

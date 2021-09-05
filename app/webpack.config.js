@@ -53,9 +53,9 @@ const mainConfig = {
             new CssMinimizerPlugin(),
         ],
     },
-    externals: {
-        'django': 'window.django'
-    },
+    // externals: {
+    //     'django': 'window.django'
+    // },
     devtool: devTool,
     module: {
         rules: [
@@ -129,65 +129,65 @@ const mainConfig = {
     },
 };
 
-const schemes = {
-    mode: runMode,
-    entry: {
-        dark: './style/dark.less',
-        light: './style/light.less',
-    },
-    output: {
-        path: path.resolve(__dirname, 'StagyBee/static'),
-        filename: '[name].scheme.js',
-    },
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new CssMinimizerPlugin(),
-        ],
-    },
-    devtool: devTool,
-    module: {
-        rules: [
-            {
-                test: /\.less$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'css/[name].css',
-                        },
-                    },
-                    {
-                        loader: 'extract-loader'
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: false
-                        }
-                    },
-                    {
-                        loader: "less-loader",
-                        options: {
-                            lessOptions: {
-                                strictMath: true,
-                                paths: [path.resolve(__dirname, "node_modules")],
-                            },
-                        },
-                    },
-                ],
-            },
-        ],
-    },
-    plugins: [
-        new FileManagerPlugin({
-            events: {
-                onEnd: {
-                    delete: [path.resolve(__dirname, 'StagyBee/static/dark.scheme.js'), path.resolve(__dirname, 'StagyBee/static/light.scheme.js')]
-                }
-            }
-        }),
-    ],
-}
+// const schemes = {
+//     mode: runMode,
+//     entry: {
+//         dark: './style/dark.less',
+//         light: './style/light.less',
+//     },
+//     output: {
+//         path: path.resolve(__dirname, 'StagyBee/static'),
+//         filename: '[name].scheme.js',
+//     },
+//     optimization: {
+//         minimize: true,
+//         minimizer: [
+//             new CssMinimizerPlugin(),
+//         ],
+//     },
+//     devtool: devTool,
+//     module: {
+//         rules: [
+//             {
+//                 test: /\.less$/,
+//                 use: [
+//                     {
+//                         loader: 'file-loader',
+//                         options: {
+//                             name: 'css/[name].css',
+//                         },
+//                     },
+//                     {
+//                         loader: 'extract-loader'
+//                     },
+//                     {
+//                         loader: "css-loader",
+//                         options: {
+//                             sourceMap: false
+//                         }
+//                     },
+//                     {
+//                         loader: "less-loader",
+//                         options: {
+//                             lessOptions: {
+//                                 strictMath: true,
+//                                 paths: [path.resolve(__dirname, "node_modules")],
+//                             },
+//                         },
+//                     },
+//                 ],
+//             },
+//         ],
+//     },
+//     plugins: [
+//         new FileManagerPlugin({
+//             events: {
+//                 onEnd: {
+//                     delete: [path.resolve(__dirname, 'StagyBee/static/dark.scheme.js'), path.resolve(__dirname, 'StagyBee/static/light.scheme.js')]
+//                 }
+//             }
+//         }),
+//     ],
+// }
 
-module.exports = [mainConfig, schemes];
+module.exports = [mainConfig];

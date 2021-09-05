@@ -6,16 +6,19 @@
   "author": "Simon Zigelli",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "css": "tailwindcss -i stage/static/stage/css/stage.css -o ./StagyBee/static/css/tailwind.css"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1",
     "css-loader": "^6.2.0",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
-    "filemanager-webpack-plugin": "^6.1.4",
+    "filemanager-webpack-plugin": "^6.1.5",
     "postcss-loader": "^6.1.1",
-    "sass": "^1.37.5",
+    "sass": "^1.38.0",
     "sass-loader": "^12.1.0",
     "node-sass": "^6.0.1",
     "less": "^4.1.1",
@@ -24,15 +27,13 @@
     "css-minimizer-webpack-plugin": "^3.0.2",
     "ts-loader": "^9.2.5",
     "typescript": "^4.3.5",
-    "webpack": "^5.49.0",
-    "webpack-cli": "^4.7.2",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0",
     "@types/jquery": "^3.5.6",
     "@types/luxon": "^2.0.0"
   },
   "dependencies": {
-    "metro4": "^4.5.0",
-    "luxon": "^2.0.2",
-    "normalize.css": "^8.0.1",
-    "htmx.org": "^1.5.0"
+    "tailwindcss": "^2.2.7",
+    "luxon": "^2.0.2"
   }
 }

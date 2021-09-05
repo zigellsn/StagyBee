@@ -1,7 +1,7 @@
 {% load static i18n %}<!DOCTYPE html>
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_current_language as LANGUAGE %}
-<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE }}">
+<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE }}" class="{% if dark or dark == None %}dark{% endif %}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -11,16 +11,13 @@
     <meta name="keywords" content="StagyBee, stage, control">
     <meta name="Copyright" content="Simon Zigelli"/>
     <meta name="MSSmartTagsPreventParsing" content="true"/>
-<meta name="metro4:init" content="true">
     <title>{% block title %}Login{% endblock %} | StagyBee</title>
     {% block link_rel_tags %}{% endblock link_rel_tags %}
     <link rel="icon" sizes="192x192" href="{% static "stagybee/img/favicon.ico" %}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{% static "stagybee/img/favicon.ico" %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static "stagybee/img/favicon.ico" %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static "stagybee/css/bundle.css" %}" type="text/css">
-    <link rel="stylesheet" id="color-scheme"
-          href="{% if dark or dark == None %}{% static "stagybee/css/dark.css" %}{% else %}{% static "stagybee/css/light.css" %}{% endif %}"
-          type="text/css">
+    <link rel="stylesheet" href="{% static "stagybee/css/tailwind.css" %}" type="text/css">
+    <script src="{% static "stagybee/js/_hyperscript.min.js" %}" type="text/javascript"></script>
     {% block head_extra %}{% endblock head_extra %}
     <style>
         .app-bar-menu li {
@@ -29,37 +26,38 @@
     </style>
 </head>
 {% block body %}
-    <body onload="StagyBee.main.startTime();" id="body">
+    <body onload="StagyBee.main.startTime();">
 {% endblock %}
 <noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
-{% block header %}{% endblock %}
-<div class="container-fluid">
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+<div class="w-full h-screen bg-white dark:bg-black text-black dark:text-white">
+    {% block header %}{% endblock %}
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="container">
+        <main class="sm:pr-1 sm:pl-1 md:pr-4 md:pl-4">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+    {% block footer %}
+    {% endblock %}
 </div>
-<div class="container-fluid">
-    <main class="pr-1-sx pl-1-sx pr-4-md pl-4-md">
-        {% block content %}
-        {% endblock %}
-    </main>
-</div>
-{% block footer %}
-{% endblock %}
-<script src="{% static "stagybee/js/external.bundle.js" %}" type="text/javascript"></script>
-<script src="{% static "stagybee/js/main.bundle.js" %}" type="text/javascript"></script>
+
+<script src="{% static "stagybee/js/htmx.min.js" %}" type="text/javascript"></script>
 <script src="{% url 'javascript-catalog' %}" type="text/javascript"></script>
 <script>
-  document.body.addEventListener('htmx:configRequest', (event) => {
-    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-  })
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
 </script>
-<script>StagyBee.main.htmx().logAll();</script>
-<script type="application/javascript">StagyBee.main.loadColorScheme('{% static "stagybee/css/dark.css" %}', '{% static "stagybee/css/light.css" %}');</script>
+{#<script>htmx.logAll();</script>#}
 {% block body_extra %}{% endblock body_extra %}
 </body>
 </html>
