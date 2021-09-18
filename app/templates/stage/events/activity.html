@@ -1,0 +1,15 @@
+{% load i18n %}
+{% if connecting != None %}
+    <div class="pos-fixed pos-center"><span class="pos-fixed
+                     pos-center" style="margin-top: -74px" data-role="activity" data-type="ring"
+                                            data-style="dark"></span>
+        <div>
+            {% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." %}</div>
+    </div>
+{% endif %}
+{% if error != None %}
+    <div class="pos-fixed pos-center"><span class="mif-cancel mif-5x fg-red pos-fixed pos-center"
+                                            style="margin-top: -74px"></span>
+        <div>{% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." %}</div>
+    </div>
+{% endif %}

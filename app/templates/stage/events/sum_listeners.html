@@ -1,0 +1,7 @@
+{% load i18n %}
+{% if listener_count is not None %}
+    <div><span class="display1">{% trans "Zuhörer gesamt:" %}&nbsp;</span><span
+            class="display1">{{ listener_count }}</span><span class="display1">&nbsp;-&nbsp;</span><span
+            class="display1">{% trans "Meldungen:" %}&nbsp;</span><span class="display1">
+            {{ request_to_speak_count|default_if_none:0 }}</span></div>
+{% endif %}

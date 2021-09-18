@@ -15,7 +15,7 @@
  */
 
 const path = require('path');
-const FileManagerPlugin = require("filemanager-webpack-plugin");
+// const FileManagerPlugin = require("filemanager-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 let runMode = process.env.RUN_MODE;

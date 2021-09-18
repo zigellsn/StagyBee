@@ -20,6 +20,7 @@ from channels.exceptions import StopConsumer
 from channels.generic.http import AsyncHttpConsumer
 from channels.generic.websocket import AsyncJsonWebsocketConsumer, AsyncWebsocketConsumer
 from django.conf import settings
+from django.template.loader import render_to_string
 
 
 class RedisConnector(object):
@@ -73,6 +74,13 @@ class AsyncRedisHttpConsumer(AsyncHttpConsumer):
         self._redis = RedisConnector()
         self.keepalive = False
 
+    async def handle(self, body):
+        await self.send_headers(headers=[
+            (b"Cache-Control", b"no-cache"),
+            (b"Content-Type", b"text/event-stream"),
+            (b"Transfer-Encoding", b"chunked"),
+        ])
+
     async def send_body(self, body, *, more_body=False):
         if more_body:
             self.keepalive = True
@@ -91,6 +99,15 @@ class AsyncRedisHttpConsumer(AsyncHttpConsumer):
 
     def set_redis(self, redis):
         self._redis = redis
+
+    @staticmethod
+    def append_event(name, template_name=None, context=None, using=None, response=""):
+        if template_name is not None:
+            template = render_to_string(template_name=template_name, context=context, using=using).replace("\n", "")
+        else:
+            template = ""
+        event = f"event: {name}\ndata: {template}\n\n"
+        return f"{response}{event}"
 
     def handle(self, body):
         """
