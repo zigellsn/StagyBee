@@ -1,51 +1,79 @@
 {% extends 'console/choose_console_base.html' %}
-{% load i18n notification known_clients %}
+{% load i18n notification known_clients widget_tweaks static %}
 
 {% block content %}
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
     {% get_available_languages as LANGUAGES %}
-    <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
-         data-material="true">
+    <style>
+        div.selected > .acc-content {
+            max-height: 100vh;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <div class="container mx-auto flex flex-col"
+         _="on click
+                take .selected from .acc-header for the closest <div.acc-header/> to the event.target
+                take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)">
         {% if user.is_superuser %}
-            <div class="frame active">
-                <div class="inherit-colors heading">{% trans "Benachrichtigungen" %}</div>
-                <div class="content">
+            <div class="my-2 shadow-lg acc-header selected">
+                <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+                    <span>{% trans "Benachrichtigungen" %}</span>
+                    {% include 'icons/chevron_down.html' with rotate=True %}
+                </div>
+                <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                     {% notifications_maintain %}
                 </div>
             </div>
         {% endif %}
-        <div class="frame {% if not user.is_superuser %}active{% endif %}">
-            <div class="inherit-colors heading">{% trans "Bekannte Clients" %}</div>
-            <div class="content">
+        <div class="my-2 shadow-lg acc-header {% if not user.is_superuser %}selected{% endif %}">
+            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+                <span>{% trans "Bekannte Clients" %}</span>
+                {% if not user.is_superuser %}
+                    {% include 'icons/chevron_down.html' with rotate=True %}
+                {% else %}
+                    {% include 'icons/chevron_down.html' %}
+                {% endif %}
+            </div>
+            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 {% known_clients_control %}
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Passwort" %}</div>
-            <div class="content">
+        <div class="my-2 shadow-lg acc-header">
+            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+                <span>{% trans "Passwort" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </div>
+            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <a href="{% url 'password_change' %}">
-                    <div class="button primary">{% trans "Passwort ändern" %}</div>
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">{% trans "Passwort ändern" %}</div>
                 </a>
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Sprache" %}</div>
-            <div class="content">
+        <div class="my-2 shadow-lg acc-header">
+            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+                <span>{% trans "Sprache" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </div>
+            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.locale.label_tag }}<br>
+                    {{ form.locale|attr:"class:dark:bg-black mb-2" }}
                     <br>
-                    <input class="button primary" type="submit" value="{% trans "Speichern" %}">
+                    <input class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded" type="submit"
+                           value="{% trans "Speichern" %}">
                 </form>
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Hilfe und Rechtliches" %}</div>
-            <div class="content">
+        <div class="my-2 shadow-lg acc-header">
+            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+                <span>{% trans "Hilfe und Rechtliches" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </div>
+            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <ul>
                     <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a></li>
-                    <li><a href="https://github.com/zigellsn/StagyBee/blob/main/LICENSE">{% trans "Lizenzvertrag" %}</a></li>
+                    <li><a href="https://github.com/zigellsn/StagyBee/blob/main/LICENSE">{% trans "Lizenzvertrag" %}</a>
+                    </li>
                     <li><a href="https://github.com/zigellsn/StagyBee/issues/">{% trans "Probleme melden" %}</a></li>
                 </ul>
                 Copyright 2019-2021 Simon Zigelli

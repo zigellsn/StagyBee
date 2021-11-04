@@ -10,7 +10,7 @@
 
 {% block content %}
     <div>
-        <span class="display1">{{ congregation.display_name }}</span>
+        <span class="text-2xl">{{ congregation.display_name }}</span>
         <div class="pt-4">
             <h1>{% trans "Kalenderwoche" %} {{ week|date:'W' }}</h1>
         </div>
@@ -28,44 +28,42 @@
             {% endif %}
         </div>
         <div class="pt-4">
-            <table class="table" data-show-search="false" data-show-pagination="false"
-                   data-show-table-info="false" data-show-activity="false" data-show-rows-steps="false"
-                   data-empty-table-title="">
+            <table class="table-auto">
                 <thead>
                 <tr>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aufgabe" %}</th>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Startzeit" %}</th>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Endezeit" %}</th>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Dauer" %}</th>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Maximale Dauer" %}</th>
-                    <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Differenz" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for time_entry in object_list %}
                     <tr>
-                        <td>{{ time_entry.talk }}</td>
-                        <td>{{ time_entry.start|time }}</td>
-                        <td>{{ time_entry.stop|time }}</td>
-                        <td>{{ time_entry.duration }}</td>
-                        <td>{{ time_entry.display_max_duration }}</td>
+                        <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.talk }}</td>
+                        <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.start|time }}</td>
+                        <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.stop|time }}</td>
+                        <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.duration }}</td>
+                        <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.display_max_duration }}</td>
                         {% if "-" in time_entry.difference %}
-                            <td class="fg-red">
-                                <div>{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-red fg-gray" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+                            <td class="px-5 py-5 text-sm w-2/5">
+                                <div class="text-red-500">{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-red-500 text-gray-700" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% else %}
-                            <td class="fg-blue">
-                                <div>{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-blue" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+                            <td class="px-5 py-5 text-sm w-2/5">
+                                <div class="text-blue-500">{{ time_entry.difference }}</div>
+                                <div class="progress-bar bg-blue-500" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
                             </td>
                         {% endif %}
 
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="6">
-                            <div class="p-title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                        <td  class="px-5 py-5 text-sm w-2/5" colspan="6">
+                            <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
                         </td>
                     </tr>
                 {% endfor %}

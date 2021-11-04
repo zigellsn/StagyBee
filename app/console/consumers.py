@@ -15,8 +15,6 @@
 from datetime import datetime
 
 from channels.exceptions import StopConsumer
-from django.utils import formats, translation
-from django.utils.translation import gettext_lazy as _
 
 from StagyBee.consumers import AsyncRedisHttpConsumer
 from audit.models import Audit
@@ -27,11 +25,7 @@ from stage.consumers import generate_channel_group_name
 class ConsoleConsumer(AsyncRedisHttpConsumer):
 
     async def handle(self, body):
-        await self.send_headers(headers=[
-            (b"Cache-Control", b"no-cache"),
-            (b"Content-Type", b"text/event-stream"),
-            (b"Transfer-Encoding", b"chunked"),
-        ])
+        await super().add_headers()
         user = self.scope['user']
         if user.is_anonymous or not user.is_authenticated:
             raise StopConsumer()
@@ -66,12 +60,8 @@ class ConsoleConsumer(AsyncRedisHttpConsumer):
     async def message(self, event):
         text = ""
         if event["message"]["message"] == "ACK":
-            time = datetime.now()
-            old_lang = translation.get_language()
-            translation.activate(self.scope["url_route"]["kwargs"]["language"])
-            time = formats.date_format(time, "DATETIME_FORMAT")
-            translation.activate(old_lang)
-            text = f"event: message\ndata: {_('Nachricht vom %s bestätigt.') % time}\n\n"
+            context = {"time": datetime.now()}
+            text = AsyncRedisHttpConsumer.append_event("message", "console/events/ack.html", context)
         await self.send_body(text.encode("utf-8"), more_body=True)
 
     @staticmethod

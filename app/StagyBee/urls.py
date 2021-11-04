@@ -20,7 +20,7 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
 
-from console.views import SettingsView, StartupView, ConsoleActionView
+from console.views import SettingsView, StartupView
 from .views import SchemeView, ToggleSchemeView
 
 urlpatterns = [path("receiver/", include("receiver.urls")),

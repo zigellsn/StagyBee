@@ -5,34 +5,21 @@
   "private": true,
   "author": "Simon Zigelli",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
     "css": "tailwindcss -i stage/static/stage/css/stage.css -o ./StagyBee/static/css/tailwind.css"
   },
   "devDependencies": {
-    "autoprefixer": "^10.3.4",
-    "postcss": "^8.3.6",
-    "postcss-cli": "^8.3.1",
-    "css-loader": "^6.2.0",
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.2.0",
-    "postcss-loader": "^6.1.1",
-    "sass": "^1.41.1",
-    "sass-loader": "^12.1.0",
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.11",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.2.0",
     "node-sass": "^6.0.1",
-    "less": "^4.1.1",
-    "less-loader": "^10.0.1",
-    "style-loader": "^3.2.1",
-    "css-minimizer-webpack-plugin": "^3.0.2",
-    "ts-loader": "^9.2.5",
-    "typescript": "^4.4.3",
-    "webpack": "^5.53.0",
-    "webpack-cli": "^4.8.0",
-    "@types/jquery": "^3.5.6",
-    "@types/luxon": "^2.0.4"
+    "typescript": "^4.4.4",
+    "@types/luxon": "^2.0.5"
   },
   "dependencies": {
-    "tailwindcss": "^2.2.15",
-    "luxon": "^2.0.2"
+    "tailwindcss": "^2.2.17",
+    "@tailwindcss/forms": "^0.3.4",
+    "luxon": "^2.0.2",
+    "sweetalert2": "^11.1.9"
   }
 }

@@ -1,0 +1,15 @@
+<tbody id="next" hx-swap-oob="beforeend">
+<tr>
+    <td>{{ context.talk }}</td>
+    <td>{{ context.start }}</td>
+    <td>{{ context.stop }}</td>
+    <td>{{ context.duration }}</td>
+    <td>{{ context.display_max_duration }}</td>
+    <td class="{% if '-' in context.difference %}fg-red{% else %}fg-blue{% endif %}">
+        <div>{{ context.difference }}</div>
+        <div class="progress-bar {% if '-' in context.difference %}bg-red{% else %}bg-blue{% endif %}"
+             style="min-height:12px;width:
+                     {{ context.percentage }}{% if percentage is not None and percentage != 0 %}%{% endif %};"></div>
+    </td>
+</tr>
+</tbody>

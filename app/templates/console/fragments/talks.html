@@ -1,0 +1,41 @@
+{% load i18n %}
+<label for="talk-list" class="pt-4">{% trans "Aufgabe" %}</label>
+<ul class="flex flex-col p-4" id="talk-list"
+    _="on click if event.target matches .line then take .bg-blue-500 from .line for event.target end">
+
+    {% if times %}
+        <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
+            <ul class="flex flex-col p-4">
+                {% for talk in times %}
+                    <li class="line border-gray-400 hover:bg-blue-300 flex flex-row {% if forloop.first %}bg-blue-500{% endif %}"
+                        data-caption="{{ talk.1 }}" data-content="{{ talk.0 }}"
+                        data-index="{{ forloop.counter0 }}" data-user="false" onclick="doClick(this);">{{ talk.1 }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+
+    {% with total=times|length %}
+        <li>{% trans 'Zusammenkunft für die Öffentlichkeit' %}
+            <ul class="flex flex-col p-4">
+                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+                    data-caption="{% trans 'Öffentlicher Vortrag (30 Min.)' %}" data-index="{{ total|add:"1" }}"
+                    data-content="30" data-user="false"
+                    onclick="doClick(this);">{% trans 'Öffentlicher Vortrag (30 Min.)' %}</li>
+                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+                    data-caption="{% trans 'Wachtturm-Studium (60 Min.)' %}" data-index="{{ total|add:"2" }}"
+                    data-content="60" data-user="false"
+                    onclick="doClick(this);">{% trans 'Wachtturm-Studium (60 Min.)' %}</li>
+            </ul>
+        </li>
+
+        <li>{% trans 'Benutzerdefiniert' %}
+            <ul class="flex flex-col p-4">
+                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+                    data-caption="{% trans 'Benutzerdefiniert' %}" data-index="{{ total|add:"3" }}"
+                    data-content="10"
+                    data-user="true" onclick="doClick(this);">{% trans 'Benutzerdefiniert' %}</li>
+            </ul>
+        </li>
+    {% endwith %}
+</ul>

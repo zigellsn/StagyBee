@@ -74,7 +74,7 @@ class AsyncRedisHttpConsumer(AsyncHttpConsumer):
         self._redis = RedisConnector()
         self.keepalive = False
 
-    async def handle(self, body):
+    async def add_headers(self):
         await self.send_headers(headers=[
             (b"Cache-Control", b"no-cache"),
             (b"Content-Type", b"text/event-stream"),

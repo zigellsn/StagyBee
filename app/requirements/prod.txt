@@ -1,3 +1,4 @@
 -r common.txt
 
+psycopg2-binary==3.0.1
 daphne==3.0.2

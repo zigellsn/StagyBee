@@ -31,7 +31,7 @@ GLOBAL_TIMEOUT = {}
 
 
 def generate_channel_group_name(function, congregation):
-    con = re.sub(r"[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]", "_", congregation)
+    con = re.sub(r'[^\x2D-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A]', '_', congregation)
     return f"congregation.{function}.{con}"
 
 
@@ -42,7 +42,7 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
         self.task = None
 
     async def handle(self, body):
-        await super().handle(body)
+        await super().add_headers()
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
             generate_channel_group_name("stage", congregation),
@@ -52,7 +52,8 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
         if timeout is not None:
             timeout.cancel()
             GLOBAL_TIMEOUT.pop(congregation)
-        await self.send_body("".encode("utf-8"), more_body=True)
+        event = await self.build_events()
+        await self.send_body(event.encode("utf-8"), more_body=True)
         await self.__connect_to_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
 
     async def disconnect(self):
@@ -273,7 +274,7 @@ class ExtractorConsumer(AsyncRedisHttpConsumer):
 class ConsoleClientConsumer(AsyncRedisHttpConsumer):
 
     async def handle(self, body):
-        await super().handle(body)
+        await super().add_headers()
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         if "scrim" not in self.scope["url_route"]["kwargs"] or self.scope["url_route"]["kwargs"]["scrim"] is None:
             self.scope["url_route"]["kwargs"]["scrim"] = False
@@ -295,8 +296,7 @@ class ConsoleClientConsumer(AsyncRedisHttpConsumer):
 
     async def alert(self, event):
         if "alert" in event:
-            context = {"message": event["alert"]["value"].decode("utf-8")}
-            event = AsyncRedisHttpConsumer.append_event("alert", "stage/events/alert.html", context)
+            event = f"event: alert\ndata: {event['alert']['value'].decode('utf-8')}\n\n"
             await self.send_body(event.encode("utf-8"), more_body=True)
 
     async def scrim(self, event):

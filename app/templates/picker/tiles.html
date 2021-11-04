@@ -9,29 +9,32 @@
 
 {% block content %}
     {% if not object_list %}
-        <div class="p-title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
+        <div class="text-2xl text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
                 href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
-    {% trans "Versammlung wählen" as choose_congregation %}
-    <div class="tiles-grid tiles-group size-{{ size }} pos-top-center"
-         {% if object_list %}data-group-title="{{ choose_congregation }}"{% endif %}>
+    {% if object_list %}
+        <div class="mb-8">{% trans "Versammlung wählen" %}</div>
+        <div class="flex grid grid-flow-col place-items-center gap-2 mb-20">
         {% for credential in object_list %}
-            <a href="{% url 'stage:stage' credential.congregation %}" data-role="tile"
-               class="bg-indigo">
-                <span class="pos-absolute pos-center">{{ credential.display_name|default:credential.congregation }}</span>
+            <a href="{% url 'stage:stage' credential.congregation %}"
+               class="flex h-32 pl-4 pr-4 bg-indigo-500 hover:bg-indigo-400 text-center justify-center items-center rounded-md">
+                <span>{{ credential.display_name|default:credential.congregation }}</span>
             </a>
         {% endfor %}
-        {% if show_login %}
-            <a href="https://jwconf.org/login.php?source=index.php&" data-role="tile"
-               class="bg-orange col-{{ col }}" data-size="wide">
-                <span class="pos-absolute pos-center">{% trans "JWConf Login Seite" %}</span>
+        </div>
+    {% endif %}
+    {% if show_login %}
+        <div class="grid place-items-center">
+            <a href="https://jwconf.org/login.php?source=index.php&"
+               class="flex w-64 h-32 bg-red-500 hover:bg-red-400 text-center justify-center items-center rounded-md">
+                <span>{% trans "JWConf Login Seite" %}</span>
             </a>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}
-    <footer class="pos-fixed fixed-bottom pr-1-sx pl-1-sx pr-4-md pl-4-md pb-4-md pb-1-sx">
+    <footer class="pos-fixed fixed-bottom sx:pr-1 sx:pl-1 md:pr-4 md:pl-4 md:pb-4 sx:pb-1">
         <div>
             {% notifications %}
         </div>

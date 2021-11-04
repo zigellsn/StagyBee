@@ -16,8 +16,8 @@ from datetime import timedelta
 
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
-from django.utils import timezone, formats
-from django.utils.translation import gettext_lazy as _
+from django.template.loader import render_to_string
+from django.utils import timezone
 
 from StagyBee.consumers import AsyncRedisWebsocketConsumer
 from picker.models import Credential
@@ -38,12 +38,10 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
         if timer is not None:
             context = timer.get_context()
             timer.set_callback(self.timeout_callback)
-            await self.send(
-                text_data=f"<button id=\"timer-stop\" type=\"submit\" name=\"action\" value=\"timer-stop\" "
-                          f"class=\"button\" onclick=\"$('.current').next().trigger('click')\">"
-                          f"<span class=\"mif-stop\"></span>{_('Stopp')}</button>")
-            await self.send(
-                text_data=f"<input type=\"hidden\" id=\"talk-index\" name=\"index\" value=\"{context['index']}\"/>")
+            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": False})
+            await self.send(text_data=stop)
+            talk_index = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
+            await self.send(text_data=talk_index)
 
     async def disconnect(self, close_code):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -61,24 +59,26 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
         event = json.loads(text_data)
         if "action" not in event and (event["action"] != "start" or event["action"] != "stop"):
             return
+        if event["h"] == "0" and event["m"] == "0" and event["s"] == "0":
+            return
         if event["action"] == "timer-start":
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is None:
-                split = str.split(event["duration"], ":")
                 context = {
-                    "duration": timedelta(hours=float(split[0]), minutes=float(split[1]), seconds=float(split[2])),
+                    "duration": timedelta(hours=float(event["h"]), minutes=float(event["m"]),
+                                          seconds=float(event["s"])),
                     "start": timezone.now(),
                     "index": event["index"],
                     "congregation": congregation}
                 GLOBAL_TIMERS[congregation] = Timer(1, self.timeout_callback, context=context,
                                                     timer_name=event["talk-name"])
-                await self.send(
-                    text_data=f"<input type=\"hidden\" id=\"talk-index\" name=\"index\" value=\"{context['index']}\"/>")
-                await self.send(text_data=f"<div id=\"pb\" class=\"progress-bar\" style=\"width:0\">")
-            await self.send(
-                text_data=f"<button id=\"timer-stop\" type=\"submit\" name=\"action\" value=\"timer-stop\" "
-                          f"class=\"button\" onclick=\"$('.current').next().trigger('click')\">"
-                          f"<span class=\"mif-stop\"></span>{_('Stopp')}</button>")
+                talk_index = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
+                await self.send(text_data=talk_index)
+                progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
+                                                context={"percentage": 0})
+                await self.send(text_data=progress_bar)
+            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": False})
+            await self.send(text_data=stop)
         elif event["action"] == "timer-stop":
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is not None:
@@ -88,44 +88,33 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
                                                                      context["start"], context["duration"])
                 timer.cancel()
                 GLOBAL_TIMERS.pop(congregation)
-            await self.send(
-                text_data=f"<button id=\"timer-stop\" type=\"submit\" name=\"action\" value=\"timer-stop\" "
-                          f"class=\"button disabled\"><span class=\"mif-stop\"></span>{_('Stopp')}</button>")
+            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": True})
+            await self.send(text_data=stop)
             await self.channel_layer.group_send(congregation_group_name,
                                                 {"congregation": congregation, "activity": "stop", "type": "timer"})
 
     async def timer(self, event):
         if "activity" in event and event["activity"] == "stop":
-            await self.send(text_data=f"<div id=\"pb\" class=\"progress-bar\" style=\"width:0\">")
-            await self.send(text_data=f"<span style=\"font-family: monospace;\" id=\"stopwatch\">"
-                                      f"00:00:00</span>")
-            await self.send(text_data=f"<span style=\"font-family: monospace;\" id=\"remaining\">"
-                                      f"00:00:00</span>")
-            await self.send(text_data=f"<span id=\"talk-name-caption\"></span>")
+            progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
+                                            context={"percentage": 0})
+            await self.send(text_data=progress_bar)
+            stopwatch = render_to_string(template_name="stopwatch/fragments/stopwatch.html",
+                                         context={"time": "00:00:00"})
+            await self.send(text_data=stopwatch)
+            remaining = render_to_string(template_name="stopwatch/fragments/remaining.html",
+                                         context={"time": "00:00:00"})
+            await self.send(text_data=remaining)
+            talk_name = render_to_string(template_name="stopwatch/fragments/talk_name_caption.html",
+                                         context={"name": ""})
+            await self.send(text_data=talk_name)
             context = await database_sync_to_async(__get_newest__)(event["congregation"])
             if context is None:
                 return
-            if "-" in context.difference:
-                class_attr_fg = "fg-red"
-                class_attr_bg = "bg-red"
-            else:
-                class_attr_fg = "fg-blue"
-                class_attr_bg = "bg-blue"
-            await self.send(text_data="<tr id=\"no-entries\" hx-swap-oob=\"outerHTML\"></tr>")
-            await self.send(text_data=f"<tbody id=\"next\" hx-swap-oob=\"beforeend\">"
-                                      f"<tr>"
-                                      f"<td>{context.talk}</td>"
-                                      f"<td>{formats.date_format(timezone.localtime(context.start), 'TIME_FORMAT')}"
-                                      f"</td>"
-                                      f"<td>{formats.date_format(timezone.localtime(context.stop), 'TIME_FORMAT')}</td>"
-                                      f"<td>{context.duration}</td>"
-                                      f"<td>{context.display_max_duration}</td>"
-                                      f"<td class=\"{class_attr_fg}\"><div>{context.difference}</div>"
-                                      f"<div class=\"progress-bar {class_attr_bg}\" style=\"min-height:12px;width:"
-                                      f"{str(context.percentage)}%;\"></div> "
-                                      f"</td>"
-                                      f"</tr>"
-                                      f"</tbody>")
+            no_entries = render_to_string(template_name="stopwatch/fragments/no_entries.html")
+            await self.send(text_data=no_entries)
+            list_item = render_to_string(template_name="stopwatch/fragments/timeentry_list_item.html",
+                                         context={"object": context})
+            await self.send(text_data=list_item)
             return
         timer = GLOBAL_TIMERS.get(event["congregation"])
         if timer is None:
@@ -143,12 +132,18 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
         full_class = ""
         if class_attr != "":
             full_class = f" class=\"{class_attr}\""
-        await self.send(text_data=f"<span style=\"font-family: monospace;\" id=\"stopwatch\"{full_class}>"
-                                  f"{__td_to_string__(delta)}</span>")
-        await self.send(text_data=f"<span style=\"font-family: monospace;\" id=\"remaining\"{full_class}>"
-                                  f"{remaining_str}</span>")
-        await self.send(text_data=f"<div id=\"pb\" class=\"progress-bar\" style=\"width:{percentage}%\">")
-        await self.send(text_data=f"<span id=\"talk-name-caption\">{timer.get_timer_name()}</span>")
+        stopwatch = render_to_string(template_name="stopwatch/fragments/stopwatch.html",
+                                     context={"time": __td_to_string__(delta), "full_class": full_class})
+        await self.send(text_data=stopwatch)
+        remaining = render_to_string(template_name="stopwatch/fragments/remaining.html",
+                                     context={"time": remaining_str, "full_class": full_class})
+        await self.send(text_data=remaining)
+        progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
+                                        context={"percentage": percentage})
+        await self.send(text_data=progress_bar)
+        talk_name = render_to_string(template_name="stopwatch/fragments/talk_name_caption.html",
+                                     context={"name": timer.get_timer_name()})
+        await self.send(text_data=talk_name)
 
 
 def __get_congregation__(congregation):

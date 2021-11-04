@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}Stage{% endblock %}
 
@@ -12,15 +12,28 @@
         <div hx-sse="swap:scrim"></div>
     </div>
 
-    <div id="alert-box" class="info-box" data-role="infobox">
-        <div hx-sse="connect:/ws/console_client/{{ credential.congregation|escape }}/">
-            <div hx-sse="swap:alert"></div>
-        </div>
-        <form id="alert-form" hx-trigger="close from:#alert-box"
-              hx-post="{% url 'console:message_ack' credential.congregation %}">
-            <input type="hidden" name="message" value="ACK">
-        </form>
-    </div>
+    <form id="alert-form" hx-trigger="confirm" hx-post="{% url 'console:message_ack' credential.congregation %}">
+        <div _="
+        on doIt(answer) log 'The answer is $answer'
+        eventsource Alerts from http:/ws/console_client/{{ credential.congregation|escape }}/
+            on alert as string
+                call Swal.fire({title: '{% trans "Nachricht" %}', text: it})
+                if result.isConfirmed trigger doIt(answer:42) end
+            end
+        end"></div>
+        <input type="hidden" name="message" value="ACK">
+    </form>
+
+
+    {#    <div id="alert-box" class="info-box" data-role="infobox">#}
+    {#        <div hx-sse="connect:/ws/console_client/{{ credential.congregation|escape }}/">#}
+    {#            <div hx-sse="swap:alert"></div>#}
+    {#        </div>#}
+    {#        <form id="alert-form" hx-trigger="close from:#alert-box"#}
+    {#              hx-post="{% url 'console:message_ack' credential.congregation %}">#}
+    {#            <input type="hidden" name="message" value="ACK">#}
+    {#        </form>#}
+    {#    </div> #}
     <div hx-sse="connect:/ws/extractor/{{ credential.congregation|escape }}/">
         <div hx-sse="swap:sum-listeners"></div>
         <div hx-sse="swap:listeners"></div>
@@ -31,15 +44,15 @@
 {% block footer %}
     <footer class="fixed-bottom">
         {% if not credential.touch and credential.send_times_to_stage %}
-            <div id="timer" class="wrapper">
-                <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
+            <div id="timer" class="flex justify-center">
+            <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
+            </div>
+
+            <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/" class="progress">
+                <div id="pb" class="progress-bar" style="width:0">
                 </div>
 
-                <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/" class="progress">
-                    <div id="pb" class="progress-bar" style="width:0">
-                </div>
-
-                <div id="timer-overlay" class="text-leader">
+                <div id="timer-overlay" class="flex flex-row text-xl self-center">
                     <span id="stopwatch" style="font-family: monospace;">00:00:00</span>
                     <span style="font-family: monospace;">&nbsp;|&nbsp;</span>
                     <span id="remaining" style="font-family: monospace;">00:00:00</span>
@@ -50,10 +63,5 @@
 {% endblock %}
 
 {% block body_extra %}
-    <script>
-        StagyBee.main.htmx().on("htmx:sseMessage", function (evt) {
-            if (evt.detail.type === 'alert')
-                $('#alert-box').data('infobox').open();
-        });
-    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}

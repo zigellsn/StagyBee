@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n widget_tweaks %}
 
 {% block title %}{% trans 'Log in' %}{% endblock %}
 
@@ -8,20 +8,20 @@
 {% endblock %}
 
 {% block content %}
-    <div class="h2">{% trans 'Log in' %}</div>
+    <div class="text-xl">{% trans 'Log in' %}</div>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
-            <div class="fieldWrapper">
+            <div>
                 {{ field.errors }}
                 <div>{{ field.label_tag }}</div>
-                <div>{{ field }}</div>
+                <div>{{ field|attr:"class:dark:bg-black mb-2" }}</div>
                 {% if field.help_text %}
                     <p class="help">{{ field.help_text|safe }}</p>
                 {% endif %}
             </div>
         {% endfor %}
-        <button class="button primary mt-4" type="submit">{% trans 'Log in' %}</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">{% trans 'Log in' %}</button>
     </form>
 
     <div>

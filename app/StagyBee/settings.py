@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "stopwatch.apps.StopwatchConfig",
     "notification.apps.NotificationConfig",
     "qr_code",
+    "widget_tweaks",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

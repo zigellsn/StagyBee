@@ -8,17 +8,9 @@
                    href="{% url 'picker:picker' %}">
                     <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
                         {% if LANGUAGE_BIDI %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                            </svg>
+                            {% include 'icons/right.html' %}
                         {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                            </svg>
+                            {% include 'icons/left.html' %}
                         {% endif %}
                     </div>
                 </a>
@@ -26,17 +18,9 @@
                 <a class="brand order-1" href="{% url 'picker:picker' %}">
                     <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
                         {% if LANGUAGE_BIDI %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                            </svg>
+                            {% include 'icons/right.html' %}
                         {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                            </svg>
+                            {% include 'icons/left.html' %}
                         {% endif %}
                     </div>
                 </a>

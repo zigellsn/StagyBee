@@ -4,32 +4,32 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div>
-        <span class="display1">{{ congregation.display_name }}</span>
-        <table class="table">
+        <span class="text-2xl">{{ congregation.display_name }}</span>
+        <table class="table-auto">
             <thead>
             <tr>
-                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "User" %}</th>
-                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Nachricht" %}</th>
-                <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Sendezeit" %}</th>
+                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "User" %}</th>
+                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
+                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sendezeit" %}</th>
             </tr>
             </thead>
             <tbody>
             {% for log_entry in object_list %}
                 <tr>
-                    <td>
+                    <td class="px-5 py-5 text-sm w-2/5">
                         <div>{{ log_entry.user.get_full_name|default:log_entry.user.username }}</div>
                     </td>
-                    <td>
+                    <td class="px-5 py-5 text-sm w-2/5">
                         <div>{{ log_entry.message }}</div>
                     </td>
-                    <td>
+                    <td class="px-5 py-5 text-sm w-2/5">
                         <div>{{ log_entry.send_time }}</div>
                     </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="3">
-                        <div class="p-title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                    <td class="px-5 py-5 text-sm w-2/5" colspan="3">
+                        <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
                     </td>
                 </tr>
             {% endfor %}

@@ -18,11 +18,12 @@ import aiohttp
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import FormMixin, UpdateView
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from tenacity import RetryError
@@ -143,26 +144,8 @@ class WorkbookView(LoginRequiredMixin, View):
         today = datetime.today()
         urls = workbook_extractor.create_urls(today, today)
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
-        talk_list = "<label for=\"c\" class=\"pt-4\">Aufgabe</label><ul data-role=\"listview\" " \
-                    "data-view=\"list\" data-select-node=\"true\" data-on-node-click=\"doClick\" id=\"talk-list\">"
-        i = 0
-        if times is not None and times != {}:
-            talk_list = f"{talk_list}<li data-caption=\"{_('Leben-und-Dienst-Zusammenkunft')}\"><ul>"
-            selected = " current current-select"
-            for talk in list(times.values())[0]:
-                talk_list = f"{talk_list}<li class=\"bg-darkBlue-hover{selected}\" data-caption=\"{talk[1]}\" " \
-                            f"data-content=\"{talk[0]}\" data-index=\"{i}\"></li>"
-                i = i + 1
-                selected = ""
-            talk_list = f"{talk_list}</ul></li>"
-
-        talk_list = f"{talk_list}<li data-caption=\"{_('Zusammenkunft für die Öffentlichkeit')}\"><ul><li " \
-                    f"class=\"bg-darkBlue-hover\" data-caption=\"{_('Öffentlicher Vortrag (30 Min.)')}\" " \
-                    f"data-content=\"30\"></li><li class=\"bg-darkBlue-hover\" data-caption=\"" \
-                    f"{_('Wachtturm-Studium (60 Min.)')}\" data-content=\"60\"></li></ul></li><li data-caption=\"" \
-                    f"{_('Benutzerdefiniert')}\"><ul><li class=\"bg-darkBlue-hover\" data-caption=\"" \
-                    f"{_('Benutzerdefiniert')}\" data-content=\"10\"></li></ul></li></ul> "
-        return HttpResponse(talk_list)
+        times = list(times.values())[0]
+        return render(request, "console/fragments/talks.html", {"times": times})
 
 
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):

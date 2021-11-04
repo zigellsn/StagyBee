@@ -6,6 +6,6 @@
         {% csrf_token %}
         <p>{% trans "Soll die folgende Benachrichtigung wirklich gelöscht werden?" %}</p><br>
         {% notification object %}<br>
-        <input class="button primary" type="submit" value="{% trans "Löschen" %}">
+        <input class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded" type="submit" value="{% trans "Löschen" %}">
     </form>
 {% endblock %}
