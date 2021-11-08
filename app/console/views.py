@@ -23,7 +23,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
-from django.views.generic.base import View, TemplateView
+from django.views.generic.base import View
 from django.views.generic.edit import FormMixin, UpdateView
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from tenacity import RetryError
@@ -141,11 +141,18 @@ class WorkbookView(LoginRequiredMixin, View):
     @async_to_sync
     async def get(self, request, *args, **kwargs):
         workbook_extractor = WorkbookExtractor()
-        today = datetime.today()
-        urls = workbook_extractor.create_urls(today, today)
+        if "date" in kwargs and kwargs["date"] != "today":
+            try:
+                date = datetime.strptime(kwargs["date"], "%Y%m%d")
+            except ValueError as e:
+                return HttpResponse(str(e), status=400)
+        else:
+            date = datetime.today()
+        urls = workbook_extractor.create_urls(date, date)
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
-        times = list(times.values())[0]
-        return render(request, "console/fragments/talks.html", {"times": times})
+        if times != {}:
+            times = list(times.values())[0]
+        return render(request, "console/fragments/workbook.html", {"times": times})
 
 
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):

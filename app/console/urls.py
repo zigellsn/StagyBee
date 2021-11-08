@@ -25,9 +25,10 @@ urlpatterns = [
     path("<str:pk>/action/scrim/toggle/", ConsoleActionView.as_view(), name="scrim"),
     path("<str:pk>/action/message/send/", ConsoleActionView.as_view(), name="message"),
     path("<str:pk>/action/message/ack/", ConsoleActionView.as_view(), name="message_ack"),
-    path("workbook/today/", WorkbookView.as_view(), name="workbook_today"),
+    path("workbook/<str:date>/", WorkbookView.as_view(), name="workbook"),
     path("audit/", include("audit.urls")),
     path("timer/", include("stopwatch.urls")),
     path("knownclient/shutdown/<int:pk>/", KnownClientShutdown.as_view(), name="known_client_shutdown"),
     path("knownclient/reboot/<int:pk>/", KnownClientReboot.as_view(), name="known_client_reboot"),
 ]
+

@@ -20,16 +20,38 @@
                 <div>{{ knownclient.uri }}</div>
             </td>
             <td class="px-5 py-5 text-sm w-2/5">
-                <a href="#"
-                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Herunterfahren" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_shutdown' knownclient.id %}');">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded"><span>{% include 'icons/shutdown.html' %}</span>&nbsp;{% trans "Herunterfahren" %}
-                    </div>
-                </a>
-                <a href="#"
-                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Neu starten" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_reboot' knownclient.id %}');">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded"><span>{% include 'icons/refresh.html' %}</span>&nbsp;{% trans "Neu starten" %}
-                    </div>
-                </a>
+                <button
+                        hx-trigger="confirmed"
+                        hx-get="{% url 'console:known_client_shutdown' knownclient.id %}"
+                        hx-swap="afterend"
+                        class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded"
+                        _="on click call Swal.fire({
+                            title: '{% trans "Herunterfahren" %}',
+                            text: '{{ knownclient.alias }}',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3b82f6'
+                            })
+                          if result.isConfirmed
+                            trigger confirmed
+                          end">
+                    <span>{% include 'icons/shutdown.html' %}</span>&nbsp;{% trans "Herunterfahren" %}
+                </button>
+                <button
+                        hx-trigger="confirmed"
+                        hx-get="{% url 'console:known_client_reboot' knownclient.id %}"
+                        hx-swap="afterend"
+                        class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded"
+                        _="on click call Swal.fire({
+                            title: '{% trans "Neu starten" %}',
+                            text: '{{ knownclient.alias }}',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3b82f6'
+                            })
+                          if result.isConfirmed
+                            trigger confirmed
+                          end">
+                    <span>{% include 'icons/refresh.html' %}</span>&nbsp;{% trans "Neu starten" %}
+                </button>
             </td>
         </tr>
     {% empty %}

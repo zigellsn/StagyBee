@@ -14,46 +14,9 @@
  * limitations under the License.
  */
 
-[class*=tile-] {
-  transform: scale(1);
-}
-
-.tiles-group {
-  margin-left: 0;
-  margin-top: 50px;
-}
-
-.p-title {
-  font-size: 25px;
-  line-height: 1.1;
-  font-weight: 300;
-  margin: 5px 5px 5px 5px;
-}
-
-@media all and (min-width: 768px) {
-  header {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10000;
-  }
-
-  //body {
-  //  padding-top: 64px;
-  //}
-}
-
-@supports (-ms-ime-align: auto) {
-  header {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10000;
-  }
-
-  body {
-    padding-top: 64px;
-  }
+module.exports = {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    }
 }

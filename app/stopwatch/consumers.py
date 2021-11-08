@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import json
 from datetime import timedelta
 
@@ -38,8 +39,6 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
         if timer is not None:
             context = timer.get_context()
             timer.set_callback(self.timeout_callback)
-            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": False})
-            await self.send(text_data=stop)
             talk_index = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
             await self.send(text_data=talk_index)
 
@@ -77,8 +76,6 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
                 progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
                                                 context={"percentage": 0})
                 await self.send(text_data=progress_bar)
-            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": False})
-            await self.send(text_data=stop)
         elif event["action"] == "timer-stop":
             timer = GLOBAL_TIMERS.get(congregation)
             if timer is not None:
@@ -88,8 +85,6 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
                                                                      context["start"], context["duration"])
                 timer.cancel()
                 GLOBAL_TIMERS.pop(congregation)
-            stop = render_to_string(template_name="stopwatch/fragments/stop.html", context={"disabled": True})
-            await self.send(text_data=stop)
             await self.channel_layer.group_send(congregation_group_name,
                                                 {"congregation": congregation, "activity": "stop", "type": "timer"})
 
@@ -128,15 +123,12 @@ class CentralTimerConsumer(AsyncRedisWebsocketConsumer):
             class_attr = ""
         else:
             remaining_str = f"-{__td_to_string__(abs(remaining))}"
-            class_attr = "fg-red times-up"
-        full_class = ""
-        if class_attr != "":
-            full_class = f" class=\"{class_attr}\""
+            class_attr = "text-red-500 times-up"
         stopwatch = render_to_string(template_name="stopwatch/fragments/stopwatch.html",
-                                     context={"time": __td_to_string__(delta), "full_class": full_class})
+                                     context={"time": __td_to_string__(delta), "full_class": class_attr})
         await self.send(text_data=stopwatch)
         remaining = render_to_string(template_name="stopwatch/fragments/remaining.html",
-                                     context={"time": remaining_str, "full_class": full_class})
+                                     context={"time": remaining_str, "full_class": class_attr})
         await self.send(text_data=remaining)
         progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
                                         context={"percentage": percentage})

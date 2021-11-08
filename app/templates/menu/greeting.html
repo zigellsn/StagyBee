@@ -1,7 +1,6 @@
 {% load i18n %}
 {% if user.is_authenticated %}
-    <span class="text-sm tracking-tight p-2 ml-2 block">
-            {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen,&nbsp;{{ username }}
-                !{% endblocktrans %}
+    <span class="text-sm tracking-tight p-2 block">
+            {% blocktrans with username=user.get_short_name|default:user.get_username %}Willkommen,&nbsp;{{ username }}!{% endblocktrans %}
         </span>
 {% endif %}

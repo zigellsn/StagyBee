@@ -5,20 +5,16 @@
   "private": true,
   "author": "Simon Zigelli",
   "scripts": {
-    "css": "tailwindcss -i stage/static/stage/css/stage.css -o ./StagyBee/static/css/tailwind.css"
+    "css": "postcss stage/static/stage/css/stage.css -o ./StagyBee/static/css/bundle.css"
   },
   "devDependencies": {
-    "autoprefixer": "^10.3.7",
-    "postcss": "^8.3.11",
-    "sass": "^1.43.4",
-    "sass-loader": "^12.2.0",
-    "node-sass": "^6.0.1",
-    "typescript": "^4.4.4",
-    "@types/luxon": "^2.0.5"
-  },
-  "dependencies": {
     "tailwindcss": "^2.2.17",
     "@tailwindcss/forms": "^0.3.4",
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.11",
+    "postcss-cli": "^9.0.2"
+  },
+  "dependencies": {
     "luxon": "^2.0.2",
     "sweetalert2": "^11.1.9"
   }

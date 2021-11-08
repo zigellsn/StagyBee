@@ -5,7 +5,7 @@
     {% now "W" as week %}
     <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
         <div id="archive"
-             class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+             class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
             {% include 'icons/archive.html' %}
         </div>
     </a>

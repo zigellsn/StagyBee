@@ -1,2 +1,3 @@
 {% load i18n %}
-{% trans "Nachricht vom %s bestätigt." | time %}
+{% now "DATETIME_FORMAT" as time %}
+{% blocktranslate %}Nachricht vom {{ time }} bestätigt.{% endblocktranslate %}<br>

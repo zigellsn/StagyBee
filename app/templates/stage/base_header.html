@@ -1,43 +1,25 @@
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <header class="bg-blue-500 dark:bg-black">
-    <nav class="flex justify-between w-full bg-blue dark:bg-black text-white p-4">
-        <div class="md:items-start md:w-auto flex">
-            {% if credential.touch %}
-                <a onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
-                   href="{% url 'picker:picker' %}">
-                    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-                        {% if LANGUAGE_BIDI %}
-                            {% include 'icons/right.html' %}
-                        {% else %}
-                            {% include 'icons/left.html' %}
-                        {% endif %}
-                    </div>
-                </a>
-            {% else %}
-                <a class="brand order-1" href="{% url 'picker:picker' %}">
-                    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-                        {% if LANGUAGE_BIDI %}
-                            {% include 'icons/right.html' %}
-                        {% else %}
-                            {% include 'icons/left.html' %}
-                        {% endif %}
-                    </div>
-                </a>
-            {% endif %}
+    <nav class="dark:bg-black text-white px-9 flex justify-between w-screen">
+        <div class="py-5 flex w-full items-center">
+            <a {% if credential.touch %}onclick="window.frames['frame'].location = 'https://jwconf.org/index.php?logout';"{% endif %}
+               href="{% url 'picker:picker' %}">
+                <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+                    {% if LANGUAGE_BIDI %}
+                        {% include 'icons/right.html' %}
+                    {% else %}
+                        {% include 'icons/left.html' %}
+                    {% endif %}
+                </div>
+            </a>
+            <div class="font-semibold tracking-tight text-xl flex w-full items-center">
+                {% if not credential.touch %}{{ credential.display_name }}{% endif %}</div>
         </div>
 
-        {% if not credential.touch %}
-            <div class="md:items-start md:w-auto flex">
-                <span class="font-semibold tracking-tight text-xl pt-1 block">{{ credential.display_name }}</span>
-            </div>
-
-            <div class="md:items-end md:w-auto flex">
-                <div class="flex text-sm">
-                    {% block header_functions %}
-                    {% endblock %}
-                </div>
-            </div>
-        {% endif %}
+        <div class="hidden md:flex font-semibold items-center font-heading">
+            {% block header_functions %}
+            {% endblock %}
+        </div>
     </nav>
 </header>

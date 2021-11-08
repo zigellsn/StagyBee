@@ -1,16 +1,15 @@
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <header class="bg-blue-500 dark:bg-black">
-    <nav class="flex justify-between w-full bg-blue dark:bg-black text-white p-4">
-        <a href="{% block header_link %}{% endblock %}">
-            <span class="font-semibold text-xl tracking-tight pt-1 block">{% block header_title %}{% endblock %}</span>
-        </a>
-
-        <div class="md:items-center md:w-auto flex">
-            <div class="flex text-sm">
-                {% block header_functions %}
-                {% endblock %}
-            </div>
+    <nav class="dark:bg-black text-white px-9 flex justify-between w-screen">
+        <div class="py-5 flex w-full items-center">
+            <a href="{% block header_link %}{% endblock %}">
+                <span class="font-semibold tracking-tight text-xl flex w-full items-center">{% block header_title %}{% endblock %}</span>
+            </a>
+        </div>
+        <div class="hidden md:flex font-semibold items-center font-heading">
+            {% block header_functions %}
+            {% endblock %}
             {% include "menu/clock.html" %}
         </div>
     </nav>

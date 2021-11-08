@@ -14,8 +14,8 @@
                 take .selected from .acc-header for the closest <div.acc-header/> to the event.target
                 take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)">
         {% if user.is_superuser %}
-            <div class="my-2 shadow-lg acc-header selected">
-                <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+            <div class="my-2 dark:bg-gray-800 shadow-lg acc-header selected">
+                <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                     <span>{% trans "Benachrichtigungen" %}</span>
                     {% include 'icons/chevron_down.html' with rotate=True %}
                 </div>
@@ -24,8 +24,8 @@
                 </div>
             </div>
         {% endif %}
-        <div class="my-2 shadow-lg acc-header {% if not user.is_superuser %}selected{% endif %}">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header {% if not user.is_superuser %}selected{% endif %}">
+            <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Bekannte Clients" %}</span>
                 {% if not user.is_superuser %}
                     {% include 'icons/chevron_down.html' with rotate=True %}
@@ -37,23 +37,23 @@
                 {% known_clients_control %}
             </div>
         </div>
-        <div class="my-2 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Passwort" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <a href="{% url 'password_change' %}">
                     <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">{% trans "Passwort ändern" %}</div>
                 </a>
             </div>
         </div>
-        <div class="my-2 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Sprache" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <form method="post">
                     {% csrf_token %}
                     {{ form.locale.label_tag }}<br>
@@ -64,12 +64,12 @@
                 </form>
             </div>
         </div>
-        <div class="my-2 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Hilfe und Rechtliches" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
                 <ul>
                     <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a></li>
                     <li><a href="https://github.com/zigellsn/StagyBee/blob/main/LICENSE">{% trans "Lizenzvertrag" %}</a>
@@ -80,4 +80,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}

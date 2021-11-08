@@ -3,15 +3,31 @@
 {% trans "Herunterfahren" as shutdown %}
 
 <div class="dropdown">
-    <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+    <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
         {% include 'icons/shutdown.html' %}
     </div>
     <ul class="dropdown-menu absolute hidden text-white pt-1">
-        <li><a href="#" class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-               onclick="StagyBee.main.shutdownDialogActions('{{ reboot }}', '{% url 'picker:reboot' %}');">{{ reboot }}</a>
+        <li>
+            <a href="#"
+               hx-trigger="confirmed"
+               hx-get="{% url 'picker:reboot' %}"
+               hx-swap="none"
+               class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+               _="on click call Swal.fire({title: '{{ reboot }}', text: '{{ reboot }}', confirmButtonColor: '#3b82f6'})
+                  if result.isConfirmed
+                    trigger confirmed
+                  end">{{ reboot }}</a>
         </li>
-        <li><a href="#" class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-               onclick="StagyBee.main.shutdownDialogActions('{{ shutdown }}', '{% url 'picker:shutdown' %}');">{{ shutdown }}</a>
+        <li>
+            <a href="#"
+               hx-trigger="confirmed"
+               hx-get="{% url 'picker:shutdown' %}"
+               hx-swap="none"
+               class="bg-blue-800 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+               _="on click call Swal.fire({title: '{{ shutdown }}', text: '{{ shutdown }}', confirmButtonColor: '#3b82f6'})
+                  if result.isConfirmed
+                    trigger confirmed
+                  end">{{ shutdown }}</a>
         </li>
     </ul>
 </div>

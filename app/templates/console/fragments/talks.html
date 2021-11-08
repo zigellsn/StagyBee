@@ -1,40 +1,60 @@
 {% load i18n %}
-<label for="talk-list" class="pt-4">{% trans "Aufgabe" %}</label>
-<ul class="flex flex-col p-4" id="talk-list"
-    _="on click if event.target matches .line then take .bg-blue-500 from .line for event.target end">
+<ul class="p-4"
+    _="on htmx:afterSwap
+        for line in <li.line/> index i
+            set @data-index of line to i + 1
+            if ( #talk-index@value is 0 and i is 0 ) or ( #talk-index@value is not 0 and #talk-index@value is i + 1 )
+                if #talk-index@value is not 0
+                    remove .opacity-50 .cursor-not-allowed from #timer-stop
+                    add .hover:bg-blue-700 to #timer-stop
+                end
+                send click to line
+                add .running to line
+            end
+        end
+    end
 
-    {% if times %}
-        <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
-            <ul class="flex flex-col p-4">
-                {% for talk in times %}
-                    <li class="line border-gray-400 hover:bg-blue-300 flex flex-row {% if forloop.first %}bg-blue-500{% endif %}"
-                        data-caption="{{ talk.1 }}" data-content="{{ talk.0 }}"
-                        data-index="{{ forloop.counter0 }}" data-user="false" onclick="doClick(this);">{{ talk.1 }}</li>
-                {% endfor %}
+    on click if event.target matches .line then
+        take .bg-blue-500 from .line for event.target
+        put event.target@data-content into #m.value
+        set @value of #talk-name to event.target@data-caption
+        set @value of #talk-index to event.target@data-index
+        set @value of #talk-user to event.target@data-custom
+        if event.target@data-custom is 'true' then
+            show #custom-talk
+        else
+            hide #custom-talk
+        end
+    end">
+    <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
+        <div hx-get="{% url 'console:workbook' date='today' %}" hx-trigger="load" hx-swap="outerHTML">
+            <ul class="p-4">
+                <li style="text-align: center;display: inline-block;">
+                    <div class="pt-4 self-center stroke-current text-purple-600 mb-8"
+                         style="transform: scale(2.0);">{% include 'icons/activity_indicator.html' %}</div>
+                </li>
             </ul>
-        </li>
-    {% endif %}
+        </div>
+    </li>
 
     {% with total=times|length %}
         <li>{% trans 'Zusammenkunft für die Öffentlichkeit' %}
-            <ul class="flex flex-col p-4">
-                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+            <ul class="p-4">
+                <li class="line border-gray-400 hover:bg-blue-300"
                     data-caption="{% trans 'Öffentlicher Vortrag (30 Min.)' %}" data-index="{{ total|add:"1" }}"
-                    data-content="30" data-user="false"
-                    onclick="doClick(this);">{% trans 'Öffentlicher Vortrag (30 Min.)' %}</li>
-                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+                    data-content="30">{% trans 'Öffentlicher Vortrag (30 Min.)' %}</li>
+                <li class="line border-gray-400 hover:bg-blue-300"
                     data-caption="{% trans 'Wachtturm-Studium (60 Min.)' %}" data-index="{{ total|add:"2" }}"
-                    data-content="60" data-user="false"
-                    onclick="doClick(this);">{% trans 'Wachtturm-Studium (60 Min.)' %}</li>
+                    data-content="60">{% trans 'Wachtturm-Studium (60 Min.)' %}</li>
             </ul>
         </li>
 
         <li>{% trans 'Benutzerdefiniert' %}
-            <ul class="flex flex-col p-4">
-                <li class="line border-gray-400 hover:bg-blue-300 flex flex-row"
+            <ul class="p-4">
+                <li class="line border-gray-400 hover:bg-blue-300"
                     data-caption="{% trans 'Benutzerdefiniert' %}" data-index="{{ total|add:"3" }}"
                     data-content="10"
-                    data-user="true" onclick="doClick(this);">{% trans 'Benutzerdefiniert' %}</li>
+                    data-custom="true">{% trans 'Benutzerdefiniert' %}</li>
             </ul>
         </li>
     {% endwith %}

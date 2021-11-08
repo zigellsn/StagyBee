@@ -5,7 +5,7 @@
     <td>{{ context.stop }}</td>
     <td>{{ context.duration }}</td>
     <td>{{ context.display_max_duration }}</td>
-    <td class="{% if '-' in context.difference %}fg-red{% else %}fg-blue{% endif %}">
+    <td class="{% if '-' in context.difference %}text-red-500{% else %}text-blue-500{% endif %}">
         <div>{{ context.difference }}</div>
         <div class="progress-bar {% if '-' in context.difference %}bg-red{% else %}bg-blue{% endif %}"
              style="min-height:12px;width:

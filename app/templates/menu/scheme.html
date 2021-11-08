@@ -1,6 +1,6 @@
 {% load static i18n %}
 
-<div id="scheme" class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
+<div id="scheme" class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
      _='on click fetch /toggle_scheme/ {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}"} } put it into me.innerHTML then fetch /scheme/ if it == "dark" then add .dark to document.documentElement else remove .dark from document.documentElement end'>
     {% if dark or dark == None %}
         {% include "icons/dark.html" %}

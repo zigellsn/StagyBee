@@ -3,7 +3,7 @@
 {% if no_settings == False or no_settings == None or user.is_superuser %}
     <a href="{% url 'settings' %}">
         <div id="settings"
-             class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+             class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
             {% include 'icons/settings.html' %}
         </div>
     </a>

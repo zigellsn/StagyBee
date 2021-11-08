@@ -1,29 +1,42 @@
 {% load i18n %}
 
-<div class="pt-4">
-    <label for="time">{% trans "Stoppuhr" %}</label>
-    <select class="form-select mt-1 block w-full" name="h" id="time">
-        <option value="0" selected>0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <select class="form-select mt-1 block w-full" name="m" id="m">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5" selected>5</option>
-    </select>
-    <select class="form-select mt-1 block w-full" name="s" id="time">
-        <option value="0" selected>0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
+<div class="mt-2 p-5 w-40 bg-white rounded-lg shadow-xl">
+    <div class="flex">
+        <div>H</div>
+        <select class="bg-transparent text-xl appearance-none outline-none" name="h" id="time" _="
+        on load
+            repeat 5 times index i
+                if i is 0 then
+                    set selected to ' selected'
+                else
+                    set selected to ''
+                end
+                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+            end">
+        </select>
+        <div>M</div>
+        <select class="bg-transparent text-xl appearance-none outline-none" name="m" id="m" _="
+        on load
+            repeat 60 times index i
+                if i is 10 then
+                    set selected to ' selected'
+                else
+                    set selected to ''
+                end
+                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+            end">
+        </select>
+        <div>S</div>
+        <select class="bg-transparent text-xl appearance-none outline-none" name="s" id="time" _="
+        on load
+            repeat 60 times index i
+                if i is 0 then
+                    set selected to ' selected'
+                else
+                    set selected to ''
+                end
+                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+            end">
+        </select>
+    </div>
 </div>

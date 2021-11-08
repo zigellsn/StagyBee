@@ -1,5 +1,5 @@
 {% if object %}
-    <div class="my-2 shadow-lg acc-header {% if forloop.first %}selected{% endif %}">
+    <div class="my-2 dark:bg-gray-800 shadow-lg acc-header {% if forloop.first %}selected{% endif %}">
         <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
             {% if object.importance == 0 %}
                 <span>{% include 'icons/quote.html' %}</span>
@@ -20,7 +20,7 @@
                 {% include 'icons/chevron_down.html' %}
             {% endif %}
         </div>
-        <div class="acc-content px-4 overflow-hidden max-h-0 ease duration-500">
+        <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
             {{ object.message }}
         </div>
     </div>

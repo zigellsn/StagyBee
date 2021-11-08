@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="pos-fixed fixed-bottom sx:pr-1 sx:pl-1 md:pr-4 md:pl-4 md:pb-4 sx:pb-1">
+    <footer class="sx:pr-1 sx:pl-1 md:pr-4 md:pl-4 md:pb-4 sx:pb-1">
         <div>
             {% notifications %}
         </div>
@@ -42,4 +42,8 @@
             Version: {{ version }}, Hostname: {{ hostname }}, IP address: {{ ip }}
         </div>
     </footer>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
