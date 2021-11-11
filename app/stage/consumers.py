@@ -18,6 +18,7 @@ import re
 from contextlib import suppress
 
 import aiohttp
+from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from django.conf import settings
@@ -276,12 +277,17 @@ class ConsoleClientConsumer(AsyncRedisHttpConsumer):
     async def handle(self, body):
         await super().add_headers()
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        if "scrim" not in self.scope["url_route"]["kwargs"] or self.scope["url_route"]["kwargs"]["scrim"] is None:
-            self.scope["url_route"]["kwargs"]["scrim"] = False
+        if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
+            self.scope["session"]["scrim"] = False
         await self.channel_layer.group_add(
             generate_channel_group_name("console", congregation),
             self.channel_name
         )
+        if self.scope["session"]["scrim"]:
+            message_alert = AsyncRedisHttpConsumer.append_event("scrim", "stage/events/scrim.html")
+        else:
+            message_alert = AsyncRedisHttpConsumer.append_event("scrim")
+        await self.send_body(message_alert.encode("utf-8"), more_body=True)
         await self.send_body("".encode("utf-8"), more_body=True)
         await self._redis.connect_uri(self.__get_redis_key(congregation), self.channel_name)
 
@@ -301,12 +307,12 @@ class ConsoleClientConsumer(AsyncRedisHttpConsumer):
 
     async def scrim(self, event):
         if "scrim" in event:
-            if not self.scope["url_route"]["kwargs"]["scrim"]:
+            if not self.scope["session"]["scrim"]:
                 message_alert = AsyncRedisHttpConsumer.append_event("scrim", "stage/events/scrim.html")
             else:
                 message_alert = AsyncRedisHttpConsumer.append_event("scrim")
-
-            self.scope["url_route"]["kwargs"]["scrim"] = not self.scope["url_route"]["kwargs"]["scrim"]
+            self.scope["session"]["scrim"] = not self.scope["session"]["scrim"]
+            await sync_to_async(self.scope["session"].save)()
             await self.send_body(message_alert.encode("utf-8"), more_body=True)
 
     async def timer(self, event):

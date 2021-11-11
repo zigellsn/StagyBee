@@ -1,0 +1,5 @@
+{% load i18n %}
+<button hx-post="{% url 'console:scrim' credential.congregation %}"
+        hx-trigger="click"
+        hx-swap="none"
+        class="group group-focus:max-h-screen bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{% if dark == True %}{% trans "Bildschirm verdunkeln" %}{% else %}{% trans "Bildschirm erhellen" %}{% endif %}</button>

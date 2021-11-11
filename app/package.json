@@ -8,14 +8,15 @@
     "css": "postcss stage/static/stage/css/stage.css -o ./StagyBee/static/css/bundle.css"
   },
   "devDependencies": {
-    "tailwindcss": "^2.2.17",
     "@tailwindcss/forms": "^0.3.4",
-    "autoprefixer": "^10.3.7",
+    "autoprefixer": "^10.4.0",
     "postcss": "^8.3.11",
-    "postcss-cli": "^9.0.2"
+    "postcss-cli": "^9.0.2",
+    "purgecss": "^4.0.3",
+    "tailwindcss": "^2.2.19"
   },
   "dependencies": {
-    "luxon": "^2.0.2",
-    "sweetalert2": "^11.1.9"
+    "luxon": "^2.1.1",
+    "sweetalert2": "^11.1.10"
   }
 }

@@ -16,12 +16,11 @@
 
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 .dropdown:hover .dropdown-menu {
     display: block;
 }
-
-@tailwind utilities;
 
 @layer components {
     .btn {
@@ -90,4 +89,9 @@ ul {
 body.swal2-shown > [aria-hidden="true"] {
     transition: 0.1s filter;
     filter: blur(10px);
+}
+
+div.selected > .acc-content {
+    max-height: 100vh;
+    margin-bottom: 1rem;
 }
