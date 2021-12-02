@@ -14,11 +14,12 @@
 
 from django.urls import path
 
-from .views import StageView, StageFormView
+from .views import StageView, StageFormView, ExtractorConnectView
 
-app_name = 'stage'
+app_name = "stage"
 
 urlpatterns = [
-    path('<str:pk>', StageView.as_view(), name='stage'),
-    path('form/<str:pk>', StageFormView.as_view(), name='stage_form')
+    path('<str:pk>', StageView.as_view(), name="stage"),
+    path('form/<str:pk>', StageFormView.as_view(), name="stage_form"),
+    path('extractor_connect/<str:pk>', ExtractorConnectView.as_view(), name="extractor_connect")
 ]

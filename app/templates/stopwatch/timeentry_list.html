@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n l10n %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
 {% block header %}
@@ -8,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <div hx-ws="connect:/ws/central_timer/{{ congregation.congregation|escape }}/">
+    <div hx-sse="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/">
         <span class="text-2xl">{{ congregation.display_name }}</span>
         <div class="text-leader pt-8 pb-8" id="talk">{% trans "Aufgabe" %}&nbsp;<i><span id="talk-name-caption"></span></i>
         </div>

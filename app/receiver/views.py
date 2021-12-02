@@ -13,9 +13,11 @@
 #  limitations under the License.
 
 import logging
+from importlib import import_module
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.conf import settings
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -37,13 +39,13 @@ class ReceiverView(View):
         if event == "listeners":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "extractor_listeners", "listeners": request.body},
+                {"type": "extractor.listeners", "listeners": request.body},
             )
             return HttpResponse(content="success", status=202)
         elif event == "status":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "extractor_status", "status": request.body},
+                {"type": "extractor.status", "status": request.body},
             )
             return HttpResponse(content="success", status=202)
         elif event == "meta":

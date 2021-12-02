@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "notification.apps.NotificationConfig",
     "qr_code",
     "widget_tweaks",
+    "django.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -119,8 +120,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
         },
-    },
+    }
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = "StagyBee.wsgi.application"
 

@@ -1,2 +1,9 @@
-<div id="pb" class="progress-bar"
-     style="width:{{ percentage }}{% if percentage is not None and percentage != 0 %}%{% endif %};"></div>
+<div class="progress-bar"
+     style="width:{% if percentage >= 100 %}100%{% else %}{{ percentage|stringformat:".2f" }}{% if percentage is not None and percentage != 0 %}%{% endif %}{% endif %};"
+     id="pb">
+    <div class="{{ full_class }} w-screen text-white text-xl text-center" style="margin-top: -3px;font-family: monospace;">{{ elapsed }}&nbsp;|&nbsp;{{ remaining }}</div>
+</div>
+{#    <div class="hidden">#}
+{#        <div id="talk-name-caption"></div>#}
+{#        <div id="talk-index"></div>#}
+{#    </div>#}

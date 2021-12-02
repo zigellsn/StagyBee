@@ -1,0 +1,21 @@
+<tr id="sw"
+    hx-get="{% url 'console:stopwatch:stopwatch' pk=pk %}"
+        {% if running %}
+    hx-trigger="load delay:100ms"
+        {% else %}
+    hx-trigger="none"
+        {% endif %}
+    hx-swap="outerHTML">
+    <td class="px-9">
+        <div style="font-size:32px">
+            <span style="font-family: monospace;" id="elapsed"
+                  class="{{ class_attr }}">{{ stopwatch | default:'00:00:00' }}</span>
+        </div>
+    </td>
+    <td class="px-9">
+        <div style="font-size:32px">
+            <span style="font-family: monospace;" id="remaining"
+                  class="{{ class_attr }}">{{ remaining | default:'00:00:00' }}</span>
+        </div>
+    </td>
+</tr>

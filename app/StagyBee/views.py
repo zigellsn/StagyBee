@@ -15,7 +15,6 @@
 import socket
 
 from django.conf import settings
-from django.contrib.auth import views as auth_views
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views.generic.base import ContextMixin, View

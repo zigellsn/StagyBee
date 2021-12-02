@@ -14,6 +14,7 @@
 
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
@@ -30,7 +31,6 @@ urlpatterns += i18n_patterns(
     path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
     path("", include("django.contrib.auth.urls")),
-    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("stage/", include("stage.urls")),
     path("picker/", include("picker.urls")),
     path("console/", include("console.urls")),
@@ -49,4 +49,4 @@ if settings.DEBUG:
     else:
         urlpatterns = [
                           path("__debug__/", include(debug_toolbar.urls)),
-                      ] + urlpatterns
+                      ] + urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

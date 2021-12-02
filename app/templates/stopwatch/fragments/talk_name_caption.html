@@ -1,1 +1,5 @@
-<span id="talk-name-caption">{{ name }}</span>
+{% load i18n %}
+
+<div id="talk-name-caption" class="text-leader pt-8 pb-8">
+    <span>{% trans "Aufgabe" %}&nbsp;</span><i><span>{{ name }}</span></i>
+</div>

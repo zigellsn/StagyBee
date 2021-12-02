@@ -14,8 +14,9 @@
 
 from django.urls import re_path
 
-from console.consumers import ConsoleConsumer
+from console.consumers import ConsoleConsumer, TimerConsumer
 
-http_urlpatterns = [
+urlpatterns = [
+    re_path(r"^ws/(?P<language>[^/]+)/timer/(?P<congregation>[^/]+)/$", TimerConsumer.as_asgi()),
     re_path(r"^ws/(?P<language>[^/]+)/console/(?P<congregation>[^/]+)/$", ConsoleConsumer.as_asgi())
 ]

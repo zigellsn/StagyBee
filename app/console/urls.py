@@ -22,9 +22,7 @@ app_name = "console"
 urlpatterns = [
     path("", ChooseConsoleView.as_view(), name="choose_console"),
     path("<str:pk>/", ConsoleView.as_view(), name="console"),
-    path("<str:pk>/action/scrim/toggle/", ConsoleActionView.as_view(), name="scrim"),
-    path("<str:pk>/action/message/send/", ConsoleActionView.as_view(), name="message"),
-    path("<str:pk>/action/message/ack/", ConsoleActionView.as_view(), name="message_ack"),
+    path("<str:pk>/action/", ConsoleActionView.as_view(), name="action"),
     path("workbook/<str:date>/", WorkbookView.as_view(), name="workbook"),
     path("audit/", include("audit.urls")),
     path("timer/", include("stopwatch.urls")),

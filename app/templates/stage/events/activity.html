@@ -1,15 +1,16 @@
 {% load i18n %}
 {% if connecting != None %}
-    <div class="flex flex-col justify-center content-center pt-20">
+    <div id="activity" class="flex flex-col justify-center content-center pt-20">
         <div class="self-center stroke-current text-purple-600 mb-8"
              style="transform: scale(2.0);">{% include 'icons/activity_indicator.html' %}</div>
         <div class="self-center">{% trans "Verbindung zu Extraktor-Dienst wird aufgebaut..." %}</div>
     </div>
-{% endif %}
-{% if error != None %}
-    <div class="flex flex-col justify-center content-center pt-20">
+{% elif error != None %}
+    <div id="activity" class="flex flex-col justify-center content-center pt-20">
         <div class="self-center stroke-current text-red-500 mb-8"
              style="transform: scale(2.0);">{% include 'icons/cancel.html' %}</div>
         <div class="self-center">{% trans "Extraktor-Dienst läuft nicht oder ist nicht erreichbar." %}</div>
     </div>
+{% else %}
+    <div id="activity"></div>
 {% endif %}

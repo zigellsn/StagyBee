@@ -11,14 +11,22 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from datetime import timedelta
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from django.views import View
 from django.views.generic import ListView, WeekArchiveView
 from guardian.mixins import PermissionRequiredMixin
 
 from StagyBee.views import SchemeMixin
 from picker.models import Credential
+from stage.consumers import generate_channel_group_name
 from .models import TimeEntry
+from .timer import GLOBAL_TIMERS, Timer
 
 
 class TimerView(PermissionRequiredMixin, SchemeMixin, ListView):
@@ -79,3 +87,40 @@ class ArchiveView(PermissionRequiredMixin, SchemeMixin, WeekArchiveView):
         dates = super().get_dated_items()
         TimeEntry.objects.calculate_additional_values(dates[1])
         return dates
+
+
+class StopwatchControlView(PermissionRequiredMixin, View):
+    return_403 = True
+    permission_required = "access_console"
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        congregation = kwargs.get("pk")
+        channel_layer = get_channel_layer()
+        congregation_group_name = generate_channel_group_name("timer", congregation)
+        if request.POST.get("action") == "timer-start":
+            if congregation in GLOBAL_TIMERS:
+                actual_timer = GLOBAL_TIMERS.get(congregation)
+                if actual_timer is not None:
+                    actual_timer.cancel()
+                    GLOBAL_TIMERS.pop(congregation)
+            context = {
+                "duration": timedelta(hours=float(request.POST.get("h")), minutes=float(request.POST.get("m")),
+                                      seconds=float(request.POST.get("s"))),
+                "start": timezone.now(),
+                "index": request.POST.get("talk_index"),
+                "congregation": congregation,
+                "running": True}
+            timer = Timer(1, None, context=context, timer_name=request.POST.get("talk_name"))
+            GLOBAL_TIMERS[congregation] = timer
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "timer.action"}
+            )
+        elif request.POST.get("action") == "timer-stop":
+            if congregation in GLOBAL_TIMERS and GLOBAL_TIMERS[congregation] is not None:
+                GLOBAL_TIMERS[congregation].cancel()
+                GLOBAL_TIMERS.pop(congregation)
+        else:
+            return HttpResponse(status=404)
+        return HttpResponse(status=202)

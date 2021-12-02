@@ -11,67 +11,130 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-from datetime import datetime
-
+from asgiref.sync import sync_to_async
 from channels.exceptions import StopConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.template.loader import render_to_string
+from django.utils import timezone, translation
 
-from StagyBee.consumers import AsyncRedisHttpConsumer
-from audit.models import Audit
-from picker.models import Credential
 from stage.consumers import generate_channel_group_name
+from stopwatch.timer import GLOBAL_TIMERS
 
 
-class ConsoleConsumer(AsyncRedisHttpConsumer):
+class TimerConsumer(AsyncWebsocketConsumer):
 
-    async def handle(self, body):
-        await super().add_headers()
-        user = self.scope['user']
+    async def connect(self):
+        user = self.scope["user"]
         if user.is_anonymous or not user.is_authenticated:
-            raise StopConsumer()
+            await self.close()
+            return
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        await self.channel_layer.group_add(
-            generate_channel_group_name("console", congregation),
-            self.channel_name
-        )
-        await self.send_body("".encode("utf-8"), more_body=True)
+        await self.channel_layer.group_add(generate_channel_group_name("timer", congregation), self.channel_name)
+        timer = GLOBAL_TIMERS.get(congregation)
+        if timer is not None:
+            timer.set_callback(self.timeout_callback)
+        await self.accept()
 
-    async def disconnect(self):
+    async def timer_action(self, _):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        timer = GLOBAL_TIMERS.get(congregation)
+        if timer is not None:
+            GLOBAL_TIMERS.get(congregation).set_callback(self.timeout_callback)
+
+    async def timeout_callback(self, _, __, ___):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        group_name = generate_channel_group_name("console", congregation)
+        await self.channel_layer.group_send(group_name, {"type": "timer.tick"})
+
+
+class ConsoleConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
+        user = self.scope["user"]
+        if user.is_anonymous or not user.is_authenticated:
+            await self.close()
+            return
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
+            self.scope["session"]["scrim"] = False
+        await self.channel_layer.group_add(generate_channel_group_name("console", congregation), self.channel_name)
+        if self.scope["session"]["scrim"]:
+            message_alert = render_to_string(template_name="stage/events/scrim.html")
+        else:
+            message_alert = ""
+        await self.accept()
+        await self.send(text_data=message_alert)
+
+    async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             generate_channel_group_name("console", self.scope["url_route"]["kwargs"]["congregation"]),
             self.channel_name
         )
+        raise StopConsumer()
 
-    async def alert(self, event):
-        pass
+    async def console_alert(self, event):
+        await self.send(text_data=event["alert"]["value"])
 
-    async def scrim(self, event):
-        pass
+    async def console_scrim(self, event):
+        if not self.scope["session"]["scrim"]:
+            message_alert = render_to_string(template_name="stage/events/scrim.html")
+        else:
+            message_alert = "<div id=\"overlay\"></div>"
+        self.scope["session"]["scrim"] = not self.scope["session"]["scrim"]
+        await sync_to_async(self.scope["session"].save)()
+        await self.send(text_data=message_alert)
 
-    async def status(self, event):
-        pass
+    async def console_message(self, event):
+        if "message" in event["message"] and event["message"]["message"] == "ACK":
+            context = {"time": timezone.localtime(timezone.now())}
+            text = render_to_string(template_name="console/events/ack.html", context=context)
+            await self.send(text_data=text)
 
-    async def timer(self, event):
-        pass
+    async def timer_tick(self, _):
+        #     talk_index = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
+        #     await self.send_body(talk_index.encode("utf-8"), more_body=True)
+        # progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
+        #                                 context={"percentage": 0, "elapsed": "00:00:00",
+        #                                          "remaining": "00:00:00", "full_class": ""})
+        # await self.send(text_data=progress_bar)
+        # stopwatch = render_to_string(template_name="stopwatch/fragments/elapsed.html",
+        #                              context={"time": "00:00:00"})
+        # await self.send(text_data=stopwatch)
+        # remaining = render_to_string(template_name="stopwatch/fragments/remaining.html",
+        #                              context={"time": "00:00:00"})
+        # await self.send(text_data=remaining)
+        # talk_name = render_to_string(template_name="stopwatch/fragments/talk_name_caption.html",
+        #                              context={"name": ""})
+        # await self.send(text_data=talk_name)
+        # context = await database_sync_to_async(__get_newest__)(name)
+        # if context is None:
+        #     return
+        # no_entries = render_to_string(template_name="stopwatch/fragments/no_entries.html")
+        # await self.send(text_data=no_entries)
+        # list_item = render_to_string(template_name="stopwatch/fragments/timeentry_list_item.html",
+        #                              context={"object": context})
+        # await self.send(text_data=list_item)
 
-    async def exit(self, event):
-        pass
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        timer = GLOBAL_TIMERS.get(congregation)
+        if timer is None:
+            return
 
-    async def message(self, event):
-        text = ""
-        if event["message"]["message"] == "ACK":
-            context = {"time": datetime.now()}
-            text = AsyncRedisHttpConsumer.append_event("message", "console/events/ack.html", context)
-        await self.send_body(text.encode("utf-8"), more_body=True)
-
-    @staticmethod
-    def __get_redis_key(congregation):
-        return f"stagybee::timer:{generate_channel_group_name('console', congregation)}"
-
-
-def __get_congregation__(congregation):
-    return Credential.objects.get(congregation__exact=congregation)
-
-
-def __persist_audit_log__(user, congregation, text_data):
-    return Audit.objects.create_audit(congregation, user, text_data["value"])
+        remaining_time = timer.get_formatted_remaining_time()
+        elapsed_time = timer.get_formatted_elapsed_time()
+        percentage = timer.get_elapsed_percentage()
+        if remaining_time.startswith("-"):
+            class_attr = "text-red-500 times-up"
+        else:
+            class_attr = ""
+        event = ""
+        context = {"time": elapsed_time, "full_class": class_attr}
+        event = event + render_to_string(template_name="stopwatch/fragments/elapsed.html", context=context)
+        context = {"time": remaining_time, "full_class": class_attr}
+        event = event + render_to_string(template_name="stopwatch/fragments/remaining.html", context=context)
+        context = {"percentage": percentage, "elapsed": elapsed_time, "remaining": remaining_time,
+                   "full_class": class_attr}
+        event = event + render_to_string(template_name="stopwatch/fragments/progress_bar.html", context=context)
+        context = {"name": timer.get_timer_name()}
+        event = event + render_to_string(template_name="stopwatch/fragments/talk_name_caption.html", context=context)
+        await self.send(text_data=event)

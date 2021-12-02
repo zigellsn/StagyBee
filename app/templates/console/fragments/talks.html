@@ -3,23 +3,23 @@
     _="on htmx:afterSwap
         for line in <li.line/> index i
             set @data-index of line to i + 1
-            if ( #talk-index@value is 0 and i is 0 ) or ( #talk-index@value is not 0 and #talk-index@value is i + 1 )
-                if #talk-index@value is not 0
+            if ( #id_talk_index@value is 0 and i is 0 ) or ( #id_talk_index@value is not 0 and #id_talk_index@value is i + 1 )
+                if #id_talk_index@value is not 0
                     remove .opacity-50 .cursor-not-allowed from #timer-stop
                     add .hover:bg-blue-700 to #timer-stop
+                    add .running to line
                 end
                 send click to line
-                add .running to line
             end
         end
     end
 
     on click if event.target matches .line then
         take .bg-blue-500 from .line for event.target
-        put event.target@data-content into #m.value
-        set @value of #talk-name to event.target@data-caption
-        set @value of #talk-index to event.target@data-index
-        set @value of #talk-user to event.target@data-custom
+        put event.target@data-content into #id_m.value
+        set @value of #id_talk_name to event.target@data-caption
+        set @value of #id_talk_index to event.target@data-index
+        set @value of #id_talk_user to event.target@data-custom
         if event.target@data-custom is 'true' then
             show #custom-talk
         else
@@ -27,7 +27,7 @@
         end
     end">
     <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
-        <div hx-get="{% url 'console:workbook' date='today' %}" hx-trigger="load" hx-swap="outerHTML">
+        <div hx-get="{% url 'console:workbook' date='today' %}" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
             <ul class="p-4">
                 <li style="text-align: center;display: inline-block;">
                     <div class="pt-4 self-center stroke-current text-purple-600 mb-8"

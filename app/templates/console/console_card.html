@@ -9,7 +9,7 @@
                 </div>
                 <div class="font-bold text-xl mt-1 mb-2">{{ congregation.display_name }}</div>
             </div>
-            <div class="{% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %} px-6 pb-4 text-gray-700 text-base">
+            <div class="{% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %} px-6 pb-4 text-base">
                 {% if congregation.since != None %}
                     {% blocktrans with since=congregation.since|time:"TIME_FORMAT" %}Seit&nbsp;
                         {{ since }}&nbsp;Uhr{% endblocktrans %}
@@ -22,8 +22,8 @@
             {% if congregation.active == True %}
                 {% if "access_console" in congregation_perms %}
                     <a href="{% url 'console:console' congregation.congregation %}">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            {% trans "Zur Console..." %}
+                        <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                            {% trans "Zur Console..." %}&nbsp;
                             <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
                                 {% include 'icons/right.html' %}{% endif %}</span>
                         </button>
@@ -31,8 +31,8 @@
                 {% endif %}
                 {% if "access_stopwatch" in congregation_perms %}
                     <a href="{% url 'console:stopwatch:timer' congregation.congregation %}">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            {% trans "Zur Stoppuhr..." %}
+                        <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                            {% trans "Zur Stoppuhr..." %}&nbsp;
                             <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
                                 {% include 'icons/right.html' %}{% endif %}</span>
                         </button>
@@ -43,8 +43,8 @@
                 {% now "Y" as year %}
                 {% now "W" as week %}
                 <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {% trans "Zum Archiv..." %}
+                    <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                        {% trans "Zum Archiv..." %}&nbsp;
                             <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
                                 {% include 'icons/right.html' %}{% endif %}</span>
                     </button>
@@ -52,8 +52,8 @@
             {% endif %}
             {% if perms.audit.view_audit and "access_audit_log" in congregation_perms %}
                 <a href="{% url 'console:audit:audit' congregation.congregation %}">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {% trans "Zum Audit-Log..." %}
+                    <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                        {% trans "Zum Audit-Log..." %}&nbsp;
                             <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
                                 {% include 'icons/right.html' %}{% endif %}</span>
                     </button>

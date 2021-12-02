@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import asyncio
+
 from datetime import datetime
 
 import aiohttp
@@ -21,7 +21,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
-from django.utils.decorators import classonlymethod
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import View
@@ -33,6 +32,7 @@ from StagyBee.utils import post_request
 from StagyBee.views import set_host, SchemeMixin
 from picker.models import Credential, is_active, get_running_since
 from stage.consumers import generate_channel_group_name
+from stopwatch.forms import StopwatchForm
 from .forms import CongregationForm, LanguageForm
 from .models import UserPreferences, KnownClient
 from .workbook.workbook import WorkbookExtractor
@@ -73,10 +73,11 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, SchemeMixin, ListView):
         return response
 
 
-class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
+class ConsoleView(PermissionRequiredMixin, SchemeMixin, FormMixin, DetailView):
     model = Credential
     return_403 = True
     permission_required = "access_console"
+    form_class = StopwatchForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,23 +109,25 @@ class ConsoleActionView(PermissionRequiredMixin, View):
     return_403 = True
     permission_required = "access_console"
 
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("console", kwargs.get("pk"))
-        if request.path.endswith("/action/message/send/"):
+        stage_group_name = generate_channel_group_name("message", kwargs.get("pk"))
+        if request.POST.get("action") == "message-send":
             async_to_sync(channel_layer.group_send)(
-                congregation_group_name,
-                {"type": "alert", "alert": {"value": request.body[8:]}},
+                stage_group_name,
+                {"type": "message.alert", "alert": {"value": request.POST.get("message")}},
             )
-        elif request.path.endswith("/action/message/ack/"):
+        elif request.POST.get("action") == "message-ack":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "message", "message": {"message": "ACK"}},
+                {"type": "console.message", "message": {"message": "ACK"}},
             )
-        elif request.path.endswith("/action/scrim/toggle/"):
+        elif request.POST.get("action") == "scrim-toggle":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "scrim", "scrim": {"value": True}},
+                {"type": "console.scrim", "scrim": {"value": True}},
             )
         else:
             return HttpResponse("", status=404)

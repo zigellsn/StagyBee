@@ -11,11 +11,24 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import asyncio
 
-from django.urls import re_path
+from django.utils import timezone
 
-from stopwatch.consumers import CentralTimerConsumer
+GLOBAL_TIMEOUT = {}
 
-websocket_urlpatterns = [
-    re_path(r"^ws/central_timer/(?P<congregation>[^/]+)/$", CentralTimerConsumer.as_asgi()),
-]
+
+class Timeout:
+    def __init__(self, callback=None):
+        self._task = None
+        self.start_time = timezone.localtime(timezone.now())
+        if callback is not None:
+            self._task = asyncio.create_task(callback)
+
+    def cancel(self):
+        if self._task is not None:
+            self._task.cancel()
+
+    def set_timeout(self, callback):
+        self.cancel()
+        self._task = asyncio.create_task(callback)

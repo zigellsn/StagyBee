@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block title %}Stage{% endblock %}
 
 {% block header %}
@@ -11,40 +13,51 @@
     <script type="text/hyperscript">
         def showMessage(msg)
             call Swal.fire({title: '{% trans "Nachricht" %}', text: msg, confirmButtonColor: '#3b82f6'})
-            if result.isConfirmed or result.isDismissed then fetch {% url 'console:message_ack' credential.congregation %} {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}"}}
+            if result.isConfirmed or result.isDismissed then
+                fetch {% url 'console:action' credential.congregation %} {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}", Content-Type: "application/x-www-form-urlencoded"}, body:"action=message-ack"}
+            end
         end
-        eventsource Alerts from http:/ws/console_client/{{ credential.congregation|escape }}/
-            on alert as string
+
+        eventsource Alerts from http:/ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
+            on message_alert as string
                 showMessage(it)
             end
         end
+
+
     </script>
 
-    <div hx-sse="connect:/ws/console_client/{{ credential.congregation|escape }}/">
-        <div hx-sse="swap:scrim"></div>
+    <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
+        <div id="overlay"></div>
     </div>
-    <div hx-sse="connect:/ws/extractor/{{ credential.congregation|escape }}/">
-        <div hx-sse="swap:sum-listeners"></div>
-        <div hx-sse="swap:listeners"></div>
-        <div hx-sse="swap:activity"></div>
+    <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/">
+        <div id="sum-listeners"></div>
+        <div id="listeners"></div>
+        <div id="activity"></div>
+        <form hx-post="{% url "stage:extractor_connect" pk=credential.congregation %}"
+              hx-swap="outerHTML" hx-trigger="htmx:load from:closest div">
+            <input name="action" value="connect" hidden>
+        </form>
     </div>
 {% endblock %}
 
 {% block footer %}
     <footer>
         {% if not credential.touch and credential.send_times_to_stage %}
-            <div id="timer" class="flex justify-center">
-            <div class="{% if LANGUAGE_BIDI %}rtl-progress{% endif %}" id="container">
-            </div>
-
-            <div hx-ws="connect:/ws/central_timer/{{ credential.congregation|escape }}/" class="progress">
-                <div id="pb" class="progress-bar" style="width:0">
-                </div>
-
-                <div id="timer-overlay" class="flex flex-row text-xl self-center">
-                    <span id="stopwatch" style="font-family: monospace;">00:00:00</span>
-                    <span style="font-family: monospace;">&nbsp;|&nbsp;</span>
-                    <span id="remaining" style="font-family: monospace;">00:00:00</span>
+            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
+                <div class="w-full" hx-swap="outerHTML">
+                    <div class="progress">
+                        <div class="progress-bar" id="pb">
+                            <div class="w-screen text-white text-xl text-center" style="margin-top: -3px;font-family: monospace;">00:00:00&nbsp;|&nbsp;00:00:00</div>
+                        </div>
+                    </div>
+                    <div class="hidden">
+                        <div id="talk-name-caption"></div>
+                        <div id="talk-index"></div>
+                        <div id="stopwatch"></div>
+                        <div id="remaining"></div>
+                        <div id="no-entries"></div>
+                    </div>
                 </div>
             </div>
         {% endif %}

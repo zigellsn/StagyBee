@@ -1,8 +1,8 @@
 {% load i18n %}
 
-<div class="mt-2 p-5 w-40 dark:bg-gray-800 bg-white rounded-lg shadow-xl">
+<div class="pt-4 dark:bg-gray-800 bg-white">
     <div class="flex">
-        <div>H</div>
+        <div class="pt-2">H</div>
         <select class="bg-transparent text-xl appearance-none outline-none" name="h" id="h" _="
         on load
             repeat 5 times index i
@@ -11,10 +11,10 @@
                 else
                     set selected to ''
                 end
-                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+                append `<option class=&quot;text-black&quot; value=&quot;${i}&quot;${selected}>${i}</option>` to me
             end">
         </select>
-        <div>M</div>
+        <div class="pt-2">M</div>
         <select class="bg-transparent text-xl appearance-none outline-none" name="m" id="m" _="
         on load
             repeat 60 times index i
@@ -23,10 +23,10 @@
                 else
                     set selected to ''
                 end
-                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+                append `<option class=&quot;text-black&quot; value=&quot;${i}&quot;${selected}>${i}</option>` to me
             end">
         </select>
-        <div>S</div>
+        <div class="pt-2">S</div>
         <select class="bg-transparent text-xl appearance-none outline-none" name="s" id="s" _="
         on load
             repeat 60 times index i
@@ -35,7 +35,7 @@
                 else
                     set selected to ''
                 end
-                append `<option value=&quot;${i}&quot;${selected}>${i}</option>` to me
+                append `<option class=&quot;text-black&quot; value=&quot;${i}&quot;${selected}>${i}</option>` to me
             end">
         </select>
     </div>
