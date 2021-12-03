@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 15:46+0100\n"
+"POT-Creation-Date: 2021-12-03 16:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,11 +82,11 @@ msgstr "Token"
 msgid "Zertifikatsdatei"
 msgstr "Certificate File"
 
-#: .\console\views.py:200 .\picker\views.py:63
+#: .\console\views.py:204 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr "Shutdown in progress"
 
-#: .\console\views.py:219 .\picker\views.py:82
+#: .\console\views.py:223 .\picker\views.py:82
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr "Reboot in progress"
 
@@ -253,41 +253,41 @@ msgstr "Time"
 msgid "Stopp"
 msgstr "Stop"
 
-#: .\templates\console\console.html:94
+#: .\templates\console\console.html:91
 msgid "Bildschirmsteuerung"
 msgstr "Display control"
 
-#: .\templates\console\console.html:110 .\templates\console\console.html:115
+#: .\templates\console\console.html:107 .\templates\console\console.html:112
 msgid "Textnachricht"
 msgstr "Text message"
 
-#: .\templates\console\console.html:120
+#: .\templates\console\console.html:117
 msgid "Sende Nachricht"
 msgstr "Send message"
 
-#: .\templates\console\console.html:129
+#: .\templates\console\console.html:126
 msgid "Livedaten"
 msgstr "Live data"
 
-#: .\templates\console\console.html:138
+#: .\templates\console\console.html:135
 #: .\templates\stage\events\sum_listeners.html:7
 msgid "Meldungen:"
 msgstr "Request to speak:"
 
-#: .\templates\console\console.html:139
+#: .\templates\console\console.html:136
 #: .\templates\stage\events\sum_listeners.html:4
 msgid "Zuhörer gesamt:"
 msgstr "Listeners total:"
 
-#: .\templates\console\console.html:142
+#: .\templates\console\console.html:139
 msgid "Status"
 msgstr "Status"
 
-#: .\templates\console\console.html:157
+#: .\templates\console\console.html:154
 msgid "Seit"
 msgstr "Since"
 
-#: .\templates\console\console.html:168
+#: .\templates\console\console.html:165
 msgid "Link zur Stoppuhrsession"
 msgstr "Link to Stopwatch session"
 
@@ -343,35 +343,37 @@ msgstr "Mute stage display"
 msgid "Verdunkelung aufheben"
 msgstr "Unmute stage display"
 
-#: .\templates\console\fragments\talks.html:29
+#: .\templates\console\fragments\talks.html:42
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr "Life and Ministry Meeting"
 
-#: .\templates\console\fragments\talks.html:41
+#: .\templates\console\fragments\talks.html:54
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr "Public Meeting"
 
-#: .\templates\console\fragments\talks.html:44
-#: .\templates\console\fragments\talks.html:45
+#: .\templates\console\fragments\talks.html:57
+#: .\templates\console\fragments\talks.html:58
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr "Public talk (30 min.)"
 
-#: .\templates\console\fragments\talks.html:47
-#: .\templates\console\fragments\talks.html:48
+#: .\templates\console\fragments\talks.html:60
+#: .\templates\console\fragments\talks.html:61
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr "Watchtower Study (60 min.)"
 
-#: .\templates\console\fragments\talks.html:52
-#: .\templates\console\fragments\talks.html:55
-#: .\templates\console\fragments\talks.html:57
+#: .\templates\console\fragments\talks.html:65
+#: .\templates\console\fragments\talks.html:68
+#: .\templates\console\fragments\talks.html:70
 msgid "Benutzerdefiniert"
 msgstr "Custom"
 
 #: .\templates\console\fragments\workbook.html:7
-msgid ""
-"Das Arbeitsheft konnte nicht geladen werden. Bitte verwende den Bereich "
-"Benutzerdefinert."
-msgstr "The workbook could not be retrieved. Please use the entry Custom."
+#, fuzzy
+#| msgid ""
+#| "Das Arbeitsheft konnte nicht geladen werden. Bitte verwende den Bereich "
+#| "Benutzerdefinert."
+msgid "Das Arbeitsheft konnte nicht geladen werden."
+msgstr "The workbook could not be retrieved."
 
 #: .\templates\console\knownclient_list.html:10
 #: .\templates\notification\notification_maintain_list.html:12

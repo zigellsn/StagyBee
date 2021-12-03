@@ -155,7 +155,11 @@ class WorkbookView(LoginRequiredMixin, View):
         urls = workbook_extractor.create_urls(date, date)
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
         if times != {}:
-            times = list(times.values())[0]
+            filter_str = request.GET.get("filter")
+            if filter_str is not None and filter_str == "talks":
+                times = list(filter(lambda item: item[1] > 0, list(times.values())[0]))
+            else:
+                times = list(times.values())[0]
         return render(request, "console/fragments/workbook.html", {"times": times})
 
 

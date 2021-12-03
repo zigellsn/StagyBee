@@ -15,6 +15,7 @@
 import asyncio
 import logging
 import re
+from html.parser import HTMLParser
 
 import aiohttp
 from aiohttp import ClientConnectorError, ServerDisconnectedError
@@ -23,11 +24,44 @@ from dateutil.relativedelta import relativedelta, MO
 from StagyBee.settings import WB_LANGUAGE_SWITCHER
 
 
+class BasicHTMLParser(HTMLParser):
+
+    def __init__(self, *, convert_charrefs=True):
+        super().__init__()
+        self.text = ""
+        self.kind = 0
+        self.is_talk = False
+
+    def handle_starttag(self, tag, attrs):
+        if not self.is_talk and (tag.lower() == "strong" or tag.lower() == "h1" or tag.lower() == "h2"):
+            self.is_talk = True
+        if self.kind != 0:
+            return
+        for attr in attrs:
+            if attr[0] == "class":
+                if "treasures" in attr[1]:
+                    self.kind = 1
+                    return
+                elif "ministry" in attr[1]:
+                    self.kind = 2
+                    return
+                elif "christianLiving" in attr[1]:
+                    self.kind = 3
+                    return
+                else:
+                    self.kind = 0
+            else:
+                self.kind = 0
+
+    def handle_data(self, data):
+        self.text = f"{self.text}{data}"
+
+
 class WorkbookExtractor:
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.logger = logging.getLogger(__name__)
+    def __init__(self, *argss, **kwargs):
+        super().__init__(*argss, **kwargs)
+        self.logger = logging.getLogger("WorkbookExtractor")
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
         self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                           "Chrome/79.0.3945.130 Safari/537.36"
@@ -37,8 +71,7 @@ class WorkbookExtractor:
             weeks = await asyncio.gather(
                 *[self.__extract__(session, url, my_date, language) for my_date, url in urls.items()],
                 return_exceptions=True)
-            if len(weeks) == 1 and (
-                    isinstance(weeks[0], ClientConnectorError) or isinstance(weeks[0], ServerDisconnectedError)):
+            if len(weeks) == 1 and isinstance(weeks[0], ClientConnectorError):
                 weeks_dict = {}
             else:
                 weeks_dict = {i[0]: i[1] for i in weeks if i}
@@ -111,19 +144,20 @@ class WorkbookExtractor:
         return switcher.get(month, "Invalid month")
 
     @staticmethod
-    async def __get_language_regex__(language):
+    async def __get_language_regex(language):
         return WB_LANGUAGE_SWITCHER.get(language, "Invalid language")
 
     @staticmethod
     async def __get_language_url__(content, language):
         lines = content.split("\n")
-        for line in lines:
-            if line.find(f"hreflang=\"{language}\"") != -1:
-                reg = re.compile(r"href=\".*?\"")
-                text = re.findall(reg, line)
-                if text:
-                    length = len(text[0]) - 1
-                    return text[0][6:length]
+        lines = list(filter(lambda item: f"hreflang=\"{language}\"" in item, lines))
+        if not lines:
+            return ""
+        reg = re.compile(r"href=\".*?\"")
+        text = re.findall(reg, lines[0])
+        if text:
+            length = len(text[0]) - 1
+            return text[0][6:length]
         return ""
 
     async def __get_workbook__(self, session, url):
@@ -142,21 +176,27 @@ class WorkbookExtractor:
             return response_code, content
 
     async def __parse__(self, content, language):
-        regex = await self.__get_language_regex__(language)
+        regex = await self.__get_language_regex(language)
         times = []
-        lines = content.split("\n")
+        lines = await self.__get_relevant_lines__(content)
+        actual_part = 0
         for line in lines:
-            clean = await self.__clean_html__(line, regex[2])
-            if clean is None or clean == "":
-                continue
-            clean = re.sub(regex[3], "", clean)
-            times_tmp = re.search(regex[0], clean)
-            if not times_tmp:
-                continue
-            ti = re.findall(regex[1], times_tmp.group(0))
-            if not ti:
-                continue
-            times.append([int(ti[0]), clean])
+            (part, clean, is_talk) = await self.__get_text_from_html__(line)
+            if is_talk:
+                if part != 0 and part > actual_part:
+                    actual_part = part
+                    continue
+                (talk_name, directions) = await self.__clean_html__(clean, regex[2])
+                if talk_name is not None and talk_name != "":
+                    clean = talk_name
+                clean = re.sub(regex[3], "", clean)
+                times_tmp = re.search(regex[0], clean)
+                if times_tmp is None:
+                    ti = [0]
+                else:
+                    ti = re.findall(regex[1], times_tmp.group(0))
+                directions = re.sub(regex[4], "", directions)
+                times.append([actual_part, int(ti[0]), clean, directions])
         self.logger.info("Parsing completed.")
         return times
 
@@ -195,10 +235,18 @@ class WorkbookExtractor:
         return url
 
     @staticmethod
-    async def __clean_html__(raw_html, regex):
-        clean_reg = re.compile(r"<.*?>")
-        clean_text = re.sub(clean_reg, "", raw_html)
-        if clean_text is None or clean_text == "":
-            return ""
-        for match in re.finditer(regex, clean_text):
-            return clean_text[:match.end()].strip()
+    async def __get_text_from_html__(raw_html):
+        basic_parser = BasicHTMLParser()
+        basic_parser.feed(raw_html)
+        return basic_parser.kind, basic_parser.text, basic_parser.is_talk
+
+    @staticmethod
+    async def __clean_html__(content, regex):
+        for match in re.finditer(regex, content):
+            return content[:match.end()].strip(), content[match.end():len(content)].strip()
+        return content, ""
+
+    @staticmethod
+    async def __get_relevant_lines__(content):
+        lines = content.split("\n")
+        return list(filter(lambda item: "data-pid" in item, map(lambda item: item.replace("\r", ""), lines)))

@@ -2,6 +2,19 @@
 <ul class="p-4"
     _="on htmx:afterSwap
         for line in <li.line/> index i
+            add .border-gray-400 .hover:bg-blue-300 to line
+            if line@data-part is 0
+                put '<strong>&nbsp;&bull;&nbsp;</strong>' at the start of line
+            end
+            if line@data-part is 1
+                put '<strong style=&quot;color: #626262;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+            end
+            if line@data-part is 2
+                put '<strong style=&quot;color: #9d5d07;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+            end
+            if line@data-part is 3
+                put '<strong style=&quot;color: #942926;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+            end
             set @data-index of line to i + 1
             if ( #id_talk_index@value is 0 and i is 0 ) or ( #id_talk_index@value is not 0 and #id_talk_index@value is i + 1 )
                 if #id_talk_index@value is not 0
@@ -27,7 +40,7 @@
         end
     end">
     <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
-        <div hx-get="{% url 'console:workbook' date='today' %}" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
+        <div hx-get="{% url 'console:workbook' date='today' %}?filter=talks" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
             <ul class="p-4">
                 <li style="text-align: center;display: inline-block;">
                     <div class="pt-4 self-center stroke-current text-purple-600 mb-8"

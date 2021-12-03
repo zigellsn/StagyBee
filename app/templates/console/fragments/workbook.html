@@ -1,9 +1,9 @@
 {% load i18n %}
 <ul class="p-4">
     {% for talk in times %}
-        <li class="line border-gray-400 hover:bg-blue-300" data-caption="{{ talk.1 }}"
-            data-content="{{ talk.0 }}">{{ talk.1 }}</li>
+        <li class="line" data-caption="{{ talk.2 }}" data-part="{{ talk.0 }}"
+            data-content="{{ talk.1 }}" data-directions="{{ talk.3 }}">{{ talk.2 }}</li>
     {% empty %}
-        <li>{% trans 'Das Arbeitsheft konnte nicht geladen werden. Bitte verwende den Bereich Benutzerdefinert.' %}</li>
+        <li>{% trans 'Das Arbeitsheft konnte nicht geladen werden.' %}</li>
     {% endfor %}
 </ul>
