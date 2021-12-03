@@ -27,8 +27,8 @@ def notifications():
 
 
 @register.inclusion_tag("notification/notification.html")
-def notification(notification_object):
-    return {"object": notification_object}
+def notification(notification_object, index=0):
+    return {"object": notification_object, "index": index}
 
 
 @register.inclusion_tag("notification/notification_maintain_list.html")

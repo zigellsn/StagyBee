@@ -1,0 +1,27 @@
+{{ errors }}
+{% if errors and not fields %}
+    <div>{% for field in hidden_fields %}{{ field }}{% endfor %}</div>
+{% endif %}
+<table class="table-auto">
+    <tbody>
+    {% for field, errors in fields %}
+        {{ errors }}
+        <tr>
+            <div{% with classes=field.css_classes %}{% if classes %} class="{{ classes }}"{% endif %}{% endwith %}>
+                <td class="w-1/3">{% if field.label %}{{ field.label_tag }}{% endif %}</td>
+                <td>{{ field }}
+                    {% if field.help_text %}
+                        <span class="helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                </td>
+            </div>
+        </tr>
+        {% if forloop.last %}
+            {% for field in hidden_fields %}{{ field }}{% endfor %}
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+{% if not fields and not errors %}
+    {% for field in hidden_fields %}{{ field }}{% endfor %}
+{% endif %}

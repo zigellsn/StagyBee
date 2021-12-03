@@ -27,22 +27,26 @@ class DateInput(forms.DateInput):
 
 
 class NotificationForm(forms.ModelForm):
+
+    template_name = "notification/form.html"
+
     class Meta:
         model = Notification
         fields = ["subject", "message", "importance", "locale", "max_duration", "active"]
 
-    message = CharField(widget=forms.Textarea)
-    message.widget.attrs.update({"data-role": "textarea",
-                                 "data-clear-button-icon": "<span class='fg-control mif-cancel'></span>"})
-    importance = ChoiceField(choices=Notification.Importance.choices, label=_("Wichtigkeit"))
-    importance.widget.attrs.update({"data-role": "select"})
+    default_class = "dark:bg-gray-800 bg-white appearance-none outline-none"
+
+    subject = CharField(widget=forms.TextInput(attrs={"class": default_class}))
+    message = CharField(widget=forms.Textarea(attrs={"class": default_class}))
+    importance = ChoiceField(choices=Notification.Importance.choices, label=_("Wichtigkeit"),
+                             widget=forms.Select(attrs={"class": default_class}))
     locales = settings.LANGUAGES.copy()
     locales.append((" ", _("Alle")))
-    locale = ChoiceField(choices=locales, label=_("Sprache"))
-    locale.widget.attrs.update({"data-role": "select"})
-    max_duration = CharField(label=_("Gültig bis"), initial=timezone.now() + timedelta(days=7))
-    max_duration.widget.attrs.update(
-        {"data-role": "calendarpicker", "data-size": "280",
-         "data-min-date": timezone.now().strftime("%Y/%m/%d")})
-    active = BooleanField(label=_("Aktiv"), initial=True, required=False)
-    active.widget.attrs.update({"data-role": "switch", "data-material": "true"})
+    locale = ChoiceField(choices=locales, label=_("Sprache"),
+                         widget=forms.Select(attrs={"class": default_class}))
+    max_duration = forms.DateField(label=_("Gültig bis"), initial=timezone.now() + timedelta(days=7),
+                                   widget=forms.DateInput(attrs={"class": default_class}))
+    # max_duration.widget.attrs.update(
+    #     {"data-role": "calendarpicker", "data-size": "280",
+    #      "data-min-date": timezone.now().strftime("%Y/%m/%d")})
+    active = BooleanField(label=_("Aktiv"), initial=True, required=False, widget=forms.CheckboxInput(attrs={}))

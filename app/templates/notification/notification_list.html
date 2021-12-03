@@ -3,15 +3,13 @@
 
     {% get_current_language as LANGUAGE_CODE %}
     {% get_current_language_bidi as LANGUAGE_BIDI %}
-    <div data-role="panel">
-        <div class="text-leader fg-control ml-4 mr-4">{% trans "Neue Informationen" %}</div>
-        <div class="container mx-auto flex flex-col"
+    <div class="container mx-auto flex flex-col"
          _="on click
                 take .selected from .acc-header for the closest <div.acc-header/> to the event.target
                 take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)">
-            {% for notification in object_list %}
-                {% notification notification %}
-            {% endfor %}
-        </div>
+        <div class="text-leader fg-control ml-4 mr-4">{% trans "Neue Informationen" %}</div>
+        {% for notification in object_list %}
+            {% notification notification forloop.counter0 %}
+        {% endfor %}
     </div>
 {% endif %}
