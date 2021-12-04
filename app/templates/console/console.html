@@ -22,8 +22,10 @@
                     <div id="listeners"></div>
                     <div id="activity"></div>
                 </div>
-                <div id="talk-name-caption" class="text-leader pt-8 pb-8">
-                    <span>{% trans "Aufgabe" %}&nbsp;</span><i><span></span></i>
+                <div class="text-leader pt-8 pb-8">
+                    <div id="talk-name-caption">
+                        <span>{% trans "Aufgabe" %}&nbsp;</span><i><span></span></i>
+                    </div>
                 </div>
                 <div>
                     <table class="table-auto">
@@ -38,13 +40,17 @@
                         </tr>
                         <tr>
                             <td class="px-9">
-                                <div id="elapsed" style="font-size:32px">
-                                    <span style="font-family: monospace;">00:00:00</span>
+                                <div style="font-size:32px; font-family: monospace;">
+                                    <div id="elapsed">
+                                        <span>00:00:00</span>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-9">
-                                <div id="remaining" style="font-size:32px">
-                                    <span style="font-family: monospace;">00:00:00</span>
+                                <div style="font-size:32px; font-family: monospace;">
+                                    <div id="remaining">
+                                        <span>00:00:00</span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -133,7 +139,8 @@
                     <tbody>
                     <tr>
                         <td class="w-2/3 border-r-2">
-                            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/" class="flex justify-center">
+                            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/"
+                                 class="flex justify-center">
                                 {% trans "Meldungen:" as sum_request_to_speak %}
                                 {% trans "Zuhörer gesamt:" as sum_listeners %}
                                 <table class="w-1/4 text-lg">
@@ -176,6 +183,9 @@
     <script type="text/hyperscript">
         socket Timer ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/
         end
+
+
+
     </script>
 
 {% endblock %}
