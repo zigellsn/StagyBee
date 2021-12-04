@@ -17,8 +17,10 @@
                 {% include 'icons/chevron_down.html' with rotate=True %}
             </div>
             <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                <div style="display: none;">
-                    <div id="progress-bar"></div>
+                <div class="hidden">
+                    <div id="pb"></div>
+                    <div id="listeners"></div>
+                    <div id="activity"></div>
                 </div>
                 <div id="talk-name-caption" class="text-leader pt-8 pb-8">
                     <span>{% trans "Aufgabe" %}&nbsp;</span><i><span></span></i>
