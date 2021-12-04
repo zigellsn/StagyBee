@@ -13,7 +13,7 @@
                 href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
     {% if object_list %}
-        <div class="mb-8 mt-4">{% trans "Versammlung wählen" %}</div>
+        <div class="mb-8">{% trans "Versammlung wählen" %}</div>
         <div class="flex grid grid-flow-col place-items-center gap-2 mb-20">
         {% for credential in object_list %}
             <a href="{% url 'stage:stage' credential.congregation %}"

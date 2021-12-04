@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-    <form class="mt-4" method="post">
+    <form method="post">
         {% csrf_token %}
         {{ form }}
         <br>
