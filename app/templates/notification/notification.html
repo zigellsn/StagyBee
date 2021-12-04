@@ -1,19 +1,22 @@
 {% if object %}
     <div class="my-2 dark:bg-gray-800 shadow-lg acc-header {% if index == 0 %}selected{% endif %}">
         <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
-            {% if object.importance == 0 %}
-                <span>{% include 'icons/quote.html' %}</span>
-            {% endif %}
-            {% if object.importance == 1 %}
-                <span>{% include 'icons/info.html' %}</span>
-            {% endif %}
-            {% if object.importance == 2 %}
-                <span>{% include 'icons/warning.html' %}</span>
-            {% endif %}
-            {% if object.importance == 3 %}
-                <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
-            {% endif %}
-            &nbsp;<span>{{ object.subject }}</span>&nbsp;<span>({{ object.create_date|date }})</span>
+            <div class="flex flex-row">
+                {% if object.importance == 0 %}
+                    <span>{% include 'icons/quote.html' %}</span>
+                {% endif %}
+                {% if object.importance == 1 %}
+                    <span>{% include 'icons/info.html' %}</span>
+                {% endif %}
+                {% if object.importance == 2 %}
+                    <span>{% include 'icons/warning.html' %}</span>
+                {% endif %}
+                {% if object.importance == 3 %}
+                    <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
+                {% endif %}
+                &nbsp;{{ object.subject }}&nbsp;({{ object.create_date|date }})
+            </div>
+
             {% if index == 0 %}
                 {% include 'icons/chevron_down.html' with rotate=True %}
             {% else %}
