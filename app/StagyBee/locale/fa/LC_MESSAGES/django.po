@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-03 16:54+0100\n"
+"POT-Creation-Date: 2021-12-05 20:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,8 +57,8 @@ msgstr ""
 msgid "Dunkles Design"
 msgstr ""
 
-#: .\console\models.py:41 .\notification\forms.py:41
-#: .\notification\models.py:57 .\templates\console\settings.html:53
+#: .\console\models.py:41 .\notification\forms.py:45
+#: .\notification\models.py:57 .\templates\console\settings.html:55
 #: .\templates\notification\notification_maintain_list.html:10
 msgid "Sprache"
 msgstr "زبان"
@@ -67,7 +67,7 @@ msgstr "زبان"
 msgid "Bekannter Client"
 msgstr ""
 
-#: .\console\models.py:56 .\templates\console\settings.html:29
+#: .\console\models.py:56 .\templates\console\settings.html:30
 msgid "Bekannte Clients"
 msgstr ""
 
@@ -83,29 +83,29 @@ msgstr ""
 msgid "Zertifikatsdatei"
 msgstr ""
 
-#: .\console\views.py:204 .\picker\views.py:63
+#: .\console\views.py:214 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:223 .\picker\views.py:82
+#: .\console\views.py:233 .\picker\views.py:82
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\notification\forms.py:37 .\notification\models.py:59
+#: .\notification\forms.py:41 .\notification\models.py:59
 msgid "Wichtigkeit"
 msgstr ""
 
-#: .\notification\forms.py:40
-#: .\templates\notification\notification_maintain_list.html:43
+#: .\notification\forms.py:44
+#: .\templates\notification\notification_maintain_list.html:46
 msgid "Alle"
 msgstr ""
 
-#: .\notification\forms.py:43 .\notification\models.py:60
+#: .\notification\forms.py:47 .\notification\models.py:60
 #: .\templates\notification\notification_maintain_list.html:9
 msgid "Gültig bis"
 msgstr ""
 
-#: .\notification\forms.py:47 .\notification\models.py:61
+#: .\notification\forms.py:52 .\notification\models.py:61
 #: .\templates\notification\notification_maintain_list.html:11
 msgid "Aktiv"
 msgstr ""
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:92 .\templates\console\settings.html:42
+#: .\picker\models.py:92 .\templates\console\settings.html:43
 msgid "Passwort"
 msgstr ""
 
@@ -189,12 +189,11 @@ msgstr ""
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
-#: .\stopwatch\forms.py:24 .\templates\console\console.html:24
-#: .\templates\console\console.html:53
+#: .\stopwatch\forms.py:24 .\templates\console\console.html:28
+#: .\templates\console\console.html:62
 #: .\templates\stopwatch\fragments\talk_name_caption.html:4
 #: .\templates\stopwatch\timeentry_archive_week.html:34
-#: .\templates\stopwatch\timeentry_list.html:15
-#: .\templates\stopwatch\timeentry_list.html:47
+#: .\templates\stopwatch\timeentry_list.html:54
 msgid "Aufgabe"
 msgstr ""
 
@@ -219,10 +218,10 @@ msgid "Sendezeit"
 msgstr ""
 
 #: .\templates\audit\audit_list.html:32
-#: .\templates\console\knownclient_list.html:60
-#: .\templates\notification\notification_maintain_list.html:64
+#: .\templates\console\knownclient_list.html:66
+#: .\templates\notification\notification_maintain_list.html:69
 #: .\templates\stopwatch\timeentry_archive_week.html:66
-#: .\templates\stopwatch\timeentry_list.html:80
+#: .\templates\stopwatch\timeentry_list.html:87
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
@@ -236,59 +235,59 @@ msgstr ""
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\templates\console\console.html:31
-#: .\templates\stopwatch\timeentry_list.html:21
+#: .\templates\console\console.html:36
+#: .\templates\stopwatch\timeentry_list.html:26
 msgid "Abgelaufen"
 msgstr ""
 
-#: .\templates\console\console.html:34
-#: .\templates\stopwatch\timeentry_list.html:24
+#: .\templates\console\console.html:39
+#: .\templates\stopwatch\timeentry_list.html:29
 msgid "Übrig"
 msgstr ""
 
-#: .\templates\console\console.html:69
+#: .\templates\console\console.html:78
 msgid "Start"
 msgstr "شروع"
 
-#: .\templates\console\console.html:82
+#: .\templates\console\console.html:91
 msgid "Stopp"
 msgstr "توقف"
 
-#: .\templates\console\console.html:91
+#: .\templates\console\console.html:100
 msgid "Bildschirmsteuerung"
 msgstr ""
 
-#: .\templates\console\console.html:107 .\templates\console\console.html:112
+#: .\templates\console\console.html:110 .\templates\console\console.html:115
 msgid "Textnachricht"
 msgstr ""
 
-#: .\templates\console\console.html:117
+#: .\templates\console\console.html:121
 msgid "Sende Nachricht"
 msgstr ""
 
-#: .\templates\console\console.html:126
+#: .\templates\console\console.html:131
 msgid "Livedaten"
 msgstr ""
 
-#: .\templates\console\console.html:135
+#: .\templates\console\console.html:141
 #: .\templates\stage\events\sum_listeners.html:7
 msgid "Meldungen:"
 msgstr ""
 
-#: .\templates\console\console.html:136
+#: .\templates\console\console.html:142
 #: .\templates\stage\events\sum_listeners.html:4
 msgid "Zuhörer gesamt:"
 msgstr ""
 
-#: .\templates\console\console.html:139
+#: .\templates\console\console.html:145
 msgid "Status"
 msgstr ""
 
-#: .\templates\console\console.html:154
+#: .\templates\console\console.html:160
 msgid "Seit"
 msgstr ""
 
-#: .\templates\console\console.html:165
+#: .\templates\console\console.html:171
 msgid "Link zur Stoppuhrsession"
 msgstr ""
 
@@ -307,15 +306,15 @@ msgstr ""
 msgid "Zur Console..."
 msgstr ""
 
-#: .\templates\console\console_card.html:35
+#: .\templates\console\console_card.html:34
 msgid "Zur Stoppuhr..."
 msgstr ""
 
-#: .\templates\console\console_card.html:47
+#: .\templates\console\console_card.html:45
 msgid "Zum Archiv..."
 msgstr ""
 
-#: .\templates\console\console_card.html:56
+#: .\templates\console\console_card.html:52
 msgid "Zum Audit-Log..."
 msgstr ""
 
@@ -332,11 +331,11 @@ msgstr ""
 msgid "Nachricht vom %(time)s bestätigt."
 msgstr ""
 
-#: .\templates\console\events\scrim_control.html:5
+#: .\templates\console\events\scrim_control_button.html:4
 msgid "Bildschirm verdunkeln"
 msgstr ""
 
-#: .\templates\console\events\scrim_control.html:6
+#: .\templates\console\events\scrim_control_button.html:5
 msgid "Verdunkelung aufheben"
 msgstr ""
 
@@ -373,44 +372,44 @@ msgstr ""
 msgid "Aktionen"
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:29
-#: .\templates\console\knownclient_list.html:37
+#: .\templates\console\knownclient_list.html:30
+#: .\templates\console\knownclient_list.html:39
 #: .\templates\menu\shutdown.html:3
 msgid "Herunterfahren"
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:45
-#: .\templates\console\knownclient_list.html:53
+#: .\templates\console\knownclient_list.html:49
+#: .\templates\console\knownclient_list.html:58
 #: .\templates\menu\shutdown.html:2
 msgid "Neu starten"
 msgstr ""
 
-#: .\templates\console\settings.html:19
+#: .\templates\console\settings.html:20
 msgid "Benachrichtigungen"
 msgstr ""
 
-#: .\templates\console\settings.html:47
+#: .\templates\console\settings.html:49
 msgid "Passwort ändern"
 msgstr ""
 
-#: .\templates\console\settings.html:63
-#: .\templates\notification\notification_form.html:9
+#: .\templates\console\settings.html:66
+#: .\templates\notification\notification_form.html:14
 msgid "Speichern"
 msgstr ""
 
-#: .\templates\console\settings.html:69
+#: .\templates\console\settings.html:72
 msgid "Hilfe und Rechtliches"
 msgstr ""
 
-#: .\templates\console\settings.html:74
+#: .\templates\console\settings.html:77
 msgid "Readme und Hilfe"
 msgstr ""
 
-#: .\templates\console\settings.html:75
+#: .\templates\console\settings.html:78
 msgid "Lizenzvertrag"
 msgstr ""
 
-#: .\templates\console\settings.html:77
+#: .\templates\console\settings.html:80
 msgid "Probleme melden"
 msgstr ""
 
@@ -424,20 +423,25 @@ msgstr "خش آمدید، %(username)s!"
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
 msgstr ""
 
-#: .\templates\notification\notification_confirm_delete.html:9
-#: .\templates\notification\notification_maintain_list.html:57
+#: .\templates\notification\notification_confirm_delete.html:14
+#: .\templates\notification\notification_form.html:11
+msgid "Zurück"
+msgstr ""
+
+#: .\templates\notification\notification_confirm_delete.html:17
+#: .\templates\notification\notification_maintain_list.html:62
 msgid "Löschen"
 msgstr ""
 
-#: .\templates\notification\notification_list.html:7
+#: .\templates\notification\notification_list.html:10
 msgid "Neue Informationen"
 msgstr ""
 
-#: .\templates\notification\notification_maintain_list.html:53
+#: .\templates\notification\notification_maintain_list.html:57
 msgid "Bearbeiten"
 msgstr ""
 
-#: .\templates\notification\notification_maintain_list.html:76
+#: .\templates\notification\notification_maintain_list.html:82
 msgid "Neu"
 msgstr ""
 
@@ -483,26 +487,26 @@ msgid "Nächste KW:"
 msgstr ""
 
 #: .\templates\stopwatch\timeentry_archive_week.html:35
-#: .\templates\stopwatch\timeentry_list.html:48
+#: .\templates\stopwatch\timeentry_list.html:55
 msgid "Startzeit"
 msgstr ""
 
 #: .\templates\stopwatch\timeentry_archive_week.html:36
-#: .\templates\stopwatch\timeentry_list.html:49
+#: .\templates\stopwatch\timeentry_list.html:56
 msgid "Endezeit"
 msgstr ""
 
 #: .\templates\stopwatch\timeentry_archive_week.html:37
-#: .\templates\stopwatch\timeentry_list.html:50
+#: .\templates\stopwatch\timeentry_list.html:57
 msgid "Dauer"
 msgstr ""
 
 #: .\templates\stopwatch\timeentry_archive_week.html:38
-#: .\templates\stopwatch\timeentry_list.html:51
+#: .\templates\stopwatch\timeentry_list.html:58
 msgid "Maximale Dauer"
 msgstr ""
 
 #: .\templates\stopwatch\timeentry_archive_week.html:39
-#: .\templates\stopwatch\timeentry_list.html:52
+#: .\templates\stopwatch\timeentry_list.html:59
 msgid "Differenz"
 msgstr ""
