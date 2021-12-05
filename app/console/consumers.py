@@ -15,7 +15,7 @@ from asgiref.sync import sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.template.loader import render_to_string
-from django.utils import timezone, translation
+from django.utils import timezone
 
 from stage.consumers import generate_channel_group_name
 from stopwatch.timer import GLOBAL_TIMERS
@@ -64,6 +64,11 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             message_alert = ""
         await self.accept()
         await self.send(text_data=message_alert)
+        timer = GLOBAL_TIMERS.get(congregation)
+        if timer is not None:
+            context = {"index": timer.get_context()["index"]}
+            event = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
+            await self.send(text_data=event)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -91,30 +96,6 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=text)
 
     async def timer_tick(self, _):
-        #     talk_index = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
-        #     await self.send_body(talk_index.encode("utf-8"), more_body=True)
-        # progress_bar = render_to_string(template_name="stopwatch/fragments/progress_bar.html",
-        #                                 context={"percentage": 0, "elapsed": "00:00:00",
-        #                                          "remaining": "00:00:00", "full_class": ""})
-        # await self.send(text_data=progress_bar)
-        # stopwatch = render_to_string(template_name="stopwatch/fragments/elapsed.html",
-        #                              context={"time": "00:00:00"})
-        # await self.send(text_data=stopwatch)
-        # remaining = render_to_string(template_name="stopwatch/fragments/remaining.html",
-        #                              context={"time": "00:00:00"})
-        # await self.send(text_data=remaining)
-        # talk_name = render_to_string(template_name="stopwatch/fragments/talk_name_caption.html",
-        #                              context={"name": ""})
-        # await self.send(text_data=talk_name)
-        # context = await database_sync_to_async(__get_newest__)(name)
-        # if context is None:
-        #     return
-        # no_entries = render_to_string(template_name="stopwatch/fragments/no_entries.html")
-        # await self.send(text_data=no_entries)
-        # list_item = render_to_string(template_name="stopwatch/fragments/timeentry_list_item.html",
-        #                              context={"object": context})
-        # await self.send(text_data=list_item)
-
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         timer = GLOBAL_TIMERS.get(congregation)
         if timer is None:
