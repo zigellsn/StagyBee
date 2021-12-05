@@ -16,13 +16,13 @@
         </div>
         <div class="pt-4">
             {% if previous_week %}
-                <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=previous_week|date:"Y" week=previous_week|date:"W" %}">
+                <a class="underline text-blue-500" href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=previous_week|date:"Y" week=previous_week|date:"W" %}">
                     {% trans "Vorherige KW:" %} {{ previous_week|date:"W" }}, {% trans "Jahr" %} {{ previous_week|date:"Y" }}
                 </a>
             {% endif %}
             {% if previous_week and next_week %}--{% endif %}
             {% if next_week %}
-                <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=next_week|date:"Y" week=next_week|date:"W" %}">
+                <a class="underline text-blue-500" href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=next_week|date:"Y" week=next_week|date:"W" %}">
                     {% trans "Nächste KW:" %} {{ next_week|date:"W" }}, {% trans "Jahr" %} {{ next_week|date:"Y" }}
                 </a>
             {% endif %}
@@ -31,12 +31,12 @@
             <table class="table-auto">
                 <thead>
                 <tr>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody>

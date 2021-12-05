@@ -16,7 +16,7 @@
     {% for notification in object_list %}
         <tr>
             <td class="px-5 py-5 text-sm w-2/5">
-                <div>
+                <div class="flex flex-row">
                     {% if notification.importance == 0 %}
                         <span>{% include 'icons/quote.html' %}</span>
                     {% endif %}
@@ -29,33 +29,38 @@
                     {% if notification.importance == 3 %}
                         <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
                     {% endif %}
-                    &nbsp;{{ notification.subject }}&nbsp;({{ notification.create_date|date }})<br>{{ notification.message }}
+                    &nbsp;<div><div class="font-bold">{{ notification.subject }}&nbsp;({{ notification.create_date|date }})</div>
+                    <div>{{ notification.message }}</div></div>
                 </div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5">
+            <td class="px-5 py-5 text-sm w-2/5 text-center">
                 <div>{{ notification.max_duration|date }}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5">
+            <td class="px-5 py-5 text-sm w-2/5 text-center">
                 {% if notification.locale != " " %}
                     {% get_language_info for notification.locale as lang %}
                 {% endif %}
                 <div>{% if notification.locale  != " " %}{{ lang.name_translated }}{% else %}
                     {% trans "Alle" %}{% endif %}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5">
+            <td class="px-5 py-5 text-sm w-2/5 text-center">
                 <div><label for="active"></label>
-                    <input id="active" type="checkbox" {% if notification.active %}checked{% endif %} readonly>
+                    <input id="active" type="checkbox" readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
             <td class="px-5 py-5 text-sm w-2/5">
-                <a href="{% url 'notification:notification_update' notification.id %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">
-                        <span>{% include 'icons/edit.html' %}</span>&nbsp;{% trans "Bearbeiten" %}</div>
-                </a>
-                <a href="{% url 'notification:notification_delete' notification.id %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">
-                        <span>{% include 'icons/delete.html' %}</span>&nbsp;{% trans "Löschen" %}</div>
-                </a>
+                <div>
+                    <a href="{% url 'notification:notification_update' notification.id %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded mb-2">
+                            <span>{% include 'icons/edit.html' %}</span>&nbsp;{% trans "Bearbeiten" %}</div>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'notification:notification_delete' notification.id %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">
+                            <span>{% include 'icons/delete.html' %}</span>&nbsp;{% trans "Löschen" %}</div>
+                    </a>
+                </div>
             </td>
         </tr>
     {% empty %}

@@ -51,20 +51,18 @@
             <table class="table-auto">
                 <thead>
                 <tr>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
-                    <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody id="next" hx-swap-oob="beforeend">
                 {% for time_entry in object_list %}
                     <tr>
                         <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.talk }}</td>
-                        {#                        <td>{% blocktrans with start=time_entry.start|time:"H:i:s" %}{{ start }}&nbsp;Uhr{% endblocktrans %}</td>#}
-                        {#                        <td>{% blocktrans with stop=time_entry.stop|time:"H:i:s" %}{{ stop }}&nbsp;Uhr{% endblocktrans %}</td>#}
                         <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.start|time:"TIME_FORMAT" }}</td>
                         <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
                         <td class="px-5 py-5 text-sm w-2/5">{{ time_entry.duration }}</td>

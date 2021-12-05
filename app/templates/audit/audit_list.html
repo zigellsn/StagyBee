@@ -8,27 +8,27 @@
         <table class="table-auto">
             <thead>
             <tr>
-                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "User" %}</th>
-                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
-                <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sendezeit" %}</th>
+                <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "User" %}</th>
+                <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
+                <th class="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Sendezeit" %}</th>
             </tr>
             </thead>
             <tbody>
             {% for log_entry in object_list %}
                 <tr>
-                    <td class="px-5 py-5 text-sm w-2/5">
+                    <td class="px-5 py-5 text-sm w-1/3">
                         <div>{{ log_entry.user.get_full_name|default:log_entry.user.username }}</div>
                     </td>
-                    <td class="px-5 py-5 text-sm w-2/5">
+                    <td class="px-5 py-5 text-sm w-1/3">
                         <div>{{ log_entry.message }}</div>
                     </td>
-                    <td class="px-5 py-5 text-sm w-2/5">
+                    <td class="px-5 py-5 text-sm w-1/3">
                         <div>{{ log_entry.send_time }}</div>
                     </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td class="px-5 py-5 text-sm w-2/5" colspan="3">
+                    <td class="px-5 py-5 text-sm w-1/3" colspan="3">
                         <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
                     </td>
                 </tr>
