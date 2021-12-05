@@ -82,12 +82,21 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
 
     async def console_scrim(self, event):
         if not self.scope["session"]["scrim"]:
-            message_alert = render_to_string(template_name="stage/events/scrim.html")
+            message = render_to_string(template_name="stage/events/scrim.html")
         else:
-            message_alert = "<div id=\"overlay\"></div>"
+            message = "<div id=\"overlay\"></div>"
         self.scope["session"]["scrim"] = not self.scope["session"]["scrim"]
         await sync_to_async(self.scope["session"].save)()
-        await self.send(text_data=message_alert)
+        await self.send(text_data=message)
+        await self.console_scrim_refresh({})
+
+    async def console_scrim_refresh(self, _):
+        if not self.scope["session"]["scrim"]:
+            context = {"dark": False}
+        else:
+            context = {"dark": True}
+        message = render_to_string(template_name="console/events/scrim_control_button.html", context=context)
+        await self.send(text_data=message)
 
     async def console_message(self, event):
         if "message" in event["message"] and event["message"]["message"] == "ACK":

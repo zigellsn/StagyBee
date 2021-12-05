@@ -134,6 +134,11 @@ class ConsoleActionView(PermissionRequiredMixin, View):
                 congregation_group_name,
                 {"type": "console.scrim", "scrim": {"value": True}},
             )
+        elif request.POST.get("action") == "scrim-refresh":
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.scrim_refresh"},
+            )
         else:
             return HttpResponse("", status=404)
         return HttpResponse("", status=202)
