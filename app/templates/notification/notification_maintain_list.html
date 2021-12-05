@@ -2,20 +2,20 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
-<table class="table-auto">
+<table class="table-auto w-full">
     <thead>
     <tr>
-        <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
-        <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Gültig bis" %}</th>
-        <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sprache" %}</th>
-        <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktiv" %}</th>
-        <th class="px-5 py-3 border-b-2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktionen" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Gültig bis" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sprache" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktiv" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktionen" %}</th>
     </tr>
     </thead>
     <tbody>
     {% for notification in object_list %}
         <tr>
-            <td class="px-5 py-5 text-sm w-2/5">
+            <td class="px-5 py-5 text-sm w-1/2">
                 <div class="flex flex-row">
                     {% if notification.importance == 0 %}
                         <span>{% include 'icons/quote.html' %}</span>
@@ -33,22 +33,22 @@
                     <div>{{ notification.message }}</div></div>
                 </div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5 text-center">
+            <td class="px-5 py-5 text-sm w-1/8 text-center">
                 <div>{{ notification.max_duration|date }}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5 text-center">
+            <td class="px-5 py-5 text-sm w-1/8 text-center">
                 {% if notification.locale != " " %}
                     {% get_language_info for notification.locale as lang %}
                 {% endif %}
                 <div>{% if notification.locale  != " " %}{{ lang.name_translated }}{% else %}
                     {% trans "Alle" %}{% endif %}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5 text-center">
+            <td class="px-5 py-5 text-sm w-1/8 text-center">
                 <div><label for="active"></label>
                     <input id="active" type="checkbox" readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
-            <td class="px-5 py-5 text-sm w-2/5">
+            <td class="px-5 py-5 text-sm w-1/8">
                 <div>
                     <a href="{% url 'notification:notification_update' notification.id %}">
                         <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded mb-2">
@@ -65,17 +65,17 @@
         </tr>
     {% empty %}
         <tr>
-            <td class="px-5 py-5 text-sm w-2/5" colspan="5">
+            <td class="px-5 py-5 text-sm w-full" colspan="5">
                 <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
             </td>
         </tr>
     {% endfor %}
     <tr>
-        <td class="px-5 py-5 text-sm w-2/5"></td>
-        <td class="px-5 py-5 text-sm w-2/5"></td>
-        <td class="px-5 py-5 text-sm w-2/5"></td>
-        <td class="px-5 py-5 text-sm w-2/5"></td>
-        <td class="px-5 py-5 text-sm w-2/5">
+        <td class="px-5 py-5 text-sm w-1/2"></td>
+        <td class="px-5 py-5 text-sm w-1/8"></td>
+        <td class="px-5 py-5 text-sm w-1/8"></td>
+        <td class="px-5 py-5 text-sm w-1/8"></td>
+        <td class="px-5 py-5 text-sm w-1/8">
             <a href="{% url 'notification:notification_create' %}">
                 <div class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded">
                     <span>{% include 'icons/document_add.html' %}</span>&nbsp;{% trans "Neu" %}</div>
