@@ -1,7 +1,12 @@
 {% load i18n %}
 <form hx-post="{% url 'console:action' credential.congregation %}" hx-swap="none">
-    <button name="action" value="scrim-toggle" hx-trigger="click"
-            class="group group-focus:max-h-screen bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        {% if dark == True %}{% trans "Bildschirm verdunkeln" %}{% else %}
-            {% trans "Verdunkelung aufheben" %}{% endif %}</button>
+    <div class="flex flex-row">
+        <button name="action" value="scrim-toggle" hx-trigger="click"
+                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default">
+        <span class="uppercase">{% if dark == True %}{% trans "Bildschirm verdunkeln" %}{% else %}
+            {% trans "Verdunkelung aufheben" %}{% endif %}</span></button>
+        <button name="action" value="scrim-refresh" hx-trigger="click"
+                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default ml-2">
+            <span>{% include 'icons/refresh.html' %}</span></button>
+    </div>
 </form>

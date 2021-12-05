@@ -18,45 +18,39 @@
                 {% endif %}
             </div>
         </div>
-        <div class="px-6 pt-4 pb-2 rounded-b-md shadow-lg dark:bg-gray-800 dark:shadow-inner">
+        <div class="flex flex-col w-full px-6 pt-4 pb-2 rounded-b-md shadow-lg dark:bg-gray-800 dark:shadow-inner">
             {% if congregation.active == True %}
                 {% if "access_console" in congregation_perms %}
-                    <a href="{% url 'console:console' congregation.congregation %}">
-                        <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                            {% trans "Zur Console..." %}&nbsp;
-                            <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
-                                {% include 'icons/right.html' %}{% endif %}</span>
-                        </button>
+                    <a class="flex w-full cursor-default" href="{% url 'console:console' congregation.congregation %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                            <span class="uppercase">{% trans "Zur Console..." %}</span>
+                        </div>
                     </a>
                 {% endif %}
                 {% if "access_stopwatch" in congregation_perms %}
-                    <a href="{% url 'console:stopwatch:timer' congregation.congregation %}">
-                        <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                            {% trans "Zur Stoppuhr..." %}&nbsp;
-                            <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
-                                {% include 'icons/right.html' %}{% endif %}</span>
-                        </button>
+                    <a class="flex w-full cursor-default"
+                       href="{% url 'console:stopwatch:timer' congregation.congregation %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                            <span class="uppercase">{% trans "Zur Stoppuhr..." %}</span>
+                        </div>
                     </a>
                 {% endif %}
             {% endif %}
             {% if "access_stopwatch" in congregation_perms and congregation.active == False %}
                 {% now "Y" as year %}
                 {% now "W" as week %}
-                <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
-                    <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                        {% trans "Zum Archiv..." %}&nbsp;
-                            <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
-                                {% include 'icons/right.html' %}{% endif %}</span>
-                    </button>
+                <a class="flex w-full cursor-default"
+                   href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <span class="uppercase">{% trans "Zum Archiv..." %}</span>
+                    </div>
                 </a>
             {% endif %}
             {% if perms.audit.view_audit and "access_audit_log" in congregation_perms %}
-                <a href="{% url 'console:audit:audit' congregation.congregation %}">
-                    <button class="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                        {% trans "Zum Audit-Log..." %}&nbsp;
-                            <span>{% if LANGUAGE_BIDI %}{% include 'icons/left.html' %}{% else %}
-                                {% include 'icons/right.html' %}{% endif %}</span>
-                    </button>
+                <a class="flex w-full cursor-default" href="{% url 'console:audit:audit' congregation.congregation %}">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <span class="uppercase">{% trans "Zum Audit-Log..." %}</span>
+                    </div>
                 </a>
             {% endif %}
         </div>

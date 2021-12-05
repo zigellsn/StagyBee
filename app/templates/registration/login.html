@@ -21,10 +21,11 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">{% trans 'Log in' %}</button>
+        <button class="pt-4 bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center uppercase text-white font-bold py-2 px-4 rounded mb-2 cursor-default"
+                type="submit">{% trans 'Log in' %}</button>
     </form>
 
     <div>
-        <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+        <a class="underline text-blue-500" href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
     </div>
 {% endblock %}
