@@ -69,6 +69,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             context = {"index": timer.get_context()["index"]}
             event = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
             await self.send(text_data=event)
+        await self.console_scrim_refresh({})
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -80,7 +81,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
     async def console_alert(self, event):
         await self.send(text_data=event["alert"]["value"])
 
-    async def console_scrim(self, event):
+    async def console_scrim(self, _):
         if not self.scope["session"]["scrim"]:
             message = render_to_string(template_name="stage/events/scrim.html")
         else:

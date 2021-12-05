@@ -132,7 +132,7 @@ class ConsoleActionView(PermissionRequiredMixin, View):
         elif request.POST.get("action") == "scrim-toggle":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "console.scrim", "scrim": {"value": True}},
+                {"type": "console.scrim"},
             )
         elif request.POST.get("action") == "scrim-refresh":
             async_to_sync(channel_layer.group_send)(
