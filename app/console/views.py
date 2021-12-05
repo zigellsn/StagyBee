@@ -30,6 +30,7 @@ from tenacity import RetryError
 
 from StagyBee.utils import post_request
 from StagyBee.views import set_host, SchemeMixin
+from audit.models import Audit
 from picker.models import Credential, is_active, get_running_since
 from stage.consumers import generate_channel_group_name
 from stopwatch.forms import StopwatchForm
@@ -119,6 +120,10 @@ class ConsoleActionView(PermissionRequiredMixin, View):
                 stage_group_name,
                 {"type": "message.alert", "alert": {"value": request.POST.get("message")}},
             )
+            congregation = Credential.objects.get(congregation=kwargs.get("pk"))
+            if congregation is not None:
+                Audit.objects.create_audit(congregation=congregation, message=request.POST.get("message"),
+                                           user=request.user)
         elif request.POST.get("action") == "message-ack":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
