@@ -277,11 +277,13 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
 
 
 class ExtractorConnect(SyncConsumer):
+    # TODO: Implement worker
     def test_action(self, message):
         print(message['data'])
 
 
 class ExtractorDisconnect(SyncConsumer):
+    # TODO: Implement worker
     def test_action(self, message):
         print(message['data'])
 
@@ -305,5 +307,7 @@ class MessageConsumer(AsyncSSEConsumer):
         raise StopConsumer()
 
     async def message_alert(self, event):
-        await self.send_body(f'event: message_alert\ndata: {event["alert"]["value"]}\n\n'.encode("utf-8"),
+        message = event["alert"]["value"]
+        message = message.replace("\n", "<br>")
+        await self.send_body(f'event: message_alert\ndata: {message}\n\n'.encode("utf-8"),
                              more_body=True)
