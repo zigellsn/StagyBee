@@ -93,8 +93,12 @@ class StopwatchControlView(PermissionRequiredMixin, View):
     return_403 = True
     permission_required = "access_console"
 
+    async def __call__(self, **kwargs):
+        pass
+
     @staticmethod
-    def post(request, *args, **kwargs):
+    @async_to_sync
+    async def post(request, *args, **kwargs):
         congregation = kwargs.get("pk")
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("timer", congregation)
@@ -102,7 +106,7 @@ class StopwatchControlView(PermissionRequiredMixin, View):
             if congregation in GLOBAL_TIMERS:
                 actual_timer = GLOBAL_TIMERS.get(congregation)
                 if actual_timer is not None:
-                    actual_timer.cancel()
+                    await actual_timer.cancel()
                     GLOBAL_TIMERS.pop(congregation)
             context = {
                 "duration": timedelta(hours=float(request.POST.get("h")), minutes=float(request.POST.get("m")),
@@ -113,13 +117,10 @@ class StopwatchControlView(PermissionRequiredMixin, View):
                 "running": True}
             timer = Timer(1, None, context=context, timer_name=request.POST.get("talk_name"))
             GLOBAL_TIMERS[congregation] = timer
-            async_to_sync(channel_layer.group_send)(
-                congregation_group_name,
-                {"type": "timer.action"}
-            )
+            await channel_layer.group_send(congregation_group_name, {"type": "timer.action"})
         elif request.POST.get("action") == "timer-stop":
             if congregation in GLOBAL_TIMERS and GLOBAL_TIMERS[congregation] is not None:
-                GLOBAL_TIMERS[congregation].cancel()
+                await GLOBAL_TIMERS[congregation].cancel()
                 GLOBAL_TIMERS.pop(congregation)
         else:
             return HttpResponse(status=404)

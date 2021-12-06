@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<form hx-post="{% url 'console:action' credential.congregation %}" hx-swap="none">
+    <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label><br>
+    <textarea name="message" class="w-full text-black border rounded resize-y mt-2"
+              id="text_message"></textarea>
+    <div class="pt-4">
+        <button name="action" value="message-send" hx-trigger="click"
+                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default">
+            <span class="uppercase">{% trans "Sende Nachricht" %}</span>
+        </button>
+    </div>
+    <div id="waiting-indicator"></div>
+    <div id="message" hx-swap-oob="afterend"></div>
+</form>

@@ -15,6 +15,7 @@
 import asyncio
 from datetime import timedelta
 
+from channels.db import database_sync_to_async
 from django.utils import timezone
 
 from StagyBee.settings import env
@@ -43,7 +44,8 @@ class Timer:
             while self._running:
                 if not self._is_first_call or not self._first_immediately:
                     await asyncio.sleep(self._interval)
-                await self._callback(self._name, self._context, self)
+                if self._running:
+                    await self._callback(self, self._running)
                 self._is_first_call = False
             self._running = False
         except Exception as ex:
@@ -102,11 +104,13 @@ class Timer:
         else:
             return 0.0
 
-    def cancel(self):
+    async def cancel(self):
         self._running = False
-        self._persist_time_entry()
+        await self._persist_time_entry()
         if self._task is not None:
             self._task.cancel()
+        if self._callback is not None:
+            await self._callback(self, self._running)
 
     @staticmethod
     def _time_delta_to_string(delta) -> str:
@@ -120,12 +124,15 @@ class Timer:
             s = ("%d day%s, " % plural(delta.days)) + s
         return s
 
-    def _persist_time_entry(self):
+    async def _persist_time_entry(self):
         elapsed_time = self.get_elapsed_time()
         if elapsed_time is None or elapsed_time < timedelta(seconds=env.int("DO_NOT_SAVE_TIMER_DELTA", default=15)):
             return
         if "congregation" in self._context and "duration" in self._context and "start" in self._context:
-            congregation = Credential.objects.get(congregation__exact=self._context.get("congregation"))
-            TimeEntry.objects.create_time_entry(congregation, self._name,
-                                                self._context.get("start"), timezone.now(),
-                                                self._context.get("duration").total_seconds())
+            congregation = await database_sync_to_async(Credential.objects.get)(
+                congregation__exact=self._context.get("congregation"))
+            await database_sync_to_async(TimeEntry.objects.create_time_entry)(congregation, self._name,
+                                                                              self._context.get("start"),
+                                                                              timezone.now(),
+                                                                              self._context.get(
+                                                                                  "duration").total_seconds())

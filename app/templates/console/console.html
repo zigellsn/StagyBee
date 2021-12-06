@@ -1,5 +1,5 @@
 {% extends 'console/choose_console_base.html' %}
-{% load i18n sb_qr_code %}
+{% load i18n %}
 
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
@@ -17,81 +17,7 @@
                 {% include 'icons/chevron_down.html' with rotate=True %}
             </div>
             <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                <div class="hidden">
-                    <div id="pb"></div>
-                    <div id="listeners"></div>
-                    <div id="activity"></div>
-                    <div id="overlay"></div>
-                </div>
-                <div class="text-leader pt-8 pb-8">
-                    <div id="talk-name-caption">
-                        <span>{% trans "Aufgabe" %}&nbsp;</span><i><span></span></i>
-                    </div>
-                </div>
-                <div>
-                    <table class="table-auto flex justify-center">
-                        <tbody>
-                        <tr>
-                            <th class="px-9">
-                                <div>{% trans "Abgelaufen" %}</div>
-                            </th>
-                            <th class="px-9">
-                                <div>{% trans "Übrig" %}</div>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="px-9">
-                                <div style="font-size:32px; font-family: monospace;">
-                                    <div id="elapsed">
-                                        <span>00:00:00</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-9">
-                                <div style="font-size:32px; font-family: monospace;">
-                                    <div id="remaining">
-                                        <span>00:00:00</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <label for="talk-list" class="pt-4">{% trans "Aufgabe" %}</label>
-                {% include 'console/fragments/talks.html' %}
-                <form hx-post="{% url "console:stopwatch:stopwatch" pk=credential.congregation %}"
-                      hx-swap="none">
-                    <div id="custom-talk" class="px-4" style="display: none;">
-                        <div class="pt-2 dark:bg-gray-800 bg-white flex">
-                            {% csrf_token %}
-                            {{ form }}
-                        </div>
-                    </div>
-                    <div class="flex flex-row pt-4">
-                        <button name="action" value="timer-start"
-                                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default"
-                                _="on click add .running to <li.bg-blue-500/>
-                                        add .hover:bg-blue-700 .cursor-default to #timer-stop
-                                        remove .opacity-50 .cursor-not-allowed from #timer-stop">
-                            {% include 'icons/start.html' %}<span class="ml-2 uppercase">{% trans "Start" %}</span>
-                        </button>
-                        <button name="action" id="timer-stop" value="timer-stop"
-                                class="bg-blue-500 hover:bg-blue-700 opacity-50 cursor-not-allowed inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default ml-2"
-                                _="on click
-                                           for line in <li.bg-blue-500/>
-                                            if line matches .running and line.nextElementSibling is not null then
-                                                send click to next <li.line/> from line
-                                            end
-                                        end
-                                        remove .running from <li.line/>
-                                        add .opacity-50 .cursor-not-allowed to me
-                                        remove .hover:bg-blue-700 .cursor-default from me">
-                            {% include 'icons/stop.html' %}<span class="ml-2 uppercase">{% trans "Stopp" %}</span>
-                        </button>
-                    </div>
-                </form>
+                {% include 'console/fragments/timer.html' %}
             </div>
         </div>
 
@@ -101,7 +27,7 @@
                 {% include 'icons/chevron_down.html' %}
             </div>
             <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                {% include 'console/events/scrim_control.html' %}
+                {% include 'console/fragments/scrim_control.html' %}
             </div>
         </div>
 
@@ -111,18 +37,7 @@
                 {% include 'icons/chevron_down.html' %}
             </div>
             <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                <form hx-post="{% url 'console:action' credential.congregation %}" hx-swap="none">
-                    <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label><br>
-                    <textarea name="message" class="w-full text-black border rounded resize-y mt-2"
-                              id="text_message"></textarea>
-                    <div class="pt-4">
-                        <button name="action" value="message-send" hx-trigger="click"
-                                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default">
-                            <span class="uppercase">{% trans "Sende Nachricht" %}</span>
-                        </button>
-                    </div>
-                    <div id="message" hx-swap-oob="afterend"></div>
-                </form>
+                {% include 'console/fragments/message.html' %}
             </div>
         </div>
 
@@ -132,47 +47,7 @@
                 {% include 'icons/chevron_down.html' %}
             </div>
             <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                <table class="w-full table-fixed">
-                    <tbody>
-                    <tr>
-                        <td class="w-2/3 border-r-2">
-                            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/"
-                                 class="flex justify-center">
-                                {% trans "Meldungen:" as sum_request_to_speak %}
-                                {% trans "Zuhörer gesamt:" as sum_listeners %}
-                                <table class="w-1/4 text-lg">
-                                    <caption class="border-b-2"><span
-                                            class="text-leader">{% trans "Status" %}</span></caption>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{ sum_listeners }}</td>
-                                        <td>
-                                            <div id="listener-count"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ sum_request_to_speak }}</td>
-                                        <td>
-                                            <div id="request-to-speak-count"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{% trans "Seit" %}</td>
-                                        <td>{{ credential.since|time:"TIME_FORMAT" }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td class="w-1/3">
-                            <div class="flex stroke-current text-black dark:text-white justify-center">
-                                {% qr_from_text timer_url size=12 version=6 %}
-                            </div>
-                            <div class="text-center">{% trans "Link zur Stoppuhrsession" %}</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                {% include 'console/fragments/status.html' %}
             </div>
         </div>
     </div>
@@ -180,8 +55,6 @@
     <script type="text/hyperscript">
         socket Timer ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/
         end
-
-
     </script>
 
 {% endblock %}

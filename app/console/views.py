@@ -118,7 +118,11 @@ class ConsoleActionView(PermissionRequiredMixin, View):
         if request.POST.get("action") == "message-send":
             async_to_sync(channel_layer.group_send)(
                 stage_group_name,
-                {"type": "message.alert", "alert": {"value": request.POST.get("message")}},
+                {"type": "message.alert", "alert": {"value": request.POST.get("message")}}
+            )
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.wait_for_ack"}
             )
             congregation = Credential.objects.get(congregation=kwargs.get("pk"))
             if congregation is not None:
@@ -127,17 +131,17 @@ class ConsoleActionView(PermissionRequiredMixin, View):
         elif request.POST.get("action") == "message-ack":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "console.message", "message": {"message": "ACK"}},
+                {"type": "console.message", "message": {"message": "ACK"}}
             )
         elif request.POST.get("action") == "scrim-toggle":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "console.scrim"},
+                {"type": "console.scrim"}
             )
         elif request.POST.get("action") == "scrim-refresh":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "console.scrim_refresh"},
+                {"type": "console.scrim_refresh"}
             )
         else:
             return HttpResponse("", status=404)

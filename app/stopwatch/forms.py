@@ -19,7 +19,7 @@ from django.utils.translation import gettext_lazy as _
 class StopwatchForm(forms.Form):
     template_name = "stopwatch/form.html"
 
-    default_class = "dark:bg-gray-800 bg-white appearance-none outline-none"
+    default_class = "dark:bg-gray-800 bg-white appearance-none outline-none mr-2"
 
     talk_name = forms.CharField(label=_("Aufgabe"), required=False, initial="",
                                 widget=forms.TextInput(attrs={"class": default_class}))

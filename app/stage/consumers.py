@@ -158,7 +158,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
             timeout.cancel()
-        GLOBAL_TIMEOUT[congregation].set_callback(self.__waiter())
+        GLOBAL_TIMEOUT[congregation].set_timeout(self.__waiter())
 
     async def __get_extractor_status(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
