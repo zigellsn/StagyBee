@@ -20,6 +20,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import View
 from django.views.generic import ListView, WeekArchiveView
+from django.views.generic.base import TemplateView
 from guardian.mixins import PermissionRequiredMixin
 
 from StagyBee.views import SchemeMixin
@@ -125,3 +126,22 @@ class StopwatchControlView(PermissionRequiredMixin, View):
         else:
             return HttpResponse(status=404)
         return HttpResponse(status=202)
+
+
+class NewestArchiveView(PermissionRequiredMixin, SchemeMixin, TemplateView):
+    return_403 = True
+    permission_required = "access_console"
+    template_name = "stopwatch/fragments/timeentry_list_item.html"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.credentials = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.credentials = get_object_or_404(Credential, congregation=self.kwargs.get("pk"))
+        context["time_entry"] = TimeEntry.objects.newest(kwargs.get("pk"))
+        return context
+
+    def get_permission_object(self):
+        return get_object_or_404(Credential, congregation=self.kwargs.get("pk"))

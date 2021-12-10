@@ -14,12 +14,14 @@
 
 from django.urls import path
 
-from stopwatch.views import TimerView, ArchiveView, StopwatchControlView
+from stopwatch.views import TimerView, ArchiveView, StopwatchControlView, NewestArchiveView
 
 app_name = 'stopwatch'
 
 urlpatterns = [
     path('<str:pk>/', TimerView.as_view(), name='timer'),
-    path('<str:pk>/<int:year>/<int:week>/', ArchiveView.as_view(), name='archive'),
     path('<str:pk>/stopwatch/', StopwatchControlView.as_view(), name='stopwatch'),
+    path('<str:pk>/newest/', NewestArchiveView.as_view(), name='newest'),
+    path('<str:pk>/<int:year>/<int:week>/', ArchiveView.as_view(), name='archive'),
 ]
+

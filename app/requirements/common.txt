@@ -1,5 +1,5 @@
 django-environ-2==2.3.0
-django==4.0rc1
+django==4.0
 django-widget-tweaks==1.4.9
 channels==3.0.4
 channels-redis[cryptography]==3.3.1

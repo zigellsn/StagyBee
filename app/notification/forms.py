@@ -27,7 +27,6 @@ class DateInput(forms.DateInput):
 
 
 class NotificationForm(forms.ModelForm):
-
     template_name = "notification/form.html"
 
     class Meta:
@@ -36,17 +35,17 @@ class NotificationForm(forms.ModelForm):
 
     default_class = "dark:bg-gray-800 bg-white appearance-none outline-none"
 
-    subject = CharField(widget=forms.TextInput(attrs={"class": default_class}))
-    message = CharField(widget=forms.Textarea(attrs={"class": default_class}))
+    subject = CharField(label=_("Betreff"), widget=forms.TextInput(attrs={"class": default_class}))
+    message = CharField(label=_("Nachricht"), widget=forms.Textarea(attrs={"class": default_class}))
     importance = ChoiceField(choices=Notification.Importance.choices, label=_("Wichtigkeit"),
                              widget=forms.Select(attrs={"class": default_class}))
     locales = settings.LANGUAGES.copy()
     locales.append((" ", _("Alle")))
     locale = ChoiceField(choices=locales, label=_("Sprache"),
                          widget=forms.Select(attrs={"class": default_class}))
-    max_duration = forms.DateField(label=_("Gültig bis"), initial=timezone.now() + timedelta(days=7),
-                                   widget=forms.DateInput(attrs={"class": default_class}))
-    # max_duration.widget.attrs.update(
-    #     {"data-role": "calendarpicker", "data-size": "280",
-    #      "data-min-date": timezone.now().strftime("%Y/%m/%d")})
+    max_duration = forms.DateField(label=_("Gültig bis"),
+                                   initial=(timezone.now() + timedelta(days=7)).strftime("%Y-%m-%d"),
+                                   widget=forms.DateInput(format="%Y-%m-%d",
+                                                          attrs={"class": default_class, "type": "date",
+                                                                 "min": timezone.now().strftime("%Y-%m-%d")}))
     active = BooleanField(label=_("Aktiv"), initial=True, required=False, widget=forms.CheckboxInput(attrs={}))

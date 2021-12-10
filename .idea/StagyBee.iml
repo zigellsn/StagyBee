@@ -27,12 +27,11 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (app)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="reconnecting-websocket-iife" level="application" />
-    <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="jquery-3.3.1" level="application" />
     <orderEntry type="library" name="hyperscript.org" level="application" />
     <orderEntry type="library" name="luxon" level="application" />
     <orderEntry type="library" name="htmx.org" level="application" />
+    <orderEntry type="library" name="dark" level="application" />
+    <orderEntry type="library" name="flatpickr" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

@@ -15,22 +15,12 @@
  */
 
 module.exports = {
-    purge: {
-        enabled: true,
-        content: ['./templates/**/*.html']
-    },
+    content: ['./templates/**/*.html'],
     darkMode: 'class', // or 'media' or 'class'
     theme: {
         container: {
             center: true,
-            //     padding: {
-            //         DEFAULT: '9px',
-            //         xl: '16px',
-            //     },
         },
-        extend: {},
-    },
-    variants: {
         extend: {},
     },
     plugins: [

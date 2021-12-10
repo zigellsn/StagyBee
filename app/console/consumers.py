@@ -147,6 +147,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         else:
             class_attr = "animate-pulse"
         event = await self.build_events(class_attr, elapsed_time, percentage, remaining_time)
+        event = event + "stop"
         await self.send(text_data=event)
 
     @staticmethod

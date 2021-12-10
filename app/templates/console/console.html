@@ -11,7 +11,7 @@
          _="on click
                 take .selected from .acc-header for the closest <div.acc-header/> to the event.target
                 take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)">
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header selected">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Stoppuhr" %}</span>
                 {% include 'icons/chevron_down.html' with rotate=True %}
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Bildschirmsteuerung" %}</span>
                 {% include 'icons/chevron_down.html' %}
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Textnachricht" %}</span>
                 {% include 'icons/chevron_down.html' %}
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Livedaten" %}</span>
                 {% include 'icons/chevron_down.html' %}

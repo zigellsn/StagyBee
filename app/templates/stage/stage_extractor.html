@@ -44,9 +44,9 @@
         {% if not credential.touch and credential.send_times_to_stage %}
             <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
                 <div class="w-full" hx-swap="outerHTML">
-                    <div class="progress dark:progress">
-                        <div class="progress-bar dark:progress-bar" id="pb">
-                            <div class="w-screen text-white text-xl text-center" style="margin-top: -3px;font-family: monospace;">00:00:00&nbsp;|&nbsp;00:00:00</div>
+                    <div class="progress-container bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-800">
+                        <div class="progress-bar bg-blue-500" id="pb">
+                            <div class="w-screen text-white dark:text-white text-xl text-center" style="margin-top: -3px;font-family: monospace;">00:00:00&nbsp;|&nbsp;00:00:00</div>
                         </div>
                     </div>
                     <div class="hidden">

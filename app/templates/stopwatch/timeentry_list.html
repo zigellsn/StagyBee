@@ -26,10 +26,10 @@
             <tbody>
             <tr>
                 <th class="px-9">
-                    <div class="text-center">{% trans "Abgelaufen" %}</div>
+                    <div class="text-center uppercase">{% trans "Abgelaufen" %}</div>
                 </th>
                 <th class="px-9">
-                    <div class="text-center">{% trans "Übrig" %}</div>
+                    <div class="text-center uppercase">{% trans "Übrig" %}</div>
                 </th>
             </tr>
             <tr>
@@ -50,49 +50,66 @@
             </tr>
             </tbody>
         </table>
-        <div class="pt-4">
-            <table class="table-auto w-full">
-                <thead>
-                <tr>
-                    <th class="px-5 py-3 w-1/2 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
-                    <th class="px-5 py-3 w-1/4 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
-                </tr>
-                </thead>
-                <tbody id="next" hx-swap-oob="beforeend">
-                {% for time_entry in object_list %}
-                    <tr>
-                        <td class="px-5 py-5 text-sm w-1/2">{{ time_entry.talk }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.start|time:"TIME_FORMAT" }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.duration }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.display_max_duration }}</td>
-                        {% if "-" in time_entry.difference %}
-                            <td class="px-5 py-5 text-sm w-1/4">
-                                <div class="text-red-500">{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-red fg-gray"
-                                     style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                            </td>
-                        {% else %}
-                            <td class="px-5 py-5 text-sm w-1/4">
-                                <div class="text-blue-500">{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-blue"
-                                     style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% empty %}
-                    <tr id="no-entries" hx-swap-oob="outerHTML">
-                        <td class="px-5 py-5 text-sm w-full" colspan="6">
-                            <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
     </div>
+    <div class="pt-4">
+        <table class="table-auto w-full">
+            <thead>
+            <tr>
+                <th class="px-5 py-3 w-1/2 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                <th class="px-5 py-3 w-1/4 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
+            </tr>
+            </thead>
+            <tbody id="times">
+            {% for time_entry in object_list %}
+                <tr>
+                    <td class="px-5 py-5 text-sm w-1/2">{{ time_entry.talk }}</td>
+                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.start|time:"TIME_FORMAT" }}</td>
+                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
+                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.duration }}</td>
+                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.display_max_duration }}</td>
+                    {% if "-" in time_entry.difference %}
+                        <td class="px-5 py-5 text-sm w-1/4">
+                            <div class="text-red-500">{{ time_entry.difference }}</div>
+                            <div class="progress-bar bg-red fg-gray"
+                                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+                        </td>
+                    {% else %}
+                        <td class="px-5 py-5 text-sm w-1/4">
+                            <div class="text-blue-500">{{ time_entry.difference }}</div>
+                            <div class="progress-bar bg-blue"
+                                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% empty %}
+                <tr id="no_timer_entries">
+                    <td class="px-5 py-5 text-sm w-full" colspan="6">
+                        <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block head_extra %}
+    <script type="text/hyperscript">
+        socket Console ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/
+            on message
+                if it contains 'stop' then
+                    if not no no_timer_entries then
+                        remove no_timer_entries
+                    end
+                    fetch {% url 'console:stopwatch:newest' congregation.congregation|escape %} as html
+                    get the <tr/> in it
+                    set result.style.opacity to 0
+                    put the result at the end of times
+                    transition the result's opacity to 1
+        end
+    </script>
 {% endblock %}

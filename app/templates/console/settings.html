@@ -15,7 +15,7 @@
                 take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)"
          id="settings-main">
         {% if user.is_superuser %}
-            <div class="my-2 dark:bg-gray-800 shadow-lg acc-header selected">
+            <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
                 <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                     <span>{% trans "Benachrichtigungen" %}</span>
                     {% include 'icons/chevron_down.html' with rotate=True %}
@@ -25,7 +25,7 @@
                 </div>
             </div>
         {% endif %}
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header {% if not user.is_superuser %}selected{% endif %}">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header {% if not user.is_superuser %}selected{% endif %}">
             <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Bekannte Clients" %}</span>
                 {% if not user.is_superuser %}
@@ -38,7 +38,7 @@
                 {% known_clients_control %}
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Passwort" %}</span>
                 {% include 'icons/chevron_down.html' %}
@@ -50,7 +50,7 @@
                 </a>
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Sprache" %}</span>
                 {% include 'icons/chevron_down.html' %}
@@ -67,7 +67,7 @@
                 </form>
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Hilfe und Rechtliches" %}</span>
                 {% include 'icons/chevron_down.html' %}

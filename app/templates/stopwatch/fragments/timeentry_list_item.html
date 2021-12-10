@@ -1,15 +1,21 @@
-<tbody id="next" hx-swap-oob="beforeend">
+{% load l10n %}
 <tr>
-    <td>{{ context.talk }}</td>
-    <td>{{ context.start }}</td>
-    <td>{{ context.stop }}</td>
-    <td>{{ context.duration }}</td>
-    <td>{{ context.display_max_duration }}</td>
-    <td class="{% if '-' in context.difference %}text-red-500{% else %}text-blue-500{% endif %}">
-        <div>{{ context.difference }}</div>
-        <div class="progress-bar {% if '-' in context.difference %}bg-red{% else %}bg-blue{% endif %}"
-             style="min-height:12px;width:
-                     {{ context.percentage }}{% if percentage is not None and percentage != 0 %}%{% endif %};"></div>
-    </td>
+    <td class="px-5 py-5 text-sm w-1/2">{{ time_entry.talk }}</td>
+    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.start|time:"TIME_FORMAT" }}</td>
+    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
+    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.duration }}</td>
+    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.display_max_duration }}</td>
+    {% if "-" in time_entry.difference %}
+        <td class="px-5 py-5 text-sm w-1/4">
+            <div class="text-red-500">{{ time_entry.difference }}</div>
+            <div class="progress-bar bg-red fg-gray"
+                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+        </td>
+    {% else %}
+        <td class="px-5 py-5 text-sm w-1/4">
+            <div class="text-blue-500">{{ time_entry.difference }}</div>
+            <div class="progress-bar bg-blue"
+                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
+        </td>
+    {% endif %}
 </tr>
-</tbody>
