@@ -22,12 +22,6 @@
     display: block;
 }
 
-@layer components {
-    .btn {
-        @apply px-4 py-2 bg-blue-600 text-white rounded;
-    }
-}
-
 main {
     padding-bottom: 20px !important;
 }
@@ -80,11 +74,6 @@ ul {
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 99999999999999999;
     cursor: none;
-}
-
-body.swal2-shown > [aria-hidden="true"] {
-    transition: 0.1s filter;
-    filter: blur(10px);
 }
 
 div.selected > .acc-content {

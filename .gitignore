@@ -15,6 +15,7 @@ media
 # in your Git repository. Update and uncomment the following line accordingly.
 **/static/css/*
 **/static/fonts/*
+static/
 junit
 
 ### Django.Python Stack ###
@@ -375,16 +376,5 @@ tmp/
 temp/
 
 files/
-
-*.bundle.js*
-*.js.map
-*.min.js
-index.js
-global.js
-console_client_ws.js
-console_ws.js
-stage_ws.js
-timer_ws.js
-#
 
 # End of https://www.gitignore.io/api/django,python,pycharm

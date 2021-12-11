@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n notification admin_urls %}
+{% load i18n notification admin_urls static %}
 
 {% block title %}Picker{% endblock %}
 
@@ -44,4 +44,8 @@
 
 {% block body_extra %}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/acc_click._hs' %}"></script>
 {% endblock %}

@@ -1,0 +1,6 @@
+behavior AccordionClick
+    on click
+        take .selected from <div.acc-header/> for the closest <div.acc-header/> to the event.target
+        take .rotate-180 from <svg.icon/> for the first <svg.icon/> in the closest <div.acc-header/> to the event.target
+    end
+end

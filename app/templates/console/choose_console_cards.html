@@ -1,5 +1,5 @@
 {% extends 'console/choose_console_base.html' %}
-{% load guardian_tags notification %}
+{% load guardian_tags notification static %}
 
 {% block content %}
     <div class="row mt-2">
@@ -16,4 +16,8 @@
     <footer class="sx:pr-1 sx:pl-1 md:pr-4 md:pl-4 md:pb-4 sx:pb-1">
         {% notifications %}
     </footer>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/acc_click._hs' %}"></script>
 {% endblock %}

@@ -3,16 +3,8 @@
 
 {% block content %}
     {% get_available_languages as LANGUAGES %}
-    <style>
-        div.selected > .acc-content {
-            max-height: 100vh;
-            margin-bottom: 1rem;
-        }
-    </style>
     <div class="container mx-auto flex flex-col"
-         _="on click
-                take .selected from .acc-header for the closest <div.acc-header/> to the event.target
-                take .rotate-180 from .icon for (<svg/> in closest <div.acc-header/> to the event.target)"
+         _="install AccordionClick"
          id="settings-main">
         {% if user.is_superuser %}
             <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
@@ -83,6 +75,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/acc_click._hs' %}"></script>
 {% endblock %}
 
 {% block body_extra %}

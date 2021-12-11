@@ -65,26 +65,7 @@
             </thead>
             <tbody id="times">
             {% for time_entry in object_list %}
-                <tr>
-                    <td class="px-5 py-5 text-sm w-1/2">{{ time_entry.talk }}</td>
-                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.start|time:"TIME_FORMAT" }}</td>
-                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.stop|time:"TIME_FORMAT" }}</td>
-                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.duration }}</td>
-                    <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.display_max_duration }}</td>
-                    {% if "-" in time_entry.difference %}
-                        <td class="px-5 py-5 text-sm w-1/4">
-                            <div class="text-red-500">{{ time_entry.difference }}</div>
-                            <div class="progress-bar bg-red fg-gray"
-                                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                        </td>
-                    {% else %}
-                        <td class="px-5 py-5 text-sm w-1/4">
-                            <div class="text-blue-500">{{ time_entry.difference }}</div>
-                            <div class="progress-bar bg-blue"
-                                 style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                        </td>
-                    {% endif %}
-                </tr>
+                {% include 'stopwatch/fragments/timeentry_list_item.html' %}
             {% empty %}
                 <tr id="no_timer_entries">
                     <td class="px-5 py-5 text-sm w-full" colspan="6">
@@ -101,7 +82,7 @@
     <script type="text/hyperscript">
         socket Console ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/
             on message
-                if it contains 'stop' then
+                if it contains '<div id="stop"></div>' then
                     if not no no_timer_entries then
                         remove no_timer_entries
                     end
