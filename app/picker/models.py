@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 async def __get_running_since__(congregation):
     if congregation in GLOBAL_TIMEOUT:
-        return GLOBAL_TIMEOUT[congregation].start_time
+        return GLOBAL_TIMEOUT.get(congregation).start_time
     return timezone.localtime(timezone.now())
 
 

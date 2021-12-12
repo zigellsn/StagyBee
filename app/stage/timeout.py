@@ -21,6 +21,7 @@ GLOBAL_TIMEOUT = {}
 class Timeout:
     def __init__(self, callback=None):
         self._task = None
+        self.count = 1
         self.start_time = timezone.localtime(timezone.now())
         if callback is not None:
             self._task = asyncio.create_task(callback)

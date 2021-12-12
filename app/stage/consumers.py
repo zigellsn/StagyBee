@@ -58,6 +58,8 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         event = await self.build_events(context)
         if congregation not in GLOBAL_TIMEOUT:
             GLOBAL_TIMEOUT[congregation] = Timeout()
+        else:
+            GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
         await self.send(text_data=event)
 
     async def disconnect(self, close_code):
@@ -69,9 +71,11 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(generate_channel_group_name("stage", congregation), self.channel_name)
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
-            timeout.cancel()
-            GLOBAL_TIMEOUT.pop(congregation)
-        await self.__disconnect_from_extractor()
+            timeout.count = timeout.count - 1
+            if timeout.count == 0:
+                timeout.cancel()
+                GLOBAL_TIMEOUT.pop(congregation)
+                await self.__disconnect_from_extractor()
         raise StopConsumer()
 
     async def extractor_connect(self, _):
@@ -82,8 +86,9 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
             timeout.cancel()
-        self.logger.info(f"Trying to connect to extractor for {congregation}...")
-        await self.__connect_to_extractor()
+            if timeout.count == 1:
+                self.logger.info(f"Trying to connect to extractor for {congregation}...")
+                await self.__connect_to_extractor()
 
     async def extractor_listeners(self, event):
         await self.__restart_waiter()
