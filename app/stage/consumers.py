@@ -45,6 +45,8 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         self.task = None
         self.extractor_url = ""
         self.show_only_request_to_speak = False
+        self.sort_by_family_name = True
+        self.family_name_first = True
         self.logger = logging.getLogger(__name__)
 
     async def connect(self):
@@ -60,6 +62,15 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             GLOBAL_TIMEOUT[congregation] = Timeout()
         else:
             GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
+        congregation_dataset = await database_sync_to_async(Credential.objects.get)(congregation=congregation)
+        if congregation_dataset.sort_order == Credential.FAMILY_NAME:
+            self.sort_by_family_name = True
+        else:
+            self.sort_by_family_name = False
+        if congregation_dataset.name_order == Credential.FAMILY_NAME:
+            self.family_name_first = True
+        else:
+            self.family_name_first = False
         await self.send(text_data=event)
 
     async def disconnect(self, close_code):
@@ -95,9 +106,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         new_content = json.loads(event["listeners"])["names"]
         listener_count = 0
         request_to_speak_count = 0
-        # TODO: Sort order
-        sort_by_family_name = True
-        if sort_by_family_name:
+        if self.sort_by_family_name:
             new_content = sorted(new_content, key=lambda x: (x["familyName"].lower(), x["givenName"].lower()))
         else:
             new_content = sorted(new_content, key=lambda x: (x["givenName"].lower(), x["familyName"].lower()))
@@ -113,9 +122,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
                 elif name["givenName"] == "":
                     complete_name = name["familyName"]
                 else:
-                    # TODO: Name order
-                    family_name_first = True
-                    if family_name_first:
+                    if self.family_name_first:
                         complete_name = f"{name['familyName']}, {name['givenName']}"
                     else:
                         complete_name = f"{name['givenName']} {name['familyName']}"
@@ -284,13 +291,13 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
 class ExtractorConnect(SyncConsumer):
     # TODO: Implement worker
     def test_action(self, message):
-        print(message['data'])
+        print(message["data"])
 
 
 class ExtractorDisconnect(SyncConsumer):
     # TODO: Implement worker
     def test_action(self, message):
-        print(message['data'])
+        print(message["data"])
 
 
 class MessageConsumer(AsyncSSEConsumer):
