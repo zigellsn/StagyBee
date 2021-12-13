@@ -1,0 +1,33 @@
+behavior AccordionClick
+    init
+        set header to the first <div.selected/>
+        set content to first <div.acc-content/> in the header
+        add .rotate-180 to the first <svg.icon/> in the header
+        tell content measure me then
+            add { height: ${it.scrollHeight}px; } to content
+        end
+    end
+
+    on click
+        if event.target is in <div.acc-header/> and event.target is not in <div.acc-content/> then
+            set header to closest <div.acc-header/> to the event.target
+            add { height: 0px; } to the first <div.acc-content/> in the first <div.selected/>
+            take .selected from <div.acc-header/> for the header
+            take .rotate-180 from <svg.icon/> for the first <svg.icon/> in the header
+            set content to the next <div.acc-content/> from the event.target
+            tell content measure me then
+                add { height: ${it.scrollHeight}px; } to content
+            end
+        end
+    end
+
+    on htmx:afterSettle
+        set header to the first <div.selected/>
+        if event.target is in header then
+            set content to first <div.acc-content/> in the header
+            tell content measure me then
+                add { height: ${it.scrollHeight}px; } to content
+            end
+        end
+    end
+end

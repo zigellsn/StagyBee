@@ -8,14 +8,16 @@
         <span class="text-2xl">{{ credential.display_name }}</span>
     </div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/" class="flex flex-col"
-         _="install AccordionClick">
+         _="install AccordionClick(header: <div.acc-header/>, content: <div.acc-content/>, selected: <div.selected/>, icon: <svg.icon/>)">
         <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Stoppuhr" %}</span>
-                {% include 'icons/chevron_down.html' with rotate=True %}
+                {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                {% include 'console/fragments/timer.html' %}
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+                <div class="pb-4">
+                    {% include 'console/fragments/timer.html' %}
+                </div>
             </div>
         </div>
 
@@ -24,8 +26,10 @@
                 <span>{% trans "Bildschirmsteuerung" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                {% include 'console/fragments/scrim_control.html' %}
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+                <div class="pb-4">
+                    {% include 'console/fragments/scrim_control.html' %}
+                </div>
             </div>
         </div>
 
@@ -34,8 +38,10 @@
                 <span>{% trans "Textnachricht" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                {% include 'console/fragments/message.html' %}
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+                <div class="pb-4">
+                    {% include 'console/fragments/message.html' %}
+                </div>
             </div>
         </div>
 
@@ -44,8 +50,10 @@
                 <span>{% trans "Livedaten" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-                {% include 'console/fragments/status.html' %}
+            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+                <div class="pb-4">
+                    {% include 'console/fragments/status.html' %}
+                </div>
             </div>
         </div>
     </div>
@@ -58,5 +66,5 @@
 {% endblock %}
 
 {% block _hs_extra %}
-    <script type="text/hyperscript" src="{% static 'stagybee/behavior/acc_click._hs' %}"></script>
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/accordion_click._hs' %}"></script>
 {% endblock %}

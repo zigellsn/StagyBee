@@ -17,14 +17,12 @@
                 &nbsp;{{ object.subject }}&nbsp;({{ object.create_date|date }})
             </div>
 
-            {% if index == 0 %}
-                {% include 'icons/chevron_down.html' with rotate=True %}
-            {% else %}
-                {% include 'icons/chevron_down.html' %}
-            {% endif %}
+            {% include 'icons/chevron_down.html' %}
         </div>
-        <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden max-h-0 ease duration-500">
-            {{ object.message }}
+        <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+            <div class="pb-4">
+                {{ object.message }}
+            </div>
         </div>
     </div>
 {% endif %}

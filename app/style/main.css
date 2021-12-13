@@ -76,11 +76,6 @@ ul {
     cursor: none;
 }
 
-div.selected > .acc-content {
-    max-height: 100vh;
-    margin-bottom: 1rem;
-}
-
 .progress-container {
     height: 20px;
     margin-bottom: 20px;
