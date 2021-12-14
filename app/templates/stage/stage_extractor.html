@@ -10,21 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    <script type="text/hyperscript">
-        def showMessage(msg)
-            call Swal.fire({title: '{% trans "Nachricht" %}', html: msg, confirmButtonColor: '#3b82f6'})
-            if result.isConfirmed or result.isDismissed then
-                fetch {% url 'console:action' credential.congregation %} {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}", Content-Type: "application/x-www-form-urlencoded"}, body:"action=message-ack"}
-            end
-        end
-
-        eventsource Alerts from http:/ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
-            on message_alert as string
-                showMessage(it)
-            end
-        end
-    </script>
-
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
         <div id="overlay"></div>
     </div>
@@ -46,7 +31,9 @@
                 <div class="w-full" hx-swap="outerHTML">
                     <div class="progress-container bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-800">
                         <div class="progress-bar bg-blue-500" id="pb">
-                            <div class="w-screen text-black dark:text-white text-xl text-center" style="margin-top: -3px;font-family: monospace;">00:00:00&nbsp;|&nbsp;00:00:00</div>
+                            <div class="w-screen text-black dark:text-white text-xl text-center"
+                                 style="margin-top: -3px;font-family: monospace;">00:00:00&nbsp;|&nbsp;00:00:00
+                            </div>
                         </div>
                     </div>
                     <div class="hidden">
@@ -68,4 +55,18 @@
 
 {% block body_extra %}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/hyperscript">
+        def showMessage(msg)
+            call Swal.fire({title: '{% trans "Nachricht" %}', html: msg, confirmButtonColor: '#3b82f6'})
+            if result.isConfirmed or result.isDismissed then
+                fetch {% url 'console:action' credential.congregation %} {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}", Content-Type: "application/x-www-form-urlencoded"}, body:"action=message-ack"}
+            end
+        end
+
+        eventsource Alerts from http:/ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
+            on message_alert as string
+                showMessage(it)
+            end
+        end
+    </script>
 {% endblock %}

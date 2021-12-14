@@ -33,7 +33,6 @@ Copy the generated files to ./StagyBee/static/
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/dev.txt
-export DJANGO_SETTINGS_MODULE=StagyBee.settings.dev
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic
