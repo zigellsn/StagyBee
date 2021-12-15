@@ -8,7 +8,7 @@
         <span class="text-2xl">{{ credential.display_name }}</span>
     </div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/" class="flex flex-col"
-         _="install AccordionClick(header: <div.acc-header/>, content: <div.acc-content/>, selected: <div.selected/>, icon: <svg.icon/>)">
+         _="install AccordionClick">
         <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Stoppuhr" %}</span>

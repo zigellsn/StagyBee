@@ -18,7 +18,10 @@
                         <div class="text-red-500 mb-2">
                             {{ field.errors }}
                         </div>
-                        <div>{{ field|placeholder:field.label|attr:"class:dark:bg-black mb-2 w-full" }}</div>
+                        <div class="relative">
+                            {{ field|placeholder:field.label|attr:"class:dark:bg-black mb-2 w-full" }}
+                            {% include 'registration/password_field.html' %}
+                        </div>
                         {% if field.help_text %}
                             <p class="help">{{ field.help_text|safe }}</p>
                         {% endif %}
@@ -28,7 +31,8 @@
                     <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
                 </div>
                 <button class="w-full py-2 mt-4 bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center uppercase text-white font-bold py-2 px-4 rounded mb-2 cursor-default"
-                        type="submit">{% trans 'Log in' %}</button>
+                        type="submit"><span>{% include 'icons/lock.html' %}</span><span
+                        class="ml-2 uppercase">{% trans 'Log in' %}</span></button>
             </form>
         </div>
     </div>

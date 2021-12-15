@@ -86,16 +86,13 @@ class Credential(models.Model):
             ("access_audit_log", _("Zugriff auf Audit-Log")),
         )
 
-    FAMILY_NAME = 0
-    GIVEN_NAME = 1
-    SORT_ORDER = (
-        (FAMILY_NAME, _("Familienname")),
-        (GIVEN_NAME, _("Vorname")),
-    )
-    NAME_ORDER = (
-        (FAMILY_NAME, _("Familienname zuerst")),
-        (GIVEN_NAME, _("Vorname zuerst")),
-    )
+    class SortOrder(models.IntegerChoices):
+        FAMILY_NAME = 0, _("Familienname")
+        GIVEN_NAME = 1, _("Vorname")
+
+    class NameOrder(models.IntegerChoices):
+        FAMILY_NAME = 0, _("Familienname zuerst")
+        GIVEN_NAME = 1, _("Vorname zuerst")
 
     congregation = models.CharField(max_length=200, primary_key=True, verbose_name=_("Versammlung"))
     autologin = models.CharField(max_length=128, default="", blank=True, verbose_name=_("Auto-Login ID"))
@@ -106,9 +103,9 @@ class Credential(models.Model):
     touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
     show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
     send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))
-    sort_order = models.PositiveSmallIntegerField(choices=SORT_ORDER, default=FAMILY_NAME,
+    sort_order = models.PositiveSmallIntegerField(choices=SortOrder.choices, default=NameOrder.FAMILY_NAME,
                                                   verbose_name=_("Namensliste sortieren nach"))
-    name_order = models.PositiveSmallIntegerField(choices=NAME_ORDER, default=FAMILY_NAME,
+    name_order = models.PositiveSmallIntegerField(choices=NameOrder.choices, default=NameOrder.FAMILY_NAME,
                                                   verbose_name=_("Namensreihenfolge"))
 
     objects = CredentialManager()

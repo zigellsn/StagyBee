@@ -18,7 +18,7 @@ import re
 from html.parser import HTMLParser
 
 import aiohttp
-from aiohttp import ClientConnectorError, ServerDisconnectedError
+from aiohttp import ClientConnectorError
 from dateutil.relativedelta import relativedelta, MO
 
 from StagyBee.settings import WB_LANGUAGE_SWITCHER
@@ -109,39 +109,51 @@ class WorkbookExtractor:
 
     @staticmethod
     def __get_month_name__(month):
-        switcher = {
-            1: "January",
-            2: "February",
-            3: "March",
-            4: "April",
-            5: "May",
-            6: "June",
-            7: "July",
-            8: "August",
-            9: "September",
-            10: "October",
-            11: "November",
-            12: "December"
-        }
-        return switcher.get(month, "Invalid month")
+        match month:
+            case 1:
+                return "January"
+            case 2:
+                return "February"
+            case 3:
+                return "March"
+            case 4:
+                return "April"
+            case 5:
+                return "May"
+            case 6:
+                return "June"
+            case 7:
+                return "July"
+            case 8:
+                return "August"
+            case 9:
+                return "September"
+            case 10:
+                return "October"
+            case 11:
+                return "November"
+            case 12:
+                return "December"
+            case _:
+                return "Invalid month"
 
     @staticmethod
     def __get_month_name_2021__(month):
-        switcher = {
-            1: "January-February",
-            2: "January-February",
-            3: "March-April",
-            4: "March-April",
-            5: "May-June",
-            6: "May-June",
-            7: "July-August",
-            8: "July-August",
-            9: "September-October",
-            10: "September-October",
-            11: "November-December",
-            12: "November-December"
-        }
-        return switcher.get(month, "Invalid month")
+        match month:
+            case 1 | 2:
+                return "January-February"
+            case 3 | 4:
+                return "March-April"
+            case 5 | 6:
+                return "May-June"
+            case 7 | 8:
+                return "July-August"
+            case 9 | 10:
+                return "September-October"
+            case 11 | 12:
+                return "November-December"
+            case _:
+                return "Invalid month"
 
     @staticmethod
     async def __get_language_regex(language):

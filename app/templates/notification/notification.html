@@ -14,10 +14,9 @@
                 {% if object.importance == 3 %}
                     <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
                 {% endif %}
-                &nbsp;{{ object.subject }}&nbsp;({{ object.create_date|date }})
+                &nbsp;{{ object.subject }}
             </div>
-
-            {% include 'icons/chevron_down.html' %}
+            <div class="flex flex-row"><span class="mr-4">({{ object.create_date|date }})</span><span>{% include 'icons/chevron_down.html' %}</span></div>
         </div>
         <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
             <div class="pb-4">

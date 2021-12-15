@@ -41,25 +41,7 @@
                 </thead>
                 <tbody>
                 {% for time_entry in object_list %}
-                    <tr>
-                        <td class="px-5 py-5 text-sm w-1/2">{{ time_entry.talk }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.start|time }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.stop|time }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.duration }}</td>
-                        <td class="px-5 py-5 text-sm w-1/8">{{ time_entry.display_max_duration }}</td>
-                        {% if "-" in time_entry.difference %}
-                            <td class="px-5 py-5 text-sm w-1/4">
-                                <div class="text-red-500">{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-red-500 text-gray-700" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                            </td>
-                        {% else %}
-                            <td class="px-5 py-5 text-sm w-1/4">
-                                <div class="text-blue-500">{{ time_entry.difference }}</div>
-                                <div class="progress-bar bg-blue-500" style="min-height:12px;width:{{ time_entry.percentage|unlocalize }}%;"></div>
-                            </td>
-                        {% endif %}
-
-                    </tr>
+                    {% include 'stopwatch/fragments/timeentry_list_item.html' %}
                 {% empty %}
                     <tr>
                         <td  class="px-5 py-5 text-sm w-full" colspan="6">

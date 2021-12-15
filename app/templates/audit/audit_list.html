@@ -16,13 +16,13 @@
             <tbody>
             {% for log_entry in object_list %}
                 <tr>
-                    <td class="px-5 py-5 text-sm w-1/6">
+                    <td class="px-5 py-2 text-sm w-1/6">
                         <div>{{ log_entry.user.get_full_name|default:log_entry.user.username }}</div>
                     </td>
-                    <td class="px-5 py-5 text-sm w-2/3">
+                    <td class="px-5 py-2 text-sm w-2/3">
                         <div>{{ log_entry.message }}</div>
                     </td>
-                    <td class="px-5 py-5 text-sm w-1/6">
+                    <td class="px-5 py-2 text-sm w-1/6">
                         <div>{{ log_entry.send_time }}</div>
                     </td>
                 </tr>

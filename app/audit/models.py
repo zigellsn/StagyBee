@@ -50,7 +50,7 @@ class AuditManager(models.Manager):
 
 class Audit(models.Model):
     class Meta:
-        ordering = ["send_time"]
+        ordering = ["-send_time"]
 
     congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

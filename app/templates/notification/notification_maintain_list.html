@@ -15,7 +15,7 @@
     <tbody>
     {% for notification in object_list %}
         <tr>
-            <td class="px-5 py-5 text-sm w-1/2">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/2">
                 <div class="flex flex-row">
                     {% if notification.importance == 0 %}
                         <span>{% include 'icons/quote.html' %}</span>
@@ -35,22 +35,22 @@
                 </div>
                 </div>
             </td>
-            <td class="px-5 py-5 text-sm w-1/8 text-center">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
                 <div>{{ notification.max_duration|date }}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-1/8 text-center">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
                 {% if notification.locale != " " %}
                     {% get_language_info for notification.locale as lang %}
                 {% endif %}
                 <div>{% if notification.locale  != " " %}{{ lang.name_translated }}{% else %}
                     {% trans "Alle" %}{% endif %}</div>
             </td>
-            <td class="px-5 py-5 text-sm w-1/8 text-center">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
                 <div><label for="active"></label>
                     <input id="active" type="checkbox" readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
-            <td class="px-5 py-5 text-sm w-1/8">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8">
                 <a class="flex w-full cursor-default" href="{% url 'notification:notification_update' notification.id %}">
                     <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
                         <span>{% include 'icons/edit.html' %}</span><span

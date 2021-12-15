@@ -63,11 +63,11 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         else:
             GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
         congregation_dataset = await database_sync_to_async(Credential.objects.get)(congregation=congregation)
-        if congregation_dataset.sort_order == Credential.FAMILY_NAME:
+        if congregation_dataset.sort_order == Credential.SortOrder.FAMILY_NAME:
             self.sort_by_family_name = True
         else:
             self.sort_by_family_name = False
-        if congregation_dataset.name_order == Credential.FAMILY_NAME:
+        if congregation_dataset.name_order == Credential.NameOrder.FAMILY_NAME:
             self.family_name_first = True
         else:
             self.family_name_first = False

@@ -1,6 +1,6 @@
 # Installation
 
-Install [Python 3.8](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
+Install [Python 3.10](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Install and configure [Redis](https://redis.io/) if necessary.
 Install and configure [Node.js](https://nodejs.org/) if necessary.
 If you don't want to use the standard SQLite database, you will need something like [PostgreSQL](https://www.postgresql.org/).

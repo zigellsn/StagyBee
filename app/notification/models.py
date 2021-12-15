@@ -44,7 +44,7 @@ class NotificationManager(models.Manager):
 
 class Notification(models.Model):
     class Meta:
-        ordering = ["create_date"]
+        ordering = ["-create_date"]
 
     class Importance(models.IntegerChoices):
         INFORMATION = 0, _('Information')
