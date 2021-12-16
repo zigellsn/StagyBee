@@ -1,16 +1,11 @@
 {% load i18n %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
 <header class="bg-blue-500 dark:bg-black">
     <nav class="dark:bg-black text-white px-9 flex justify-between w-screen">
         <div class="py-5 flex w-full items-center">
             <a {% if credential.touch %}onclick="window.frames['frame'].location = 'https://jwconf.org/index.php?logout';"{% endif %}
                href="{% url 'picker:picker' %}">
-                <div class="p-2 ml-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-                    {% if LANGUAGE_BIDI %}
-                        {% include 'icons/right.html' %}
-                    {% else %}
-                        {% include 'icons/left.html' %}
-                    {% endif %}
+                <div class="p-2 ltr:ml-2 rtl:mr-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+                    {% include 'icons/left.html' %}
                 </div>
             </a>
             <div class="font-semibold tracking-tight text-xl flex w-full items-center">

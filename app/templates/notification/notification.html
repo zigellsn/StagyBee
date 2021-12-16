@@ -1,3 +1,4 @@
+{% load i18n %}
 {% if object %}
     <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header {% if index == 0 %}selected{% endif %}">
         <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
@@ -14,14 +15,25 @@
                 {% if object.importance == 3 %}
                     <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
                 {% endif %}
-                &nbsp;{{ object.subject }}
+                &nbsp;
+                {% language object.locale %}
+                    {% get_current_language_bidi as LANGUAGE_BIDI %}
+                    {% get_current_language as LANGUAGE_CODE %}
+                    <span dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+                          lang="{{ LANGUAGE_CODE }}">{{ object.subject }}</span>
+                {% endlanguage %}
             </div>
-            <div class="flex flex-row"><span class="mr-4">({{ object.create_date|date }})</span><span>{% include 'icons/chevron_down.html' %}</span></div>
+            <div class="flex flex-row"><span
+                    class="mr-4">({{ object.create_date|date }})</span><span>{% include 'icons/chevron_down.html' %}</span>
+            </div>
         </div>
-        <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
-            <div class="pb-4">
-                {{ object.message }}
-            </div>
+        <div class="dark:bg-gray-800 acc-content px-10 overflow-hidden h-0 ease duration-500">
+            {% language object.locale %}
+                {% get_current_language_bidi as LANGUAGE_BIDI %}
+                {% get_current_language as LANGUAGE_CODE %}
+                <span class="pb-4" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}">
+                {{ object.message }}</span>
+            {% endlanguage %}
         </div>
     </div>
 {% endif %}

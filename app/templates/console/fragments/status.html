@@ -3,12 +3,12 @@
 <table class="table-auto w-full">
     <tbody>
     <tr>
-        <td class="w-2/3 border-r-2 pr-4">
+        <td class="w-2/3 border-r-2 ltr:pr-4 rtl:pl-4">
             <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/"
                  class="flex justify-center">
                 {% trans "Meldungen:" as sum_request_to_speak %}
                 {% trans "Zuhörer gesamt:" as sum_listeners %}
-                <table class="table-auto w-full w-1/4 text-lg">
+                <table class="table-auto w-1/2 text-lg">
                     <thead>
                     <tr>
                         <th class="px-5 py-3 border-b-2 text-center text-lg font-semibold uppercase tracking-wider"

@@ -35,7 +35,7 @@
 <main class="flex-auto container pt-4">
     <div>
         {% if messages %}
-            <ul class="list-disc">
+            <ul class="list-disc px-4">
                 {% for message in messages %}
                     <li class="{{ message.tags }}">{{ message }}</li>
                 {% endfor %}

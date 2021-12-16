@@ -31,7 +31,7 @@ class NotificationForm(forms.ModelForm):
 
     class Meta:
         model = Notification
-        fields = ["subject", "message", "importance", "locale", "max_duration", "active"]
+        fields = ["subject", "message", "importance", "locale", "show_in_locale", "max_duration", "active"]
 
     default_class = "dark:bg-gray-800 bg-white appearance-none outline-none"
 
@@ -40,9 +40,11 @@ class NotificationForm(forms.ModelForm):
     importance = ChoiceField(choices=Notification.Importance.choices, label=_("Wichtigkeit"),
                              widget=forms.Select(attrs={"class": default_class}))
     locales = settings.LANGUAGES.copy()
-    locales.append((" ", _("Alle")))
-    locale = ChoiceField(choices=locales, label=_("Sprache"),
+    locale = ChoiceField(choices=locales, label=_("Sprache der Nachricht"),
                          widget=forms.Select(attrs={"class": default_class}))
+    locales.append((" ", _("Alle")))
+    show_in_locale = ChoiceField(choices=locales, label=_("Anzeigen für Sprache"),
+                                 widget=forms.Select(attrs={"class": default_class}))
     max_duration = forms.DateField(label=_("Gültig bis"),
                                    initial=(timezone.now() + timedelta(days=7)).strftime("%Y-%m-%d"),
                                    widget=forms.DateInput(format="%Y-%m-%d",

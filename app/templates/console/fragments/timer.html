@@ -3,14 +3,12 @@
 <div class="hidden">
     <div id="pb"></div>
     <div id="listeners"></div>
-    <div id="activity" class="animate-pulse"></div>
+    <div id="activity" class="animate-pulse ltr:mr-2 rtl:ml-2"></div>
     <div id="overlay"></div>
     <div id="sum-listeners"></div>
 </div>
-<div class="text-leader pt-8 pb-8">
-    <div id="talk-name-caption">
-        <span>{% trans "Aufgabe" %}&nbsp;</span><i><span></span></i>
-    </div>
+<div class="pt-8 pb-8">
+    <div id="talk-name-caption" class="flex justify-center"></div>
 </div>
 <div>
     <table class="table-auto flex justify-center">
@@ -43,7 +41,7 @@
     </table>
 </div>
 
-<label for="talk-list" class="pt-4">{% trans "Aufgabe" %}</label>
+<label for="talk-list" class="pt-4 font-semibold">{% trans "Programm" %}</label>
 {% include 'console/fragments/talks.html' %}
 <form hx-post="{% url "console:stopwatch:stopwatch" pk=credential.congregation %}"
       hx-swap="none">
@@ -59,10 +57,10 @@
                 _="on click add .running to <li.bg-blue-500/>
                                         add .hover:bg-blue-700 .cursor-default to #timer-stop
                                         remove .opacity-50 .cursor-not-allowed from #timer-stop">
-            {% include 'icons/start.html' %}<span class="ml-2 uppercase">{% trans "Start" %}</span>
+            {% include 'icons/start.html' %}<span class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Start" %}</span>
         </button>
         <button name="action" id="timer-stop" value="timer-stop"
-                class="bg-blue-500 hover:bg-blue-700 opacity-50 cursor-not-allowed inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default ml-2"
+                class="bg-blue-500 hover:bg-blue-700 opacity-50 cursor-not-allowed inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default ltr:ml-2 rtl:mr-2"
                 _="on click
                        for line in <li.bg-blue-500/>
                         if line matches .running and line.nextElementSibling is not null then
@@ -72,7 +70,7 @@
                     remove .running from <li.line/>
                     add .opacity-50 .cursor-not-allowed to me
                     remove .hover:bg-blue-700 .cursor-default from me">
-            {% include 'icons/stop.html' %}<span class="ml-2 uppercase">{% trans "Stopp" %}</span>
+            {% include 'icons/stop.html' %}<span class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Stopp" %}</span>
         </button>
     </div>
 </form>

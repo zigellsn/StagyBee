@@ -1,7 +1,6 @@
 {% load i18n %}
 
 {% get_current_language as LANGUAGE_CODE %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
 <table class="table-auto w-full">
     <thead>
     <tr>
@@ -36,7 +35,7 @@
                             trigger confirmed
                           end">
                         <span>{% include 'icons/shutdown.html' %}</span><span
-                            class="ml-2 uppercase">{% trans "Herunterfahren" %}</span>
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Herunterfahren" %}</span>
                     </button>
                 </div>
                 <div class="flex w-full cursor-default">
@@ -55,7 +54,7 @@
                             trigger confirmed
                           end">
                         <span>{% include 'icons/refresh.html' %}</span><span
-                            class="ml-2 uppercase">{% trans "Neu starten" %}</span>
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Neu starten" %}</span>
                     </button>
                 </div>
             </td>

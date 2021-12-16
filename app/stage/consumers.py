@@ -26,6 +26,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
+from django.utils import translation
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
 from StagyBee.consumers import AsyncSSEConsumer
@@ -55,6 +56,8 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             generate_channel_group_name("stage", congregation),
             self.channel_name
         )
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
         await self.accept()
         context = {"connecting": True}
         event = await self.build_events(context)
@@ -309,6 +312,8 @@ class MessageConsumer(AsyncSSEConsumer):
             generate_channel_group_name("message", congregation),
             self.channel_name
         )
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
         await self.send_body("".encode("utf-8"), more_body=True)
 
     async def disconnect(self):

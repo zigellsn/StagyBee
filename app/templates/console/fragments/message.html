@@ -2,8 +2,15 @@
 
 <form hx-post="{% url 'console:action' credential.congregation %}" hx-swap="none">
     <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label><br>
-    <textarea name="message" class="w-full text-black border rounded resize-y mt-2"
-              id="text_message"></textarea>
+    <textarea name="message" class="w-full dark:bg-black mb-2 w-full border rounded resize-y mt-2"
+              id="text_message"
+              _="on mousemove
+                    set header to the first <div.selected/>
+                    set content to first <div.acc-content/> in the header
+                    tell the first <div/> in content measure me then
+                        add { height: ${it.scrollHeight}px; } to content
+                    end
+                end"></textarea>
     <div class="pt-4">
         <button name="action" value="message-send" hx-trigger="click"
                 class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2 cursor-default">

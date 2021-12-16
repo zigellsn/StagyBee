@@ -12,8 +12,8 @@
 {% block content %}
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/">
         <span class="text-2xl">{{ congregation.display_name }}</span>
-        <div class="text-xl pt-8 pb-8">
-            <div id="talk-name-caption"></div>
+        <div class="text-2xl pt-8 pb-8">
+            <div id="talk-name-caption" class="flex justify-center"></div>
             <div id="id_talk_index"></div>
         </div>
         <div class="hidden rotate-180">
@@ -55,12 +55,12 @@
         <table class="table-auto w-full">
             <thead>
             <tr>
-                <th class="px-5 py-3 w-1/2 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
-                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
-                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
-                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
-                <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
-                <th class="px-5 py-3 w-1/4 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
+                <th class="px-5 py-3 w-1/2 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                <th class="px-5 py-3 w-1/4 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
             </tr>
             </thead>
             <tbody id="times">

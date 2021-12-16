@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n l10n %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% load i18n %}
 
 {% block title %}{% trans "Stoppuhr" %}{% endblock %}
 
@@ -31,12 +30,12 @@
             <table class="table-auto w-full">
                 <thead>
                 <tr>
-                    <th class="px-5 py-3 w-1/2 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
-                    <th class="px-5 py-3 w-1/8 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
-                    <th class="px-5 py-3 w-1/4 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
+                    <th class="px-5 py-3 w-1/2 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Aufgabe" %}</th>
+                    <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Startzeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Endezeit" %}</th>
+                    <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Dauer" %}</th>
+                    <th class="px-5 py-3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Maximale Dauer" %}</th>
+                    <th class="px-5 py-3 w-1/4 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Differenz" %}</th>
                 </tr>
                 </thead>
                 <tbody>

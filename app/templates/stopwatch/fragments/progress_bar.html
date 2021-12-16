@@ -1,5 +1,5 @@
-<div class="progress-bar bg-blue-500"
-     style="width:{% if percentage >= 100 %}100%{% else %}{{ percentage|stringformat:".2f" }}{% if percentage is not None and percentage != 0 %}%{% endif %}{% endif %};"
+<div class="ltr:left-progress-bar rtl:right-progress-bar bg-blue-500"
+     style="width:{% if percentage >= 100 %}100%{% else %}{{ percentage|stringformat:".2f" }}{% if percentage is not None and percentage != 0 %}%{% endif %}{% endif %}; background-color: {{ color }};"
      id="pb">
-    <div class="{{ full_class }} w-screen text-black dark:text-white text-xl text-center cursor-default" style="margin-top: -3px;font-family: monospace;">{{ elapsed }}&nbsp;|&nbsp;{{ remaining }}</div>
+    <div id="pb_caption" class="{{ full_class }} w-screen text-black dark:text-white text-xl text-center cursor-default" style="margin-top: -3px;font-family: monospace;">{{ elapsed }}&nbsp;|&nbsp;{{ remaining }}</div>
 </div>

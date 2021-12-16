@@ -1,10 +1,8 @@
 {% load i18n notification %}
 {% if object_list %}
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
     <div class="container mx-auto flex flex-col"
          _="install AccordionClick">
-        <div class="text-leader fg-control ml-4 mr-4">{% trans "Neue Informationen" %}</div>
+        <div class="text-lg mx-4">{% trans "Neue Informationen" %}</div>
         {% for notification in object_list %}
             {% notification notification forloop.counter0 %}
         {% endfor %}

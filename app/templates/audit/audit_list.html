@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 {% extends 'console/choose_console_base.html' %}
 {% load i18n %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div>
         <span class="text-2xl">{{ congregation.display_name }}</span>
         <table class="table-auto w-full">
             <thead>
             <tr>
-                <th class="px-5 py-3 w-1/6 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "User" %}</th>
-                <th class="px-5 py-3 w-2/3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
-                <th class="px-5 py-3 w-1/6 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">{% trans "Sendezeit" %}</th>
+                <th class="px-5 py-3 w-1/6 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "User" %}</th>
+                <th class="px-5 py-3 w-2/3 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
+                <th class="px-5 py-3 w-1/6 border-b-2 ltr:text-left rtl:text-right text-xs font-semibold uppercase tracking-wider">{% trans "Sendezeit" %}</th>
             </tr>
             </thead>
             <tbody>

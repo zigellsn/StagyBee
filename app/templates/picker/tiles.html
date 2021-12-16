@@ -13,11 +13,11 @@
                 href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
     {% if object_list %}
-        <div class="mb-8">{% trans "Versammlung wählen" %}</div>
+        <div class="mb-8 text-lg">{% trans "Versammlung wählen" %}</div>
         <div class="flex grid grid-flow-col place-items-center gap-2 mb-20">
         {% for credential in object_list %}
             <a href="{% url 'stage:stage' credential.congregation %}"
-               class="flex h-32 pl-4 pr-4 bg-indigo-500 hover:bg-indigo-400 text-center justify-center items-center rounded-md">
+               class="flex h-32 px-4 bg-indigo-500 hover:bg-indigo-400 text-center justify-center items-center rounded-md">
                 <span>{{ credential.display_name|default:credential.congregation }}</span>
             </a>
         {% endfor %}
@@ -34,9 +34,9 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="sx:pr-1 sx:pl-1 md:pr-4 md:pl-4 md:pb-4 sx:pb-1">
+    <footer class="sx:px-1 md:px-4 md:pb-4 sx:pb-1">
         {% notifications %}
-        <div class="z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %}">
+        <div class="z-top text-small rtl:text-left ltr:text-right">
             Version: {{ version }}, Hostname: {{ hostname }}, IP address: {{ ip }}
         </div>
     </footer>

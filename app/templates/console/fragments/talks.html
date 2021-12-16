@@ -38,8 +38,13 @@
         else
             hide #custom-talk
         end
+        set header to the first <div.selected/>
+        set content to first <div.acc-content/> in the header
+        tell the first <div/> in content measure me then
+            add { height: ${it.scrollHeight}px; } to content
+        end
     end">
-    <li>{% trans 'Leben-und-Dienst-Zusammenkunft' %}
+    <li><span class="italic">{% trans 'Leben-und-Dienst-Zusammenkunft' %}</span>
         <div hx-get="{% url 'console:workbook' date='today' %}?filter=talks" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
             <ul class="p-4">
                 <li style="text-align: center;display: inline-block;">
@@ -51,7 +56,7 @@
     </li>
 
     {% with total=times|length %}
-        <li>{% trans 'Zusammenkunft für die Öffentlichkeit' %}
+        <li><span class="italic">{% trans 'Zusammenkunft für die Öffentlichkeit' %}</span>
             <ul class="p-4">
                 <li class="line border-gray-400 hover:bg-blue-300"
                     data-caption="{% trans 'Öffentlicher Vortrag (30 Min.)' %}" data-index="{{ total|add:"1" }}"
@@ -62,7 +67,7 @@
             </ul>
         </li>
 
-        <li>{% trans 'Benutzerdefiniert' %}
+        <li><span class="italic">{% trans 'Benutzerdefiniert' %}</span>
             <ul class="p-4">
                 <li class="line border-gray-400 hover:bg-blue-300"
                     data-caption="{% trans 'Benutzerdefiniert' %}" data-index="{{ total|add:"3" }}"

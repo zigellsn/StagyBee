@@ -1,15 +1,14 @@
 {% load i18n %}
 
-{% get_current_language as LANGUAGE_CODE %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
 <table class="table-auto w-full">
     <thead>
     <tr>
         <th class="px-5 py-3 border-b-2 w-1/2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Nachricht" %}</th>
-        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Gültig bis" %}</th>
-        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sprache" %}</th>
-        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktiv" %}</th>
-        <th class="px-5 py-3 border-b-2 w-1/8 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktionen" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/6 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Gültig bis" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/12 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Sprache der Nachricht" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/12 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Anzeigen für Sprache" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/12 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktiv" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/12 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktionen" %}</th>
     </tr>
     </thead>
     <tbody>
@@ -30,56 +29,76 @@
                         <span class="text-red-500">{% include 'icons/cancel.html' %}</span>
                     {% endif %}
                     &nbsp;<div>
-                    <div class="font-bold">{{ notification.subject }}&nbsp;({{ notification.create_date|date }})</div>
-                    <div>{{ notification.message }}</div>
+                    <div class="font-bold">
+                        {% language notification.locale %}
+                            {% get_current_language_bidi as LANGUAGE_BIDI %}
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <span dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+                                  lang="{{ LANGUAGE_CODE }}">{{ notification.subject }}</span>
+                        {% endlanguage %}
+                        &nbsp;({{ notification.create_date|date }})
+                    </div>
+                    {% language notification.locale %}
+                        {% get_current_language_bidi as LANGUAGE_BIDI %}
+                        {% get_current_language as LANGUAGE_CODE %}
+                        <span dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+                              lang="{{ LANGUAGE_CODE }}">{{ notification.message }}</span>
+                    {% endlanguage %}
                 </div>
                 </div>
             </td>
-            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/6 text-center">
                 <div>{{ notification.max_duration|date }}</div>
             </td>
-            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
-                {% if notification.locale != " " %}
-                    {% get_language_info for notification.locale as lang %}
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12 text-center">
+                {% get_language_info for notification.locale as lang %}
+                <div>{{ lang.name_translated }}</div>
+            </td>
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12 text-center">
+                {% if notification.show_in_locale != " " %}
+                    {% get_language_info for notification.show_in_locale as lang %}
                 {% endif %}
-                <div>{% if notification.locale  != " " %}{{ lang.name_translated }}{% else %}
+                <div>{% if notification.show_in_locale != " " %}{{ lang.name_translated }}{% else %}
                     {% trans "Alle" %}{% endif %}</div>
             </td>
-            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8 text-center">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12 text-center">
                 <div><label for="active"></label>
                     <input id="active" type="checkbox" readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
-            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/8">
-                <a class="flex w-full cursor-default" href="{% url 'notification:notification_update' notification.id %}">
+            <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12">
+                <a class="flex w-full cursor-default"
+                   href="{% url 'notification:notification_update' notification.id %}">
                     <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
                         <span>{% include 'icons/edit.html' %}</span><span
-                            class="ml-2 uppercase">{% trans "Bearbeiten" %}</span></div>
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Bearbeiten" %}</span></div>
                 </a>
-                <a class="flex w-full cursor-default" href="{% url 'notification:notification_delete' notification.id %}">
+                <a class="flex w-full cursor-default"
+                   href="{% url 'notification:notification_delete' notification.id %}">
                     <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
                         <span>{% include 'icons/delete.html' %}</span><span
-                            class="ml-2 uppercase">{% trans "Löschen" %}</span></div>
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Löschen" %}</span></div>
                 </a>
             </td>
         </tr>
     {% empty %}
         <tr>
-            <td class="px-5 py-5 text-sm w-full" colspan="5">
+            <td class="px-5 py-5 text-sm w-full" colspan="6">
                 <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
             </td>
         </tr>
     {% endfor %}
     <tr>
         <td class="px-5 py-5 text-sm w-1/2"></td>
-        <td class="px-5 py-5 text-sm w-1/8"></td>
-        <td class="px-5 py-5 text-sm w-1/8"></td>
-        <td class="px-5 py-5 text-sm w-1/8"></td>
-        <td class="px-5 py-5 text-sm w-1/8">
+        <td class="px-5 py-5 text-sm w-1/6"></td>
+        <td class="px-5 py-5 text-sm w-1/12"></td>
+        <td class="px-5 py-5 text-sm w-1/12"></td>
+        <td class="px-5 py-5 text-sm w-1/12"></td>
+        <td class="px-5 py-5 text-sm w-1/12">
             <a class="flex w-full cursor-default" href="{% url 'notification:notification_create' %}">
                 <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
                     <span>{% include 'icons/document_add.html' %}</span><span
-                        class="ml-2 uppercase">{% trans "Neu" %}</span></div>
+                        class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Neu" %}</span></div>
             </a>
         </td>
     </tr>

@@ -11,12 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import math
+
 from asgiref.sync import sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.template.loader import render_to_string
-from django.utils import timezone
+from django.utils import timezone, translation
 
+from StagyBee.settings import COLOR_GRADIENT
 from stage.consumers import generate_channel_group_name
 from stopwatch.timer import GLOBAL_TIMERS
 
@@ -29,6 +32,8 @@ class TimerConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
         await self.channel_layer.group_add(generate_channel_group_name("timer", congregation), self.channel_name)
         timer = GLOBAL_TIMERS.get(congregation)
         if timer is not None:
@@ -63,6 +68,8 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
         if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
             self.scope["session"]["scrim"] = False
         await self.channel_layer.group_add(generate_channel_group_name("console", congregation), self.channel_name)
@@ -152,12 +159,17 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
 
     @staticmethod
     async def build_events(class_attr, elapsed_time, percentage, remaining_time):
+        index = int(math.floor(percentage))
+        if index > 99:
+            index = 99
+        color = COLOR_GRADIENT["hex"][index]
+
         event = ""
         context = {"time": elapsed_time, "full_class": class_attr}
         event = event + render_to_string(template_name="stopwatch/fragments/elapsed.html", context=context)
         context = {"time": remaining_time, "full_class": class_attr}
         event = event + render_to_string(template_name="stopwatch/fragments/remaining.html", context=context)
-        context = {"percentage": percentage, "elapsed": elapsed_time, "remaining": remaining_time,
+        context = {"percentage": percentage, "elapsed": elapsed_time, "remaining": remaining_time, "color": color,
                    "full_class": class_attr}
         event = event + render_to_string(template_name="stopwatch/fragments/progress_bar.html", context=context)
         return event

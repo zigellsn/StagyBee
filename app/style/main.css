@@ -83,8 +83,16 @@ ul {
     border-radius: 4px;
 }
 
-.progress-bar {
+[dir="ltr"] .ltr\:.left-progress-bar {
     float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+[dir="rtl"] .rtl\:.right-progress-bar {
+    float: right;
     width: 0;
     height: 100%;
     font-size: 12px;

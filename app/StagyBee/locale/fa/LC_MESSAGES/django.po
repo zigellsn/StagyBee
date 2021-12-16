@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-12 10:42+0100\n"
+"POT-Creation-Date: 2021-12-16 15:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,12 +32,12 @@ msgid "Bevorzugte Sprache"
 msgstr ""
 
 #: .\console\forms.py:58 .\console\models.py:61
-#: .\templates\console\knownclient_list.html:9
+#: .\templates\console\knownclient_list.html:8
 msgid "Client URL"
 msgstr ""
 
 #: .\console\forms.py:59 .\console\models.py:62
-#: .\templates\console\knownclient_list.html:8
+#: .\templates\console\knownclient_list.html:7
 msgid "Alias Name"
 msgstr ""
 
@@ -57,9 +57,7 @@ msgstr ""
 msgid "Dunkles Design"
 msgstr ""
 
-#: .\console\models.py:41 .\notification\forms.py:44
-#: .\notification\models.py:57 .\templates\console\settings.html:47
-#: .\templates\notification\notification_maintain_list.html:10
+#: .\console\models.py:41 .\templates\console\settings.html:50
 msgid "Sprache"
 msgstr "زبان"
 
@@ -67,7 +65,7 @@ msgstr "زبان"
 msgid "Bekannter Client"
 msgstr ""
 
-#: .\console\models.py:56 .\templates\console\settings.html:22
+#: .\console\models.py:56 .\templates\console\settings.html:24
 msgid "Bekannte Clients"
 msgstr ""
 
@@ -96,29 +94,39 @@ msgid "Betreff"
 msgstr ""
 
 #: .\notification\forms.py:39 .\notification\models.py:56
-#: .\templates\audit\audit_list.html:12
-#: .\templates\notification\notification_maintain_list.html:8
+#: .\templates\audit\audit_list.html:11
+#: .\templates\notification\notification_maintain_list.html:6
 #: .\templates\stage\events\alert.html:3
-#: .\templates\stage\stage_extractor.html:15
+#: .\templates\stage\stage_extractor.html:65
 msgid "Nachricht"
 msgstr ""
 
-#: .\notification\forms.py:40 .\notification\models.py:59
+#: .\notification\forms.py:40 .\notification\models.py:60
 msgid "Wichtigkeit"
 msgstr ""
 
-#: .\notification\forms.py:43
-#: .\templates\notification\notification_maintain_list.html:46
-msgid "Alle"
+#: .\notification\forms.py:43 .\notification\models.py:57
+#: .\templates\notification\notification_maintain_list.html:8
+msgid "Sprache der Nachricht"
 msgstr ""
 
-#: .\notification\forms.py:46 .\notification\models.py:60
+#: .\notification\forms.py:45
+#: .\templates\notification\notification_maintain_list.html:62
+msgid "Alle"
+msgstr "همه"
+
+#: .\notification\forms.py:46 .\notification\models.py:58
 #: .\templates\notification\notification_maintain_list.html:9
+msgid "Anzeigen für Sprache"
+msgstr ""
+
+#: .\notification\forms.py:48 .\notification\models.py:61
+#: .\templates\notification\notification_maintain_list.html:7
 msgid "Gültig bis"
 msgstr ""
 
-#: .\notification\forms.py:51 .\notification\models.py:61
-#: .\templates\notification\notification_maintain_list.html:11
+#: .\notification\forms.py:53 .\notification\models.py:62
+#: .\templates\notification\notification_maintain_list.html:10
 msgid "Aktiv"
 msgstr ""
 
@@ -158,66 +166,63 @@ msgstr ""
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:92
+#: .\picker\models.py:90
 msgid "Familienname"
 msgstr ""
 
-#: .\picker\models.py:93
+#: .\picker\models.py:91
 msgid "Vorname"
 msgstr ""
 
-#: .\picker\models.py:96
+#: .\picker\models.py:94
 msgid "Familienname zuerst"
 msgstr ""
 
-#: .\picker\models.py:97
+#: .\picker\models.py:95
 msgid "Vorname zuerst"
 msgstr ""
 
-#: .\picker\models.py:100
+#: .\picker\models.py:97
 msgid "Versammlung"
 msgstr ""
 
-#: .\picker\models.py:101
+#: .\picker\models.py:98
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:102
+#: .\picker\models.py:99
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:103 .\templates\console\settings.html:35
+#: .\picker\models.py:100 .\templates\console\settings.html:35
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:104
+#: .\picker\models.py:101
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:106
+#: .\picker\models.py:103
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:107
+#: .\picker\models.py:104
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:108
+#: .\picker\models.py:105
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
-#: .\picker\models.py:110
+#: .\picker\models.py:107
 msgid "Namensliste sortieren nach"
 msgstr ""
 
-#: .\picker\models.py:112
+#: .\picker\models.py:109
 msgid "Namensreihenfolge"
 msgstr ""
 
-#: .\stopwatch\forms.py:24 .\templates\console\fragments\timer.html:12
-#: .\templates\console\fragments\timer.html:46
-#: .\templates\stopwatch\fragments\talk_name_caption.html:4
-#: .\templates\stopwatch\timeentry_archive_week.html:34
+#: .\stopwatch\forms.py:24 .\templates\stopwatch\timeentry_archive_week.html:33
 #: .\templates\stopwatch\timeentry_list.html:58
 msgid "Aufgabe"
 msgstr ""
@@ -234,42 +239,42 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: .\templates\audit\audit_list.html:11
+#: .\templates\audit\audit_list.html:10
 msgid "User"
 msgstr ""
 
-#: .\templates\audit\audit_list.html:13
+#: .\templates\audit\audit_list.html:12
 msgid "Sendezeit"
 msgstr ""
 
-#: .\templates\audit\audit_list.html:32
-#: .\templates\console\knownclient_list.html:66
-#: .\templates\notification\notification_maintain_list.html:69
-#: .\templates\stopwatch\timeentry_archive_week.html:66
+#: .\templates\audit\audit_list.html:31
+#: .\templates\console\knownclient_list.html:65
+#: .\templates\notification\notification_maintain_list.html:87
+#: .\templates\stopwatch\timeentry_archive_week.html:47
 #: .\templates\stopwatch\timeentry_list.html:72
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
-#: .\templates\base.html:30
+#: .\templates\base.html:33
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr ""
 
-#: .\templates\console\console.html:14
-#: .\templates\stopwatch\timeentry_archive_week.html:5
+#: .\templates\console\console.html:13
+#: .\templates\stopwatch\timeentry_archive_week.html:4
 #: .\templates\stopwatch\timeentry_list.html:6
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\templates\console\console.html:24
+#: .\templates\console\console.html:25
 msgid "Bildschirmsteuerung"
 msgstr ""
 
-#: .\templates\console\console.html:34
+#: .\templates\console\console.html:37
 #: .\templates\console\fragments\message.html:4
 msgid "Textnachricht"
 msgstr ""
 
-#: .\templates\console\console.html:44
+#: .\templates\console\console.html:49
 msgid "Livedaten"
 msgstr ""
 
@@ -371,21 +376,25 @@ msgstr ""
 msgid "Benutzerdefiniert"
 msgstr ""
 
-#: .\templates\console\fragments\timer.html:20
+#: .\templates\console\fragments\timer.html:18
 #: .\templates\stopwatch\timeentry_list.html:29
 msgid "Abgelaufen"
 msgstr ""
 
-#: .\templates\console\fragments\timer.html:23
+#: .\templates\console\fragments\timer.html:21
 #: .\templates\stopwatch\timeentry_list.html:32
 msgid "Übrig"
 msgstr ""
 
-#: .\templates\console\fragments\timer.html:62
+#: .\templates\console\fragments\timer.html:44
+msgid "Programm"
+msgstr "برنامه"
+
+#: .\templates\console\fragments\timer.html:60
 msgid "Start"
 msgstr "شروع"
 
-#: .\templates\console\fragments\timer.html:75
+#: .\templates\console\fragments\timer.html:73
 msgid "Stopp"
 msgstr "توقف"
 
@@ -393,19 +402,19 @@ msgstr "توقف"
 msgid "Das Arbeitsheft konnte nicht geladen werden."
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:10
-#: .\templates\notification\notification_maintain_list.html:12
+#: .\templates\console\knownclient_list.html:9
+#: .\templates\notification\notification_maintain_list.html:11
 msgid "Aktionen"
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:30
-#: .\templates\console\knownclient_list.html:39
+#: .\templates\console\knownclient_list.html:29
+#: .\templates\console\knownclient_list.html:38
 #: .\templates\menu\shutdown.html:3
 msgid "Herunterfahren"
 msgstr ""
 
-#: .\templates\console\knownclient_list.html:49
-#: .\templates\console\knownclient_list.html:58
+#: .\templates\console\knownclient_list.html:48
+#: .\templates\console\knownclient_list.html:57
 #: .\templates\menu\shutdown.html:2
 msgid "Neu starten"
 msgstr ""
@@ -414,34 +423,33 @@ msgstr ""
 msgid "Benachrichtigungen"
 msgstr ""
 
-#: .\templates\console\settings.html:41
+#: .\templates\console\settings.html:42
 msgid "Passwort ändern"
 msgstr ""
 
-#: .\templates\console\settings.html:58
+#: .\templates\console\settings.html:62
 #: .\templates\notification\notification_form.html:14
 msgid "Speichern"
 msgstr ""
 
-#: .\templates\console\settings.html:64
+#: .\templates\console\settings.html:69
 msgid "Hilfe und Rechtliches"
 msgstr ""
 
-#: .\templates\console\settings.html:69
+#: .\templates\console\settings.html:75
 msgid "Readme und Hilfe"
 msgstr ""
 
-#: .\templates\console\settings.html:70
+#: .\templates\console\settings.html:78
 msgid "Lizenzvertrag"
 msgstr ""
 
-#: .\templates\console\settings.html:72
+#: .\templates\console\settings.html:80
 msgid "Probleme melden"
 msgstr ""
 
 #: .\templates\menu\greeting.html:4
-#, fuzzy, python-format
-#| msgid "Willkommen, %(username)s!"
+#, python-format
 msgid "Willkommen,&nbsp;%(username)s!"
 msgstr "خش آمدید، %(username)s!"
 
@@ -455,19 +463,19 @@ msgid "Zurück"
 msgstr ""
 
 #: .\templates\notification\notification_confirm_delete.html:17
-#: .\templates\notification\notification_maintain_list.html:62
+#: .\templates\notification\notification_maintain_list.html:80
 msgid "Löschen"
 msgstr ""
 
-#: .\templates\notification\notification_list.html:7
+#: .\templates\notification\notification_list.html:5
 msgid "Neue Informationen"
 msgstr ""
 
-#: .\templates\notification\notification_maintain_list.html:57
+#: .\templates\notification\notification_maintain_list.html:74
 msgid "Bearbeiten"
 msgstr ""
 
-#: .\templates\notification\notification_maintain_list.html:82
+#: .\templates\notification\notification_maintain_list.html:101
 msgid "Neu"
 msgstr ""
 
@@ -495,44 +503,44 @@ msgstr ""
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:15
+#: .\templates\stopwatch\timeentry_archive_week.html:14
 msgid "Kalenderwoche"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:20
+#: .\templates\stopwatch\timeentry_archive_week.html:19
 msgid "Vorherige KW:"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:20
-#: .\templates\stopwatch\timeentry_archive_week.html:26
+#: .\templates\stopwatch\timeentry_archive_week.html:19
+#: .\templates\stopwatch\timeentry_archive_week.html:25
 msgid "Jahr"
 msgstr "سال"
 
-#: .\templates\stopwatch\timeentry_archive_week.html:26
+#: .\templates\stopwatch\timeentry_archive_week.html:25
 msgid "Nächste KW:"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:35
+#: .\templates\stopwatch\timeentry_archive_week.html:34
 #: .\templates\stopwatch\timeentry_list.html:59
 msgid "Startzeit"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:36
+#: .\templates\stopwatch\timeentry_archive_week.html:35
 #: .\templates\stopwatch\timeentry_list.html:60
 msgid "Endezeit"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:37
+#: .\templates\stopwatch\timeentry_archive_week.html:36
 #: .\templates\stopwatch\timeentry_list.html:61
 msgid "Dauer"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:38
+#: .\templates\stopwatch\timeentry_archive_week.html:37
 #: .\templates\stopwatch\timeentry_list.html:62
 msgid "Maximale Dauer"
 msgstr ""
 
-#: .\templates\stopwatch\timeentry_archive_week.html:39
+#: .\templates\stopwatch\timeentry_archive_week.html:38
 #: .\templates\stopwatch\timeentry_list.html:63
 msgid "Differenz"
 msgstr ""

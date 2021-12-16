@@ -22,12 +22,12 @@ from django.utils.translation import gettext_lazy as _
 
 class NotificationQuerySet(QuerySet):
 
-    def by_state(self, active=True, locale=None):
-        if locale is None:
-            locale = ["en"]
-        if " " not in locale:
-            locale.append(" ")
-        return self.filter(active=active, locale__in=locale, max_duration__gt=timezone.now())
+    def by_state(self, active=True, show_in_locale=None):
+        if show_in_locale is None:
+            show_in_locale = ["en"]
+        if " " not in show_in_locale:
+            show_in_locale.append(" ")
+        return self.filter(active=active, show_in_locale__in=show_in_locale, max_duration__gt=timezone.now())
 
 
 class NotificationManager(models.Manager):
@@ -38,13 +38,13 @@ class NotificationManager(models.Manager):
     def create_notification(self, user, message, importance=1, max_duration=timezone.now() + timedelta(days=30)):
         return self.create(user=user, message=message, importance=importance, max_duration=max_duration)
 
-    def by_state(self, active=True, locale=None):
-        return self.get_query_set().by_state(active, locale)
+    def by_state(self, active=True, show_in_locale=None):
+        return self.get_query_set().by_state(active, show_in_locale)
 
 
 class Notification(models.Model):
     class Meta:
-        ordering = ["-create_date"]
+        ordering = ["-create_date", "-importance"]
 
     class Importance(models.IntegerChoices):
         INFORMATION = 0, _('Information')
@@ -54,12 +54,13 @@ class Notification(models.Model):
 
     subject = models.CharField(default="", max_length=255, verbose_name=_("Betreff"))
     message = models.TextField(default="", blank=True, verbose_name=_("Nachricht"))
-    locale = models.CharField(default=" ", max_length=10, verbose_name=_("Sprache"))
+    locale = models.CharField(default=" ", max_length=10, verbose_name=_("Sprache der Nachricht"))
+    show_in_locale = models.CharField(default=" ", max_length=10, verbose_name=_("Anzeigen für Sprache"))
     importance = models.IntegerField(choices=Importance.choices, default=Importance.INFORMATION,
                                      verbose_name=_("Wichtigkeit"))
-    max_duration = models.DateTimeField(verbose_name=_("Gültig bis"), null=True, blank=True)
+    max_duration = models.DateField(verbose_name=_("Gültig bis"), null=True, blank=True)
     active = models.BooleanField(verbose_name=_("Aktiv"))
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    create_date = models.DateTimeField(default=timezone.now)
+    create_date = models.DateField(default=timezone.now)
 
     objects = NotificationManager()

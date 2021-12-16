@@ -12,7 +12,7 @@
                     <span>{% trans "Benachrichtigungen" %}</span>
                     {% include 'icons/chevron_down.html' %}
                 </div>
-                <div class="acc-content px-4 overflow-hidden h-0 ease duration-500">
+                <div class="acc-content px-8 overflow-hidden h-0 ease duration-500">
                     <div class="pb-4">
                         {% notifications_maintain %}
                     </div>
@@ -24,7 +24,7 @@
                 <span>{% trans "Bekannte Clients" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="acc-content px-4 overflow-hidden h-0 ease duration-500">
+            <div class="acc-content px-8 overflow-hidden h-0 ease duration-500">
                 <div class="pb-4">
                     {% known_clients_control %}
                 </div>
@@ -35,7 +35,7 @@
                 <span>{% trans "Passwort" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
                 <div class="pb-4">
                     <a class="flex cursor-default" href="{% url 'password_change' %}">
                         <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2">
@@ -50,7 +50,7 @@
                 <span>{% trans "Sprache" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
                 <div class="pb-4">
                     <form method="post">
                         {% csrf_token %}
@@ -69,7 +69,7 @@
                 <span>{% trans "Hilfe und Rechtliches" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-4 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
                 <div class="pb-4">
                     <ul>
                         <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a>
