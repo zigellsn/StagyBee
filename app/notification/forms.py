@@ -50,4 +50,5 @@ class NotificationForm(forms.ModelForm):
                                    widget=forms.DateInput(format="%Y-%m-%d",
                                                           attrs={"class": default_class, "type": "date",
                                                                  "min": timezone.now().strftime("%Y-%m-%d")}))
-    active = BooleanField(label=_("Aktiv"), initial=True, required=False, widget=forms.CheckboxInput(attrs={}))
+    active = BooleanField(label=_("Aktiv"), initial=True, required=False,
+                          widget=forms.CheckboxInput(attrs={"class": default_class}))

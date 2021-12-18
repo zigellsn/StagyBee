@@ -59,7 +59,6 @@
 {% endblock %}
 
 {% block body_extra %}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/hyperscript">
         def showMessage(msg)
             call Swal.fire({title: '{% trans "Nachricht" %}', html: msg, confirmButtonColor: '#3b82f6'})
@@ -73,7 +72,5 @@
                 showMessage(it)
             end
         end
-
-
     </script>
 {% endblock %}

@@ -63,7 +63,8 @@
             </td>
             <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12 text-center">
                 <div><label for="active"></label>
-                    <input id="active" type="checkbox" readonly disabled {% if notification.active %}checked{% endif %}>
+                    <input class="dark:bg-gray-800 bg-white appearance-none outline-none" id="active" type="checkbox"
+                           readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
             <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12">

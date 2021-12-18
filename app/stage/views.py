@@ -44,18 +44,6 @@ class StageView(SchemeMixin, DetailView):
             return "stage/stage_extractor.html"
 
 
-class StageFormView(SchemeMixin, DetailView):
-    model = Credential
-    template_name = "stage/stage_form.html"
-
-    def setup(self, request, *args, **kwargs):
-        super().setup(request, *args, **kwargs)
-
-    @method_decorator(xframe_options_exempt)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-
 class ExtractorConnectView(View):
 
     def post(self, request, *args, **kwargs):

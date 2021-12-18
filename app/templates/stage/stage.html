@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Auto-Login Page{% endblock %}
+
+{% block header %}
+    {% include "stage/header.html" %}
+{% endblock %}
 
 {% block content %}
-    <div class="embed-container">
+    <div>
         {% if credential.autologin %}
-            <iframe name="frame" src="https://jwconf.org/?key={{ credential.autologin }}"></iframe>
+            <iframe class="w-full" name="frame" style="height: calc(100vh - 150px);"
+                    src="https://jwconf.org/?key={{ credential.autologin }}"
+                    _="on load remove .container from <main/>"></iframe>
         {% else %}
-            <iframe name="frame" src="{% url 'stage:stage_form' credential.congregation %}"></iframe>
+            <div class="text-2xl text-center">{% trans 'Aus einem Browser kann JWConf nur über den Auto-Login-Schlüssel gestartet werden. Bitte setzte dich mit dem Administrator in Verbindung.' %}</div>
         {% endif %}
     </div>
 {% endblock %}
