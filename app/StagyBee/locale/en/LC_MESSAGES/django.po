@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-16 15:01+0100\n"
+"POT-Creation-Date: 2021-12-18 11:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,7 +96,7 @@ msgstr "Subject"
 #: .\templates\audit\audit_list.html:11
 #: .\templates\notification\notification_maintain_list.html:6
 #: .\templates\stage\events\alert.html:3
-#: .\templates\stage\stage_extractor.html:65
+#: .\templates\stage\stage_extractor.html:64
 msgid "Nachricht"
 msgstr "Message"
 
@@ -248,13 +248,13 @@ msgstr "Send time"
 
 #: .\templates\audit\audit_list.html:31
 #: .\templates\console\knownclient_list.html:65
-#: .\templates\notification\notification_maintain_list.html:87
+#: .\templates\notification\notification_maintain_list.html:88
 #: .\templates\stopwatch\timeentry_archive_week.html:47
 #: .\templates\stopwatch\timeentry_list.html:72
 msgid "Keine Einträge vorhanden"
 msgstr "No entries"
 
-#: .\templates\base.html:33
+#: .\templates\base.html:38
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr "You need to enable JavaScript to run this app."
 
@@ -321,7 +321,7 @@ msgstr ""
 msgid "Nachricht vom %(time)s bestätigt."
 msgstr "Message from %(time)s acknowledged."
 
-#: .\templates\console\fragments\message.html:10
+#: .\templates\console\fragments\message.html:17
 msgid "Sende Nachricht"
 msgstr "Send message"
 
@@ -355,27 +355,27 @@ msgstr "Since"
 msgid "Link zur Stoppuhrsession"
 msgstr "Link to Stopwatch session"
 
-#: .\templates\console\fragments\talks.html:42
+#: .\templates\console\fragments\talks.html:47
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr "Life and Ministry Meeting"
 
-#: .\templates\console\fragments\talks.html:54
+#: .\templates\console\fragments\talks.html:59
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr "Public Meeting"
 
-#: .\templates\console\fragments\talks.html:57
-#: .\templates\console\fragments\talks.html:58
+#: .\templates\console\fragments\talks.html:62
+#: .\templates\console\fragments\talks.html:63
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr "Public talk (30 min.)"
 
-#: .\templates\console\fragments\talks.html:60
-#: .\templates\console\fragments\talks.html:61
+#: .\templates\console\fragments\talks.html:65
+#: .\templates\console\fragments\talks.html:66
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr "Watchtower Study (60 min.)"
 
-#: .\templates\console\fragments\talks.html:65
-#: .\templates\console\fragments\talks.html:68
 #: .\templates\console\fragments\talks.html:70
+#: .\templates\console\fragments\talks.html:73
+#: .\templates\console\fragments\talks.html:75
 msgid "Benutzerdefiniert"
 msgstr "Custom"
 
@@ -401,7 +401,7 @@ msgstr "Time"
 msgid "Stopp"
 msgstr "Stop"
 
-#: .\templates\console\fragments\workbook.html:7
+#: .\templates\console\fragments\workbook.html:8
 msgid "Das Arbeitsheft konnte nicht geladen werden."
 msgstr "The workbook could not be retrieved."
 
@@ -466,7 +466,7 @@ msgid "Zurück"
 msgstr "Back"
 
 #: .\templates\notification\notification_confirm_delete.html:17
-#: .\templates\notification\notification_maintain_list.html:80
+#: .\templates\notification\notification_maintain_list.html:81
 msgid "Löschen"
 msgstr "Delete"
 
@@ -474,11 +474,11 @@ msgstr "Delete"
 msgid "Neue Informationen"
 msgstr "New information"
 
-#: .\templates\notification\notification_maintain_list.html:74
+#: .\templates\notification\notification_maintain_list.html:75
 msgid "Bearbeiten"
 msgstr "Edit"
 
-#: .\templates\notification\notification_maintain_list.html:101
+#: .\templates\notification\notification_maintain_list.html:102
 msgid "Neu"
 msgstr "New"
 
@@ -505,6 +505,12 @@ msgstr "Establishing connection to extractor service..."
 #: .\templates\stage\events\activity.html:12
 msgid "Extraktor-Dienst läuft nicht oder ist nicht erreichbar."
 msgstr "Extractor service not running or not reachable"
+
+#: .\templates\stage\stage.html:17
+msgid ""
+"Aus einem Browser kann JWConf nur über den Auto-Login-Schlüssel gestartet "
+"werden. Bitte setzte dich mit dem Administrator in Verbindung."
+msgstr "In a browser JWConf can only be started using an auto login key. Please contact your administrator."
 
 #: .\templates\stopwatch\timeentry_archive_week.html:14
 msgid "Kalenderwoche"
