@@ -45,6 +45,7 @@ COLOR_GRADIENT = linear_gradient("#3B82F6", "#EF4444", n=100)
 VERSION = "2.0.0-alpha01"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
+CSRF_TRUSTED_ORIGINS = env.list(" CSRF_TRUSTED_ORIGINS", default=["https://127.0.0.1", "https://localhost"])
 
 LOGGING = {
     "version": 1,
