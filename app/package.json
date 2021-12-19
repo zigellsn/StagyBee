@@ -19,8 +19,7 @@
     "purgecss": "^4.1.3",
     "cssnano": "^5.0.13",
     "tailwindcss": "^3.0.6",
-    "laravel-mix": "^6.0.39",
-    "bread-compressor-cli": "^1.1.0"
+    "laravel-mix": "^6.0.39"
   },
   "dependencies": {
     "luxon": "^2.2.0",

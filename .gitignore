@@ -16,7 +16,6 @@ media
 **/static/css/*
 **/static/js/*
 **/style/all_main.css
-**/static/**/*.br
 junit
 
 ### Django.Python Stack ###

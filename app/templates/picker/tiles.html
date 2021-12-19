@@ -18,7 +18,7 @@
         {% for credential in object_list %}
             <a href="{% url 'stage:stage' credential.congregation %}"
                class="flex h-32 px-4 bg-indigo-500 hover:bg-indigo-400 text-center justify-center items-center rounded-md">
-                <span>{{ credential.display_name|default:credential.congregation }}</span>
+                <span>{{ credential }}</span>
             </a>
         {% endfor %}
         </div>

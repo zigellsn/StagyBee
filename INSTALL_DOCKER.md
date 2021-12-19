@@ -1,6 +1,6 @@
 # Installation with Docker
 
-Install [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/) if necessary.
+Install [Docker](https://docs.docker.com/install/) (Version >= 20.10.0) and [Docker Compose](https://docs.docker.com/compose/) if necessary.
 
 Download and extract [this repository](https://github.com/zigellsn/StagyBee/archive/master.zip) or use
 ``` bash

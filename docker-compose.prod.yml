@@ -7,6 +7,8 @@ services:
   nginx:
     build:
       context: nginx/
+      args:
+        ENABLED_MODULES: brotli
     restart: always
     ports:
       - "443:443"

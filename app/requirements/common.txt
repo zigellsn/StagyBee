@@ -1,4 +1,4 @@
-django-environ-2==2.3.0
+django-environ==0.8.1
 django==4.0
 django-widget-tweaks==1.4.9
 channels==3.0.4

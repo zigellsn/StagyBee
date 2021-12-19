@@ -4,7 +4,7 @@
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
     <div>
-        <span class="text-2xl">{{ credential.display_name }}</span>
+        <span class="text-2xl">{{ credential }}</span>
     </div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/" class="flex flex-col"
          _="install AccordionClick">

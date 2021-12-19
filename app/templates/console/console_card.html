@@ -7,7 +7,7 @@
                     {% if congregation.active == True %}{% include 'icons/star.html' %}{% else %}
                         {% include 'icons/star_outline.html' %}{% endif %}
                 </div>
-                <div class="font-bold text-xl mt-1 mb-2">{{ congregation.display_name }}</div>
+                <div class="font-bold text-xl mt-1 mb-2">{{ congregation }}</div>
             </div>
             <div class="{% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %} px-6 pb-4 text-base">
                 {% if congregation.since != None %}
