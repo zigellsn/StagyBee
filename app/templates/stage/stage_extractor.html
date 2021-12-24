@@ -67,7 +67,7 @@
             end
         end
 
-        eventsource Alerts from http:/ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
+        eventsource Alerts from /ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
             on message_alert as string
                 showMessage(it)
             end

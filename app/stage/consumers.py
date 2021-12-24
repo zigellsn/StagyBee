@@ -100,7 +100,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
             timeout.cancel()
-            if timeout.count == 1:
+            if timeout.count <= 2 and "role" not in self.scope["url_route"]["kwargs"]:
                 self.logger.info(f"Trying to connect to extractor for {congregation}...")
                 await self.__connect_to_extractor()
 
@@ -236,6 +236,9 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             success = self.task.result()["success"]
             if success:
                 self.scope["session"]["session_id"] = self.task.result()["sessionId"]
+                timeout = GLOBAL_TIMEOUT.get(credentials.congregation)
+                if timeout is not None:
+                    timeout.established = True
                 context = {"connecting": None, "error": None, "listener_count": 0, "request_to_speak_count": 0}
                 event = await self.build_events(context)
                 await self.send(text_data=event)

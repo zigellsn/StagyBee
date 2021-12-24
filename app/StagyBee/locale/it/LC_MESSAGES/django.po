@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-18 11:55+0100\n"
+"POT-Creation-Date: 2021-12-24 11:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,81 +146,85 @@ msgstr ""
 msgid "Warnung"
 msgstr ""
 
-#: .\picker\models.py:80
-msgid "JWConf Verbindung"
+#: .\picker\forms.py:35 .\picker\models.py:103
+msgid "Extractor URL"
 msgstr ""
 
 #: .\picker\models.py:81
+msgid "JWConf Verbindung"
+msgstr ""
+
+#: .\picker\models.py:82
 msgid "JWConf Verbindungen"
 msgstr ""
 
-#: .\picker\models.py:84
+#: .\picker\models.py:85
 msgid "Zugriff auf Management Console"
 msgstr ""
 
-#: .\picker\models.py:85
+#: .\picker\models.py:86
 msgid "Zugriff auf Stoppuhr"
 msgstr ""
 
-#: .\picker\models.py:86
+#: .\picker\models.py:87
 msgid "Zugriff auf Audit-Log"
 msgstr ""
 
-#: .\picker\models.py:90
+#: .\picker\models.py:91
 msgid "Familienname"
 msgstr ""
 
-#: .\picker\models.py:91
+#: .\picker\models.py:92
 msgid "Vorname"
 msgstr ""
 
-#: .\picker\models.py:94
+#: .\picker\models.py:95
 msgid "Familienname zuerst"
 msgstr ""
 
-#: .\picker\models.py:95
+#: .\picker\models.py:96
 msgid "Vorname zuerst"
 msgstr ""
 
-#: .\picker\models.py:97
+#: .\picker\models.py:98
 #, fuzzy
 #| msgid "Versammlung wählen"
 msgid "Versammlung"
 msgstr "Scegli la riunione"
 
-#: .\picker\models.py:98
+#: .\picker\models.py:99
 msgid "Auto-Login ID"
 msgstr ""
 
-#: .\picker\models.py:99
+#: .\picker\models.py:100
 msgid "Username"
 msgstr ""
 
-#: .\picker\models.py:100 .\templates\console\settings.html:35
+#: .\picker\models.py:101 .\templates\console\settings.html:35
 msgid "Passwort"
 msgstr ""
 
-#: .\picker\models.py:101
+#: .\picker\models.py:102
 msgid "Anzeigename"
 msgstr ""
 
-#: .\picker\models.py:103
+#: .\picker\models.py:104
 msgid "Touch erlaubt"
 msgstr ""
 
-#: .\picker\models.py:104
+#: .\picker\models.py:105
 msgid "Zeige nur Meldungen"
 msgstr ""
 
-#: .\picker\models.py:105
+#: .\picker\models.py:106
 msgid "Sende Zeiten an Bühne"
 msgstr ""
 
-#: .\picker\models.py:107
+#: .\picker\models.py:108
 msgid "Namensliste sortieren nach"
 msgstr ""
 
-#: .\picker\models.py:109
+#: .\picker\models.py:110
 msgid "Namensreihenfolge"
 msgstr ""
 
@@ -257,26 +261,26 @@ msgstr ""
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
-#: .\templates\base.html:38
+#: .\templates\base.html:29
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr ""
 
-#: .\templates\console\console.html:13
+#: .\templates\console\console.html:14
 #: .\templates\stopwatch\timeentry_archive_week.html:4
 #: .\templates\stopwatch\timeentry_list.html:6
 msgid "Stoppuhr"
 msgstr ""
 
-#: .\templates\console\console.html:25
+#: .\templates\console\console.html:26
 msgid "Bildschirmsteuerung"
 msgstr ""
 
-#: .\templates\console\console.html:37
+#: .\templates\console\console.html:38
 #: .\templates\console\fragments\message.html:4
 msgid "Textnachricht"
 msgstr ""
 
-#: .\templates\console\console.html:49
+#: .\templates\console\console.html:50
 msgid "Livedaten"
 msgstr ""
 

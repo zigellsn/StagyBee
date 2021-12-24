@@ -15,10 +15,11 @@ import asyncio
 import logging
 
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, URLField
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from StagyBee.utils import DockerURLValidator
 from stage.timeout import GLOBAL_TIMEOUT
 
 logger = logging.getLogger(__name__)
@@ -75,6 +76,10 @@ class CredentialManager(models.Manager):
                            send_times_to_stage=send_times_to_stage)
 
 
+class DockerURLField(URLField):
+    default_validators = [DockerURLValidator()]
+
+
 class Credential(models.Model):
     class Meta:
         verbose_name = _("JWConf Verbindung")
@@ -99,7 +104,7 @@ class Credential(models.Model):
     username = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Username"))
     password = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Passwort"))
     display_name = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Anzeigename"))
-    extractor_url = models.URLField(default="https://extractor:8080/", blank=True, verbose_name="Extractor URL")
+    extractor_url = DockerURLField(default="https://extractor:8443/", blank=True, verbose_name=_("Extractor URL"))
     touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
     show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
     send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))

@@ -17,9 +17,9 @@ from django.urls import re_path
 from stage.consumers import ExtractorConsumer, MessageConsumer, ExtractorConnect, ExtractorDisconnect
 
 websocket_urlpatterns = [
-    re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi())
+    re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi()),
+    re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/(?P<role>[^/]+)/$", ExtractorConsumer.as_asgi())
 ]
-
 http_urlpatterns = [
     re_path(r"^ws/(?P<language>[^/]+)/message/(?P<congregation>[^/]+)/$", MessageConsumer.as_asgi())
 ]

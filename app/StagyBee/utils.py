@@ -11,11 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import re
 import ssl
 
 import aiohttp
 from asgiref.sync import async_to_sync
+from django.core.validators import URLValidator
+from django.utils.deconstruct import deconstructible
+from django.utils.regex_helper import _lazy_re_compile
 from tenacity import retry, retry_if_exception_type, wait_random_exponential, stop_after_delay
 
 
@@ -106,3 +109,18 @@ async def post_request(url, certificate=None, payload=None):
         ssl_context = create_ssl_context(certificate)
         async with session.post(url=url, data=payload, ssl=ssl_context) as response:
             return await response.read(), response.status
+
+
+@deconstructible
+class DockerURLValidator(URLValidator):
+
+    def __init__(self, schemes=None, **kwargs):
+        self.host_re = '(' + self.hostname_re + self.tld_re + '|localhost|' + self.hostname_re + ')'
+        self.regex = _lazy_re_compile(r'^(?:[a-z0-9\.\-\+]*)://'  # scheme is validated separately
+                                      r'(?:\S+(?::\S*)?@)?'  # user:pass authentication
+                                      r'(?:' + self.ipv4_re + '|' + self.ipv6_re + '|' + self.host_re + ')'
+                                      r'(?::\d{2,5})?'  # port
+                                      r'(?:[/?#][^\s]*)?'  # resource path
+                                      r'\Z',
+                                      re.IGNORECASE)
+        super().__init__(schemes, **kwargs)
