@@ -64,7 +64,8 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         if congregation not in GLOBAL_TIMEOUT:
             GLOBAL_TIMEOUT[congregation] = Timeout()
         else:
-            GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
+            if "role" not in self.scope["url_route"]["kwargs"]:
+                GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
         congregation_dataset = await database_sync_to_async(Credential.objects.get)(congregation=congregation)
         if congregation_dataset.sort_order == Credential.SortOrder.FAMILY_NAME:
             self.sort_by_family_name = True
@@ -84,7 +85,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
                 await self.task
         await self.channel_layer.group_discard(generate_channel_group_name("stage", congregation), self.channel_name)
         timeout = GLOBAL_TIMEOUT.get(congregation)
-        if timeout is not None:
+        if timeout is not None and "role" not in self.scope["url_route"]["kwargs"]:
             timeout.count = timeout.count - 1
             if timeout.count == 0:
                 timeout.cancel()
