@@ -1,0 +1,8 @@
+{% extends 'base_error.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Fehler 403' %}{% endblock %}
+
+{% block content %}
+    <div class="text-2xl text-center">{% trans 'Fehler 403 - Du hast keine Berechtigung zum Aufrufen dieser Seite. Bitte wende dich an den Administrator.' %}</div>
+{% endblock %}

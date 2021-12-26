@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-24 11:15+0100\n"
+"POT-Creation-Date: 2021-12-26 11:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,83 +145,83 @@ msgstr "Urgent"
 msgid "Warnung"
 msgstr "Warning"
 
-#: .\picker\forms.py:35 .\picker\models.py:103
+#: .\picker\forms.py:35 .\picker\models.py:107
 msgid "Extractor URL"
 msgstr "Extractor URL"
 
-#: .\picker\models.py:81
+#: .\picker\models.py:85
 msgid "JWConf Verbindung"
 msgstr "JWConf Credential"
 
-#: .\picker\models.py:82
+#: .\picker\models.py:86
 msgid "JWConf Verbindungen"
 msgstr "JWConf Credentials"
 
-#: .\picker\models.py:85
+#: .\picker\models.py:89
 msgid "Zugriff auf Management Console"
 msgstr "Access Management Console"
 
-#: .\picker\models.py:86
+#: .\picker\models.py:90
 msgid "Zugriff auf Stoppuhr"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:87
+#: .\picker\models.py:91
 msgid "Zugriff auf Audit-Log"
 msgstr "Access stopwatch"
 
-#: .\picker\models.py:91
+#: .\picker\models.py:95
 msgid "Familienname"
 msgstr "Family name"
 
-#: .\picker\models.py:92
+#: .\picker\models.py:96
 msgid "Vorname"
 msgstr "Given name"
 
-#: .\picker\models.py:95
+#: .\picker\models.py:99
 msgid "Familienname zuerst"
 msgstr "Family name first"
 
-#: .\picker\models.py:96
+#: .\picker\models.py:100
 msgid "Vorname zuerst"
 msgstr "Given name first"
 
-#: .\picker\models.py:98
+#: .\picker\models.py:102
 msgid "Versammlung"
 msgstr "Congregation"
 
-#: .\picker\models.py:99
+#: .\picker\models.py:103
 msgid "Auto-Login ID"
 msgstr "Auto-login ID"
 
-#: .\picker\models.py:100
+#: .\picker\models.py:104
 msgid "Username"
 msgstr "username"
 
-#: .\picker\models.py:101 .\templates\console\settings.html:35
+#: .\picker\models.py:105 .\templates\console\settings.html:35
 msgid "Passwort"
 msgstr "Password"
 
-#: .\picker\models.py:102
+#: .\picker\models.py:106
 msgid "Anzeigename"
 msgstr "Display name"
 
-#: .\picker\models.py:104
+#: .\picker\models.py:108
 msgid "Touch erlaubt"
 msgstr "Allow touch"
 
-#: .\picker\models.py:105
+#: .\picker\models.py:109
 msgid "Zeige nur Meldungen"
 msgstr "Show requests to speak only"
 
-#: .\picker\models.py:106
+#: .\picker\models.py:110
 msgid "Sende Zeiten an Bühne"
 msgstr "Send times to stage"
 
-#: .\picker\models.py:108
+#: .\picker\models.py:112
 msgid "Namensliste sortieren nach"
 msgstr "Sort names list by"
 
-#: .\picker\models.py:110
+#: .\picker\models.py:114
 msgid "Namensreihenfolge"
 msgstr "Name order"
 
@@ -241,6 +241,40 @@ msgstr "M"
 #: .\stopwatch\forms.py:36
 msgid "S"
 msgstr "S"
+
+#: .\templates\400.html:4
+msgid "Fehler 400"
+msgstr "Error 400"
+
+#: .\templates\400.html:7
+msgid "Fehler 400 - Fehlerhafter Request"
+msgstr "Error 400 - Bad request"
+
+#: .\templates\403.html:4
+msgid "Fehler 403"
+msgstr "Error 403"
+
+#: .\templates\403.html:7
+msgid ""
+"Fehler 403 - Du hast keine Berechtigung zum Aufrufen dieser Seite. Bitte "
+"wende dich an den Administrator."
+msgstr "Error 403 - You do not have the permission to access this page. Please contact your administrator."
+
+#: .\templates\404.html:4
+msgid "Fehler 404"
+msgstr "Error 404"
+
+#: .\templates\404.html:7
+msgid "Fehler 404 - Seite nicht gefunden"
+msgstr "Error 404 - Page not found"
+
+#: .\templates\500.html:4
+msgid "Fehler 500"
+msgstr "Error 500"
+
+#: .\templates\500.html:7
+msgid "Fehler 500 - Interner Fehler"
+msgstr "Error 500 - Internal error"
 
 #: .\templates\audit\audit_list.html:10
 msgid "User"

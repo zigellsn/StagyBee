@@ -16,6 +16,7 @@ import socket
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.views.generic.base import ContextMixin, View
 
@@ -87,6 +88,22 @@ class ToggleSchemeView(View):
             response = render_to_string("icons/light.html")
 
         return HttpResponse(content=response, status=200)
+
+
+def page_not_found_view(request, _):
+    return render(request, "404.html")
+
+
+def error_view(request):
+    return render(request, "500.html")
+
+
+def permission_denied_view(request, _):
+    return render(request, "403.html")
+
+
+def bad_request_view(request, _):
+    return render(request, "400.html")
 
 
 def set_host(request, context):
