@@ -23,11 +23,6 @@ from django.views.generic import RedirectView
 from console.views import SettingsView, StartupView
 from .views import SchemeView, ToggleSchemeView
 
-handler404 = "StagyBee.views.page_not_found_view"
-handler500 = "StagyBee.views.error_view"
-handler403 = "StagyBee.views.permission_denied_view"
-handler400 = "StagyBee.views.bad_request_view"
-
 urlpatterns = [path("receiver/", include("receiver.urls")),
                path("toggle_scheme/", ToggleSchemeView.as_view()),
                path("scheme/", SchemeView.as_view())]

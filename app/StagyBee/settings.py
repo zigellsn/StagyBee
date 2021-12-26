@@ -125,6 +125,7 @@ TEMPLATES = [
 ]
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+GUARDIAN_RENDER_403 = True
 
 WSGI_APPLICATION = "StagyBee.wsgi.application"
 
