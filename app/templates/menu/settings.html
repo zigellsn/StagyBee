@@ -3,7 +3,8 @@
 {% if no_settings == False or no_settings == None or user.is_superuser %}
     <a href="{% url 'settings' %}">
         <div id="settings"
-             class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+             class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+            <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Einstellungen' %}</span>
             {% include 'icons/settings.html' %}
         </div>
     </a>

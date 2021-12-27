@@ -48,7 +48,7 @@ class NotificationForm(forms.ModelForm):
     max_duration = forms.DateField(label=_("Gültig bis"),
                                    initial=(timezone.now() + timedelta(days=7)).strftime("%Y-%m-%d"),
                                    widget=forms.DateInput(format="%Y-%m-%d",
-                                                          attrs={"class": default_class, "type": "date",
+                                                          attrs={"class": default_class + " dark:date_input", "type": "date",
                                                                  "min": timezone.now().strftime("%Y-%m-%d")}))
     active = BooleanField(label=_("Aktiv"), initial=True, required=False,
                           widget=forms.CheckboxInput(attrs={"class": default_class}))

@@ -2,7 +2,7 @@
 {% load guardian_tags notification static %}
 
 {% block content %}
-    <div class="row mt-2">
+    <div class="flex flex-row mt-2">
         {% for congregation in object_list %}
             {% get_obj_perms request.user for congregation as "congregation_perms" %}
             {% if "access_console" in congregation_perms or "access_stopwatch" in congregation_perms or "access_audit_log" in congregation_perms %}
@@ -16,4 +16,8 @@
     <footer class="sx:px-1 md:px-4 md:pb-4 sx:pb-1">
         {% notifications %}
     </footer>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/accordion_click._hs' %}"></script>
 {% endblock %}

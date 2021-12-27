@@ -10,9 +10,11 @@
 {% block content %}
     <div>
         {% if credential.autologin %}
-            <iframe class="w-full" name="frame" style="height: calc(100vh - 150px);"
-                    src="https://jwconf.org/?key={{ credential.autologin }}"
-                    _="on load remove .container from <main/>"></iframe>
+            <div id="my_frame">
+                <iframe class="w-full" name="frame" style="height: calc(100vh - 150px);"
+                        src="https://jwconf.org/?key={{ credential.autologin }}"
+                        _="on load remove .container from <main/>"></iframe>
+            </div>
         {% else %}
             <div class="text-2xl text-center">{% trans 'Aus einem Browser kann JWConf nur über den Auto-Login-Schlüssel gestartet werden. Bitte setzte dich mit dem Administrator in Verbindung.' %}</div>
         {% endif %}

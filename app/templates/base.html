@@ -26,9 +26,11 @@
     <body _="on load repeat forever js return luxon.DateTime.now().toFormat('HH:mm:ss'); end put it into #current-time wait 0.5s end"
           class="bg-white dark:bg-black text-black dark:text-white flex flex-col min-h-screen">
 {% endblock %}
-<noscript>{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</noscript>
 {% block header %}{% endblock %}
 <main class="flex-auto container pt-4">
+    <noscript>
+        <div class="text-2xl text-center pb-8">{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</div>
+    </noscript>
     <div>
         {% if messages %}
             <ul class="list-disc px-4">

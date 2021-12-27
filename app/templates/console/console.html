@@ -9,48 +9,48 @@
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/"></div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/" class="flex flex-col"
          _="install AccordionClick">
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header selected">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded selected">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Stoppuhr" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
                 <div class="pb-4">
                     {% include 'console/fragments/timer.html' %}
                 </div>
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Bildschirmsteuerung" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
                 <div class="pb-4">
                     {% include 'console/fragments/scrim_control.html' %}
                 </div>
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Textnachricht" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
                 <div class="pb-4">
                     {% include 'console/fragments/message.html' %}
                 </div>
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header">
+        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
             <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
                 <span>{% trans "Livedaten" %}</span>
                 {% include 'icons/chevron_down.html' %}
             </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500">
+            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
                 <div class="pb-4">
                     {% include 'console/fragments/status.html' %}
                 </div>

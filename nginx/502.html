@@ -10,43 +10,44 @@
     <meta name="keywords" content="StagyBee, stage, control">
     <meta name="Copyright" content="Simon Zigelli"/>
     <meta name="MSSmartTagsPreventParsing" content="true"/>
-    <title>Please wait... | StagyBee</title>
-    <style>
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
-            font-size: 1rem;
-            line-height: 1.5;
-            font-style: normal;
-            font-weight: 400;
-            background-color: #1d1d1d !important;
-            color: #ffffff !important;
-        }
-
-        .display1 {
-            font-size: 2.25rem;
-            font-weight: 400;
-        }
-    </style>
+    <link rel="icon" sizes="192x192" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="502.css" type="text/css">
+    <title>Error 502 | StagyBee</title>
 </head>
-<body>
-<div class="display1">StagyBee</div>
-<div>&nbsp;</div>
-<span>Please wait...&nbsp;</span><span id="Timer">Timer</span>
+<body class="bg-black text-white">
+<header>
+    <nav class="flex justify-between w-full px-9">
+        <div class="flex items-center py-5">
+            <span class="flex items-center font-semibold tracking-tight text-xl">StagyBee</span>
+        </div>
+    </nav>
+</header>
+<main class="flex-auto container pt-4">
+    <div class="text-2xl text-center">
+        <noscript>
+            <div class="py-5">You need to enable JavaScript to run this app.</div>
+        </noscript>
+        <div><span>Server not ready yet. Page reloads in&nbsp;</span><span
+                id="timer">0</span><span>&nbsp;seconds.<div>Please wait...</div></span></div>
+    </div>
+</main>
 <script>
-    let TimerVal = 5;
-    let TimerSpan = document.getElementById("Timer");
+    let timerVal = 5;
+    let timerSpan = document.getElementById('timer');
 
-    function Countdown() {
-        setTimeout("Countdown()", 1000);
-        TimerSpan.innerHTML = TimerVal;
-        TimerVal = TimerVal - 1;
-        if (TimerVal < 0) {
-            TimerVal = 0;
+    function countdown() {
+        setTimeout('countdown()', 1000);
+        timerSpan.innerHTML = timerVal;
+        timerVal = timerVal - 1;
+        if (timerVal < 0) {
+            timerVal = 0;
             location.reload();
         }
     }
 
-    Countdown();
+    countdown();
 </script>
 </body>
 </html>

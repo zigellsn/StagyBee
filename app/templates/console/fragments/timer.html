@@ -45,7 +45,7 @@
 {% include 'console/fragments/talks.html' %}
 <form hx-post="{% url "console:stopwatch:stopwatch" pk=credential.congregation %}"
       hx-swap="none">
-    <div id="custom-talk" class="px-4" style="display: none;">
+    <div id="custom-talk" class="px-4 pb-6" style="display: none;">
         <div class="pt-2 dark:bg-gray-800 bg-white flex">
             {% csrf_token %}
             {{ form }}

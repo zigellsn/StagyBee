@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-26 11:20+0100\n"
+"POT-Creation-Date: 2021-12-27 12:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,8 @@ msgstr "Certificate is invalid."
 msgid "Kein Token vom Client empfangen."
 msgstr "No token received from client."
 
-#: .\console\models.py:40
+#: .\console\models.py:40 .\templates\menu\light.html:2
+#: .\templates\menu\scheme.html:9
 msgid "Dunkles Design"
 msgstr "Dark mode"
 
@@ -258,7 +259,9 @@ msgstr "Error 403"
 msgid ""
 "Fehler 403 - Du hast keine Berechtigung zum Aufrufen dieser Seite. Bitte "
 "wende dich an den Administrator."
-msgstr "Error 403 - You do not have the permission to access this page. Please contact your administrator."
+msgstr ""
+"Error 403 - You do not have the permission to access this page. Please "
+"contact your administrator."
 
 #: .\templates\404.html:4
 msgid "Fehler 404"
@@ -292,7 +295,7 @@ msgstr "Send time"
 msgid "Keine Einträge vorhanden"
 msgstr "No entries"
 
-#: .\templates\base.html:29
+#: .\templates\base.html:32
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr "You need to enable JavaScript to run this app."
 
@@ -489,10 +492,26 @@ msgstr "License"
 msgid "Probleme melden"
 msgstr "Report an issue"
 
+#: .\templates\menu\archive.html:9
+msgid "Archiv"
+msgstr "Archive"
+
+#: .\templates\menu\dark.html:2 .\templates\menu\scheme.html:6
+msgid "Helles Design"
+msgstr "Light mode"
+
 #: .\templates\menu\greeting.html:4
 #, python-format
 msgid "Willkommen,&nbsp;%(username)s!"
 msgstr "Welcome,&nbsp;%(username)s!"
+
+#: .\templates\menu\logout.html:6
+msgid "Abmelden"
+msgstr "Logout"
+
+#: .\templates\menu\settings.html:7
+msgid "Einstellungen"
+msgstr "Settings"
 
 #: .\templates\notification\notification_confirm_delete.html:7
 msgid "Soll die folgende Benachrichtigung wirklich gelöscht werden?"
@@ -597,17 +616,8 @@ msgstr "Difference"
 #~ msgid "Titel"
 #~ msgstr "Title"
 
-#~ msgid "Archiv"
-#~ msgstr "Proceed to archive..."
-
-#~ msgid "Einstellungen"
-#~ msgstr "Settings"
-
 #~ msgid "Logout"
 #~ msgstr "Logout"
-
-#~ msgid "Helles Design"
-#~ msgstr "Light mode"
 
 #~ msgid "Soll folgender Client wirklich gelöscht werden?"
 #~ msgstr "Do you really want to delete the following client?"

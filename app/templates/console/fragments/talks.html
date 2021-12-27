@@ -35,7 +35,9 @@
         set @value of #id_talk_user to event.target@data-custom
         if event.target@data-custom is 'true' then
             show #custom-talk
+            transition #custom-talk opacity to 1
         else
+            transition #custom-talk opacity to 0
             hide #custom-talk
         end
         set header to the first <div.selected/>

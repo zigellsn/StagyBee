@@ -74,5 +74,7 @@ RUN rm /etc/nginx/conf.d/default.conf \
     && sed -i "1 i load_module modules/ngx_http_brotli_static_module.so;load_module modules/ngx_http_brotli_filter_module.so;" /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/
 COPY 502.html /etc/nginx/
+COPY 502.css /etc/nginx/
+COPY favicon.ico /etc/nginx/
 COPY certs/crt.pem /etc/nginx/crt.pem
 COPY certs/key.pem /etc/nginx/key.pem

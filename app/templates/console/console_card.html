@@ -1,15 +1,23 @@
 {% load i18n %}
-<div class="cell-md-6">
-    <div class="max-w-sm rounded-t-md overflow-hidden shadow-lg dark:shadow-gray-800">
-        <div class="flex flex-col">
-            <div class="flex flex-row {% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %} px-6 pt-3 pb-2">
-                <div class="pt-2 ltr:mr-5 rtl:ml-5" style="transform: scale(2.0);">
-                    {% if congregation.active == True %}{% include 'icons/star.html' %}{% else %}
-                        {% include 'icons/star_outline.html' %}{% endif %}
-                </div>
-                <div class="font-bold text-xl mt-1 mb-2">{{ congregation }}</div>
-            </div>
-            <div class="{% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %} px-6 pb-4 text-base">
+<div>
+    <div class="max-w-sm rounded-t-md overflow-hidden shadow-lg dark:shadow-gray-800 mx-4">
+        <div class="flex flex-col {% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %}">
+            <table class="table-auto flex flex-row px-6 pt-3 pb-2 w-full">
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        <div class="ltr:mr-5 rtl:ml-5" style="transform: scale(2.0);">
+                            {% if congregation.active == True %}{% include 'icons/star.html' %}{% else %}
+                                {% include 'icons/star_outline.html' %}{% endif %}
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <div class="w-64 whitespace-nowrap text-ellipsis overflow-hidden font-bold text-xl mt-1 mb-2">{{ congregation }}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="px-6 pb-4 text-base">
                 {% if congregation.since != None %}
                     {% blocktrans with since=congregation.since|time:"TIME_FORMAT" %}Seit&nbsp;
                         {{ since }}&nbsp;Uhr{% endblocktrans %}

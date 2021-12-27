@@ -83,9 +83,9 @@ class ToggleSchemeView(View):
             else:
                 request.session["dark"] = not request.session["dark"]
         if request.session["dark"]:
-            response = render_to_string("icons/dark.html")
+            response = render_to_string("menu/dark.html", request=request)
         else:
-            response = render_to_string("icons/light.html")
+            response = render_to_string("menu/light.html", request=request)
 
         return HttpResponse(content=response, status=200)
 

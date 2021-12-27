@@ -24,11 +24,11 @@ from console.views import SettingsView, StartupView
 from .views import SchemeView, ToggleSchemeView
 
 urlpatterns = [path("receiver/", include("receiver.urls")),
-               path("toggle_scheme/", ToggleSchemeView.as_view()),
                path("scheme/", SchemeView.as_view())]
 urlpatterns += i18n_patterns(
     path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
+    path("toggle_scheme/", ToggleSchemeView.as_view()),
     path("", include("django.contrib.auth.urls")),
     path("stage/", include("stage.urls")),
     path("picker/", include("picker.urls")),

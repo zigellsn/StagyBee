@@ -1,20 +1,18 @@
-{% load i18n %}
 <header class="bg-blue-500 dark:bg-black">
-    <nav class="dark:bg-black text-white px-9 flex justify-between w-screen">
+    <nav class="flex justify-between w-full text-white px-9">
         <div class="py-5 flex w-full items-center">
-            <a {% if credential.touch %}onclick="window.frames['frame'].location = 'https://jwconf.org/index.php?logout';"{% endif %}
-               href="{% url 'picker:picker' %}">
-                <div class="p-2 ltr:ml-2 rtl:mr-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-                    {% include 'icons/left.html' %}
-                </div>
-            </a>
-            <div class="font-semibold tracking-tight text-xl flex w-full items-center">
+            <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
+                _="on click go back {% if credential.touch %}go back{% endif %}">
+                {% include 'icons/left.html' %}
+            </div>
+            <div class="flex items-center font-semibold tracking-tight text-xl ltr:ml-2 rtl:mr-2">
                 {% if not credential.touch %}{{ credential }}{% endif %}</div>
         </div>
 
-        <div class="hidden md:flex font-semibold items-center font-heading">
+        <div class="flex items-center font-semibold font-heading">
             {% block header_functions %}
             {% endblock %}
+            {% include "menu/clock.html" %}
         </div>
     </nav>
 </header>

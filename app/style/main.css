@@ -18,20 +18,36 @@
 @tailwind components;
 @tailwind utilities;
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
 main {
     padding-bottom: 20px !important;
 }
 
+.dropdown-menu {
+    @apply opacity-0 invisible absolute;
+}
+
+.dropdown:hover .dropdown-menu {
+    @apply visible opacity-100 transition-opacity duration-300 z-50 text-white pt-1;
+}
+
+.tooltip {
+    @apply opacity-0 invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible delay-1000 transition-opacity opacity-100 z-50;
+}
+
 .htmx-settling ul {
-    opacity: 0;
+    @apply opacity-0
 }
 
 ul {
-    transition: opacity 300ms ease-in;
+    @apply opacity-100 transition-opacity ease-in duration-300
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
 }
 
 @keyframes request-to-speak-pulse {

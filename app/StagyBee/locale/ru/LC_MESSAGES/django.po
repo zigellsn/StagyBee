@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-26 11:20+0100\n"
+"POT-Creation-Date: 2021-12-27 12:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,8 @@ msgstr ""
 msgid "Kein Token vom Client empfangen."
 msgstr ""
 
-#: .\console\models.py:40
+#: .\console\models.py:40 .\templates\menu\light.html:2
+#: .\templates\menu\scheme.html:9
 msgid "Dunkles Design"
 msgstr ""
 
@@ -297,7 +298,7 @@ msgstr ""
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
-#: .\templates\base.html:29
+#: .\templates\base.html:32
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr ""
 
@@ -490,9 +491,25 @@ msgstr ""
 msgid "Probleme melden"
 msgstr ""
 
+#: .\templates\menu\archive.html:9
+msgid "Archiv"
+msgstr ""
+
+#: .\templates\menu\dark.html:2 .\templates\menu\scheme.html:6
+msgid "Helles Design"
+msgstr ""
+
 #: .\templates\menu\greeting.html:4
 #, python-format
 msgid "Willkommen,&nbsp;%(username)s!"
+msgstr ""
+
+#: .\templates\menu\logout.html:6
+msgid "Abmelden"
+msgstr ""
+
+#: .\templates\menu\settings.html:7
+msgid "Einstellungen"
 msgstr ""
 
 #: .\templates\notification\notification_confirm_delete.html:7
