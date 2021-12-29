@@ -28,9 +28,6 @@
 {% endblock %}
 {% block header %}{% endblock %}
 <main class="flex-auto container pt-4">
-    <noscript>
-        <div class="text-2xl text-center pb-8">{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</div>
-    </noscript>
     <div>
         {% if messages %}
             <ul class="list-disc px-4">
@@ -40,6 +37,15 @@
             </ul>
         {% endif %}
     </div>
+    <noscript>
+        <div class="text-2xl text-center pb-8">
+            <div class="flex flex-row w-full justify-center items-center">
+                <div class="mt-1">{% include 'icons/warning.html' %}</div>
+                <div class="px-4">{% trans "Sie müssen JavaScript aktivieren, um diese App zu starten." %}</div>
+                <div class="mt-1">{% include 'icons/warning.html' %}</div>
+            </div>
+        </div>
+    </noscript>
     {% block content %}
     {% endblock %}
 </main>

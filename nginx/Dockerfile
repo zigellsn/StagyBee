@@ -68,13 +68,14 @@ RUN set -ex \
     && for module in $BUILT_MODULES; do \
            apk add --no-cache --allow-untrusted /tmp/packages/nginx-module-${module}-${NGINX_VERSION}*.apk; \
        done \
-    && rm -rf /tmp/packages
-
-RUN rm /etc/nginx/conf.d/default.conf \
-    && sed -i "1 i load_module modules/ngx_http_brotli_static_module.so;load_module modules/ngx_http_brotli_filter_module.so;" /etc/nginx/nginx.conf
+    && rm -rf /tmp/packages \
+    && rm /etc/nginx/conf.d/default.conf \
+    && sed -i "1 i load_module modules/ngx_http_brotli_static_module.so;load_module modules/ngx_http_brotli_filter_module.so;" /etc/nginx/nginx.conf \
+    && mkdir /etc/nginx/errorPage/ \
+    && mkdir /etc/nginx/certs/
 COPY nginx.conf /etc/nginx/conf.d/
-COPY 502.html /etc/nginx/
-COPY 502.css /etc/nginx/
-COPY favicon.ico /etc/nginx/
-COPY certs/crt.pem /etc/nginx/crt.pem
-COPY certs/key.pem /etc/nginx/key.pem
+COPY 502.html /etc/nginx/errorPage/
+COPY 502.css /etc/nginx/errorPage/
+COPY favicon.ico /etc/nginx/errorPage/
+COPY certs/crt.pem /etc/nginx/certs/crt.pem
+COPY certs/key.pem /etc/nginx/certs/key.pem

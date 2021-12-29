@@ -10,10 +10,10 @@
     <meta name="keywords" content="StagyBee, stage, control">
     <meta name="Copyright" content="Simon Zigelli"/>
     <meta name="MSSmartTagsPreventParsing" content="true"/>
-    <link rel="icon" sizes="192x192" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="502.css" type="text/css">
+    <link rel="icon" sizes="192x192" href="/errorPage/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/errorPage/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/errorPage/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/errorPage/502.css" type="text/css">
     <title>Error 502 | StagyBee</title>
 </head>
 <body class="bg-black text-white">
@@ -27,10 +27,42 @@
 <main class="flex-auto container pt-4">
     <div class="text-2xl text-center">
         <noscript>
-            <div class="py-5">You need to enable JavaScript to run this app.</div>
+            <div class="flex flex-row w-full justify-center items-center">
+                <div class="mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <div class="py-5 px-4">You need to enable JavaScript to run this app.</div>
+                <div class="mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+            </div>
         </noscript>
-        <div><span>Server not ready yet. Page reloads in&nbsp;</span><span
-                id="timer">0</span><span>&nbsp;seconds.<div>Please wait...</div></span></div>
+        <div class="flex flex-row w-full justify-center items-center">
+            <div class="mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+            <div class="px-4"><span>Server not ready yet. Page reloads in&nbsp;</span><span
+                    id="timer">0&nbsp;seconds.</span><div>Please wait...</div></div>
+            <div class="mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+        </div>
     </div>
 </main>
 <script>
@@ -39,7 +71,10 @@
 
     function countdown() {
         setTimeout('countdown()', 1000);
-        timerSpan.innerHTML = timerVal;
+        if (timerVal === 1)
+            timerSpan.innerHTML = `${timerVal} second.`;
+        else
+            timerSpan.innerHTML = `${timerVal} seconds.`;
         timerVal = timerVal - 1;
         if (timerVal < 0) {
             timerVal = 0;

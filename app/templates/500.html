@@ -4,5 +4,11 @@
 {% block title %}{% trans 'Fehler 500' %}{% endblock %}
 
 {% block content %}
-    <div class="text-2xl text-center">{% trans 'Fehler 500 - Interner Fehler' %}</div>
+    <div class="text-2xl text-center">
+        <div class="flex flex-row w-full justify-center items-center">
+            <div class="mt-1">{% include 'icons/warning.html' %}</div>
+            <div class="px-4">{% trans 'Fehler 500 - Interner Fehler' %}</div>
+            <div class="mt-1">{% include 'icons/warning.html' %}</div>
+        </div>
+    </div>
 {% endblock %}
