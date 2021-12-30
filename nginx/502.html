@@ -54,7 +54,9 @@
                 </svg>
             </div>
             <div class="px-4"><span>Server not ready yet. Page reloads in&nbsp;</span><span
-                    id="timer">0&nbsp;seconds.</span><div>Please wait...</div></div>
+                    id="timer">0&nbsp;seconds.</span>
+                <div>Please wait...</div>
+            </div>
             <div class="mt-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -63,6 +65,17 @@
                 </svg>
             </div>
         </div>
+        <button class="py-6 mt-8 bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center uppercase text-white font-bold py-2 px-4 rounded mb-2 cursor-default"
+                type="submit" onclick="location.reload();">
+            <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 rtl:scale-y-[-1]" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            </span>
+            <span class="ltr:ml-2 rtl:mr-2 uppercase">Retry now</span>
+        </button>
     </div>
 </main>
 <script>
