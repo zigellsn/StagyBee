@@ -173,7 +173,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = [(x.split(":")[0], _(x.split(":")[1])) for x in env.list("LANGUAGES", default=["de:German", "en:English"])]
 
-LANGUAGE_CODE = "de"
+LANGUAGE_CODE = env.str("DEFAULT_LANGUAGE", default="de")
 
 LOCALE_PATHS = (
     str(PROJECT_PACKAGE.joinpath("locale")),

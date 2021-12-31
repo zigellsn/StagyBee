@@ -31,7 +31,7 @@ main {
 }
 
 .tooltip {
-    @apply opacity-0 invisible absolute;
+    @apply opacity-0 invisible absolute cursor-default select-none;
 }
 
 .has-tooltip:hover .tooltip {

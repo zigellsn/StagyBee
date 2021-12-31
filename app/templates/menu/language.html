@@ -3,14 +3,19 @@
 {% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as languages %}
 
-<div class="dropdown">
-    <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-        {% include 'icons/language.html' %}
+{% if LANGUAGES|length > 1 %}
+    <div class="dropdown">
+        <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+            {% include 'icons/language.html' %}
+        </div>
+        <ul class="dropdown-menu">
+            {% for lang_code, lang_name in LANGUAGES %}
+                {% if lang_code != LANGUAGE_CODE %}
+                    <li>
+                        <a class="{% if forloop.first %}rounded-t{% endif %} {% if forloop.last %}rounded-b{% endif %} bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                           href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
     </div>
-    <ul class="dropdown-menu">
-        {% for lang_code, lang_name in LANGUAGES %}
-            <li><a class="{% if forloop.first %}rounded-t{% endif %} {% if forloop.last %}rounded-b{% endif %} bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                            href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+{% endif %}
