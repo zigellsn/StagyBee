@@ -10,11 +10,9 @@
         </div>
         <ul class="dropdown-menu">
             {% for lang_code, lang_name in LANGUAGES %}
-                {% if lang_code != LANGUAGE_CODE %}
-                    <li>
-                        <a class="{% if forloop.first %}rounded-t{% endif %} {% if forloop.last %}rounded-b{% endif %} bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                           href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
-                {% endif %}
+                <li>
+                    <a class="{% if forloop.first %}rounded-t{% endif %} {% if forloop.last %}rounded-b{% endif %} {% if lang_code == LANGUAGE_CODE %}bg-blue-900{% else %}bg-blue-800{% endif %} dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                       href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
             {% endfor %}
         </ul>
     </div>
