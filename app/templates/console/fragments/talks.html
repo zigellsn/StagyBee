@@ -25,12 +25,10 @@
                 send click to line
             end
             if line@data-directions is not null
-                make a <div.has-tooltip/> called content
+                add .has-tooltip to line
                 make a <div.tooltip.mt-2.rounded.dark:shadow-gray-800.shadow-lg.p-2.dark:bg-gray-700.bg-gray-100.dark:text-white.text-black.font-light/> called tooltip
                 put line@data-directions into tooltip
-                put line.innerHTML into content
-                put tooltip at the end of content
-                put content into line
+                put tooltip at the end of line
             end
         end
     end
