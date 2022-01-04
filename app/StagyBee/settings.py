@@ -154,7 +154,7 @@ DATABASES = {
     "default": env.db_url(default="sqlite:///db.sqlite3")
 }
 
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
