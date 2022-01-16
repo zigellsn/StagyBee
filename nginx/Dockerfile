@@ -76,6 +76,8 @@ RUN set -ex \
 COPY nginx.conf /etc/nginx/conf.d/
 COPY 502.html /etc/nginx/errorPage/
 COPY 502.css /etc/nginx/errorPage/
-COPY favicon.ico /etc/nginx/errorPage/
+COPY favicon-32x32.ico /etc/nginx/errorPage/
+COPY favicon-96x96.png /etc/nginx/errorPage/
+COPY apple-touch-icon-180x180.png /etc/nginx/errorPage/
 COPY certs/crt.pem /etc/nginx/certs/crt.pem
 COPY certs/key.pem /etc/nginx/certs/key.pem
