@@ -64,7 +64,8 @@ class WorkbookExtractor:
         self.logger = logging.getLogger("WorkbookExtractor")
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
         self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
-                          "Chrome/79.0.3945.130 Safari/537.36"
+                          "Chrome/97.0.4692.71 Safari/537.36"
+        self.ACCEPT_LANGUAGE = "en-EN,en"
 
     async def get_workbooks(self, urls, language="en"):
         async with aiohttp.ClientSession() as session:
@@ -175,8 +176,8 @@ class WorkbookExtractor:
     async def __get_workbook__(self, session, url):
         self.logger.info(url)
         self.logger.info("Fetching workbook...")
-        headers = {
-            "User-Agent": self.USER_AGENT}
+        headers = {"User-Agent": self.USER_AGENT,
+                   "Accept-Language": self.ACCEPT_LANGUAGE}
         async with session.get(url, headers=headers) as resp:
             response_code = resp.status
             if response_code == 200:

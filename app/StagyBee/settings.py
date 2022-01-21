@@ -18,6 +18,7 @@ import os
 import sys
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 from environ import environ
 
@@ -173,6 +174,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = [(x.split(":")[0], _(x.split(":")[1])) for x in env.list("LANGUAGES", default=["de:German", "en:English"])]
 
+if not [item for item in LANGUAGES if item[0] == env.str("DEFAULT_LANGUAGE", default="de")]:
+    raise ImproperlyConfigured("Language list does not contain the default language.")
+
 LANGUAGE_CODE = env.str("DEFAULT_LANGUAGE", default="de")
 
 LOCALE_PATHS = (
@@ -198,7 +202,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "files/")
 
 if DEBUG:
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = "abc_change_key"
+    SECRET_KEY = env.str("SECRET_KEY", "django-insecure-qhmmb46a$-j_#%yt0@1enx=mxpercrdbu!sc4^x=a1n_+a!^y5")
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 
