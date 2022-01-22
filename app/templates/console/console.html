@@ -59,6 +59,7 @@
     </div>
     <div id="talk"></div>
     <script type="text/hyperscript">
+        -- TODO: Remove 'ws:/127.0.0.1:8000' with hyperscript v0.9.5
         socket Timer ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/
         end
     </script>

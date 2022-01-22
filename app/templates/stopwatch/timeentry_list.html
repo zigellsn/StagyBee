@@ -21,6 +21,7 @@
             <div id="waiting-indicator"></div>
             <div id="scrim"></div>
             <div id="overlay"></div>
+            <div id="stop"></div>
         </div>
         <table class="table-auto flex justify-center">
             <tbody>
@@ -80,17 +81,21 @@
 
 {% block head_extra %}
     <script type="text/hyperscript">
+        def get_newest()
+            fetch {% url 'console:stopwatch:newest' congregation.congregation|escape %} as html
+            get the <tr/> in it
+            set result.style.opacity to 0
+            put the result at the end of times
+            transition the result's opacity to 1
+        end
+        -- TODO: Remove 'ws:/127.0.0.1:8000' with hyperscript v0.9.5
         socket Console ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/
             on message
                 if it contains '<div id="stop"></div>' then
                     if not no no_timer_entries then
                         remove no_timer_entries
                     end
-                    fetch {% url 'console:stopwatch:newest' congregation.congregation|escape %} as html
-                    get the <tr/> in it
-                    set result.style.opacity to 0
-                    put the result at the end of times
-                    transition the result's opacity to 1
+                    call get_newest()
         end
     </script>
 {% endblock %}
