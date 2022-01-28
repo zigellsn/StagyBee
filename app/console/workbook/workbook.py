@@ -61,7 +61,7 @@ class WorkbookExtractor:
 
     def __init__(self, *argss, **kwargs):
         super().__init__(*argss, **kwargs)
-        self.logger = logging.getLogger("WorkbookExtractor")
+        self.logger = logging.getLogger(__name__)
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
         self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                           "Chrome/97.0.4692.71 Safari/537.36"

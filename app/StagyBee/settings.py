@@ -48,24 +48,42 @@ VERSION = "2.0.0-alpha01"
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["https://127.0.0.1", "https://localhost"])
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+if DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
         },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-    },
-}
+        "loggers": {
+            "console.workbook.workbook": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "StagyBee.consumers": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "stage.consumers": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "picker.apps": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+        },
+    }
 
 # Application definition
 
 INSTALLED_APPS = [
-    "channels",
     "guardian",
     "stage",
     "receiver",
@@ -83,6 +101,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
 ]
 
 MIDDLEWARE = [

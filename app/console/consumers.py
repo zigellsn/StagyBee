@@ -63,10 +63,10 @@ class TimerConsumer(AsyncWebsocketConsumer):
 class ConsoleConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        user = self.scope["user"]
-        if user.is_anonymous or not user.is_authenticated:
-            await self.close()
-            return
+        # user = self.scope["user"]
+        # if user.is_anonymous or not user.is_authenticated:
+        #     await self.close()
+        #     return
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         language = self.scope["url_route"]["kwargs"]["language"]
         translation.activate(language)

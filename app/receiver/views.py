@@ -12,20 +12,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import logging
-from importlib import import_module
-
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.conf import settings
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from stage.consumers import generate_channel_group_name
-
-logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name="dispatch")

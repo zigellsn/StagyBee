@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import asyncio
-import logging
 
 from django.db import models
 from django.db.models import QuerySet, URLField
@@ -21,8 +20,6 @@ from django.utils.translation import gettext_lazy as _
 
 from StagyBee.utils import DockerURLValidator
 from stage.timeout import GLOBAL_TIMEOUT
-
-logger = logging.getLogger(__name__)
 
 
 async def __get_running_since__(congregation):
