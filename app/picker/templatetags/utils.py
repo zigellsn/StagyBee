@@ -21,7 +21,8 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def translate_url(context, lang_code):
     request = context.get("request")
-    # If ALLOWED_HOSTS is not configured correctly, request may be None. This turns HTTP 500 into HTTP 400.
+    # If ALLOWED_HOSTS is not configured correctly, request may be None.
+    # This turns HTTP 500 into HTTP 400:
     if request is None:
         return ""
     else:
