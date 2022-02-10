@@ -46,11 +46,7 @@
             transition #custom-talk opacity to 0
             hide #custom-talk
         end
-        set header to the first <div.selected/>
-        set content to first <div.acc-content/> in the header
-        tell the first <div/> in content measure me then
-            add { height: ${it.scrollHeight}px; } to content
-        end
+        send calc_size to the next <[role=region]/> from the first <[aria-expanded=true]/>
     end">
     <li><span class="italic">{% trans 'Leben-und-Dienst-Zusammenkunft' %}</span>
         <div hx-get="{% url 'console:workbook' date='today' %}?filter=talks" hx-trigger="load" hx-swap="outerHTML" hx-target="this">

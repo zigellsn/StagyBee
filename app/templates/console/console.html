@@ -8,52 +8,64 @@
     </div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/"></div>
     <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/" class="flex flex-col"
-         _="install AccordionClick">
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded selected">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+         _="install Accordion">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-1"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-1" aria-expanded="true">
                 <span>{% trans "Stoppuhr" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    {% include 'console/fragments/timer.html' %}
-                </div>
+            </button>
+        </div>
+        <div id="content-1" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-1">
+            <div class="pb-4">
+                {% include 'console/fragments/timer.html' %}
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-2"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-2" aria-expanded="false">
                 <span>{% trans "Bildschirmsteuerung" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    {% include 'console/fragments/scrim_control.html' %}
-                </div>
+            </button>
+        </div>
+        <div id="content-2" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-2" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/scrim_control.html' %}
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-3"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-3" aria-expanded="false">
                 <span>{% trans "Textnachricht" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    {% include 'console/fragments/message.html' %}
-                </div>
+            </button>
+        </div>
+        <div id="content-3" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-3" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/message.html' %}
             </div>
         </div>
 
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-4"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-4" aria-expanded="false">
                 <span>{% trans "Livedaten" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    {% include 'console/fragments/status.html' %}
-                </div>
+            </button>
+        </div>
+        <div id="content-4" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-4" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/status.html' %}
             </div>
         </div>
     </div>
@@ -67,5 +79,5 @@
 {% endblock %}
 
 {% block _hs_extra %}
-    <script type="text/hyperscript" src="{% static 'stagybee/behavior/accordion_click._hs' %}"></script>
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/Accordion._hs' %}"></script>
 {% endblock %}

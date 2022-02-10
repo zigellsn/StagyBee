@@ -5,11 +5,7 @@
     <textarea name="message" class="w-full dark:bg-black mb-2 w-full border rounded resize-y mt-2"
               id="text_message"
               _="on mousemove
-                    set header to the first <div.selected/>
-                    set content to first <div.acc-content/> in the header
-                    tell the first <div/> in content measure me then
-                        add { height: ${it.scrollHeight}px; } to content
-                    end
+                    send calc_size to the next <[role=region]/> from the first <[aria-expanded=true]/>
                 end"></textarea>
     <div class="pt-4">
         <button name="action" value="message-send" hx-trigger="click"

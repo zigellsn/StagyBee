@@ -4,89 +4,107 @@
 {% block content %}
     {% get_available_languages as LANGUAGES %}
     <div class="container mx-auto flex flex-col"
-         _="install AccordionClick"
+         _="install Accordion"
          id="settings-main">
         {% if user.is_superuser %}
-            <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded selected">
-                <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer rounded">
+            <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+                <button id="acc-1"
+                        class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                        aria-controls="content-1" aria-expanded="true">
                     <span>{% trans "Benachrichtigungen" %}</span>
                     {% include 'icons/chevron_down.html' %}
-                </div>
-                <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                    <div class="pb-4">
-                        {% notifications_maintain %}
-                    </div>
+                </button>
+            </div>
+            <div id="content-1"
+                 class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+                 role="region" aria-labelledby="acc-1">
+                <div class="pb-4">
+                    {% notifications_maintain %}
                 </div>
             </div>
         {% endif %}
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded {% if not user.is_superuser %}selected{% endif %}">
-            <div class="dark:bg-gray-800 flex flex-row justify-between items-center font-semibold p-3 cursor-pointer rounded">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            {% if not user.is_superuser %}selected{% endif %}
+            <button id="acc-2"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-2"
+                    aria-expanded="{% if not user.is_superuser %}true{% else %}false{% endif %}">
                 <span>{% trans "Bekannte Clients" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    {% known_clients_control %}
-                </div>
+            </button>
+        </div>
+        <div id="content-2" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-2" {% if user.is_superuser %}hidden{% endif %}>
+            <div class="pb-4">
+                {% known_clients_control %}
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-3"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-3" aria-expanded="false">
                 <span>{% trans "Passwort" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    <a class="flex cursor-default" href="{% url 'password_change' %}">
-                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2">
-                            <span class="uppercase">{% trans "Passwort ändern" %}</span>
-                        </div>
-                    </a>
-                </div>
+            </button>
+        </div>
+        <div id="content-3" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-3" hidden>
+            <div class="pb-4">
+                <a class="flex cursor-default" href="{% url 'password_change' %}">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded mb-2">
+                        <span class="uppercase">{% trans "Passwort ändern" %}</span>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-4"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-4" aria-expanded="false">
                 <span>{% trans "Sprache" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.locale.label_tag }}<br>
-                        {{ form.locale|attr:"class:dark:bg-black mb-2" }}
-                        <br>
-                        <input class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded uppercase"
-                               type="submit"
-                               value="{% trans "Speichern" %}">
-                    </form>
-                </div>
+            </button>
+        </div>
+        <div id="content-4" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-4" hidden>
+            <div class="pb-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.locale.label_tag }}<br>
+                    {{ form.locale|attr:"class:dark:bg-black mb-2" }}
+                    <br>
+                    <input class="bg-blue-500 hover:bg-blue-700 inline-flex items-center text-white font-bold py-2 px-4 rounded uppercase"
+                           type="submit"
+                           value="{% trans "Speichern" %}">
+                </form>
             </div>
         </div>
-        <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded">
-            <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-5"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-5" aria-expanded="false">
                 <span>{% trans "Hilfe und Rechtliches" %}</span>
                 {% include 'icons/chevron_down.html' %}
-            </div>
-            <div class="dark:bg-gray-800 acc-content px-8 overflow-hidden h-0 ease duration-500 rounded">
-                <div class="pb-4">
-                    <ul>
-                        <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/zigellsn/StagyBee/blob/main/LICENSE">{% trans "Lizenzvertrag" %}</a>
-                        </li>
-                        <li><a href="https://github.com/zigellsn/StagyBee/issues/">{% trans "Probleme melden" %}</a>
-                        </li>
-                    </ul>
-                    <div class="mt-2 text-xs">Copyright 2019-2022 Simon Zigelli</div>
-                </div>
+            </button>
+        </div>
+        <div id="content-5" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+             role="region" aria-labelledby="acc-5" hidden>
+            <div class="pb-4">
+                <ul>
+                    <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/zigellsn/StagyBee/blob/main/LICENSE">{% trans "Lizenzvertrag" %}</a>
+                    </li>
+                    <li><a href="https://github.com/zigellsn/StagyBee/issues/">{% trans "Probleme melden" %}</a>
+                    </li>
+                </ul>
+                <div class="mt-2 text-xs">Copyright 2019-2022 Simon Zigelli</div>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block _hs_extra %}
-    <script type="text/hyperscript" src="{% static 'stagybee/behavior/accordion_click._hs' %}"></script>
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/Accordion._hs' %}"></script>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% load i18n %}
 {% if object %}
-    <div class="my-2 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 acc-header rounded {% if index == 0 %}selected{% endif %}">
-        <div class="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer">
+    <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+        <button id="acc-{{ index }}" class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                aria-controls="content-{{ index }}" aria-expanded="{% if index == 0 %}true{% else %}false{% endif %}">
             <div class="flex flex-row">
                 {% if object.importance == 0 %}
                     <span>{% include 'icons/quote.html' %}</span>
@@ -26,14 +27,15 @@
             <div class="flex flex-row"><span
                     class="mr-4">({{ object.create_date|date }})</span><span>{% include 'icons/chevron_down.html' %}</span>
             </div>
-        </div>
-        <div class="dark:bg-gray-800 acc-content px-10 overflow-hidden h-0 ease duration-500 rounded">
-            {% language object.locale %}
-                {% get_current_language_bidi as LANGUAGE_BIDI %}
-                {% get_current_language as LANGUAGE_CODE %}
-                <span class="pb-4" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}">
-                {{ object.message }}</span>
-            {% endlanguage %}
-        </div>
+        </button>
+    </div>
+    <div id="content-{{ index }}" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+         role="region" aria-labelledby="acc-{{ index }}" {% if index != 0 %}hidden{% endif %}>
+        {% language object.locale %}
+            {% get_current_language_bidi as LANGUAGE_BIDI %}
+            {% get_current_language as LANGUAGE_CODE %}
+            <div class="pb-4" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}">
+                {{ object.message }}</div>
+        {% endlanguage %}
     </div>
 {% endif %}
