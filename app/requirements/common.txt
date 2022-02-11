@@ -10,4 +10,4 @@ tenacity==8.0.1
 python-dateutil==2.8.2
 wheel==0.37.1
 django-qr-code==3.0.0
-twisted[tls,http2]==21.7.0
+twisted[tls,http2]==22.1.0
