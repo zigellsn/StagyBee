@@ -34,6 +34,7 @@ env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
+SHOW_DEBUG_TOOLBAR = DEBUG
 
 try:
     with open(os.path.join(PROJECT_PACKAGE, "regex.json"), encoding="utf-8") as json_file:

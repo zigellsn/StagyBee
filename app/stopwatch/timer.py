@@ -116,12 +116,12 @@ class Timer:
     def _time_delta_to_string(delta) -> str:
         mm, ss = divmod(delta.seconds, 60)
         hh, mm = divmod(mm, 60)
-        s = "%02d:%02d:%02d" % (hh, mm, ss)
+        s = f"{hh:02d}:{mm:02d}:{ss:02d}"
         if delta.days:
             def plural(n):
                 return n, abs(n) != 1 and "s" or ""
 
-            s = ("%d day%s, " % plural(delta.days)) + s
+            s = f"{plural(delta.days)[0]} day{plural(delta.days)[1]}, {s}"
         return s
 
     async def _persist_time_entry(self):

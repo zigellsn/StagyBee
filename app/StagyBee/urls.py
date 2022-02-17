@@ -40,7 +40,7 @@ urlpatterns += i18n_patterns(
     prefix_default_language=True
 )
 
-if settings.DEBUG:
+if settings.SHOW_DEBUG_TOOLBAR:
     try:
         import debug_toolbar
     except ImportError:

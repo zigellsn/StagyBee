@@ -90,16 +90,16 @@ class TimeEntryManager(models.Manager):
 
 
 class TimeEntry(models.Model):
-    class Meta:
-        ordering = ["start"]
-
-    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
+    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE, related_name="time_entries")
     talk = models.CharField(max_length=255)
     start = models.DateTimeField()
     stop = models.DateTimeField()
     max_duration = models.IntegerField()
 
     objects = TimeEntryManager()
+
+    class Meta:
+        ordering = ["start"]
 
 
 def __get_duration_string__(timespan):

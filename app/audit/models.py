@@ -49,12 +49,13 @@ class AuditManager(models.Manager):
 
 
 class Audit(models.Model):
-    class Meta:
-        ordering = ["-send_time"]
 
-    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE, related_name="audits")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="audits")
     message = models.TextField(default="", blank=True)
     send_time = models.DateTimeField(default=timezone.now)
 
     objects = AuditManager()
+
+    class Meta:
+        ordering = ["-send_time"]

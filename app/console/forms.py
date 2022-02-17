@@ -36,7 +36,7 @@ class CongregationForm(forms.ModelForm):
     congregation.widget.attrs.update({"data-role": "select"})
 
     def __init__(self, *args, **kwargs):
-        super(CongregationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["congregation"].queryset = Credential.objects.active()
 
 

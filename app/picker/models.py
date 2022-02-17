@@ -78,16 +78,6 @@ class DockerURLField(URLField):
 
 
 class Credential(models.Model):
-    class Meta:
-        verbose_name = _("JWConf Verbindung")
-        verbose_name_plural = _("JWConf Verbindungen")
-        ordering = ["display_name", "congregation"]
-        permissions = (
-            ("access_console", _("Zugriff auf Management Console")),
-            ("access_stopwatch", _("Zugriff auf Stoppuhr")),
-            ("access_audit_log", _("Zugriff auf Audit-Log")),
-        )
-
     class SortOrder(models.IntegerChoices):
         FAMILY_NAME = 0, _("Familienname")
         GIVEN_NAME = 1, _("Vorname")
@@ -111,6 +101,16 @@ class Credential(models.Model):
                                                   verbose_name=_("Namensreihenfolge"))
 
     objects = CredentialManager()
+
+    class Meta:
+        verbose_name = _("JWConf Verbindung")
+        verbose_name_plural = _("JWConf Verbindungen")
+        ordering = ["display_name", "congregation"]
+        permissions = (
+            ("access_console", _("Zugriff auf Management Console")),
+            ("access_stopwatch", _("Zugriff auf Stoppuhr")),
+            ("access_audit_log", _("Zugriff auf Audit-Log")),
+        )
 
     def __str__(self):
         if not self.display_name:
