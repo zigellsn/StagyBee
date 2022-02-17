@@ -43,9 +43,6 @@ class NotificationManager(models.Manager):
 
 
 class Notification(models.Model):
-    class Meta:
-        ordering = ["-create_date", "-importance"]
-
     class Importance(models.IntegerChoices):
         INFORMATION = 0, _('Information')
         IMPORTANT = 1, _('Wichtig')
@@ -60,7 +57,11 @@ class Notification(models.Model):
                                      verbose_name=_("Wichtigkeit"))
     max_duration = models.DateField(verbose_name=_("Gültig bis"), null=True, blank=True)
     active = models.BooleanField(verbose_name=_("Aktiv"))
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                             related_name="notifications")
     create_date = models.DateField(default=timezone.now)
 
     objects = NotificationManager()
+
+    class Meta:
+        ordering = ["-create_date", "-importance"]
