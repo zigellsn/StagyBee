@@ -10,10 +10,10 @@
 {% endblock %}
 
 {% block content %}
-    <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
+    <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
         <div id="overlay"></div>
     </div>
-    <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/">
+    <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/">
         <div id="sum-listeners"></div>
         <div id="listeners"></div>
         <div id="activity"></div>
@@ -27,7 +27,7 @@
 {% block footer %}
     <footer>
         {% if not credential.touch and credential.send_times_to_stage %}
-            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
+            <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/">
                 <div class="w-full" hx-swap="outerHTML">
                     <div class="progress-container bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-800">
                         <div class="ltr:left-progress-bar rtl:right-progress-bar bg-blue-500" id="pb" style="width:0;">

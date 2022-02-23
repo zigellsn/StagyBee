@@ -16,15 +16,14 @@
                 </button>
             </div>
             <div id="content-1"
-                 class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+                 class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
                  role="region" aria-labelledby="acc-1">
                 <div class="pb-4">
                     {% notifications_maintain %}
                 </div>
             </div>
         {% endif %}
-        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
-            {% if not user.is_superuser %}selected{% endif %}
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t {% if user.is_superuser %}rounded-b{% endif %}">
             <button id="acc-2"
                     class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
                     aria-controls="content-2"
@@ -33,13 +32,13 @@
                 {% include 'icons/chevron_down.html' %}
             </button>
         </div>
-        <div id="content-2" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+        <div id="content-2" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
              role="region" aria-labelledby="acc-2" {% if user.is_superuser %}hidden{% endif %}>
             <div class="pb-4">
                 {% known_clients_control %}
             </div>
         </div>
-        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
             <button id="acc-3"
                     class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
                     aria-controls="content-3" aria-expanded="false">
@@ -47,7 +46,7 @@
                 {% include 'icons/chevron_down.html' %}
             </button>
         </div>
-        <div id="content-3" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+        <div id="content-3" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
              role="region" aria-labelledby="acc-3" hidden>
             <div class="pb-4">
                 <a class="flex cursor-default" href="{% url 'password_change' %}">
@@ -57,7 +56,7 @@
                 </a>
             </div>
         </div>
-        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
             <button id="acc-4"
                     class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
                     aria-controls="content-4" aria-expanded="false">
@@ -65,7 +64,7 @@
                 {% include 'icons/chevron_down.html' %}
             </button>
         </div>
-        <div id="content-4" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+        <div id="content-4" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
              role="region" aria-labelledby="acc-4" hidden>
             <div class="pb-4">
                 <form method="post">
@@ -79,7 +78,7 @@
                 </form>
             </div>
         </div>
-        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
             <button id="acc-5"
                     class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
                     aria-controls="content-5" aria-expanded="false">
@@ -87,7 +86,7 @@
                 {% include 'icons/chevron_down.html' %}
             </button>
         </div>
-        <div id="content-5" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+        <div id="content-5" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
              role="region" aria-labelledby="acc-5" hidden>
             <div class="pb-4">
                 <ul>

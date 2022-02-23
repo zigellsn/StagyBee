@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/">
+    <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/">
         <span class="text-2xl">{{ congregation }}</span>
         <div class="text-2xl pt-8 pb-8">
             <div id="talk-name-caption" class="flex justify-center"></div>
@@ -88,8 +88,7 @@
             put the result at the end of times
             transition the result's opacity to 1
         end
-        -- TODO: Remove 'ws:/127.0.0.1:8000' with hyperscript v0.9.5
-        socket Console ws:/127.0.0.1:8000/ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/
+        socket Console /ws/{{ LANGUAGE_CODE }}/console/{{ congregation.congregation|escape }}/
             on message
                 if it contains '<div id="stop"></div>' then
                     if not no no_timer_entries then

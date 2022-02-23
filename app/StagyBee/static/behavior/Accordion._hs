@@ -1,22 +1,9 @@
 behavior Accordion
-    init
-		if target is null then
-			set target to first <[role=heading]/> in me
-		end
-
-        add .rotate-180 to the first <svg.icon/> in the target
-		send select to target
-    end
-
     on htmx:afterSettle
         set panel to the next <[role=region]/> from the first <[aria-expanded=true]/>
         if target is in panel then
             send calc_size to panel
         end
-    end
-
-    on resize from window
-        send calc_size to the next <[role=region]/> from the first <[aria-expanded=true]/>
     end
 
 	on mousedown(target) from <[role=heading]/>
@@ -28,7 +15,7 @@ behavior Accordion
 	end
 
     on calc_size(target)
-        tell first in target measure me then
+        tell target measure me then
         	transition the target's height to `${it.scrollHeight}px` over 500ms
         end
     end
@@ -37,34 +24,35 @@ behavior Accordion
         if <button:focus/> in <[role=heading]/> then
 		    send select to first <button:focus/>
 		end
+	end
 
 	on keydown[keyCode==13]
         if <button:focus/> in <[role=heading]/> then
 		    send select to first <button:focus/>
 		end
+    end
 
     on select(target)
         set target_header to the closest <[role=heading]/> to the target
 		for header in <[role=heading] /> in me
 			if header == target_header
 				add [@aria-expanded="true"] to the first <button/> in the header
-				add .rotate-180 to the first <svg.icon/> in the header
+				remove .rounded-b from the header
 			else
 				add [@aria-expanded="false"] to the first <button/> in the header
-				remove .rotate-180 from the first <svg.icon/> in the header
+				add .rounded-b to the header
 			end
 		end
 
         set target_button to the first <button/> in the target_header
 		for panel in <[role=region]/> in me
 		    if panel[@id] != target_button[@aria-controls] then
-		        transition the panel's height to 0px over 500ms
-		        set {hidden: true} on panel
+		         transition the panel's height to 0 over 500ms
+		         set {hidden: true} on panel
 		    else
 		        set {hidden: false} on panel
 		        send calc_size to panel
 		    end
 		end
 	end
-
 end

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% if object %}
-    <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+    <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t {% if index != 0 %}rounded-b{% endif %}">
         <button id="acc-{{ index }}" class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
                 aria-controls="content-{{ index }}" aria-expanded="{% if index == 0 %}true{% else %}false{% endif %}">
             <div class="flex flex-row">
@@ -29,7 +29,7 @@
             </div>
         </button>
     </div>
-    <div id="content-{{ index }}" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden h-0 rounded-b"
+    <div id="content-{{ index }}" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
          role="region" aria-labelledby="acc-{{ index }}" {% if index != 0 %}hidden{% endif %}>
         {% language object.locale %}
             {% get_current_language_bidi as LANGUAGE_BIDI %}

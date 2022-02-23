@@ -114,3 +114,7 @@ ul {
     font-size: 12px;
     line-height: 20px;
 }
+
+[aria-expanded="true"] .icon {
+    @apply rotate-180
+}

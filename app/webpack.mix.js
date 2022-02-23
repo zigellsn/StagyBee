@@ -19,6 +19,7 @@ let mix = require('laravel-mix');
 mix.disableNotifications();
 
 let src = ['./node_modules/htmx.org/dist/htmx.js',
+    './node_modules/htmx.org/dist/ext/ws.js',
     './node_modules/hyperscript.org/dist/_hyperscript_w9y.min.js',
     './node_modules/luxon/build/global/luxon.min.js',
     './node_modules/sweetalert2/dist/sweetalert2.min.js']

@@ -4,7 +4,7 @@
     <tbody>
     <tr>
         <td class="w-2/3 border-r-2 ltr:pr-4 rtl:pl-4">
-            <div hx-ws="connect:/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/listener/"
+            <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/extractor/{{ credential.congregation|escape }}/listener/"
                  class="flex justify-center">
                 {% trans "Meldungen:" as sum_request_to_speak %}
                 {% trans "Zuhörer gesamt:" as sum_listeners %}

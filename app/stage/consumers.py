@@ -143,13 +143,13 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         event = await self.build_events(context)
         await self.send(text_data=event)
 
-    @staticmethod
-    async def build_events(context=None):
-        event = ""
-        event = event + render_to_string(template_name="stage/events/sum_listeners.html", context=context)
-        event = event + render_to_string(template_name="stage/events/activity.html", context=context)
-        event = event + render_to_string(template_name="stage/events/listeners.html", context=context)
-        return event
+    async def build_events(self, context=None):
+        event = render_to_string(template_name="stage/events/sum_listeners.html", context=context)
+        await self.send(text_data=event)
+        event = render_to_string(template_name="stage/events/activity.html", context=context)
+        await self.send(text_data=event)
+        event = render_to_string(template_name="stage/events/listeners.html", context=context)
+        await self.send(text_data=event)
 
     async def extractor_status(self, event):
         if not json.loads(event["status"])["running"]:
