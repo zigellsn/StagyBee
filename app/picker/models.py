@@ -12,57 +12,24 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import asyncio
-import datetime
-import logging
 
-import aioredis
-from django.conf import settings
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, URLField
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-REDIS_KEY = "stagybee:console:congregation.console."
-logger = logging.getLogger(__name__)
-
-
-async def __get_redis_congregations(congregation):
-    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-    redis = await aioredis.create_redis(host)
-    congregations = await redis.keys(REDIS_KEY + congregation)
-    redis.close()
-    await redis.wait_closed()
-    return congregations
-
-
-async def __get_active_congregations__(congregation="*"):
-    congregation_filter = []
-    try:
-        congregation_filter = await __get_redis_congregations(congregation)
-    except():
-        logger.error("Redis Server not available")
-    finally:
-        congregation_filter[:] = [c.decode()[len(REDIS_KEY):len(c)] for c in congregation_filter]
-        return congregation_filter
+from StagyBee.utils import DockerURLValidator
+from stage.timeout import GLOBAL_TIMEOUT
 
 
 async def __get_running_since__(congregation):
-    host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-    redis = await aioredis.create_redis(host)
-    members = await redis.smembers(f"stagybee:console:congregation.console.{congregation}")
-    with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
-    if with_since:
-        redis.close()
-        await redis.wait_closed()
-        return datetime.datetime.strptime(with_since[0].decode("utf-8")[6:31], settings.REDIS_DATETIME_FORMAT)
+    if congregation in GLOBAL_TIMEOUT:
+        return GLOBAL_TIMEOUT.get(congregation).start_time
+    return timezone.localtime(timezone.now())
 
 
 def is_active(congregation):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    congregation_filter = loop.run_until_complete(__get_active_congregations__(congregation.congregation))
-    if not loop.is_closed():
-        loop.close()
-    if congregation.congregation in congregation_filter:
+    if congregation.congregation in GLOBAL_TIMEOUT:
         return True
     else:
         return False
@@ -88,10 +55,9 @@ class CredentialManager(models.Manager):
     def active(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        congregation_filter = loop.run_until_complete(__get_active_congregations__())
         congregation_set = self.get_query_set().all()
         for congregation in congregation_set:
-            if congregation.congregation in congregation_filter:
+            if is_active(congregation):
                 congregation.active = True
                 congregation.since = loop.run_until_complete(__get_running_since__(congregation.congregation))
             else:
@@ -107,7 +73,35 @@ class CredentialManager(models.Manager):
                            send_times_to_stage=send_times_to_stage)
 
 
+class DockerURLField(URLField):
+    default_validators = [DockerURLValidator()]
+
+
 class Credential(models.Model):
+    class SortOrder(models.IntegerChoices):
+        FAMILY_NAME = 0, _("Familienname")
+        GIVEN_NAME = 1, _("Vorname")
+
+    class NameOrder(models.IntegerChoices):
+        FAMILY_NAME = 0, _("Familienname zuerst")
+        GIVEN_NAME = 1, _("Vorname zuerst")
+
+    congregation = models.CharField(max_length=200, primary_key=True, verbose_name=_("Versammlung"))
+    autologin = models.CharField(max_length=128, default="", blank=True, verbose_name=_("Auto-Login ID"))
+    username = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Username"))
+    password = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Passwort"))
+    display_name = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Anzeigename"))
+    extractor_url = DockerURLField(default="https://extractor:8443/", blank=True, verbose_name=_("Extractor URL"))
+    touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
+    show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
+    send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))
+    sort_order = models.PositiveSmallIntegerField(choices=SortOrder.choices, default=NameOrder.FAMILY_NAME,
+                                                  verbose_name=_("Namensliste sortieren nach"))
+    name_order = models.PositiveSmallIntegerField(choices=NameOrder.choices, default=NameOrder.FAMILY_NAME,
+                                                  verbose_name=_("Namensreihenfolge"))
+
+    objects = CredentialManager()
+
     class Meta:
         verbose_name = _("JWConf Verbindung")
         verbose_name_plural = _("JWConf Verbindungen")
@@ -117,18 +111,6 @@ class Credential(models.Model):
             ("access_stopwatch", _("Zugriff auf Stoppuhr")),
             ("access_audit_log", _("Zugriff auf Audit-Log")),
         )
-
-    congregation = models.CharField(max_length=200, primary_key=True, verbose_name=_("Versammlung"))
-    autologin = models.CharField(max_length=128, default="", blank=True, verbose_name=_("Auto-Login ID"))
-    username = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Username"))
-    password = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Passwort"))
-    display_name = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Anzeigename"))
-    extractor_url = models.URLField(default="https://extractor:8080/", blank=True, verbose_name="Extractor URL")
-    touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
-    show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
-    send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))
-
-    objects = CredentialManager()
 
     def __str__(self):
         if not self.display_name:

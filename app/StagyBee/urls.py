@@ -14,23 +14,22 @@
 
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.generic import RedirectView
-from django.views.i18n import JavaScriptCatalog
 
 from console.views import SettingsView, StartupView
 from .views import SchemeView, ToggleSchemeView
 
 urlpatterns = [path("receiver/", include("receiver.urls")),
-               path("toggle_scheme/", ToggleSchemeView.as_view()),
                path("scheme/", SchemeView.as_view())]
 urlpatterns += i18n_patterns(
     path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
+    path("toggle_scheme/", ToggleSchemeView.as_view()),
     path("", include("django.contrib.auth.urls")),
-    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("stage/", include("stage.urls")),
     path("picker/", include("picker.urls")),
     path("console/", include("console.urls")),
@@ -41,7 +40,7 @@ urlpatterns += i18n_patterns(
     prefix_default_language=True
 )
 
-if settings.DEBUG:
+if settings.SHOW_DEBUG_TOOLBAR:
     try:
         import debug_toolbar
     except ImportError:
@@ -49,4 +48,4 @@ if settings.DEBUG:
     else:
         urlpatterns = [
                           path("__debug__/", include(debug_toolbar.urls)),
-                      ] + urlpatterns
+                      ] + urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

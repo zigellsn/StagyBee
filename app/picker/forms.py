@@ -12,16 +12,24 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.forms import ModelForm, PasswordInput
+from django.forms import ModelForm, PasswordInput, URLField, ChoiceField
+from django.utils.translation import gettext_lazy as _
 
+from StagyBee.utils import DockerURLValidator
 from .models import Credential
+
+
+class DockerURLField(URLField):
+    default_validators = [DockerURLValidator()]
 
 
 class CredentialForm(ModelForm):
     class Meta:
         model = Credential
         fields = ['congregation', 'autologin', 'username', 'password', 'display_name', 'extractor_url', 'touch',
-                  'show_only_request_to_speak', 'send_times_to_stage']
+                  'show_only_request_to_speak', 'send_times_to_stage', 'sort_order', 'name_order']
         widgets = {
             'password': PasswordInput(render_value=True),
         }
+
+    extractor_url = DockerURLField(label=_("Extractor URL"), initial="https://extractor:8443/", required=False)

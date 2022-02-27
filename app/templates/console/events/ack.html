@@ -1,0 +1,3 @@
+{% load i18n %}
+{% now "DATETIME_FORMAT" as time %}
+<div id="message" hx-swap-oob="afterend">{% blocktranslate %}Nachricht vom {{ time }} bestätigt.{% endblocktranslate %}<br></div>

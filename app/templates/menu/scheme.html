@@ -1,8 +1,12 @@
-{% load static i18n %}
-
-<a class="app-bar-item">
-    <span id="scheme-icon" class="{% if dark or dark == None %}mif-sun4{% else %}mif-sun{% endif %} mif-3x" data-role="hint"
-          data-hint-text="{% if dark or dark == None %}{% trans "Helles Design" %}{% else %}{% trans "Dunkles Design" %}{% endif %}"
-          data-hint-position="bottom"
-          onclick="StagyBee.main.toggleColorScheme('{% static "stagybee/css/dark.css" %}', '{% static "stagybee/css/light.css" %}');"></span>
-</a>
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<div id="scheme" class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
+     _='on click fetch /{{ LANGUAGE_CODE }}/toggle_scheme/ {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}"} } put it into me.innerHTML then fetch /scheme/ if it == "dark" then add .dark to document.documentElement else remove .dark from document.documentElement end'>
+    {% if dark or dark == None %}
+        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Helles Design' %}</span>
+        {% include "icons/dark.html" %}
+    {% else %}
+        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Dunkles Design' %}</span>
+        {% include "icons/light.html" %}
+    {% endif %}
+</div>

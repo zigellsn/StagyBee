@@ -17,7 +17,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from picker.tests import create_credential
-from stopwatch.consumers import get_json_duration, get_duration
 
 
 class ConsoleViewTests(TestCase):
@@ -32,14 +31,6 @@ class ConsoleViewTests(TestCase):
         response = self.client.get(reverse("console:choose_console"))
         self.assertEqual(logged_in, True)
         self.assertEqual(response.status_code, 200)
-
-    def test_duration_converter(self):
-        duration = get_json_duration(5000)
-        int_duration = get_duration(duration)
-        self.assertEqual(int_duration, 5000)
-        duration = get_json_duration(0)
-        int_duration = get_duration(duration)
-        self.assertEqual(int_duration, 0)
 
     @staticmethod
     def user():

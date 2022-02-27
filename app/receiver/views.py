@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import logging
-
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponse
@@ -22,8 +20,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from stage.consumers import generate_channel_group_name
-
-logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -37,13 +33,13 @@ class ReceiverView(View):
         if event == "listeners":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "extractor_listeners", "listeners": request.body},
+                {"type": "extractor.listeners", "listeners": request.body},
             )
             return HttpResponse(content="success", status=202)
         elif event == "status":
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
-                {"type": "extractor_status", "status": request.body},
+                {"type": "extractor.status", "status": request.body},
             )
             return HttpResponse(content="success", status=202)
         elif event == "meta":

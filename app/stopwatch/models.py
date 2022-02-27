@@ -34,6 +34,9 @@ class TimeEntryQuerySet(QuerySet):
     def all_by_congregation(self, congregation):
         return self.filter(congregation=congregation)
 
+    def newest(self, congregation):
+        return self.filter(congregation=congregation).latest("id")
+
 
 class TimeEntryManager(models.Manager):
 
@@ -50,6 +53,10 @@ class TimeEntryManager(models.Manager):
         time_entries = self.get_query_set().all_by_congregation(congregation)
         return self.calculate_additional_values(time_entries)
 
+    def newest(self, congregation):
+        time_entry = self.get_query_set().newest(congregation)
+        return self.calculate_additional_values_single(time_entry)
+
     def by_congregation(self, congregation):
         now = datetime.now()
         time_entries = self.all_by_congregation(congregation).filter(congregation=congregation, start__day=now.day,
@@ -57,35 +64,42 @@ class TimeEntryManager(models.Manager):
         return self.calculate_additional_values(time_entries)
 
     @staticmethod
-    def calculate_additional_values(time_entries):
-        for time_entry in time_entries:
-            td1 = time_entry.stop - time_entry.start
-            time_entry.duration = __get_duration_string__(td1.seconds)
-            td2 = timedelta(seconds=time_entry.max_duration)
-            time_entry.display_max_duration = __get_duration_string__(time_entry.max_duration)
+    def calculate_additional_values_single(time_entry):
+        td1 = time_entry.stop - time_entry.start
+        time_entry.duration = __get_duration_string__(td1.seconds)
+        td2 = timedelta(seconds=time_entry.max_duration)
+        time_entry.display_max_duration = __get_duration_string__(time_entry.max_duration)
 
-            if td2 > td1:
-                difference = td2 - td1
-                time_entry.difference = __get_duration_string__(difference.seconds)
-                time_entry.percentage = str(difference / td2)
-            else:
-                difference = td1 - td2
-                time_entry.difference = "-" + __get_duration_string__(difference.seconds)
-                time_entry.percentage = str((difference / td2) * -1.0)
+        if td2 > td1:
+            difference = td2 - td1
+            time_entry.difference = __get_duration_string__(difference.seconds)
+            time_entry.percentage = difference / td2 * 100.0
+        else:
+            difference = td1 - td2
+            time_entry.difference = "-" + __get_duration_string__(difference.seconds)
+            percentage = (difference / td2) * 100.0
+            if percentage > 100.0:
+                percentage = 100.0
+            time_entry.percentage = percentage
+        return time_entry
+
+    def calculate_additional_values(self, time_entries):
+        for time_entry in time_entries:
+            self.calculate_additional_values_single(time_entry)
         return time_entries
 
 
 class TimeEntry(models.Model):
-    class Meta:
-        ordering = ["start"]
-
-    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
+    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE, related_name="time_entries")
     talk = models.CharField(max_length=255)
     start = models.DateTimeField()
     stop = models.DateTimeField()
     max_duration = models.IntegerField()
 
     objects = TimeEntryManager()
+
+    class Meta:
+        ordering = ["start"]
 
 
 def __get_duration_string__(timespan):

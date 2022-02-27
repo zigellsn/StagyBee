@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n notification admin_urls %}
+{% load i18n notification admin_urls static %}
 
 {% block title %}Picker{% endblock %}
 
@@ -9,34 +9,39 @@
 
 {% block content %}
     {% if not object_list %}
-        <div class="p_title text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
+        <div class="text-2xl text-center">{% trans "Keine Versammlung angelegt." %}&nbsp;<a
                 href="{% url 'admin:login' %}">{% trans "Zum Anlegen hier klicken." %}</a></div>
     {% endif %}
-    {% trans "Versammlung wählen" as choose_congregation %}
-    <div class="tiles-grid tiles-group size-{{ size }} pos-top-center"
-         {% if object_list %}data-group-title="{{ choose_congregation }}"{% endif %}>
+    {% if object_list %}
+        <div class="mb-8 text-lg">{% trans "Versammlung wählen" %}</div>
+        <div class="flex grid grid-flow-col place-items-center gap-2 mb-20">
         {% for credential in object_list %}
-            <a href="{% url 'stage:stage' credential.congregation %}" data-role="tile"
-               class="bg-indigo">
-                <span class="pos-absolute pos-center">{{ credential.display_name|default:credential.congregation }}</span>
+            <a href="{% url 'stage:stage' credential.congregation %}"
+               class="flex h-32 px-4 bg-indigo-500 hover:bg-indigo-400 text-center justify-center items-center rounded-md">
+                <span>{{ credential }}</span>
             </a>
         {% endfor %}
-        {% if show_login %}
-            <a href="https://jwconf.org/login.php?source=index.php&" data-role="tile"
-               class="bg-orange col-{{ col }}" data-size="wide">
-                <span class="pos-absolute pos-center">{% trans "JWConf Login Seite" %}</span>
+        </div>
+    {% endif %}
+    {% if show_login %}
+        <div class="grid place-items-center">
+            <a href="https://jwconf.org/login.php?source=index.php&"
+               class="flex w-64 h-32 bg-red-500 hover:bg-red-400 text-center justify-center items-center rounded-md">
+                <span>{% trans "JWConf Login Seite" %}</span>
             </a>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}
-    <footer class="pos-fixed fixed-bottom pr-1-sx pl-1-sx pr-4-md pl-4-md pb-4-md pb-1-sx">
-        <div>
-            {% notifications %}
-        </div>
-        <div class="z-top text-small {% if LANGUAGE_BIDI %}text-left{% else %}text-right{% endif %}">
+    <footer class="sx:px-1 md:px-4 md:pb-4 sx:pb-1">
+        {% notifications %}
+        <div class="z-top text-small rtl:text-left ltr:text-right">
             Version: {{ version }}, Hostname: {{ hostname }}, IP address: {{ ip }}
         </div>
     </footer>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/Accordion._hs' %}"></script>
 {% endblock %}

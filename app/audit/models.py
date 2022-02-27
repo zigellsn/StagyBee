@@ -24,7 +24,7 @@ from picker.models import Credential
 
 class AuditQuerySet(QuerySet):
     def invalid(self):
-        date = timezone.now() - timedelta(days=180)
+        date = timezone.now() - timedelta(days=settings.KEEP_TIMER_DAYS)
         return self.filter(send_time__lt=date)
 
     def by_congregation(self, congregation):
@@ -37,22 +37,25 @@ class AuditManager(models.Manager):
         return AuditQuerySet(self.model, using=self._db)
 
     def create_audit(self, congregation, user, message):
+        self.delete_invalid()
         return self.create(congregation=congregation, user=user, message=message)
 
     def delete_invalid(self):
         return self.get_query_set().invalid().delete()
 
     def by_congregation(self, congregation):
+        self.delete_invalid()
         return self.get_query_set().by_congregation(congregation)
 
 
 class Audit(models.Model):
-    class Meta:
-        ordering = ["send_time"]
 
-    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    congregation = models.ForeignKey(Credential, on_delete=models.CASCADE, related_name="audits")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="audits")
     message = models.TextField(default="", blank=True)
     send_time = models.DateTimeField(default=timezone.now)
 
     objects = AuditManager()
+
+    class Meta:
+        ordering = ["-send_time"]

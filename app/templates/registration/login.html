@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n widget_tweaks placeholder static %}
 
 {% block title %}{% trans 'Log in' %}{% endblock %}
 
@@ -8,23 +8,36 @@
 {% endblock %}
 
 {% block content %}
-    <div class="h2">{% trans 'Log in' %}</div>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="fieldWrapper">
-                {{ field.errors }}
-                <div>{{ field.label_tag }}</div>
-                <div>{{ field }}</div>
-                {% if field.help_text %}
-                    <p class="help">{{ field.help_text|safe }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button class="button primary mt-4" type="submit">{% trans 'Log in' %}</button>
-    </form>
-
-    <div>
-        <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+    <div class="max-w-sm mx-auto px-6 py-8 mt-10 rounded overflow-hidden shadow-lg dark:bg-gray-800 dark:shadow-gray-800">
+        <div class="w-full relative">
+            <div class="mb-4 text-xl text-center">{% trans 'Log in' %}</div>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <div class="text-red-500 mb-2">
+                            {{ field.errors }}
+                        </div>
+                        <div class="relative">
+                            {{ field|placeholder:field.label|attr:"class:dark:bg-black mb-2 w-full" }}
+                            {% include 'registration/password_field.html' %}
+                        </div>
+                        {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="mt-4 text-center underline text-blue-500 hover:text-blue-400">
+                    <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+                </div>
+                <button class="w-full py-2 mt-4 bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center uppercase text-white font-bold py-2 px-4 rounded mb-2 cursor-default"
+                        type="submit"><span>{% include 'icons/lock.html' %}</span><span
+                        class="ltr:ml-2 rtl:mr-2 uppercase">{% trans 'Log in' %}</span></button>
+            </form>
+        </div>
     </div>
+{% endblock %}
+
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/TogglePasswordVisibility._hs' %}"></script>
 {% endblock %}

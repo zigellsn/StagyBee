@@ -1,148 +1,84 @@
 {% extends 'console/choose_console_base.html' %}
-{% load i18n qr_code %}
+{% load i18n static %}
 
 {% block content %}
     {% get_current_language as LANGUAGE_CODE %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
     <div>
-        <span class="display1">{{ credential.display_name }}</span>
+        <span class="text-2xl">{{ credential }}</span>
     </div>
-    <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="true" data-show-active="true"
-         data-material="true">
-        <div class="frame active">
-            <div class="inherit-colors heading">{% trans "Stoppuhr" %}</div>
-            <div class="content">
-                <div>
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>
-                                <div>{% trans "Abgelaufen" %}</div>
-                            </th>
-                            <th>
-                                <div>{% trans "Übrig" %}</div>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <div>
-                                    <samp style="font-size:32px" id="stopwatch">00:00:00</samp>
-                                </div>
-                            </th>
-                            <th>
-                                <div>
-                                    <samp style="font-size:32px" id="remaining">00:00:00</samp>
-                                </div>
-                            </th>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pt-4">
-                    <label for="talk_list" class="pt-4">{% trans "Aufgabe" %}</label>
-                    <ul data-role="listview" data-view="list" data-select-node="true"
-                        id="talk_list">
-                    </ul>
-                </div>
-                <div id="custom_talk">
-                    <div class="pt-4">
-                        <label for="talk_name" class="pt-4">{% trans "Titel" %}</label>
-                        <input type="text" data-role="input" data-default-value="{% trans "Titel" %}" id="talk_name">
-                    </div>
-                    <div class="pt-4">
-                        <label for="time" class="pt-4">{% trans "Stoppuhr" %}</label>
-                        <input type="text" data-role="timepicker" data-size="280" data-value="00:00:00"
-                               data-hours="false" id="time"/>
-                    </div>
-                </div>
-                <div class="pt-4">
-                    <a href="#" class="button bg-control" id="submit_time"><span
-                            class="mif-play"></span>{% trans "Start" %}</a>
-                    <a href="#" class="button disabled" id="submit_stop"><span
-                            class="mif-stop"></span>{% trans "Stopp" %}
-                    </a>
-                </div>
+    <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/"></div>
+    <div hx-ext="ws" ws-connect="/ws/{{ LANGUAGE_CODE }}/console/{{ credential.congregation|escape }}/"
+         class="flex flex-col"
+         _="install Accordion">
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t">
+            <button id="acc-1"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-1" aria-expanded="true">
+                <span>{% trans "Stoppuhr" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </button>
+        </div>
+        <div id="content-1"
+             class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
+             role="region" aria-labelledby="acc-1">
+            <div class="pb-4">
+                {% include 'console/fragments/timer.html' %}
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Bildschirmsteuerung" %}</div>
-            <div class="content">
-                <table class="table" style="width:20%">
-                    <tr>
-                        <td>
-                            <button class="button bg-control mif-refresh" id="submit_refresh"></button>
-                        </td>
-                        <td>
-                            <button class="button bg-control"
-                                    id="submit_scrim">{% trans "Bildschirm verdunkeln" %}</button>
-                        </td>
-                        <td>
-                            <div data-role="activity" data-type="simple" id="refresh_activity"></div>
-                        </td>
-                    </tr>
-                </table>
+
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
+            <button id="acc-2"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-2" aria-expanded="false">
+                <span>{% trans "Bildschirmsteuerung" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </button>
+        </div>
+        <div id="content-2" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
+             role="region" aria-labelledby="acc-2" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/scrim_control.html' %}
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Textnachricht" %}</div>
-            <div class="content">
-                <label for="text_message" class="pt-4">{% trans "Textnachricht" %}</label>
-                <textarea data-role="textarea" class="mt-2" id="text_message"></textarea>
-                <div id="messageAcknowledgement" class="pt-4">
-                </div>
-                <div class="pt-4">
-                    <button class="button bg-control" id="submit_text">{% trans "Sende Nachricht" %}</button>
-                </div>
+
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
+            <button id="acc-3"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer "
+                    aria-controls="content-3" aria-expanded="false">
+                <span>{% trans "Textnachricht" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </button>
+        </div>
+        <div id="content-3" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
+             role="region" aria-labelledby="acc-3" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/message.html' %}
             </div>
         </div>
-        <div class="frame">
-            <div class="inherit-colors heading">{% trans "Livedaten" %}</div>
-            <div class="content">
-                <table style="width: 100%;">
-                    <tbody>
-                    <tr>
-                        <td style="width: 75%; vertical-align: top; border-right: 1px solid;">
-                            <div id="sumListeners">
-                                {% trans "Meldungen:" as sum_request_to_speak %}
-                                {% trans "Zuhörer gesamt:" as sum_listeners %}
-                                <table class="text-leader2" style="width: 25%">
-                                    <caption style="border-bottom: 1px solid"><span class="text-leader">{% trans "Status" %}</span></caption>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{ sum_listeners }}</td>
-                                        <td><span id="sumListenersNumber"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ sum_request_to_speak }}&nbsp</td>
-                                        <td><span id="sumRequestToSpeakNumber"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{% trans "Seit" %}</td>
-                                        <td>{{ credential.since|time:"TIME_FORMAT" }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td style="text-align: center; vertical-align: center; width: 25%">
-                            <div>
-                                {% if dark or dark == None %}{% qr_from_text timer_url dark_color="white" size=12 version=6 %}{% else %}
-                                    {% qr_from_text timer_url dark_color="black" size=12 version=6 %}{% endif %}</div>
-                            <div>{% trans "Link zur Stoppuhrsession" %}</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+
+        <div role="heading" class="mt-4 dark:bg-gray-800 shadow-lg dark:shadow-gray-800 rounded-t rounded-b">
+            <button id="acc-4"
+                    class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
+                    aria-controls="content-4" aria-expanded="false">
+                <span>{% trans "Livedaten" %}</span>
+                {% include 'icons/chevron_down.html' %}
+            </button>
+        </div>
+        <div id="content-4" class="dark:bg-gray-800 shadow-lg dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
+             role="region" aria-labelledby="acc-4" hidden>
+            <div class="pb-4">
+                {% include 'console/fragments/status.html' %}
             </div>
         </div>
     </div>
+    <div id="talk"></div>
+    {#    <script type="text/hyperscript">#}
+    {#        socket Timer /ws/{{ LANGUAGE_CODE }}/timer/{{ credential.congregation|escape }}/#}
+    {#        end#}
+    {#    </script>#}
+
 {% endblock %}
 
-{% block body_extra %}
-    {% get_current_language as LANGUAGE_CODE %}
-    <script>
-        StagyBee.main.console_ws('{{ LANGUAGE_CODE|default:"de" }}', '{{ credential.congregation|escape }}');
-        StagyBee.main.timer_ws('{{ credential.congregation|escape }}', false, false);
-        StagyBee.main.stage_ws('{{ credential.congregation|escape }}', {{ credential.show_only_request_to_speak|yesno:"true,false" }});
-    </script>
+{% block _hs_extra %}
+    <script type="text/hyperscript" src="{% static 'stagybee/behavior/Accordion._hs' %}"></script>
 {% endblock %}

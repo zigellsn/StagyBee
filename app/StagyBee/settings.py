@@ -18,12 +18,11 @@ import os
 import sys
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 from environ import environ
 
-# Needed for now when using Python 3.8 on Windows
-if sys.platform == "win32" and sys.version_info.major == 3 and sys.version_info.minor >= 8:
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+from StagyBee.utils import linear_gradient
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -35,6 +34,7 @@ env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
+SHOW_DEBUG_TOOLBAR = DEBUG
 
 try:
     with open(os.path.join(PROJECT_PACKAGE, "regex.json"), encoding="utf-8") as json_file:
@@ -42,28 +42,49 @@ try:
 except FileNotFoundError:
     WB_LANGUAGE_SWITCHER = {}
 
-VERSION = "1.0.0-rc03"
+COLOR_GRADIENT = linear_gradient("#3B82F6", "#EF4444", n=100)
+
+VERSION = "2.0.0-alpha01"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["https://127.0.0.1", "https://localhost"])
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+if DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
         },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-    },
-}
+        "loggers": {
+            "console.workbook.workbook": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "StagyBee.consumers": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "stage.consumers": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "picker.apps": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": False,
+            },
+        },
+    }
 
 # Application definition
 
 INSTALLED_APPS = [
-    "channels",
     "guardian",
     "stage",
     "receiver",
@@ -73,12 +94,15 @@ INSTALLED_APPS = [
     "stopwatch.apps.StopwatchConfig",
     "notification.apps.NotificationConfig",
     "qr_code",
+    "widget_tweaks",
+    "django.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -118,8 +142,11 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
         },
-    },
+    }
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+GUARDIAN_RENDER_403 = True
 
 WSGI_APPLICATION = "StagyBee.wsgi.application"
 
@@ -134,7 +161,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-REDIS_EXPIRATION = env.int("REDIS_EXPIRATION", default=21600)
 EXTRACTOR_TIMEOUT = env.int("EXTRACTOR_TIMEOUT", default=120)
 SHOW_SHUTDOWN_ICON = env.bool("SHOW_SHUTDOWN_ICON", default=True)
 SHOW_LOGIN = env.bool("SHOW_LOGIN", default=True)
@@ -149,7 +175,7 @@ DATABASES = {
     "default": env.db_url(default="sqlite:///db.sqlite3")
 }
 
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -168,7 +194,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = [(x.split(":")[0], _(x.split(":")[1])) for x in env.list("LANGUAGES", default=["de:German", "en:English"])]
 
-LANGUAGE_CODE = "de"
+if not [item for item in LANGUAGES if item[0] == env.str("DEFAULT_LANGUAGE", default="de")]:
+    raise ImproperlyConfigured("Language list does not contain the default language.")
+
+LANGUAGE_CODE = env.str("DEFAULT_LANGUAGE", default="de")
 
 LOCALE_PATHS = (
     str(PROJECT_PACKAGE.joinpath("locale")),
@@ -177,8 +206,6 @@ LOCALE_PATHS = (
 TIME_ZONE = env.str("TIME_ZONE", default="Europe/Berlin")
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
-
-REDIS_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
 USE_I18N = True
 
@@ -195,7 +222,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "files/")
 
 if DEBUG:
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = "abc_change_key"
+    SECRET_KEY = env.str("SECRET_KEY", "django-insecure-qhmmb46a$-j_#%yt0@1enx=mxpercrdbu!sc4^x=a1n_+a!^y5")
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 

@@ -1,0 +1,120 @@
+/*
+ * Copyright 2019-2022 Simon Zigelli
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main {
+    padding-bottom: 20px !important;
+}
+
+.dropdown-menu {
+    @apply opacity-0 invisible absolute;
+}
+
+.dropdown:hover .dropdown-menu {
+    @apply visible opacity-100 transition-opacity duration-300 z-50 text-white pt-1;
+}
+
+.tooltip {
+    @apply opacity-0 invisible absolute cursor-default select-none;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible delay-1000 transition-opacity opacity-100 z-50;
+}
+
+.htmx-settling ul {
+    @apply opacity-0
+}
+
+ul {
+    @apply opacity-100 transition-opacity ease-in duration-300
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+@keyframes request-to-speak-pulse {
+    0% {
+        box-shadow: 0 0 15px 0 rgba(80, 155, 255, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 15px 35px rgba(80, 155, 255, 0);
+    }
+}
+
+.request-to-speak {
+    animation: request-to-speak-pulse 1s infinite;
+}
+
+@keyframes times-up-pulse {
+    0% {
+        text-shadow: 0 0 15px rgba(206, 53, 44, 0.9);
+    }
+
+    100% {
+        text-shadow: 0 0 70px rgba(206, 53, 44, 0);
+    }
+}
+
+.times-up {
+    animation: times-up-pulse 1s infinite;
+    -webkit-text-stroke: 1px black;
+    -webkit-text-fill-color: rgb(206, 53, 44);
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 99999999999999999;
+    cursor: none;
+}
+
+.progress-container {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+[dir="ltr"] .ltr\:.left-progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+[dir="rtl"] .rtl\:.right-progress-bar {
+    float: right;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+[aria-expanded="true"] .icon {
+    @apply rotate-180
+}

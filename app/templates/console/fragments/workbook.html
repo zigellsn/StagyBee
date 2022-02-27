@@ -1,0 +1,10 @@
+{% load i18n %}
+<ul class="p-4">
+    {% for talk in times %}
+        <li class="line" data-caption="{{ talk.2 }}" data-part="{{ talk.0 }}"
+            {% if talk.1 %}data-content="{{ talk.1 }}"{% endif %}
+            {% if talk.3 %}data-directions="{{ talk.3 }}"{% endif %}>{{ talk.2 }}</li>
+    {% empty %}
+        <li>{% trans 'Das Arbeitsheft konnte nicht geladen werden.' %}</li>
+    {% endfor %}
+</ul>

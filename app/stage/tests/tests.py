@@ -27,7 +27,7 @@ class StageViewTests(TestCase):
         create_credential("LE", "abc", "def", "ghi", "The LE", "www.abc.com", False)
         response = self.client.get(reverse("stage:stage", args=("LE",)))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Zuhörer gesamt:")
+        self.assertContains(response, "sum-listeners")
 
     def test_touch(self):
         create_credential("LE", "abc", "def", "ghi", "The LE", "www.abc.com", True)

@@ -1,0 +1,58 @@
+behavior Accordion
+    on htmx:afterSettle
+        set panel to the next <[role=region]/> from the first <[aria-expanded=true]/>
+        if target is in panel then
+            send calc_size to panel
+        end
+    end
+
+	on mousedown(target) from <[role=heading]/>
+		send select to target
+	end
+
+	on touchstart(target) from <[role=heading]/>
+		send select to target
+	end
+
+    on calc_size(target)
+        tell target measure me then
+        	transition the target's height to `${it.scrollHeight}px` over 500ms
+        end
+    end
+
+	on keydown[keyCode==32]
+        if <button:focus/> in <[role=heading]/> then
+		    send select to first <button:focus/>
+		end
+	end
+
+	on keydown[keyCode==13]
+        if <button:focus/> in <[role=heading]/> then
+		    send select to first <button:focus/>
+		end
+    end
+
+    on select(target)
+        set target_header to the closest <[role=heading]/> to the target
+		for header in <[role=heading] /> in me
+			if header == target_header
+				add [@aria-expanded="true"] to the first <button/> in the header
+				remove .rounded-b from the header
+			else
+				add [@aria-expanded="false"] to the first <button/> in the header
+				add .rounded-b to the header
+			end
+		end
+
+        set target_button to the first <button/> in the target_header
+		for panel in <[role=region]/> in me
+		    if panel[@id] != target_button[@aria-controls] then
+		         transition the panel's height to 0 over 500ms
+		         set {hidden: true} on panel
+		    else
+		        set {hidden: false} on panel
+		        send calc_size to panel
+		    end
+		end
+	end
+end

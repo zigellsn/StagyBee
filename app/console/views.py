@@ -12,8 +12,13 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from datetime import datetime
+
 import aiohttp
-from django.http import HttpResponseRedirect
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
@@ -25,9 +30,13 @@ from tenacity import RetryError
 
 from StagyBee.utils import post_request
 from StagyBee.views import set_host, SchemeMixin
+from audit.models import Audit
 from picker.models import Credential, is_active, get_running_since
+from stage.consumers import generate_channel_group_name
+from stopwatch.forms import StopwatchForm
 from .forms import CongregationForm, LanguageForm
 from .models import UserPreferences, KnownClient
+from .workbook.workbook import WorkbookExtractor
 
 
 class StartupView(LoginRequiredMixin, SchemeMixin, View):
@@ -57,11 +66,19 @@ class ChooseConsoleView(LoginRequiredMixin, FormMixin, SchemeMixin, ListView):
         else:
             return "console/choose_console.html"
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response.headers["Cache-Control"] = "no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
 
-class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
+
+class ConsoleView(PermissionRequiredMixin, SchemeMixin, FormMixin, DetailView):
     model = Credential
     return_403 = True
     permission_required = "access_console"
+    form_class = StopwatchForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,6 +97,84 @@ class ConsoleView(PermissionRequiredMixin, SchemeMixin, DetailView):
         congregation = super().get_object(queryset)
         congregation.since = get_running_since(congregation)
         return congregation
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response.headers["Cache-Control"] = "no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
+
+
+class ConsoleActionView(PermissionRequiredMixin, View):
+    return_403 = True
+    permission_required = "access_console"
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        channel_layer = get_channel_layer()
+        congregation_group_name = generate_channel_group_name("console", kwargs.get("pk"))
+        stage_group_name = generate_channel_group_name("message", kwargs.get("pk"))
+        if request.POST.get("action") == "message-send":
+            async_to_sync(channel_layer.group_send)(
+                stage_group_name,
+                {"type": "message.alert", "alert": {"value": request.POST.get("message")}}
+            )
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.wait_for_ack"}
+            )
+            congregation = Credential.objects.get(congregation=kwargs.get("pk"))
+            if congregation is not None:
+                Audit.objects.create_audit(congregation=congregation, message=request.POST.get("message"),
+                                           user=request.user)
+        elif request.POST.get("action") == "message-ack":
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.message", "message": {"message": "ACK"}}
+            )
+        elif request.POST.get("action") == "scrim-toggle":
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.scrim"}
+            )
+        elif request.POST.get("action") == "scrim-refresh":
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.scrim_refresh"}
+            )
+        else:
+            return HttpResponse("", status=404)
+        return HttpResponse("", status=202)
+
+    def get_object(self, queryset=None):
+        return Credential.objects.get(congregation=self.kwargs["pk"])
+
+
+class WorkbookView(LoginRequiredMixin, View):
+
+    async def __call__(self, **kwargs):
+        pass
+
+    @async_to_sync
+    async def get(self, request, *args, **kwargs):
+        workbook_extractor = WorkbookExtractor()
+        if "date" in kwargs and kwargs["date"] != "today":
+            try:
+                date = datetime.strptime(kwargs["date"], "%Y%m%d")
+            except ValueError as e:
+                return HttpResponse(str(e), status=400)
+        else:
+            date = datetime.today()
+        urls = workbook_extractor.create_urls(date, date)
+        times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
+        if times != {}:
+            filter_str = request.GET.get("filter")
+            if filter_str is not None and filter_str == "talks":
+                times = list(filter(lambda item: item[1] > 0, list(times.values())[0]))
+            else:
+                times = list(times.values())[0]
+        return render(request, "console/fragments/workbook.html", {"times": times})
 
 
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):

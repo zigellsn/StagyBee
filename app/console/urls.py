@@ -14,15 +14,19 @@
 
 from django.urls import path, include
 
-from .views import ConsoleView, ChooseConsoleView, KnownClientReboot, KnownClientShutdown
+from .views import ConsoleView, ChooseConsoleView, KnownClientReboot, KnownClientShutdown, WorkbookView, \
+    ConsoleActionView
 
 app_name = "console"
 
 urlpatterns = [
     path("", ChooseConsoleView.as_view(), name="choose_console"),
     path("<str:pk>/", ConsoleView.as_view(), name="console"),
+    path("<str:pk>/action/", ConsoleActionView.as_view(), name="action"),
+    path("workbook/<str:date>/", WorkbookView.as_view(), name="workbook"),
     path("audit/", include("audit.urls")),
     path("timer/", include("stopwatch.urls")),
     path("knownclient/shutdown/<int:pk>/", KnownClientShutdown.as_view(), name="known_client_shutdown"),
     path("knownclient/reboot/<int:pk>/", KnownClientReboot.as_view(), name="known_client_reboot"),
 ]
+

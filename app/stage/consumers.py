@@ -14,20 +14,24 @@
 
 import asyncio
 import json
+import logging
 import re
 from contextlib import suppress
 
 import aiohttp
+from channels.consumer import SyncConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.utils import translation
 from tenacity import retry, wait_random_exponential, stop_after_delay, retry_if_exception_type, RetryError
 
-from StagyBee.consumers import AsyncJsonRedisWebsocketConsumer
+from StagyBee.consumers import AsyncSSEConsumer
 from picker.models import Credential
-
-GLOBAL_TIMEOUT = {}
+from stage.timeout import GLOBAL_TIMEOUT, Timeout
 
 
 def generate_channel_group_name(function, congregation):
@@ -35,7 +39,16 @@ def generate_channel_group_name(function, congregation):
     return f"congregation.{function}.{con}"
 
 
-class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
+class ExtractorConsumer(AsyncWebsocketConsumer):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.task = None
+        self.extractor_url = ""
+        self.show_only_request_to_speak = False
+        self.sort_by_family_name = True
+        self.family_name_first = True
+        self.logger = logging.getLogger(__name__)
 
     async def connect(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -43,66 +56,130 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             generate_channel_group_name("stage", congregation),
             self.channel_name
         )
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
         await self.accept()
-        timeout = GLOBAL_TIMEOUT.get(congregation)
-        if timeout is not None:
-            timeout.cancel()
-            GLOBAL_TIMEOUT.pop(congregation)
-        await self.__connect_to_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
+        context = {"connecting": True}
+        await self.build_events(context)
+        if congregation not in GLOBAL_TIMEOUT:
+            GLOBAL_TIMEOUT[congregation] = Timeout()
+        else:
+            if "role" not in self.scope["url_route"]["kwargs"]:
+                GLOBAL_TIMEOUT.get(congregation).count = GLOBAL_TIMEOUT.get(congregation).count + 1
+        congregation_dataset = await database_sync_to_async(Credential.objects.get)(congregation=congregation)
+        if congregation_dataset.sort_order == Credential.SortOrder.FAMILY_NAME:
+            self.sort_by_family_name = True
+        else:
+            self.sort_by_family_name = False
+        if congregation_dataset.name_order == Credential.NameOrder.FAMILY_NAME:
+            self.family_name_first = True
+        else:
+            self.family_name_first = False
+        await self.build_events(context)
 
     async def disconnect(self, close_code):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
         if self.task is not None and not self.task.done():
             self.task.cancel()
             with suppress(asyncio.CancelledError):
                 await self.task
-        await self.channel_layer.group_discard(
-            generate_channel_group_name("stage", self.scope["url_route"]["kwargs"]["congregation"]),
-            self.channel_name
-        )
-        await self.__disconnect_from_extractor(self.__get_redis_key(self.scope["url_route"]["kwargs"]["congregation"]))
+        await self.channel_layer.group_discard(generate_channel_group_name("stage", congregation), self.channel_name)
+        timeout = GLOBAL_TIMEOUT.get(congregation)
+        if timeout is not None and "role" not in self.scope["url_route"]["kwargs"]:
+            timeout.count = timeout.count - 1
+            if timeout.count == 0:
+                timeout.cancel()
+                GLOBAL_TIMEOUT.pop(congregation)
+                await self.__disconnect_from_extractor()
         raise StopConsumer()
+
+    async def extractor_connect(self, _):
+        congregation = self.scope["url_route"]["kwargs"]["congregation"]
+        if "session_id" in self.scope["session"] and self.scope["session"]["session_id"] is not None:
+            self.logger.info(f"Extractor for {congregation} already connected.")
+            return
+        timeout = GLOBAL_TIMEOUT.get(congregation)
+        if timeout is not None:
+            timeout.cancel()
+            if timeout.count <= 2 and "role" not in self.scope["url_route"]["kwargs"]:
+                self.logger.info(f"Trying to connect to extractor for {congregation}...")
+                await self.__connect_to_extractor()
 
     async def extractor_listeners(self, event):
         await self.__restart_waiter()
-        await self.send_json(event["listeners"])
+        new_content = json.loads(event["listeners"])["names"]
+        listener_count = 0
+        request_to_speak_count = 0
+        if self.sort_by_family_name:
+            new_content = sorted(new_content, key=lambda x: (x["familyName"].lower(), x["givenName"].lower()))
+        else:
+            new_content = sorted(new_content, key=lambda x: (x["givenName"].lower(), x["familyName"].lower()))
+        listeners = []
+        for name in new_content:
+            if (self.show_only_request_to_speak and name["requestToSpeak"]) or not self.show_only_request_to_speak:
+                listener_count = listener_count + name["listenerCount"]
+
+                if name["familyName"] == "" and name["givenName"] == "":
+                    continue
+                if name["familyName"] == "":
+                    complete_name = name["givenName"]
+                elif name["givenName"] == "":
+                    complete_name = name["familyName"]
+                else:
+                    if self.family_name_first:
+                        complete_name = f"{name['familyName']}, {name['givenName']}"
+                    else:
+                        complete_name = f"{name['givenName']} {name['familyName']}"
+
+                if name["requestToSpeak"] and not name["speaking"]:
+                    request_to_speak_count = request_to_speak_count + 1
+
+                listeners.append({"listener_type": name["listenerType"], "speaking": name["speaking"],
+                                  "request_to_speak": name["requestToSpeak"], "complete_name": complete_name,
+                                  "listener_count": name["listenerCount"]})
+
+        context = {"listener_count": listener_count, "request_to_speak_count": request_to_speak_count,
+                   "listeners": listeners}
+        await self.build_events(context)
+
+    async def build_events(self, context=None):
+        event = render_to_string(template_name="stage/events/sum_listeners.html", context=context)
+        await self.send(text_data=event)
+        event = render_to_string(template_name="stage/events/activity.html", context=context)
+        await self.send(text_data=event)
+        event = render_to_string(template_name="stage/events/listeners.html", context=context)
+        await self.send(text_data=event)
 
     async def extractor_status(self, event):
-        await self.send_json(event["status"])
-
-    async def encode_json(self, content):
-        if type(content) == bytes:
-            new_content = json.loads(content)
-            if type(new_content) == dict:
-                return json.dumps(new_content)
-            return new_content
+        if not json.loads(event["status"])["running"]:
+            context = {"connecting": True}
+            await self.build_events(context)
         else:
-            return await super().encode_json(content=content)
+            context = {"listener_count": 0, "request_to_speak_count": 0}
+            await self.build_events(context)
 
     async def __waiter(self):
         await asyncio.sleep(settings.EXTRACTOR_TIMEOUT)
         reachable = await self.__get_extractor_status()
         if not reachable:
-            await self.send_json("extractor_not_available")
+            context = {"error": True}
+            await self.build_events(context)
 
     async def __restart_waiter(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         timeout = GLOBAL_TIMEOUT.get(congregation)
         if timeout is not None:
             timeout.cancel()
-        GLOBAL_TIMEOUT[congregation] = asyncio.create_task(self.__waiter())
-
-    @staticmethod
-    def __get_redis_key(congregation):
-        return f"stagybee:session:{generate_channel_group_name('stage', congregation)}"
+        GLOBAL_TIMEOUT[congregation].set_timeout(self.__waiter())
 
     async def __get_extractor_status(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
-        if "session_id" in self.scope["url_route"]["kwargs"] and \
-                self.scope["url_route"]["kwargs"]["session_id"] is not None:
-            url = f"{self.extractor_url}api/status/{self.scope['url_route']['kwargs']['session_id']}"
+        self.show_only_request_to_speak = credentials.show_only_request_to_speak
+        if "session_id" in self.scope["session"] and self.scope["session"]["session_id"] is not None:
+            url = f"{self.extractor_url}api/status/{self.scope['session']['session_id']}"
             try:
                 self.task = asyncio.create_task(
                     self.__get_request(url))
@@ -114,11 +191,14 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             else:
                 return True
 
-    async def __connect_to_extractor(self, redis_key):
+    async def __connect_to_extractor(self):
+        context = {"connecting": True}
+        await self.build_events(context)
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
+        self.show_only_request_to_speak = credentials.show_only_request_to_speak
         self.extractor_url = credentials.extractor_url
         if not self.extractor_url.endswith("/"):
             self.extractor_url = self.extractor_url + "/"
@@ -141,41 +221,43 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
             self.task = asyncio.create_task(self.__post_request(self.extractor_url + "api/subscribe", payload))
             await self.task
         except aiohttp.ClientError:
-            await self.send_json("extractor_not_available")
+            context = {"error": True}
+            await self.build_events(context)
         except RetryError:
-            await self.send_json("extractor_not_available")
+            context = {"error": True}
+            await self.build_events(context)
         else:
             success = self.task.result()["success"]
             if success:
-                self.scope["url_route"]["kwargs"]["session_id"] = self.task.result()["sessionId"]
-                await self.send_json("subscribed_to_extractor")
-            await self._redis.connect_uri(redis_key, self.channel_name)
+                self.scope["session"]["session_id"] = self.task.result()["sessionId"]
+                timeout = GLOBAL_TIMEOUT.get(credentials.congregation)
+                if timeout is not None:
+                    timeout.established = True
+                context = {"connecting": None, "error": None, "listener_count": 0, "request_to_speak_count": 0}
+                await self.build_events(context)
 
-    async def __disconnect_from_extractor(self, redis_key):
+    async def __disconnect_from_extractor(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
-        if "session_id" in self.scope["url_route"]["kwargs"] and \
-                self.scope["url_route"]["kwargs"]["session_id"] is not None:
-            count = await self._redis.disconnect_uri(redis_key, self.channel_name)
-            self.logger.info(f"Extractor STATUS {count} listeners")
-            if count != 0 and count is not None:
-                return
+        if "session_id" in self.scope["session"] and self.scope["session"]["session_id"] is not None:
             try:
                 self.task = asyncio.create_task(
                     self.__delete_request(
-                        f"{self.extractor_url}api/unsubscribe/{self.scope['url_route']['kwargs']['session_id']}"))
+                        f"{self.extractor_url}api/unsubscribe/{self.scope['session']['session_id']}"))
                 await self.task
             except aiohttp.ClientError:
-                await self.send_json("extractor_not_available")
+                context = {"error": True}
+                await self.build_events(context)
             except RetryError:
-                await self.send_json("extractor_not_available")
+                context = {"error": True}
+                await self.build_events(context)
             else:
                 success = self.task.result()["success"]
                 if success:
-                    await self.send_json("unsubscribed_from_extractor")
-                    self.scope["url_route"]["kwargs"]["session_id"] = None
+                    self.scope["session"]["session_id"] = None
+            await self.build_events()
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
            stop=stop_after_delay(15))
@@ -202,42 +284,40 @@ class ExtractorConsumer(AsyncJsonRedisWebsocketConsumer):
                 return await response.json()
 
 
-class ConsoleClientConsumer(AsyncJsonRedisWebsocketConsumer):
+class ExtractorConnect(SyncConsumer):
+    # TODO: Implement worker
+    def test_action(self, message):
+        print(message["data"])
 
-    async def connect(self):
+
+class ExtractorDisconnect(SyncConsumer):
+    # TODO: Implement worker
+    def test_action(self, message):
+        print(message["data"])
+
+
+class MessageConsumer(AsyncSSEConsumer):
+
+    async def handle(self, body):
+        await super().add_headers()
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         await self.channel_layer.group_add(
-            generate_channel_group_name("console", congregation),
+            generate_channel_group_name("message", congregation),
             self.channel_name
         )
-        await self.accept()
-        await self._redis.connect_uri(self.__get_redis_key(congregation), self.channel_name)
+        language = self.scope["url_route"]["kwargs"]["language"]
+        translation.activate(language)
+        await self.send_body("".encode("utf-8"), more_body=True)
 
-    async def disconnect(self, close_code):
-        congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        congregation_channel_group = generate_channel_group_name("console", congregation)
-        count = await self._redis.disconnect_uri(self.__get_redis_key(congregation), self.channel_name)
-        self.logger.info(f"Extractor STATUS {count} listeners")
-        if count == 0:
-            await self.channel_layer.group_send(congregation_channel_group, {"type": "exit"})
-        await self.channel_layer.group_discard(congregation_channel_group, self.channel_name)
+    async def disconnect(self):
+        await self.channel_layer.group_discard(
+            generate_channel_group_name("message", self.scope["url_route"]["kwargs"]["congregation"]),
+            self.channel_name
+        )
         raise StopConsumer()
 
-    async def receive_json(self, text_data, **kwargs):
-        congregation = self.scope["url_route"]["kwargs"]["congregation"]
-        congregation_channel_group = generate_channel_group_name("console", congregation)
-        if "message" in text_data:
-            await self.channel_layer.group_send(congregation_channel_group, {"type": "message", "message": text_data})
-
-    async def alert(self, event):
-        await self.send_json(event)
-
-    async def timer(self, event):
-        await self.send_json(event)
-
-    async def message(self, event):
-        await self.send_json(event)
-
-    @staticmethod
-    def __get_redis_key(congregation):
-        return f"stagybee:console:{generate_channel_group_name('console', congregation)}"
+    async def message_alert(self, event):
+        message = event["alert"]["value"]
+        message = message.replace("\n", "<br>")
+        await self.send_body(f'event: message_alert\ndata: {message}\n\n'.encode("utf-8"),
+                             more_body=True)

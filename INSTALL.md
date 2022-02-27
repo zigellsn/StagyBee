@@ -1,6 +1,6 @@
 # Installation
 
-Install [Python 3.8](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
+Install [Python 3.10](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Install and configure [Redis](https://redis.io/) if necessary.
 Install and configure [Node.js](https://nodejs.org/) if necessary.
 If you don't want to use the standard SQLite database, you will need something like [PostgreSQL](https://www.postgresql.org/).
@@ -33,7 +33,6 @@ Copy the generated files to ./StagyBee/static/
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/dev.txt
-export DJANGO_SETTINGS_MODULE=StagyBee.settings.dev
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic

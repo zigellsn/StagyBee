@@ -13,62 +13,57 @@
 #  limitations under the License.
 
 import logging
-from datetime import datetime
 
-import aioredis
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.conf import settings
-
-
-class RedisConnector(object):
-
-    def __init__(self):
-        self._host = None
-        if "CONFIG" in settings.CHANNEL_LAYERS["default"]:
-            self._host = settings.CHANNEL_LAYERS["default"]["CONFIG"]["hosts"][0]
-
-    async def redis_connect(self):
-        if self._host is not None:
-            return await aioredis.create_redis(self._host)
-
-    @staticmethod
-    async def redis_disconnect(redis):
-        redis.close()
-        await redis.wait_closed()
-
-    async def connect_uri(self, group, channel_name):
-        redis = await self.redis_connect()
-        if redis is None:
-            return
-        await redis.sadd(group, channel_name)
-        members = await redis.smembers(group)
-        with_since = [x for x in members if x.decode("utf-8").startswith("since:")]
-        if not with_since:
-            date = f"since:{datetime.now()}"
-            await redis.sadd(group, date)
-        await redis.expire(group, settings.REDIS_EXPIRATION)
-        await self.redis_disconnect(redis)
-
-    async def disconnect_uri(self, group, channel_name):
-        redis = await self.redis_connect()
-        if redis is None:
-            return
-        await redis.srem(group, channel_name)
-        count = await redis.scard(group)
-        if count == 1:
-            members = await redis.smembers(group)
-            await redis.srem(group, members[0])
-            count = count - 1
-        await self.redis_disconnect(redis)
-        return count
+from channels.exceptions import StopConsumer
+from channels.generic.http import AsyncHttpConsumer
+from django.template.loader import render_to_string
 
 
-class AsyncJsonRedisWebsocketConsumer(AsyncJsonWebsocketConsumer):
+class AsyncSSEConsumer(AsyncHttpConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.logger = logging.getLogger(__name__)
-        self._redis = RedisConnector()
+        self.keepalive = False
 
-    def set_redis(self, redis):
-        self._redis = redis
+    async def add_headers(self):
+        await self.send_headers(headers=[
+            (b"Cache-Control", b"no-cache"),
+            (b"Content-Type", b"text/event-stream"),
+            (b"Transfer-Encoding", b"chunked"),
+        ])
+
+    async def send_body(self, body, *, more_body=False):
+        if more_body:
+            self.keepalive = True
+        return await super().send_body(body, more_body=more_body)
+
+    async def http_request(self, message):
+        if "body" in message:
+            self.body.append(message["body"])
+        if not message.get("more_body"):
+            try:
+                await self.handle(b"".join(self.body))
+            finally:
+                if not self.keepalive:
+                    await self.disconnect()
+                    raise StopConsumer()
+
+    @staticmethod
+    def append_event(name, template_name=None, context=None, using=None, response=""):
+        if template_name is not None:
+            template = render_to_string(template_name=template_name, context=context, using=using).replace("\n", "")
+        else:
+            template = ""
+        event = f"event: {name}\ndata: {template}\n\n"
+        return f"{response}{event}"
+
+    def handle(self, body):
+        """
+        Receives the request body as a bytestring. Response may be composed
+        using the ``self.send*`` methods; the return value of this method is
+        thrown away.
+        """
+        raise NotImplementedError(
+            "Subclasses of AsyncHttpConsumer must provide a handle() method."
+        )

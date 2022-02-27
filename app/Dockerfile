@@ -1,11 +1,13 @@
-FROM node:15-slim AS build
+FROM node:16-slim AS build
 
-ENV RUN_MODE=development
+ENV NODE_ENV=development
 
 COPY . .
 
 RUN npm install && \
-    npm run build
+    npm run build && \
+    npm run css && \
+    rm -rf node_modules
 
 FROM stagybee/python-base:slim
 

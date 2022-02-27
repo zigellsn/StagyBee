@@ -14,9 +14,17 @@
 
 from django.urls import re_path
 
-from stage.consumers import ExtractorConsumer, ConsoleClientConsumer
+from stage.consumers import ExtractorConsumer, MessageConsumer, ExtractorConnect, ExtractorDisconnect
 
 websocket_urlpatterns = [
-    re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi()),
-    re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", ConsoleClientConsumer.as_asgi()),
+    re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi()),
+    re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/(?P<role>[^/]+)/$", ExtractorConsumer.as_asgi())
 ]
+http_urlpatterns = [
+    re_path(r"^ws/(?P<language>[^/]+)/message/(?P<congregation>[^/]+)/$", MessageConsumer.as_asgi())
+]
+
+workers = {
+    "extractor-connect": ExtractorConnect.as_asgi(),
+    "extractor-disconnect": ExtractorDisconnect.as_asgi(),
+}

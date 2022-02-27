@@ -1,0 +1,11 @@
+{% extends 'base_header.html' %}
+{% load i18n %}
+
+{% block header_title %}StagyBee{% endblock %}
+
+{% block header_link %}{% url 'picker:picker' %}{% endblock %}
+
+{% block header_functions %}
+    {% include "menu/scheme.html" %}
+    {% include "menu/language.html" %}
+{% endblock %}

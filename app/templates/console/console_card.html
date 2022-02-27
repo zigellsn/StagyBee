@@ -1,0 +1,66 @@
+{% load i18n %}
+<div>
+    <div class="max-w-sm rounded-t-md overflow-hidden shadow-lg dark:shadow-gray-800 mx-4">
+        <div class="flex flex-col {% if congregation.active == True %}bg-blue-500{% else %}bg-gray-300{% endif %}">
+            <table class="table-auto flex flex-row px-6 pt-3 pb-2 w-full">
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        <div class="ltr:mr-5 rtl:ml-5" style="transform: scale(2.0);">
+                            {% if congregation.active == True %}{% include 'icons/star.html' %}{% else %}
+                                {% include 'icons/star_outline.html' %}{% endif %}
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <div class="w-64 whitespace-nowrap text-ellipsis overflow-hidden font-bold text-xl mt-1 mb-2">{{ congregation }}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="px-6 pb-4 text-base">
+                {% if congregation.since != None %}
+                    {% blocktrans with since=congregation.since|time:"TIME_FORMAT" %}Seit&nbsp;
+                        {{ since }}&nbsp;Uhr{% endblocktrans %}
+                {% else %}
+                    {% trans "Nicht eingewählt" %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="flex flex-col w-full px-6 pt-4 pb-2 rounded-b-md shadow-lg dark:bg-gray-800 dark:shadow-gray-800">
+            {% if congregation.active == True %}
+                {% if "access_console" in congregation_perms %}
+                    <a class="flex w-full cursor-default" href="{% url 'console:console' congregation.congregation %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                            <span class="uppercase">{% trans "Zur Console..." %}</span>
+                        </div>
+                    </a>
+                {% endif %}
+                {% if "access_stopwatch" in congregation_perms %}
+                    <a class="flex w-full cursor-default"
+                       href="{% url 'console:stopwatch:timer' congregation.congregation %}">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                            <span class="uppercase">{% trans "Zur Stoppuhr..." %}</span>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% if "access_stopwatch" in congregation_perms and congregation.active == False %}
+                {% now "Y" as year %}
+                {% now "W" as week %}
+                <a class="flex w-full cursor-default"
+                   href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <span class="uppercase">{% trans "Zum Archiv..." %}</span>
+                    </div>
+                </a>
+            {% endif %}
+            {% if perms.audit.view_audit and "access_audit_log" in congregation_perms %}
+                <a class="flex w-full cursor-default" href="{% url 'console:audit:audit' congregation.congregation %}">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <span class="uppercase">{% trans "Zum Audit-Log..." %}</span>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

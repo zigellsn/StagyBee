@@ -1,16 +1,10 @@
 {% load i18n notification %}
 {% if object_list %}
-
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_current_language_bidi as LANGUAGE_BIDI %}
-    <div data-role="panel">
-        <div class="text-leader fg-control ml-4 mr-4">{% trans "Neue Informationen" %}</div>
-        <div {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} data-role="accordion" data-one-frame="false"
-             data-show-active="true"
-             data-material="true">
-            {% for notification in object_list %}
-                {% notification notification %}
-            {% endfor %}
-        </div>
+    <div class="container mx-auto flex flex-col"
+         _="install Accordion">
+        <div class="text-lg mx-4">{% trans "Neue Informationen" %}</div>
+        {% for notification in object_list %}
+            {% notification notification forloop.counter0 %}
+        {% endfor %}
     </div>
 {% endif %}

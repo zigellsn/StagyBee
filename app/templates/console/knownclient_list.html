@@ -1,41 +1,68 @@
 {% load i18n %}
 
 {% get_current_language as LANGUAGE_CODE %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
-<table class="table">
+<table class="table-auto w-full">
     <thead>
     <tr>
-        <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Alias Name" %}</th>
-        <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Client URL" %}</th>
-        <th class="fg-control {% if LANGUAGE_BIDI %}text-right{% endif %}">{% trans "Aktionen" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/2 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Alias Name" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/4 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Client URL" %}</th>
+        <th class="px-5 py-3 border-b-2 w-1/4 text-center text-xs font-semibold uppercase tracking-wider">{% trans "Aktionen" %}</th>
     </tr>
     </thead>
     <tbody>
     {% for knownclient in object_list %}
         <tr>
-            <td>
+            <td class="px-5 py-5 text-sm w-1/2 text-center">
                 <div>{{ knownclient.alias }}</div>
             </td>
-            <td>
+            <td class="px-5 py-5 text-sm w-1/4 text-center">
                 <div>{{ knownclient.uri }}</div>
             </td>
-            <td>
-                <a href="#"
-                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Herunterfahren" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_shutdown' knownclient.id %}');">
-                    <div class="button primary"><span class="mif-switch"></span>&nbsp;{% trans "Herunterfahren" %}
-                    </div>
-                </a>
-                <a href="#"
-                   onclick="StagyBee.main.shutdownDialogActions('{% trans "Neu starten" %}&nbsp;({{ knownclient.alias }})', '{% url 'console:known_client_reboot' knownclient.id %}');">
-                    <div class="button primary"><span class="mif-refresh"></span>&nbsp;{% trans "Neu starten" %}
-                    </div>
-                </a>
+            <td class="px-5 py-5 text-sm w-1/4">
+                <div class="flex w-full cursor-default">
+                    <button
+                            hx-trigger="confirmed"
+                            hx-get="{% url 'console:known_client_shutdown' knownclient.id %}"
+                            hx-swap="afterend"
+                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2"
+                            _="on click call Swal.fire({
+                            title: '{% trans "Herunterfahren" %}',
+                            text: '{{ knownclient.alias }}',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3b82f6'
+                            })
+                          if result.isConfirmed
+                            trigger confirmed
+                          end">
+                        <span>{% include 'icons/shutdown.html' %}</span><span
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Herunterfahren" %}</span>
+                    </button>
+                </div>
+                <div class="flex w-full cursor-default">
+                    <button
+                            hx-trigger="confirmed"
+                            hx-get="{% url 'console:known_client_reboot' knownclient.id %}"
+                            hx-swap="afterend"
+                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2"
+                            _="on click call Swal.fire({
+                            title: '{% trans "Neu starten" %}',
+                            text: '{{ knownclient.alias }}',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3b82f6'
+                            })
+                          if result.isConfirmed
+                            trigger confirmed
+                          end">
+                        <span>{% include 'icons/refresh.html' %}</span><span
+                            class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Neu starten" %}</span>
+                    </button>
+                </div>
             </td>
         </tr>
     {% empty %}
         <tr>
-            <td colspan="3">
-                <div class="p_title text-center">{% trans "Keine Einträge vorhanden" %}</div>
+            <td class="px-5 py-5 text-sm w-full" colspan="3">
+                <div class="text-lg text-center">{% trans "Keine Einträge vorhanden" %}</div>
             </td>
         </tr>
     {% endfor %}

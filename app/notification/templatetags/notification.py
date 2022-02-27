@@ -22,13 +22,13 @@ register = template.Library()
 
 @register.inclusion_tag("notification/notification_list.html")
 def notifications():
-    notification_list = Notification.objects.by_state(locale=[get_language()])
+    notification_list = Notification.objects.by_state(show_in_locale=[get_language()])
     return {"object_list": notification_list}
 
 
 @register.inclusion_tag("notification/notification.html")
-def notification(notification_object):
-    return {"object": notification_object}
+def notification(notification_object, index=0):
+    return {"object": notification_object, "index": index}
 
 
 @register.inclusion_tag("notification/notification_maintain_list.html")

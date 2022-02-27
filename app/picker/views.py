@@ -41,7 +41,7 @@ class PickerView(SchemeMixin, ListView):
         context["version"] = settings.VERSION
         ip = get_client_ip(self.request)
         client = KnownClient.objects.filter(uri__contains=ip)
-        if len(client) == 1:
+        if client.count() == 1:
             context["shutdown_icon"] = settings.SHOW_SHUTDOWN_ICON
         return context
 
@@ -52,7 +52,7 @@ class ShutdownView(View):
     def get(request):
         ip = get_client_ip(request)
         client = KnownClient.objects.filter(uri__contains=ip)
-        if len(client) == 1:
+        if client.count() == 1:
             try:
                 post_request(client[0].uri + "/shutdown", payload=client[0].token, certificate=client[0].cert_file)
             except aiohttp.ClientError:
@@ -71,7 +71,7 @@ class RebootView(View):
     def get(request):
         ip = get_client_ip(request)
         client = KnownClient.objects.filter(uri__contains=ip)
-        if len(client) == 1:
+        if client.count() == 1:
             try:
                 post_request(client[0].uri + "/reboot", payload=client[0].token, certificate=client[0].cert_file)
             except aiohttp.ClientError:

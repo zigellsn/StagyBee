@@ -16,11 +16,12 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from StagyBee.views import SchemeMixin
 from .forms import NotificationForm
 from .models import Notification
 
 
-class NotificationCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class NotificationCreate(LoginRequiredMixin, SchemeMixin, UserPassesTestMixin, CreateView):
     model = Notification
     form_class = NotificationForm
     success_url = reverse_lazy("settings")
@@ -34,7 +35,7 @@ class NotificationCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return self.request.user.is_superuser
 
 
-class NotificationUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class NotificationUpdate(LoginRequiredMixin, SchemeMixin, UserPassesTestMixin, UpdateView):
     model = Notification
     form_class = NotificationForm
     success_url = reverse_lazy("settings")
@@ -48,7 +49,7 @@ class NotificationUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user.is_superuser
 
 
-class NotificationDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class NotificationDelete(LoginRequiredMixin, SchemeMixin, UserPassesTestMixin, DeleteView):
     model = Notification
     success_url = reverse_lazy("settings")
 

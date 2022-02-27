@@ -1,35 +1,18 @@
-{% load i18n %}
-{% get_current_language_bidi as LANGUAGE_BIDI %}
-<header class="app-bar pr-1-sx pl-1-sx pr-4-md pl-4-md" data-role="appbar" data-role-appbar="true">
-    {% if credential.touch %}
-        <a class="brand order-1" onclick="StagyBee.main.RedirectPage('frame', 'https://jwconf.org/index.php?logout');"
-           href="{% url 'picker:picker' %}">
-            {% if LANGUAGE_BIDI %}
-                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
-            {% else %}
-                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
-            {% endif %}
-        </a>
-    {% else %}
-        <a class="brand order-1" href="{% url 'picker:picker' %}">
-            {% if LANGUAGE_BIDI %}
-                <span class="mif-arrow-right mif-4x" style="margin-left: 10px;"></span>
-            {% else %}
-                <span class="mif-arrow-left mif-4x" style="margin-left: 10px;"></span>
-            {% endif %}
-        </a>
-    {% endif %}
+<header class="bg-blue-500 dark:bg-black">
+    <nav class="flex justify-between w-full text-white px-9">
+        <div class="py-5 flex w-full items-center">
+            <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
+                _="on click go back {% if credential.touch %}go back{% endif %}">
+                {% include 'icons/left.html' %}
+            </div>
+            <div class="flex items-center font-semibold tracking-tight text-xl ltr:ml-2 rtl:mr-2">
+                {% if not credential.touch %}{{ credential }}{% endif %}</div>
+        </div>
 
-    {% if not credential.touch %}
-        <span class="text-leader pr-1-sx pl-1-sx pr-4-md pl-4-md order-2">{{ credential.display_name }}</span>
-        {% if LANGUAGE_BIDI %}
-            <div class="app-bar-container order-3 mr-auto">
-        {% else %}
-            <div class="app-bar-container order-3 ml-auto">
-        {% endif %}
-    {% block header_functions %}
-    {% endblock %}
-    <samp class="text-leader" id="currentTime"></samp>
-    </div>
-    {% endif %}
+        <div class="flex items-center font-semibold font-heading">
+            {% block header_functions %}
+            {% endblock %}
+            {% include "menu/clock.html" %}
+        </div>
+    </nav>
 </header>

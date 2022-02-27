@@ -16,6 +16,8 @@ import socket
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.generic.base import ContextMixin, View
 
 from console.models import UserPreferences
@@ -26,12 +28,15 @@ class SchemeMixin(ContextMixin):
     @staticmethod
     def get_scheme(request):
         if request.user.is_authenticated:
-            try:
-                preferences = UserPreferences.objects.get(user=request.user)
-                dark = preferences.dark_mode
-            except UserPreferences.DoesNotExist:
-                UserPreferences.objects.create(user=request.user, dark_mode=True)
-                dark = True
+            if "dark" not in request.session:
+                try:
+                    preferences = UserPreferences.objects.get(user=request.user)
+                    dark = preferences.dark_mode
+                except UserPreferences.DoesNotExist:
+                    UserPreferences.objects.create(user=request.user, dark_mode=True)
+                    dark = True
+            else:
+                dark = request.session["dark"]
         else:
             if "dark" in request.session:
                 dark = request.session["dark"]
@@ -50,7 +55,11 @@ class SchemeView(View):
 
     def dispatch(self, request, *args, **kwargs):
         dark = SchemeMixin.get_scheme(request)
-        return HttpResponse(dark, status=200)
+        if dark:
+            response = "dark"
+        else:
+            response = ""
+        return HttpResponse(response, status=200)
 
 
 class ToggleSchemeView(View):
@@ -59,7 +68,10 @@ class ToggleSchemeView(View):
         if request.user.is_authenticated:
             try:
                 preferences = UserPreferences.objects.get(user=request.user)
-                preferences.dark_mode = not preferences.dark_mode
+                if "dark" not in request.session:
+                    preferences.dark_mode = not preferences.dark_mode
+                else:
+                    preferences.dark_mode = not request.session["dark"]
                 preferences.save()
                 request.session["dark"] = preferences.dark_mode
             except UserPreferences.DoesNotExist:
@@ -70,7 +82,12 @@ class ToggleSchemeView(View):
                 request.session["dark"] = True
             else:
                 request.session["dark"] = not request.session["dark"]
-        return HttpResponse(status=200)
+        if request.session["dark"]:
+            response = render_to_string("menu/dark.html", request=request)
+        else:
+            response = render_to_string("menu/light.html", request=request)
+
+        return HttpResponse(content=response, status=200)
 
 
 def set_host(request, context):

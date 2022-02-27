@@ -20,5 +20,11 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def translate_url(context, lang_code):
-    path = context.get('request').get_full_path()
-    return django_translate_url(path, lang_code)
+    request = context.get("request")
+    # If ALLOWED_HOSTS is not configured correctly, request may be None.
+    # This turns HTTP 500 into HTTP 400:
+    if request is None:
+        return ""
+    else:
+        path = request.get_full_path()
+        return django_translate_url(path, lang_code)
