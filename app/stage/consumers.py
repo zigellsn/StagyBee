@@ -60,7 +60,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         translation.activate(language)
         await self.accept()
         context = {"connecting": True}
-        event = await self.build_events(context)
+        await self.build_events(context)
         if congregation not in GLOBAL_TIMEOUT:
             GLOBAL_TIMEOUT[congregation] = Timeout()
         else:
@@ -75,7 +75,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             self.family_name_first = True
         else:
             self.family_name_first = False
-        await self.send(text_data=event)
+        await self.build_events(context)
 
     async def disconnect(self, close_code):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
