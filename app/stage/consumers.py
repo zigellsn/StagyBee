@@ -140,8 +140,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
 
         context = {"listener_count": listener_count, "request_to_speak_count": request_to_speak_count,
                    "listeners": listeners}
-        event = await self.build_events(context)
-        await self.send(text_data=event)
+        await self.build_events(context)
 
     async def build_events(self, context=None):
         event = render_to_string(template_name="stage/events/sum_listeners.html", context=context)
@@ -154,20 +153,17 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
     async def extractor_status(self, event):
         if not json.loads(event["status"])["running"]:
             context = {"connecting": True}
-            event = await self.build_events(context)
-            await self.send(text_data=event)
+            await self.build_events(context)
         else:
             context = {"listener_count": 0, "request_to_speak_count": 0}
-            event = await self.build_events(context)
-            await self.send(text_data=event)
+            await self.build_events(context)
 
     async def __waiter(self):
         await asyncio.sleep(settings.EXTRACTOR_TIMEOUT)
         reachable = await self.__get_extractor_status()
         if not reachable:
             context = {"error": True}
-            event = await self.build_events(context)
-            await self.send(text_data=event)
+            await self.build_events(context)
 
     async def __restart_waiter(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -197,8 +193,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
 
     async def __connect_to_extractor(self):
         context = {"connecting": True}
-        event = await self.build_events(context)
-        await self.send(text_data=event)
+        await self.build_events(context)
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
@@ -227,12 +222,10 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             await self.task
         except aiohttp.ClientError:
             context = {"error": True}
-            event = await self.build_events(context)
-            await self.send(text_data=event)
+            await self.build_events(context)
         except RetryError:
             context = {"error": True}
-            event = await self.build_events(context)
-            await self.send(text_data=event)
+            await self.build_events(context)
         else:
             success = self.task.result()["success"]
             if success:
@@ -241,8 +234,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
                 if timeout is not None:
                     timeout.established = True
                 context = {"connecting": None, "error": None, "listener_count": 0, "request_to_speak_count": 0}
-                event = await self.build_events(context)
-                await self.send(text_data=event)
+                await self.build_events(context)
 
     async def __disconnect_from_extractor(self):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
@@ -257,18 +249,15 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
                 await self.task
             except aiohttp.ClientError:
                 context = {"error": True}
-                event = await self.build_events(context)
-                await self.send(text_data=event)
+                await self.build_events(context)
             except RetryError:
                 context = {"error": True}
-                event = await self.build_events(context)
-                await self.send(text_data=event)
+                await self.build_events(context)
             else:
                 success = self.task.result()["success"]
                 if success:
                     self.scope["session"]["session_id"] = None
-            event = await self.build_events()
-            await self.send(text_data=event)
+            await self.build_events()
 
     @retry(retry=retry_if_exception_type(aiohttp.ClientError), wait=wait_random_exponential(multiplier=1, max=15),
            stop=stop_after_delay(15))
