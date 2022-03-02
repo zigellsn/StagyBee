@@ -100,7 +100,7 @@ class WorkbookExtractor:
         if response_code == 200:
             if language == "en":
                 times = await self.__parse__(content, "en")
-                return week.strftime("YYYY-MM-DD"), times
+                return week.strftime("%Y-%m-%d"), times
             else:
                 language_url = await self.__get_language_url__(content, language)
                 response_code, content = await self.__get_workbook__(session, language_url)
