@@ -70,11 +70,14 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         language = self.scope["url_route"]["kwargs"]["language"]
         translation.activate(language)
-        if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
-            self.scope["session"]["scrim"] = False
-        await self.channel_layer.group_add(generate_channel_group_name("console", congregation), self.channel_name)
-        if self.scope["session"]["scrim"]:
-            message_alert = render_to_string(template_name="stage/events/scrim.html")
+        if "session" in self.scope:
+            if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
+                self.scope["session"]["scrim"] = False
+            await self.channel_layer.group_add(generate_channel_group_name("console", congregation), self.channel_name)
+            if self.scope["session"]["scrim"]:
+                message_alert = render_to_string(template_name="stage/events/scrim.html")
+            else:
+                message_alert = ""
         else:
             message_alert = ""
         await self.accept()
@@ -107,10 +110,13 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         await self.console_scrim_refresh({})
 
     async def console_scrim_refresh(self, _):
-        if not self.scope["session"]["scrim"]:
-            context = {"dark": False}
+        if "session" in self.scope:
+            if not self.scope["session"]["scrim"]:
+                context = {"dark": False}
+            else:
+                context = {"dark": True}
         else:
-            context = {"dark": True}
+            context = {"dark": False}
         message = render_to_string(template_name="console/fragments/scrim_control_button.html", context=context)
         await self.send(text_data=message)
 

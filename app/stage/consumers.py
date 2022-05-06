@@ -241,7 +241,8 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         credentials = await database_sync_to_async(get_object_or_404)(Credential, congregation=congregation)
         if credentials.touch:
             return
-        if "session_id" in self.scope["session"] and self.scope["session"]["session_id"] is not None:
+        if "session" in self.scope and "session_id" in self.scope["session"] and \
+                self.scope["session"]["session_id"] is not None:
             try:
                 self.task = asyncio.create_task(
                     self.__delete_request(

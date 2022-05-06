@@ -14,7 +14,7 @@ jobs:
       max-parallel: 4
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ['3.10.1']
+        python-version: ['3.10.4']
 
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
       - name: Run Tests
         run: |
           python app/manage.py test ./app
-          pytest app/stage/tests/test_consumers.py app/console/tests/test_consumers.py app/stopwatch/tests/test_consumers.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          pytest app/stage/tests/test_consumers.py app/console/tests/test_consumers.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         env:
           DEBUG: on
           DJANGO_SETTINGS_MODULE: StagyBee.settings

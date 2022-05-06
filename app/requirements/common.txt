@@ -1,7 +1,7 @@
 django-environ==0.8.1
 django==4.0.4
 django-widget-tweaks==1.4.12
-asgiref==3.5.0
+asgiref==3.5.1
 channels==3.0.4
 channels-redis[cryptography]==3.4.0
 django-guardian==2.4.0
@@ -10,4 +10,4 @@ tenacity==8.0.1
 python-dateutil==2.8.2
 wheel==0.37.1
 django-qr-code==3.0.0
-twisted[tls,http2]==22.2.0
+twisted[tls,http2]==22.4.0

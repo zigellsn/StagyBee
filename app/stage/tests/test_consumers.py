@@ -14,12 +14,13 @@
 
 import pytest
 from channels.db import database_sync_to_async
+from channels.layers import get_channel_layer
 from channels.routing import URLRouter
-from channels.testing import WebsocketCommunicator
+from channels.testing import WebsocketCommunicator, HttpCommunicator
 from django.urls import re_path
 
 from picker.models import Credential
-from stage.consumers import ExtractorConsumer, MessageConsumer
+from stage.consumers import ExtractorConsumer, MessageConsumer, generate_channel_group_name
 
 
 @pytest.fixture
@@ -43,9 +44,10 @@ def get_or_create_credential(congregation='LE', autologin='abc', username='abc',
 @pytest.mark.django_db
 async def test_extractor_consumer(channel_layers):
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi())])
+    application = URLRouter(
+        [re_path(r"^ws/(?P<language>[^/]+)/extractor/(?P<congregation>[^/]+)/$", ExtractorConsumer.as_asgi())])
 
-    communicator = WebsocketCommunicator(application, "/ws/extractor/LE/")
+    communicator = WebsocketCommunicator(application, "/ws/de/extractor/LE/")
     communicator.scope["server"] = ["www", 8000]
     connected, _ = await communicator.connect()
     assert connected
@@ -59,12 +61,15 @@ async def test_extractor_consumer(channel_layers):
 @pytest.mark.django_db
 async def test_console_client_consumer(channel_layers):
     await database_sync_to_async(get_or_create_credential)()
-    application = URLRouter([re_path(r"^ws/console_client/(?P<congregation>[^/]+)/$", MessageConsumer.as_asgi())])
+    application = URLRouter(
+        [re_path(r"^ws/(?P<language>[^/]+)/message/(?P<congregation>[^/]+)/$", MessageConsumer.as_asgi())])
 
-    communicator = WebsocketCommunicator(application, "/ws/console_client/LE/")
-    connected, _ = await communicator.connect()
-    assert connected
+    communicator = HttpCommunicator(application, "GET", "/ws/de/message/LE/")
+    stage_group_name = generate_channel_group_name("message", "LE")
+    await get_channel_layer().group_send(stage_group_name, {"type": "message.alert", "alert": {"value": "Bla"}})
+    response = await communicator.receive_nothing()
+    assert response
     # await communicator.send_json_to({"hello": "hello"})
     # response = await communicator.receive_json_from()
     # assert response == {"hello": "hello"}
-    await communicator.disconnect()
+    # await communicator.disconnect()
