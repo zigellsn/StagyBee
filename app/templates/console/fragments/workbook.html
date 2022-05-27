@@ -1,5 +1,5 @@
 {% load i18n %}
-<ul class="p-4">
+<ul class="workbook">
     {% for talk in times %}
         <li class="line" data-caption="{{ talk.2 }}" data-part="{{ talk.0 }}"
             {% if talk.1 %}data-content="{{ talk.1 }}"{% endif %}
