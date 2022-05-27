@@ -62,7 +62,8 @@
     <script type="text/hyperscript">
         def showMessage(msg)
             call Swal.fire({title: '{% trans "Nachricht" %}', html: msg, confirmButtonColor: '#3b82f6'})
-            if result.isConfirmed or result.isDismissed then
+            log result
+            if ( result.isConfirmed or result.isDismissed ) and result.value is not undefined then
                 fetch {% url 'console:action' credential.congregation %} {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}", Content-Type: "application/x-www-form-urlencoded"}, body:"action=message-ack"}
             end
         end
@@ -70,6 +71,9 @@
         eventsource Alerts from /ws/{{ LANGUAGE_CODE }}/message/{{ credential.congregation|escape }}/
             on message_alert as string
                 showMessage(it)
+            end
+            on message_cancel
+                call Swal.close()
             end
         end
     </script>

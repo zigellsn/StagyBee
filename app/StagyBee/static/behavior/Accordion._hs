@@ -21,13 +21,13 @@ behavior Accordion
     end
 
 	on keydown[keyCode==32]
-        if <button:focus/> in <[role=heading]/> then
+        if first <button:focus/> is not null and first <button:focus/> in <[role=heading]/> then
 		    send select to first <button:focus/>
 		end
 	end
 
 	on keydown[keyCode==13]
-        if <button:focus/> in <[role=heading]/> then
+        if first <button:focus/> is not null and first <button:focus/> in <[role=heading]/> then
 		    send select to first <button:focus/>
 		end
     end

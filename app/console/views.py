@@ -116,6 +116,8 @@ class ConsoleActionView(PermissionRequiredMixin, View):
         congregation_group_name = generate_channel_group_name("console", kwargs.get("pk"))
         stage_group_name = generate_channel_group_name("message", kwargs.get("pk"))
         if request.POST.get("action") == "message-send":
+            if request.POST.get("message") == "":
+                return HttpResponse("", status=202)
             async_to_sync(channel_layer.group_send)(
                 stage_group_name,
                 {"type": "message.alert", "alert": {"value": request.POST.get("message")}}
@@ -132,6 +134,15 @@ class ConsoleActionView(PermissionRequiredMixin, View):
             async_to_sync(channel_layer.group_send)(
                 congregation_group_name,
                 {"type": "console.message", "message": {"message": "ACK"}}
+            )
+        elif request.POST.get("action") == "message-cancel":
+            async_to_sync(channel_layer.group_send)(
+                stage_group_name,
+                {"type": "message.cancel"}
+            )
+            async_to_sync(channel_layer.group_send)(
+                congregation_group_name,
+                {"type": "console.cancel_message"}
             )
         elif request.POST.get("action") == "scrim-toggle":
             async_to_sync(channel_layer.group_send)(

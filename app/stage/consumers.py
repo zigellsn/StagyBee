@@ -322,3 +322,6 @@ class MessageConsumer(AsyncSSEConsumer):
         message = message.replace("\n", "<br>")
         await self.send_body(f'event: message_alert\ndata: {message}\n\n'.encode("utf-8"),
                              more_body=True)
+
+    async def message_cancel(self, _):
+        await self.send_body(f'event: message_cancel\ndata: \n\n'.encode("utf-8"), more_body=True)

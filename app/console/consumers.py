@@ -78,6 +78,13 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
                 message_alert = render_to_string(template_name="stage/events/scrim.html")
             else:
                 message_alert = ""
+            wait_for_ack = False
+            if "message_wait_for_ack" not in self.scope["session"] or \
+                    self.scope["session"]["message_wait_for_ack"] is None:
+                self.scope["session"]["message_wait_for_ack"] = False
+            else:
+                if self.scope["session"]["message_wait_for_ack"]:
+                    wait_for_ack = True
         else:
             message_alert = ""
         await self.accept()
@@ -88,6 +95,8 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             event = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
             await self.send(text_data=event)
         await self.console_scrim_refresh({})
+        if wait_for_ack:
+            await self.console_wait_for_ack({})
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -122,6 +131,9 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
 
     async def console_message(self, event):
         if "message" in event["message"] and event["message"]["message"] == "ACK":
+            if "session" in self.scope:
+                self.scope["session"]["message_wait_for_ack"] = False
+                await sync_to_async(self.scope["session"].save)()
             context = {"time": timezone.localtime(timezone.now())}
             text = render_to_string(template_name="console/events/ack.html", context=context)
             await self.send(text_data=text)
@@ -129,7 +141,17 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=text)
 
     async def console_wait_for_ack(self, _):
+        if "session" in self.scope:
+            self.scope["session"]["message_wait_for_ack"] = True
+            await sync_to_async(self.scope["session"].save)()
         text = render_to_string(template_name="console/events/waiting.html")
+        await self.send(text_data=text)
+
+    async def console_cancel_message(self, _):
+        if "session" in self.scope:
+            self.scope["session"]["message_wait_for_ack"] = False
+            await sync_to_async(self.scope["session"].save)()
+        text = '<div id="waiting-indicator"></div>'
         await self.send(text_data=text)
 
     async def timer_tick(self, _):
