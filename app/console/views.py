@@ -181,11 +181,32 @@ class WorkbookView(LoginRequiredMixin, View):
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
         if times != {}:
             filter_str = request.GET.get("filter")
-            if filter_str is not None and filter_str == "talks":
-                times = list(filter(lambda item: item[1] > 0, list(times.values())[0]))
+            if filter_str is not None:
+                match filter_str:
+                    case "times":
+                        times = list(filter(lambda item: item[1] > 0, list(times.values())[0]))
+                    case "no_times":
+                        times = list(filter(lambda item: item[1] == 0, list(times.values())[0]))
+                    case "directions":
+                        times = list(filter(lambda item: item[3] != "", list(times.values())[0]))
+                    case "no_directions":
+                        times = list(filter(lambda item: item[3] == "", list(times.values())[0]))
+                    case "0":
+                        times = list(filter(lambda item: item[0] == 0, list(times.values())[0]))
+                    case "1":
+                        times = list(filter(lambda item: item[0] == 1, list(times.values())[0]))
+                    case "2":
+                        times = list(filter(lambda item: item[0] == 2, list(times.values())[0]))
+                    case "3":
+                        times = list(filter(lambda item: item[0] == 3, list(times.values())[0]))
+                    case _:
+                        return HttpResponse(
+                            "Only 'times', 'no_times', 'directions', "
+                            "'no_directions', '0', '1', '2' and '3' are valid filters.",
+                            status=400)
             else:
                 times = list(times.values())[0]
-        return render(request, "console/fragments/workbook.html", {"times": times})
+        return render(request, "console/fragments/workbook.html", {"times": times, "language": request.LANGUAGE_CODE})
 
 
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):
