@@ -70,6 +70,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         congregation = self.scope["url_route"]["kwargs"]["congregation"]
         language = self.scope["url_route"]["kwargs"]["language"]
         translation.activate(language)
+        wait_for_ack = False
         if "session" in self.scope:
             if "scrim" not in self.scope["session"] or self.scope["session"]["scrim"] is None:
                 self.scope["session"]["scrim"] = False
@@ -78,7 +79,6 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
                 message_alert = render_to_string(template_name="stage/events/scrim.html")
             else:
                 message_alert = ""
-            wait_for_ack = False
             if "message_wait_for_ack" not in self.scope["session"] or \
                     self.scope["session"]["message_wait_for_ack"] is None:
                 self.scope["session"]["message_wait_for_ack"] = False
