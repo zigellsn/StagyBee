@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./templates/**/*.html'],
     darkMode: 'class', // or 'media' or 'class'
