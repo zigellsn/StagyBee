@@ -1,4 +1,6 @@
 {
     "/StagyBee/static/js/bundle.js": "/StagyBee/static/js/bundle.js",
+    "/StagyBee/static/js/hs_socket.js": "/StagyBee/static/js/hs_socket.js",
+    "/StagyBee/static/js/hs_eventsource.js": "/StagyBee/static/js/hs_eventsource.js",
     "/style/all_main.css": "/style/all_main.css"
 }
