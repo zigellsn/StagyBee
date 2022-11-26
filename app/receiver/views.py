@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -26,18 +25,18 @@ from stage.consumers import generate_channel_group_name
 class ReceiverView(View):
 
     @staticmethod
-    def post(request, *args, **kwargs):
+    async def post(request, *args, **kwargs):
         event = request.META.get("HTTP_X_STAGYBEE_EXTRACTOR_EVENT")
         channel_layer = get_channel_layer()
         congregation_group_name = generate_channel_group_name("stage", kwargs.get("pk"))
         if event == "listeners":
-            async_to_sync(channel_layer.group_send)(
+            await channel_layer.group_send(
                 congregation_group_name,
                 {"type": "extractor.listeners", "listeners": request.body},
             )
             return HttpResponse(content="success", status=202)
         elif event == "status":
-            async_to_sync(channel_layer.group_send)(
+            await channel_layer.group_send(
                 congregation_group_name,
                 {"type": "extractor.status", "status": request.body},
             )

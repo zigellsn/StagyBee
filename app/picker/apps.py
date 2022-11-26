@@ -15,7 +15,8 @@
 import asyncio
 import logging
 
-import aioredis
+import redis
+import redis.asyncio as aioredis
 from django.apps import AppConfig
 from django.conf import settings
 
@@ -31,12 +32,12 @@ async def __initialize_redis(layer):
         return
     try:
         host = settings.CHANNEL_LAYERS[layer]["CONFIG"]["hosts"][0]
-        redis = await aioredis.create_redis(host)
-        for key in await redis.keys(REDIS_KEY):
-            await redis.delete(key)
-        redis.close()
-        await redis.wait_closed()
-    except OSError:
+        pool = aioredis.ConnectionPool.from_url(host)
+        connection = aioredis.Redis(connection_pool=pool)
+        for key in await connection.keys(REDIS_KEY):
+            await connection.delete(key)
+        await connection.close(close_connection_pool=True)
+    except redis.exceptions.ConnectionError:
         log = logging.getLogger(__name__)
         log.warning("Redis unavailable")
 
@@ -47,7 +48,7 @@ class PickerConfig(AppConfig):
 
     def ready(self):
         loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
         loop.run_until_complete(initialize_redis())
         if not loop.is_closed():
             loop.close()
+        pass

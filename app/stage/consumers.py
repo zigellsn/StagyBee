@@ -19,7 +19,6 @@ import re
 from contextlib import suppress
 
 import aiohttp
-from channels.consumer import SyncConsumer
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -283,18 +282,6 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
             async with session.get(url, ssl=False) as response:
                 self.logger.info(f"Extractor GET {url}")
                 return await response.json()
-
-
-class ExtractorConnect(SyncConsumer):
-    # TODO: Implement worker
-    def test_action(self, message):
-        print(message["data"])
-
-
-class ExtractorDisconnect(SyncConsumer):
-    # TODO: Implement worker
-    def test_action(self, message):
-        print(message["data"])
 
 
 class MessageConsumer(AsyncSSEConsumer):

@@ -164,10 +164,6 @@ class ConsoleActionView(PermissionRequiredMixin, View):
 
 class WorkbookView(LoginRequiredMixin, View):
 
-    async def __call__(self, **kwargs):
-        pass
-
-    @async_to_sync
     async def get(self, request, *args, **kwargs):
         workbook_extractor = WorkbookExtractor()
         if "date" in kwargs and kwargs["date"] != "today":

@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import asyncio
 
 from django.db import models
 from django.db.models import QuerySet, URLField
@@ -22,7 +21,7 @@ from StagyBee.utils import DockerURLValidator
 from stage.timeout import GLOBAL_TIMEOUT
 
 
-async def __get_running_since__(congregation):
+def __get_running_since__(congregation):
     if congregation in GLOBAL_TIMEOUT:
         return GLOBAL_TIMEOUT.get(congregation).start_time
     return timezone.localtime(timezone.now())
@@ -36,9 +35,7 @@ def is_active(congregation):
 
 
 def get_running_since(congregation):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    return loop.run_until_complete(__get_running_since__(congregation.congregation))
+    return __get_running_since__(congregation.congregation)
 
 
 class CredentialQuerySet(QuerySet):
@@ -53,13 +50,11 @@ class CredentialManager(models.Manager):
         return CredentialQuerySet(self.model, using=self._db)
 
     def active(self):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
         congregation_set = self.get_query_set().all()
         for congregation in congregation_set:
             if is_active(congregation):
                 congregation.active = True
-                congregation.since = loop.run_until_complete(__get_running_since__(congregation.congregation))
+                congregation.since = __get_running_since__(congregation.congregation)
             else:
                 congregation.active = False
                 congregation.since = None

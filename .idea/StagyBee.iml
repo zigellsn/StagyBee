@@ -25,7 +25,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/app" />
       <excludeFolder url="file://$MODULE_DIR$/app/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10 (app)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (app)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="hyperscript.org" level="application" />
     <orderEntry type="library" name="luxon" level="application" />

@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -46,12 +45,12 @@ class StageView(SchemeMixin, DetailView):
 
 class ExtractorConnectView(View):
 
-    def post(self, request, *args, **kwargs):
+    async def post(self, request, *args, **kwargs):
         congregation = kwargs.get("pk")
         channel_layer = get_channel_layer()
         stage_congregation_group_name = generate_channel_group_name("stage", congregation)
         if request.POST.get("action") == "connect":
-            async_to_sync(channel_layer.group_send)(
+            await channel_layer.group_send(
                 stage_congregation_group_name,
                 {"type": "extractor.connect"}
             )

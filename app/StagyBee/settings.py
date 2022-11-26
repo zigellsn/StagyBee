@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import asyncio
 import json
 import os
 import sys
@@ -85,6 +84,7 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "guardian",
     "stage",
     "receiver",
@@ -150,7 +150,7 @@ GUARDIAN_RENDER_403 = True
 
 WSGI_APPLICATION = "StagyBee.wsgi.application"
 
-ASGI_APPLICATION = "StagyBee.routing.application"
+ASGI_APPLICATION = "StagyBee.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
