@@ -6,11 +6,7 @@ behavior Accordion
         end
     end
 
-	on mousedown(target) from <[role=heading]/>
-		send select to target
-	end
-
-	on touchstart(target) from <[role=heading]/>
+	on pointerdown(target) from <[role=heading]/>
 		send select to target
 	end
 
