@@ -51,4 +51,3 @@ class PickerConfig(AppConfig):
         loop.run_until_complete(initialize_redis())
         if not loop.is_closed():
             loop.close()
-        pass

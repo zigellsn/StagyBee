@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
 from datetime import datetime
 
 import aiohttp
@@ -164,45 +163,77 @@ class ConsoleActionView(PermissionRequiredMixin, View):
 
 class WorkbookView(LoginRequiredMixin, View):
 
+    async def __call__(self, **kwargs):
+        pass
+
+    @async_to_sync
     async def get(self, request, *args, **kwargs):
         workbook_extractor = WorkbookExtractor()
-        if "date" in kwargs and kwargs["date"] != "today":
-            try:
-                date = datetime.strptime(kwargs["date"], "%Y%m%d")
-            except ValueError as e:
-                return HttpResponse(str(e), status=400)
+        if "date_from" in kwargs and kwargs["date_from"] != "today":
+            date_from = kwargs["date_from"]
         else:
-            date = datetime.today()
-        urls = workbook_extractor.create_urls(date, date)
+            date_from = datetime.today()
+        if "date_to" in kwargs and kwargs["date_from"] != "today":
+            date_to = kwargs["date_to"]
+        elif "date_to" in kwargs and kwargs["date_from"] == "today":
+            date_to = datetime.today()
+        else:
+            date_to = date_from
+        urls = workbook_extractor.create_urls(date_from, date_to)
         times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
+        workbooks = []
         if times != {}:
-            filter_str = request.GET.get("filter")
-            if filter_str is not None:
-                match filter_str:
+            filter_list = request.GET.getlist("filter")
+            filters_times = ()
+            filters_directions = ()
+            filters_part = ()
+            for f in filter_list:
+                match f:
                     case "times":
-                        times = list(filter(lambda item: item[1] > 0, list(times.values())[0]))
+                        filters_times = filters_times + (lambda item: item[1] > 0,)
                     case "no_times":
-                        times = list(filter(lambda item: item[1] == 0, list(times.values())[0]))
+                        filters_times = filters_times + (lambda item: item[1] == 0,)
                     case "directions":
-                        times = list(filter(lambda item: item[3] != "", list(times.values())[0]))
+                        filters_directions = filters_directions + (lambda item: item[3] != "",)
                     case "no_directions":
-                        times = list(filter(lambda item: item[3] == "", list(times.values())[0]))
+                        filters_directions = filters_directions + (lambda item: item[3] == "",)
                     case "0":
-                        times = list(filter(lambda item: item[0] == 0, list(times.values())[0]))
+                        filters_part = filters_part + (lambda item: item[0] == 0,)
                     case "1":
-                        times = list(filter(lambda item: item[0] == 1, list(times.values())[0]))
+                        filters_part = filters_part + (lambda item: item[0] == 1,)
                     case "2":
-                        times = list(filter(lambda item: item[0] == 2, list(times.values())[0]))
+                        filters_part = filters_part + (lambda item: item[0] == 2,)
                     case "3":
-                        times = list(filter(lambda item: item[0] == 3, list(times.values())[0]))
+                        filters_part = filters_part + (lambda item: item[0] == 3,)
                     case _:
                         return HttpResponse(
                             "Only 'times', 'no_times', 'directions', "
                             "'no_directions', '0', '1', '2' and '3' are valid filters.",
                             status=400)
-            else:
-                times = list(times.values())[0]
-        return render(request, "console/fragments/workbook.html", {"times": times, "language": request.LANGUAGE_CODE})
+
+            if filters_part == ():
+                filters_part = (lambda item: item[0] == 0 or item[0] == 1 or item[0] == 2 or item[0] == 3,)
+
+            def filter_list(item):
+                return all((any(fu(item) for fu in filters_part), all(fu(item) for fu in filters_directions),
+                            all(fu(item) for fu in filters_times)))
+
+            for time in times:
+                times_list = [item for item in times[time] if filter_list(item)]
+                workbooks += [{"date": time, "times": times_list}]
+
+        return render(request, "console/fragments/workbook.html",
+                      {"workbooks": workbooks, "language": request.LANGUAGE_CODE})
+
+
+class WorkbookHelpView(View):
+    async def get(self, request, *args, **kwargs):
+        return HttpResponse(
+            "Valid filters are 'times', 'no_times', 'directions', "
+            "'no_directions', '0', '1', '2' and '3'."
+            "\n"
+            "",
+            status=200)
 
 
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):

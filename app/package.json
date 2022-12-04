@@ -17,14 +17,14 @@
     "cssnano": "^5.1.14",
     "laravel-mix": "^6.0.49",
     "postcss": "^8.4.19",
-    "postcss-cli": "^10.0.0",
+    "postcss-cli": "^10.1.0",
     "purgecss": "^5.0.0",
     "tailwindcss": "^3.2.4"
   },
   "dependencies": {
     "htmx.org": "^1.8.4",
     "hyperscript.org": "^0.9.7",
-    "luxon": "^3.1.0",
-    "sweetalert2": "^11.6.14"
+    "luxon": "^3.1.1",
+    "sweetalert2": "^11.6.15"
   }
 }
