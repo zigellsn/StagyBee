@@ -169,6 +169,9 @@ class WorkbookView(LoginRequiredMixin, View):
     @async_to_sync
     async def get(self, request, *args, **kwargs):
         workbook_extractor = WorkbookExtractor()
+        language = kwargs["language"]
+        # if not workbook_extractor.language_exists(language):
+        #     return HttpResponse(f"Regular Expressions for {language} are not available.", status=400)
         if "date_from" in kwargs and kwargs["date_from"] != "today":
             date_from = kwargs["date_from"]
         else:
@@ -180,7 +183,7 @@ class WorkbookView(LoginRequiredMixin, View):
         else:
             date_to = date_from
         urls = workbook_extractor.create_urls(date_from, date_to)
-        times = await workbook_extractor.get_workbooks(urls, request.LANGUAGE_CODE)
+        times = await workbook_extractor.get_workbooks(urls, language)
         workbooks = []
         if times != {}:
             filter_list = request.GET.getlist("filter")

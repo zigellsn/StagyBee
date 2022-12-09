@@ -68,6 +68,8 @@ class WorkbookExtractor:
         self.ACCEPT_LANGUAGE = "en-EN,en"
 
     async def get_workbooks(self, urls, language="en"):
+        if not self.language_exists(language):
+            return {}
         async with aiohttp.ClientSession() as session:
             weeks = await asyncio.gather(
                 *[self.__extract__(session, url, my_date, language) for my_date, url in urls.items()],
@@ -94,6 +96,10 @@ class WorkbookExtractor:
             urls[last_monday] = url
             last_monday = last_monday + relativedelta(days=7)
         return urls
+
+    @staticmethod
+    def language_exists(language):
+        return language in WB_LANGUAGE_SWITCHER
 
     async def __extract__(self, session, url, week, language):
         response_code, content = await self.__get_workbook__(session, url)

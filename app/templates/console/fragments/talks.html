@@ -1,4 +1,5 @@
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <ul class="p-4"
     _="on htmx:afterSwap
         add .p-4 to the first <ul.workbook/>
@@ -53,7 +54,7 @@
         send calc_size to the next <[role=region]/> from the first <[aria-expanded=true]/>
     end">
     <li><span class="italic">{% trans 'Leben-und-Dienst-Zusammenkunft' %}</span>
-        <div hx-get="{% url 'console:workbook_today' %}?filter=times" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
+        <div hx-get="{% url 'workbook_today' language=LANGUAGE_CODE %}?filter=times" hx-trigger="load" hx-swap="outerHTML" hx-target="this">
             <ul class="p-4">
                 <li style="text-align: center;display: inline-block;">
                     <div class="pt-4 self-center stroke-current text-purple-600 mb-8"

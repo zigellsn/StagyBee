@@ -21,13 +21,18 @@ from django.urls import include, path, register_converter
 from django.views.generic import RedirectView
 
 from console import converters
-from console.views import SettingsView, StartupView
+from console.views import SettingsView, StartupView, WorkbookHelpView, WorkbookView
 from .views import SchemeView, ToggleSchemeView
 
 register_converter(converters.DateConverter, "date")
 
 urlpatterns = [path("receiver/", include("receiver.urls")),
-               path("scheme/", SchemeView.as_view())]
+               path("scheme/", SchemeView.as_view()),
+               path("<str:language>/console/workbook/help/", WorkbookHelpView.as_view(), name="workbook_help"),
+               path("<str:language>/console/workbook/today/", WorkbookView.as_view(), name="workbook_today"),
+               path("<str:language>/console/workbook/<date:date_from>/", WorkbookView.as_view(), name="workbook"),
+               path("<str:language>/console/workbook/<date:date_from>/<date:date_to>/", WorkbookView.as_view(),
+                    name="workbook")]
 urlpatterns += i18n_patterns(
     path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
