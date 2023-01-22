@@ -41,6 +41,7 @@
         if hours > 4 then set hours to 4 end
         put ( ( event.target@data-content - ( hours * 60 ) ) as an Int ) into #id_m.value
         put hours into #id_h.value
+        put 0 into #id_s.value
         set @value of #id_talk_name to event.target@data-caption
         set @value of #id_talk_index to event.target@data-index
         set @value of #id_talk_user to event.target@data-custom
