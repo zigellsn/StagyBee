@@ -14,8 +14,7 @@
 
 from django.urls import path, include
 
-from .views import ConsoleView, ChooseConsoleView, KnownClientReboot, KnownClientShutdown, WorkbookView, \
-    ConsoleActionView, WorkbookHelpView
+from .views import ConsoleView, ChooseConsoleView, KnownClientReboot, KnownClientShutdown, ConsoleActionView
 
 app_name = "console"
 

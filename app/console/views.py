@@ -229,16 +229,6 @@ class WorkbookView(LoginRequiredMixin, View):
                       {"workbooks": workbooks, "language": request.LANGUAGE_CODE})
 
 
-class WorkbookHelpView(View):
-    async def get(self, request, *args, **kwargs):
-        return HttpResponse(
-            "Valid filters are 'times', 'no_times', 'directions', "
-            "'no_directions', '0', '1', '2' and '3'."
-            "\n"
-            "",
-            status=200)
-
-
 class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):
     template_name = "console/settings.html"
     form_class = LanguageForm

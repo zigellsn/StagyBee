@@ -18,17 +18,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path, register_converter
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 
 from console import converters
-from console.views import SettingsView, StartupView, WorkbookHelpView, WorkbookView
+from console.views import SettingsView, StartupView, WorkbookView
 from .views import SchemeView, ToggleSchemeView
 
 register_converter(converters.DateConverter, "date")
 
 urlpatterns = [path("receiver/", include("receiver.urls")),
                path("scheme/", SchemeView.as_view()),
-               path("<str:language>/console/workbook/help/", WorkbookHelpView.as_view(), name="workbook_help"),
+               path("<str:language>/console/workbook/help/",
+                    TemplateView.as_view(template_name="console/fragments/workbook_help.html"), name="workbook_help"),
                path("<str:language>/console/workbook/today/", WorkbookView.as_view(), name="workbook_today"),
                path("<str:language>/console/workbook/<date:date_from>/", WorkbookView.as_view(), name="workbook"),
                path("<str:language>/console/workbook/<date:date_from>/<date:date_to>/", WorkbookView.as_view(),

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-04 16:44+0100\n"
+"POT-Creation-Date: 2023-01-22 11:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,11 +82,11 @@ msgstr ""
 msgid "Client steuern"
 msgstr ""
 
-#: .\console\views.py:277 .\picker\views.py:63
+#: .\console\views.py:270 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:296 .\picker\views.py:82
+#: .\console\views.py:289 .\picker\views.py:82
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
@@ -397,27 +397,27 @@ msgstr ""
 msgid "Link zur Stoppuhrsession"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:55
+#: .\templates\console\fragments\talks.html:56
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:67
+#: .\templates\console\fragments\talks.html:68
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:70
 #: .\templates\console\fragments\talks.html:71
+#: .\templates\console\fragments\talks.html:72
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:73
 #: .\templates\console\fragments\talks.html:74
+#: .\templates\console\fragments\talks.html:75
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:78
-#: .\templates\console\fragments\talks.html:81
-#: .\templates\console\fragments\talks.html:83
+#: .\templates\console\fragments\talks.html:79
+#: .\templates\console\fragments\talks.html:82
+#: .\templates\console\fragments\talks.html:84
 msgid "Benutzerdefiniert"
 msgstr ""
 
@@ -450,6 +450,16 @@ msgstr ""
 
 #: .\templates\console\fragments\workbook.html:13
 msgid "Das Arbeitsheft konnte nicht geladen werden."
+msgstr ""
+
+#: .\templates\console\fragments\workbook_help.html:4
+msgid ""
+"Gültige Filter sind 'times', 'no_times', 'directions', 'no_directions', '0', "
+"'1', '2' und '3'."
+msgstr ""
+
+#: .\templates\console\fragments\workbook_help.html:5
+msgid "Das Datumsformat ist 'yyyy-mm-dd'."
 msgstr ""
 
 #: .\templates\console\knownclient_list.html:9
