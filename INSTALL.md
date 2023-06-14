@@ -65,7 +65,7 @@ Copy the generated files to ./StagyBee/static/
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements/prod.txt
-export DJANGO_SETTINGS_MODULE=StagyBee.settings.prod
+export DJANGO_SETTINGS_MODULE=StagyBee.settings
 python manage.py migrate --run-syncdb
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic

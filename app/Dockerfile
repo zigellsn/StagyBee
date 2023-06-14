@@ -1,4 +1,4 @@
-FROM node:16-slim AS build
+FROM docker.io/node:16-slim AS build
 
 ENV NODE_ENV=development
 
@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 
 
 USER pyuser
 
-COPY --from=build --chown=pyuser:users /StagyBee/static ./StagyBee/static
-COPY ./scripts/entrypoint.sh $HOME/
+COPY --from=build --chown=pyuser:users /StagyBee/static $TMP/StagyBee/static
+COPY --chown=pyuser:users ./scripts/entrypoint.sh /opt/StagyBee/
 
-ENTRYPOINT ["/home/pyuser/entrypoint.sh"]
+ENTRYPOINT ["/opt/StagyBee/entrypoint.sh"]

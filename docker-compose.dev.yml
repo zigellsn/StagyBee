@@ -4,15 +4,12 @@ services:
     build:
       context: app/
       dockerfile: Dockerfile
-    image: "stagybee/frontend:latest"
+    image: "localhost/stagybee/frontend:latest"
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
-      - db
-      - extractor
     volumes:
       - type: bind
         source: ./app
         target: /home/pyuser
+        selinux: z

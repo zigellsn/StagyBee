@@ -1,11 +1,11 @@
-FROM node:16-slim AS build
+FROM docker.io/node:16-slim AS build
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 COPY . .
 
 RUN npm install && \
-    npm run build --production && \
+    npm run build && \
     npm run postcss && \
     rm -rf node_modules
 
@@ -35,6 +35,6 @@ RUN mkdir -p $HOME/static && \
 USER pyuser
 
 COPY --chown=pyuser:users . .
-COPY --from=build --chown=pyuser:users /StagyBee/static ./StagyBee/static
+COPY --from=build --chown=pyuser:users /StagyBee/static $TMP/StagyBee/static
 
 ENTRYPOINT ["/home/pyuser/scripts/entrypoint.prod.sh"]

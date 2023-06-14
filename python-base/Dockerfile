@@ -1,7 +1,7 @@
-FROM python:3.11.1-slim
+FROM docker.io/python:3.11.4-slim
 
 ENV HOME /home/pyuser 
-RUN useradd --create-home pyuser
+RUN useradd --gid users --create-home pyuser
 WORKDIR $HOME
 
 ENV TMP /tmp

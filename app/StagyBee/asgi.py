@@ -21,6 +21,8 @@ from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
 from django.urls import re_path
 
+django.setup()
+
 from console import routing as console_routing
 from stage import routing as stage_routing
 
@@ -28,7 +30,6 @@ urlpatterns = stage_routing.websocket_urlpatterns + console_routing.urlpatterns
 http_urlpatterns = stage_routing.http_urlpatterns + [re_path(r'', get_asgi_application())]
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StagyBee.settings")
-django.setup()
 application = ProtocolTypeRouter({
     "http": AuthMiddlewareStack(URLRouter(http_urlpatterns)),
     "websocket": AllowedHostsOriginValidator(

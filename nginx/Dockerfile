@@ -1,4 +1,4 @@
-FROM nginx:mainline-alpine as builder
+FROM docker.io/nginx:mainline-alpine as builder
 
 ARG ENABLED_MODULES
 
@@ -60,7 +60,7 @@ RUN set -ex \
     done \
     && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
-FROM nginx:mainline-alpine
+FROM docker.io/nginx:mainline-alpine
 
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
@@ -74,10 +74,5 @@ RUN set -ex \
     && mkdir /etc/nginx/errorPage/ \
     && mkdir /etc/nginx/certs/
 COPY nginx.conf /etc/nginx/conf.d/
-COPY 502.html /etc/nginx/errorPage/
-COPY 502.css /etc/nginx/errorPage/
-COPY favicon-32x32.ico /etc/nginx/errorPage/
-COPY favicon-96x96.png /etc/nginx/errorPage/
-COPY apple-touch-icon-180x180.png /etc/nginx/errorPage/
-COPY certs/crt.pem /etc/nginx/certs/crt.pem
-COPY certs/key.pem /etc/nginx/certs/key.pem
+COPY 502.html 502.css favicon-32x32.ico favicon-96x96.png apple-touch-icon-180x180.png /etc/nginx/errorPage/
+COPY certs/crt.pem certs/key.pem /etc/nginx/certs/

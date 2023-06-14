@@ -20,11 +20,12 @@ services:
         source: ./static
         target: /home/pyuser/static
         read_only: true
+        selinux: z
   web:
     build:
       context: app/
       dockerfile: Dockerfile.prod
-    image: "stagybee/frontend:latest"
+    image: "localhost/stagybee/frontend:latest"
     command: bash -c "daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application"
     restart: always
     ports:
@@ -33,6 +34,8 @@ services:
       - type: bind
         source: ./static
         target: /home/pyuser/static
+        selinux: Z
       - type: bind
         source: ./files
         target: /home/pyuser/files
+        selinux: Z

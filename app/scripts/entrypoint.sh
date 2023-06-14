@@ -21,6 +21,8 @@ if [ "${SQL_ENGINE}" = "django.db.backends.postgresql" ]; then
     echo "PostgreSQL started"
 fi
 
+cp -rf $TMP/StagyBee/static/* $HOME/StagyBee/static/
+
 python manage.py flush --no-input
 python manage.py migrate --no-input
 python manage.py compilemessages --ignore venv

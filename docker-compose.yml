@@ -1,11 +1,11 @@
 version: '3.9'
 services:
   python-base:
-    image: stagybee/python-base:slim
+    image: "localhost/stagybee/python-base:slim"
     build:
       context: python-base/
   db:
-    image: postgres:14.6-alpine
+    image: "docker.io/postgres:15.2-alpine"
     volumes:
       - type: bind
         source: ./data
@@ -15,24 +15,22 @@ services:
     env_file:
       - app/.env
   redis:
-    image: redis:7-alpine
+    image: "docker.io/redis:7-alpine"
     ports:
       - "127.0.0.1:6379:6379"
   extractor:
     build:
       context: extractor/
       dockerfile: Dockerfile
-    image: "stagybee/extractor:latest"
+    image: "localhost/stagybee/extractor:latest"
     restart: always
     ports:
       - "127.0.0.1:8443:8443"
   web:
     build:
       context: app/
-    image: "stagybee/frontend:latest"
+    image: "localhost/stagybee/frontend:latest"
     command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "127.0.0.1:8000:8000"
     depends_on:
       - redis
       - db

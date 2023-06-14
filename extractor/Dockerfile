@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM docker.io/eclipse-temurin:20-jre-jammy
 
 ENV EXTRACTOR_VERSION 1.0.19
 ENV KTOR_USER ktor
