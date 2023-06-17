@@ -5,7 +5,7 @@ services:
     build:
       context: python-base/
   db:
-    image: "docker.io/postgres:15.2-alpine"
+    image: "docker.io/postgres:15.3-alpine"
     volumes:
       - type: bind
         source: ./data
@@ -29,6 +29,8 @@ services:
   web:
     build:
       context: app/
+    environment:
+      - DJANGO_SETTINGS_MODULE=StagyBee.settings
     image: "localhost/stagybee/frontend:latest"
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
