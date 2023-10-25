@@ -1,6 +1,6 @@
 FROM docker.io/eclipse-temurin:20-jre-jammy
 
-ENV EXTRACTOR_VERSION 1.0.19
+ENV EXTRACTOR_VERSION 1.0.20
 ENV KTOR_USER ktor
 ENV HOME /home/$KTOR_USER
 RUN set -ex \

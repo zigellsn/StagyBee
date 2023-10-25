@@ -1,4 +1,4 @@
-FROM docker.io/node:16-slim AS build
+FROM docker.io/node:18-slim AS build
 
 ENV NODE_ENV=development
 
