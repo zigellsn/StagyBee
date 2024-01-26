@@ -13,17 +13,17 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
-    "autoprefixer": "^10.4.16",
-    "cssnano": "^6.0.1",
+    "autoprefixer": "^10.4.17",
+    "cssnano": "^6.0.3",
     "laravel-mix": "^6.0.49",
-    "postcss": "^8.4.32",
-    "postcss-cli": "^10.1.0",
+    "postcss": "^8.4.33",
+    "postcss-cli": "^11.0.0",
     "purgecss": "^5.0.0",
-    "tailwindcss": "^3.3.6",
+    "tailwindcss": "^3.4.1",
 
-    "htmx.org": "^1.9.9",
+    "htmx.org": "^1.9.10",
     "hyperscript.org": "^0.9.12",
     "luxon": "^3.4.4",
-    "sweetalert2": "^11.10.1"
+    "sweetalert2": "^11.10.4"
   }
 }
