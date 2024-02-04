@@ -3,19 +3,32 @@
 <ul class="p-4"
     _="on htmx:afterSwap
         add .p-4 to the first <ul.workbook/>
+        js return luxon.DateTime.now().toFormat('yyyyMMdd'); end set date to it
         for line in <li.line/> index i
             add .border-gray-400 .hover:bg-blue-300 to line
             if line@data-part is 0
                 put '<strong>&nbsp;&bull;&nbsp;</strong>' at the start of line
-            end
-            if line@data-part is 1
-                put '<strong style=&quot;color: #626262;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
-            end
-            if line@data-part is 2
-                put '<strong style=&quot;color: #9d5d07;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
-            end
-            if line@data-part is 3
-                put '<strong style=&quot;color: #942926;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+            end            
+            if date <= '20231231'
+                if line@data-part is 1
+                    put '<strong style=&quot;color: #626262;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end
+                if line@data-part is 2
+                    put '<strong style=&quot;color: #9d5d07;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end
+                if line@data-part is 3
+                    put '<strong style=&quot;color: #942926;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end
+            else
+                if line@data-part is 1
+                    put '<strong style=&quot;color: #3c7f8b;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end
+                if line@data-part is 2
+                    put '<strong style=&quot;color: #d68f00;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end
+                if line@data-part is 3
+                    put '<strong style=&quot;color: #bf2f13;\&quot;>&nbsp;&bull;&nbsp;</strong>' at the start of line
+                end            
             end
             set @data-index of line to i + 1
             if ( #id_talk_index@value is 0 and i is 0 ) or ( #id_talk_index@value is not 0 and #id_talk_index@value is i + 1 )

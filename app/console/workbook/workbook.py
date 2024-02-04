@@ -19,6 +19,7 @@ from html.parser import HTMLParser
 
 import aiohttp
 from aiohttp import ClientConnectorError
+from bs4 import BeautifulSoup
 from dateutil.relativedelta import relativedelta, MO
 
 from StagyBee.settings import WB_LANGUAGE_SWITCHER
@@ -57,19 +58,53 @@ class BasicHTMLParser(HTMLParser):
         self.text = f"{self.text}{data}"
 
 
+class BasicHTMLParser2024(HTMLParser):
+
+    def __init__(self, *, convert_charrefs=True):
+        super().__init__()
+        self.text = ""
+        self.kind = 0
+        self.is_talk = False
+
+    def handle_starttag(self, tag, attrs):
+        if not self.is_talk and (tag.lower() == "h1" or tag.lower() == "h2" or tag.lower() == "h3"):
+            self.is_talk = True
+        if self.kind != 0:
+            return
+        for attr in attrs:
+            if attr[0] == "class":
+                if "dc-icon--gem" in attr[1]:
+                    self.kind = 1
+                    return
+                elif "dc-icon--wheat" in attr[1]:
+                    self.kind = 2
+                    return
+                elif "dc-icon--sheep" in attr[1]:
+                    self.kind = 3
+                    return
+                else:
+                    self.kind = 0
+            else:
+                self.kind = 0
+
+    def handle_data(self, data):
+        self.text = f"{self.text}{data}"
+
+
 class WorkbookExtractor:
 
     def __init__(self, *argss, **kwargs):
         super().__init__(*argss, **kwargs)
         self.logger = logging.getLogger(__name__)
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
-        self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
-                          "Chrome/97.0.4692.71 Safari/537.36"
+        self.USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                           "Chrome/120.0.0.0 Safari/537.36")
         self.ACCEPT_LANGUAGE = "en-EN,en"
 
     async def get_workbooks(self, urls, language="en"):
         if not self.language_exists(language):
             return {}
+
         async with aiohttp.ClientSession() as session:
             weeks = await asyncio.gather(
                 *[self.__extract__(session, url, my_date, language) for my_date, url in urls.items()],
@@ -105,13 +140,19 @@ class WorkbookExtractor:
         response_code, content = await self.__get_workbook__(session, url)
         if response_code == 200:
             if language == "en":
-                times = await self.__parse__(content, "en")
+                if week.year < 2024:
+                    times = await self.__parse__(content, "en")
+                else:
+                    times = await self.__parse_2024__(content, "en")
                 return week.strftime("%Y-%m-%d"), times
             else:
                 language_url = await self.__get_language_url__(content, language)
                 response_code, content = await self.__get_workbook__(session, language_url)
                 if response_code == 200:
-                    times = await self.__parse__(content, language)
+                    if week.year < 2024:
+                        times = await self.__parse__(content, language)
+                    else:
+                        times = await self.__parse_2024__(content, language)
                     return week.strftime("%Y-%m-%d"), times
 
     @staticmethod
@@ -163,8 +204,10 @@ class WorkbookExtractor:
                 return "Invalid month"
 
     @staticmethod
-    async def __get_language_regex(language):
-        return WB_LANGUAGE_SWITCHER.get(language, "Invalid language")
+    async def __get_language_regex(language, version=2004):
+        lang = WB_LANGUAGE_SWITCHER.get(language, "Invalid language")
+        res = [d for d in lang if d["version"] >= version]
+        return res[0]["regex"]
 
     @staticmethod
     async def __get_language_url__(content, language):
@@ -209,15 +252,71 @@ class WorkbookExtractor:
                 if talk_name is not None and talk_name != "":
                     clean = talk_name
                 clean = re.sub(regex[3], "", clean)
-                times_tmp = re.search(regex[0], clean)
-                if times_tmp is None:
-                    ti = [0]
-                else:
-                    ti = re.findall(regex[1], times_tmp.group(0))
-                directions = re.sub(regex[4], "", directions)
-                times.append([actual_part, int(ti[0]), clean, directions])
+                directions, ti = self.__get_time_and_directions__(directions, clean, regex)
+                if [actual_part, int(ti[0]), clean, directions] not in times:
+                    times.append([actual_part, int(ti[0]), clean, directions])
         self.logger.info("Parsing completed.")
         return times
+
+    async def __parse_2024__(self, content, language):
+        regex = await self.__get_language_regex(language, 2024)
+        times = []
+        lines = await self.__get_relevant_lines__(content)
+        actual_part = 0
+        next_is_talk = False
+        next_clean = ""
+        next_part = 0
+        i = 0
+        while i < len(lines):
+            if next_part != 0 and next_part > actual_part:
+                actual_part = next_part
+            line = lines[i]
+            (part, clean, is_talk) = await self.__get_text_from_html_2024__(line)
+            if i + 1 < len(lines):
+                next_line = lines[i + 1]
+                (next_part, next_clean, next_is_talk) = await self.__get_text_from_html_2024__(next_line)
+            else:
+                next_line = None
+
+            if part != 0 and part > actual_part:
+                actual_part = part
+
+            if is_talk:
+                actual_clean = clean
+                directions = ""
+                talk_name = actual_clean
+                if talk_name is not None and talk_name != "":
+                    clean = talk_name
+                actual_clean = re.sub(regex[3], "", clean)
+                if next_line is not None and not next_is_talk:
+                    _, next_ti = self.__get_time_and_directions__(actual_clean, actual_clean, regex)
+                    directions, ti = self.__get_time_and_directions__(next_clean, next_clean, regex)
+                    if int(ti[0]) > int(next_ti[0]):
+                        time = int(ti[0])
+                    else:
+                        time = int(next_ti[0])
+                    if [actual_part, time, actual_clean, directions] not in times:
+                        times.append([actual_part, time, actual_clean, directions])
+                else:
+                    _, ti = self.__get_time_and_directions__(actual_clean, actual_clean, regex)
+                    if [actual_part, int(ti[0]), actual_clean, directions] not in times:
+                        times.append([actual_part, int(ti[0]), actual_clean, directions])
+            if next_is_talk:
+                i += 1
+            else:
+                i += 2
+        self.logger.info("Parsing completed.")
+        return times
+
+    @staticmethod
+    def __get_time_and_directions__(directions, next_clean, regex):
+        times_tmp = re.search(regex[0], next_clean)
+        if times_tmp is None:
+            ti = [0]
+        else:
+            ti = re.findall(regex[1], times_tmp.group(0))
+        directions = re.sub(regex[4], "", directions)
+        return directions, ti
 
     def __get_url__(self, last_monday, next_sunday):
         prefix = "meeting-schedule"
@@ -260,6 +359,12 @@ class WorkbookExtractor:
         return basic_parser.kind, basic_parser.text, basic_parser.is_talk
 
     @staticmethod
+    async def __get_text_from_html_2024__(raw_html):
+        basic_parser = BasicHTMLParser2024()
+        basic_parser.feed(raw_html)
+        return basic_parser.kind, basic_parser.text, basic_parser.is_talk
+
+    @staticmethod
     async def __clean_html__(content, regex):
         for match in re.finditer(regex, content):
             return content[:match.end()].strip(), content[match.end():len(content)].strip()
@@ -267,5 +372,23 @@ class WorkbookExtractor:
 
     @staticmethod
     async def __get_relevant_lines__(content):
-        lines = content.split("\n")
-        return list(filter(lambda item: "data-pid" in item, map(lambda item: item.replace("\r", ""), lines)))
+        def has_class_but_no_id(tag):
+            return tag.has_attr("data-pid") or (
+                    tag.has_attr("class") and ("dc-icon--gem" in tag["class"]
+                                               or "dc-icon--wheat" in tag["class"]
+                                               or "dc-icon--sheep" in tag["class"]
+                                               or any("treasures" in s for s in tag["class"])
+                                               or any("ministry" in s for s in tag["class"])
+                                               or any("christianLiving" in s for s in tag["class"])))
+
+        soup = BeautifulSoup(content, features="html.parser")
+        soup_lines = soup.find_all("figure")
+        for figure in soup_lines:
+            figure.decompose()
+        soup_lines = soup.findAll(has_class_but_no_id)
+
+        lines = []
+        for line in soup_lines:
+            lines.append(str(line).replace("\r", "").replace("\n", ""))
+
+        return lines
