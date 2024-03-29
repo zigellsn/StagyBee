@@ -32,4 +32,5 @@ class CredentialForm(ModelForm):
             'password': PasswordInput(render_value=True),
         }
 
-    extractor_url = DockerURLField(label=_("Extractor URL"), initial="https://extractor:8443/", required=False)
+    extractor_url = DockerURLField(label=_("Extractor URL"), initial="https://extractor:8443/", required=False,
+                                   assume_scheme="https")

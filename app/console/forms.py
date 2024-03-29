@@ -55,7 +55,7 @@ class KnownClientForm(forms.ModelForm):
         model = KnownClient
         fields = ["uri", "alias", "cert_file"]
 
-    uri = URLField(label=_("Client URL"), empty_value="https://")
+    uri = URLField(label=_("Client URL"), empty_value="https://", assume_scheme="https")
     alias = CharField(label=_("Alias Name"))
 
     def is_valid(self):

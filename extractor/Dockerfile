@@ -1,4 +1,4 @@
-FROM docker.io/eclipse-temurin:20-jre-jammy
+FROM docker.io/eclipse-temurin:22-jre-jammy
 
 ENV EXTRACTOR_VERSION 1.0.20
 ENV KTOR_USER ktor
