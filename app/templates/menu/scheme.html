@@ -1,12 +1,41 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
-<div id="scheme" class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800"
-     _='on click fetch /{{ LANGUAGE_CODE }}/toggle_scheme/ {method:"POST", headers: { X-CSRFToken:"{{ csrf_token }}"} } put it into me.innerHTML then fetch /scheme/ if it == "dark" then add .dark to document.documentElement else remove .dark from document.documentElement end'>
-    {% if dark or dark == None %}
-        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Helles Design' %}</span>
-        {% include "icons/dark.html" %}
-    {% else %}
-        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Dunkles Design' %}</span>
+<div class="dropdown">
+<button id="scheme" type="button"
+     class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+    <div id="scheme-light" class="dark:hidden">
+        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light"></span>
         {% include "icons/light.html" %}
-    {% endif %}
+    </div>
+    <div id="scheme-dark" class="hidden dark:inline">
+        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light"></span>
+        {% include "icons/dark.html" %}
+    </div>
+</button>
+        <ul id="dd-menu" class="dropdown-menu">
+            <li _="on click remove .dark from document.documentElement
+                    then set localStorage.theme to 'light'
+                    {% if user.is_authenticated %}
+                   then fetch /scheme/?actual=light
+                   {% endif %}
+                   "><div class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/light.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Helles Design' %}</span></span></div></li>
+            <li _="on click add .dark to document.documentElement
+                   then set localStorage.theme to 'dark'
+                   {% if user.is_authenticated %}
+                   then fetch /scheme/?actual=dark
+                   {% endif %}
+                   "><div class="dark:hover:bg-gray-700 bg-blue-800 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/dark.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Dunkles Design' %}</span></span></div></li>
+                <li _="on click
+                js return window.matchMedia('(prefers-color-scheme: dark)').matches end then set media to it                
+                if media then
+                    add .dark to document.documentElement
+                else
+                    remove .dark from document.documentElement
+                end
+                then set localStorage.theme to 'auto'
+                {% if user.is_authenticated %}
+                fetch /scheme/?actual=follow
+                {% endif %}
+                "><div class="rounded-b bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/system.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Wie Betriebssystem' %}</span></span></div></li>
+        </ul>
 </div>

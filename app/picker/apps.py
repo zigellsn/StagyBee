@@ -43,6 +43,7 @@ async def __initialize_redis(layer):
 
 
 class PickerConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
     name = "picker"
     verbose_name = "JWConf Picker"
 

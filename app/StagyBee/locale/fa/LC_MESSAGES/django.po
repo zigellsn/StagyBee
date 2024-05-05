@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-22 11:18+0100\n"
+"POT-Creation-Date: 2024-04-15 12:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,12 +31,12 @@ msgstr ""
 msgid "Bevorzugte Sprache"
 msgstr ""
 
-#: .\console\forms.py:58 .\console\models.py:53
+#: .\console\forms.py:58 .\console\models.py:60
 #: .\templates\console\knownclient_list.html:8
 msgid "Client URL"
 msgstr ""
 
-#: .\console\forms.py:59 .\console\models.py:54
+#: .\console\forms.py:59 .\console\models.py:61
 #: .\templates\console\knownclient_list.html:7
 msgid "Alias Name"
 msgstr ""
@@ -53,40 +53,49 @@ msgstr ""
 msgid "Kein Token vom Client empfangen."
 msgstr ""
 
-#: .\console\models.py:40 .\templates\menu\light.html:2
+#: .\console\models.py:36 .\console\models.py:47 .\templates\menu\light.html:2
 #: .\templates\menu\scheme.html:9
 msgid "Dunkles Design"
 msgstr ""
 
-#: .\console\models.py:41 .\templates\console\settings.html:63
+#: .\console\models.py:37 .\templates\menu\dark.html:2
+#: .\templates\menu\scheme.html:6
+msgid "Helles Design"
+msgstr ""
+
+#: .\console\models.py:38
+msgid "Wie Betriebssystem"
+msgstr ""
+
+#: .\console\models.py:48 .\templates\console\settings.html:63
 msgid "Sprache"
 msgstr "زبان"
 
-#: .\console\models.py:55
+#: .\console\models.py:62
 msgid "Token"
 msgstr ""
 
-#: .\console\models.py:56
+#: .\console\models.py:63
 msgid "Zertifikatsdatei"
 msgstr ""
 
-#: .\console\models.py:62
+#: .\console\models.py:69
 msgid "Bekannter Client"
 msgstr ""
 
-#: .\console\models.py:63 .\templates\console\settings.html:31
+#: .\console\models.py:70 .\templates\console\settings.html:31
 msgid "Bekannte Clients"
 msgstr ""
 
-#: .\console\models.py:65
+#: .\console\models.py:72
 msgid "Client steuern"
 msgstr ""
 
-#: .\console\views.py:270 .\picker\views.py:63
+#: .\console\views.py:277 .\picker\views.py:63
 msgid "Herunterfahren-Anfrage erfolgreich gesendet"
 msgstr ""
 
-#: .\console\views.py:289 .\picker\views.py:82
+#: .\console\views.py:296 .\picker\views.py:82
 msgid "Neustart-Anfrage erfolgreich gesendet"
 msgstr ""
 
@@ -294,7 +303,7 @@ msgstr ""
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
-#: .\templates\base.html:47
+#: .\templates\base.html:75
 msgid "Sie müssen JavaScript aktivieren, um diese App zu starten."
 msgstr ""
 
@@ -395,27 +404,27 @@ msgstr ""
 msgid "Link zur Stoppuhrsession"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:56
+#: .\templates\console\fragments\talks.html:70
 msgid "Leben-und-Dienst-Zusammenkunft"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:68
+#: .\templates\console\fragments\talks.html:82
 msgid "Zusammenkunft für die Öffentlichkeit"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:71
-#: .\templates\console\fragments\talks.html:72
+#: .\templates\console\fragments\talks.html:85
+#: .\templates\console\fragments\talks.html:86
 msgid "Öffentlicher Vortrag (30 Min.)"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:74
-#: .\templates\console\fragments\talks.html:75
+#: .\templates\console\fragments\talks.html:88
+#: .\templates\console\fragments\talks.html:89
 msgid "Wachtturm-Studium (60 Min.)"
 msgstr ""
 
-#: .\templates\console\fragments\talks.html:79
-#: .\templates\console\fragments\talks.html:82
-#: .\templates\console\fragments\talks.html:84
+#: .\templates\console\fragments\talks.html:93
+#: .\templates\console\fragments\talks.html:96
+#: .\templates\console\fragments\talks.html:98
 msgid "Benutzerdefiniert"
 msgstr ""
 
@@ -510,16 +519,12 @@ msgstr ""
 msgid "Archiv"
 msgstr ""
 
-#: .\templates\menu\dark.html:2 .\templates\menu\scheme.html:6
-msgid "Helles Design"
-msgstr ""
-
 #: .\templates\menu\greeting.html:4
 #, python-format
 msgid "Willkommen,&nbsp;%(username)s!"
 msgstr "خش آمدید، %(username)s!"
 
-#: .\templates\menu\logout.html:6
+#: .\templates\menu\logout.html:7
 msgid "Abmelden"
 msgstr ""
 

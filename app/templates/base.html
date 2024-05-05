@@ -1,9 +1,7 @@
 {% load static i18n %}<!DOCTYPE html>
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_current_language as LANGUAGE_CODE %}
-<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}"
-      class="{% if dark %}dark{% endif %}"
-      _="on load fetch /scheme/ if it == 'dark' then add .dark to document.documentElement else remove .dark from document.documentElement end">
+<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -15,6 +13,34 @@
     <meta name="MSSmartTagsPreventParsing" content="true"/>
     <meta name="msapplication-square310x310logo" content="{% static 'stagybee/img/mstile-310x310.png' %}">
     <meta name="msapplication-TileColor" content="#000000">
+    <script>
+        {% if not user.is_authenticated %}
+            try {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) || localStorage.theme === 'auto'  
+                        && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark')
+                } else {
+                    document.documentElement.classList.remove('dark')
+                }
+            } catch (_) {
+            }
+        {% else %}
+            {% if scheme == 0 %}
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            {% elif scheme == 1 %}
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            {% elif scheme == 2 %}
+                localStorage.theme = 'auto';
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            {% endif %}
+        {% endif %}
+    </script>
     <title>{% block title %}Login{% endblock %} | StagyBee</title>
     {% block link_rel_tags %}{% endblock link_rel_tags %}
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'stagybee/img/apple-touch-icon-180x180.png' %}"

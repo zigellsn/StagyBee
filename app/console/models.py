@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from django.contrib.auth import user_logged_in
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
@@ -18,26 +19,46 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _, get_language
 
 
+@receiver(user_logged_in, sender=User)
+def user_logged_in(sender, **kwargs):
+    if "user" not in kwargs or "request" not in kwargs:
+        return
+    try:
+        preferences = UserPreferences.objects.get(user=kwargs["user"])
+        scheme = preferences.scheme
+    except UserPreferences.DoesNotExist:
+        UserPreferences.objects.create(user=kwargs["user"], scheme=UserPreferences.Scheme.LIGHT)
+        scheme = UserPreferences.Scheme.LIGHT
+    kwargs["request"].session["scheme"] = scheme
+
+
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
     current_language = get_language()
     if created and current_language is not None:
-        UserPreferences.objects.create(user=instance, dark_mode=True, locale=current_language)
+        UserPreferences.objects.create(user=instance, scheme=UserPreferences.Scheme.LIGHT, locale=current_language)
 
 
 class PreferencesManager(models.Manager):
 
-    def create_user_preferences(self, user, dark_mode, locale):
-        return self.create(user=user, dark_mode=dark_mode, locale=locale)
+    def create_user_preferences(self, user, scheme, locale):
+        return self.create(user=user, scheme=scheme, locale=locale)
 
 
 class UserPreferences(models.Model):
+    class Scheme(models.IntegerChoices):
+        DARK = 0, _('Dunkles Design')
+        LIGHT = 1, _('Helles Design')
+        FOLLOW = 2, _('Wie Betriebssystem')
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    dark_mode = models.BooleanField(verbose_name=_("Dunkles Design"))
+
+    scheme = models.IntegerField(choices=Scheme.choices, default=Scheme.LIGHT,
+                                 verbose_name=_("Erscheinungsbild"))
     locale = models.CharField(max_length=10, verbose_name=_("Sprache"), default="en")
 
     objects = PreferencesManager()

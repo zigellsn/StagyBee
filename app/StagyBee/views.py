@@ -16,7 +16,6 @@ import socket
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.views.generic.base import ContextMixin, View
 
@@ -28,66 +27,41 @@ class SchemeMixin(ContextMixin):
     @staticmethod
     def get_scheme(request):
         if request.user.is_authenticated:
-            if "dark" not in request.session:
+            preferences = None
+            if "actual" in request.GET:
                 try:
                     preferences = UserPreferences.objects.get(user=request.user)
-                    dark = preferences.dark_mode
+                    if request.GET["actual"] == "light":
+                        preferences.scheme = UserPreferences.Scheme.LIGHT
+                    elif request.GET["actual"] == "dark":
+                        preferences.scheme = UserPreferences.Scheme.DARK
+                    else:
+                        preferences.scheme = UserPreferences.Scheme.FOLLOW
+                    preferences.save()
                 except UserPreferences.DoesNotExist:
-                    UserPreferences.objects.create(user=request.user, dark_mode=True)
-                    dark = True
+                    UserPreferences.objects.create(user=request.user, scheme=UserPreferences.Scheme.LIGHT)
             else:
-                dark = request.session["dark"]
-        else:
-            if "dark" in request.session:
-                dark = request.session["dark"]
+                try:
+                    preferences = UserPreferences.objects.get(user=request.user)
+                except UserPreferences.DoesNotExist:
+                    UserPreferences.objects.create(user=request.user, scheme=UserPreferences.Scheme.LIGHT)
+            if preferences is not None:
+                request.session["scheme"] = preferences.scheme
             else:
-                request.session["dark"] = True
-                dark = True
-        return dark
+                request.session["scheme"] = UserPreferences.Scheme.LIGHT
+        return request.session["scheme"]
 
     def get_context_data(self, **kwargs):
-        if "dark" not in kwargs:
-            kwargs["dark"] = self.get_scheme(self.request)
+        if "scheme" not in kwargs:
+            kwargs["scheme"] = self.get_scheme(self.request)
         return super().get_context_data(**kwargs)
 
 
 class SchemeView(View):
 
     def dispatch(self, request, *args, **kwargs):
-        dark = SchemeMixin.get_scheme(request)
-        if dark:
-            response = "dark"
-        else:
-            response = ""
-        return HttpResponse(response, status=200)
-
-
-class ToggleSchemeView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            try:
-                preferences = UserPreferences.objects.get(user=request.user)
-                if "dark" not in request.session:
-                    preferences.dark_mode = not preferences.dark_mode
-                else:
-                    preferences.dark_mode = not request.session["dark"]
-                preferences.save()
-                request.session["dark"] = preferences.dark_mode
-            except UserPreferences.DoesNotExist:
-                UserPreferences.objects.create(user=request.user, dark_mode=True)
-                request.session["dark"] = True
-        else:
-            if "dark" not in request.session:
-                request.session["dark"] = True
-            else:
-                request.session["dark"] = not request.session["dark"]
-        if request.session["dark"]:
-            response = render_to_string("menu/dark.html", request=request)
-        else:
-            response = render_to_string("menu/light.html", request=request)
-
-        return HttpResponse(content=response, status=200)
+        scheme = SchemeMixin.get_scheme(request)
+        return HttpResponse(scheme, status=200)
 
 
 def set_host(request, context):

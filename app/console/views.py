@@ -25,6 +25,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.base import View
 from django.views.generic.edit import FormMixin, UpdateView
 from guardian.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from qr_code.qrcode.utils import QRCodeOptions
 from tenacity import RetryError
 
 from StagyBee.utils import post_request
@@ -84,6 +85,10 @@ class ConsoleView(PermissionRequiredMixin, SchemeMixin, FormMixin, DetailView):
         set_host(self.request, context)
         path = reverse("console:stopwatch:timer", args=[context["object"].congregation])
         context["timer_url"] = f"{self.request.scheme}://{context['ip']}{path}"
+        context["qr_options_dark"] = QRCodeOptions(size="s", border=6, error_correction="L",
+                                                   dark_color="white", light_color=None)
+        context["qr_options_light"] = QRCodeOptions(size="s", border=6, error_correction="L",
+                                                    dark_color="black", light_color=None)
         return context
 
     def get_template_names(self):
@@ -240,15 +245,18 @@ class SettingsView(LoginRequiredMixin, SchemeMixin, UpdateView):
 
     def form_valid(self, form):
         locale = form.cleaned_data["locale"]
+        scheme = form.cleaned_data["scheme"]
         try:
             preferences = UserPreferences.objects.get(user=self.request.user)
             preferences.locale = locale
+            preferences.scheme = scheme
             preferences.save()
             cur_language = translation.get_language()
             if cur_language != locale:
                 translation.activate(locale)
         except UserPreferences.DoesNotExist:
-            UserPreferences.objects.create_user_preferences(user=self.request.user, dark_mode=True, locale=locale)
+            UserPreferences.objects.create_user_preferences(user=self.request.user,
+                                                            design=UserPreferences.Scheme.LIGHT, locale=locale)
         return super().form_valid(form)
 
 

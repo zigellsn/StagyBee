@@ -4,7 +4,7 @@
 {% get_language_info_list for LANGUAGES as languages %}
 
 {% if LANGUAGES|length > 1 %}
-    <div class="dropdown">
+    <button type="button" class="dropdown">
         <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
             {% include 'icons/language.html' %}
         </div>
@@ -15,5 +15,5 @@
                        href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
             {% endfor %}
         </ul>
-    </div>
+    </button>
 {% endif %}

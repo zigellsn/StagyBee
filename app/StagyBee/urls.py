@@ -22,7 +22,7 @@ from django.views.generic import RedirectView, TemplateView
 
 from console import converters
 from console.views import SettingsView, StartupView, WorkbookView
-from .views import SchemeView, ToggleSchemeView
+from .views import SchemeView
 
 register_converter(converters.DateConverter, "date")
 
@@ -37,7 +37,6 @@ urlpatterns = [path("receiver/", include("receiver.urls")),
 urlpatterns += i18n_patterns(
     path("", RedirectView.as_view(url="/login/")),
     path("login/", auth_views.LoginView.as_view(redirect_authenticated_user=True), name="login"),
-    path("toggle_scheme/", ToggleSchemeView.as_view()),
     path("", include("django.contrib.auth.urls")),
     path("stage/", include("stage.urls")),
     path("picker/", include("picker.urls")),

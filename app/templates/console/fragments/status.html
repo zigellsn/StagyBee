@@ -1,4 +1,4 @@
-{% load i18n sb_qr_code %}
+{% load i18n qr_code %}
 
 <table class="table-auto w-full">
     <tbody>
@@ -37,8 +37,15 @@
             </div>
         </td>
         <td class="w-1/3">
-            <div class="flex stroke-current text-black dark:text-white justify-center">
-                {% qr_from_text timer_url size=12 version=6 %}
+            <div class="flex justify-center">
+                <span class="hidden dark:inline">
+                {% qr_from_text timer_url options=qr_options_dark size=12 version=6 %}
+                </span>
+            </div>
+            <div class="flex justify-center">
+                <span class="dark:hidden">
+                {% qr_from_text timer_url options=qr_options_light size=12 version=6 %}
+                </span>
             </div>
             <div class="text-center">{% trans "Link zur Stoppuhrsession" %}</div>
         </td>

@@ -1,6 +1,6 @@
 <div id="listeners" class="flex flex-wrap">
     {% for o in listeners %}
-        <div class="{% if o.request_to_speak and not o.speaking %}bg-green-600{% elif o.speaking %}bg-blue-600
+        <div class="{% if o.request_to_speak and not o.speaking %}bg-emerald-600{% elif o.speaking %}bg-blue-600
              request-to-speak{% else %}bg-gray-600{% endif %} h-12 m-2 rounded-md flex">
             <span class="m-2 self-center">
                 {% if o.listener_type <= 3 %}{% include 'icons/phone.html' %}{% else %}
@@ -9,7 +9,7 @@
             <span class="m-2 self-center text-l">
                 {{ o.complete_name }}
             </span>
-            <span class="m-2 p-2 {% if o.request_to_speak and not o.speaking %}bg-green-700{% elif o.speaking %}bg-blue-700
+            <span class="m-2 p-2 {% if o.request_to_speak and not o.speaking %}bg-emerald-700{% elif o.speaking %}bg-blue-700
              {% else %}bg-gray-700{% endif %} rounded-md self-center text-l">{{ o.listener_count }}
             </span>
         </div>
