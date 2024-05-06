@@ -16,7 +16,6 @@ import socket
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.template.loader import render_to_string
 from django.views.generic.base import ContextMixin, View
 
 from console.models import UserPreferences
@@ -26,8 +25,8 @@ class SchemeMixin(ContextMixin):
 
     @staticmethod
     def get_scheme(request):
+        preferences = None
         if request.user.is_authenticated:
-            preferences = None
             if "actual" in request.GET:
                 try:
                     preferences = UserPreferences.objects.get(user=request.user)
@@ -45,10 +44,10 @@ class SchemeMixin(ContextMixin):
                     preferences = UserPreferences.objects.get(user=request.user)
                 except UserPreferences.DoesNotExist:
                     UserPreferences.objects.create(user=request.user, scheme=UserPreferences.Scheme.LIGHT)
-            if preferences is not None:
-                request.session["scheme"] = preferences.scheme
-            else:
-                request.session["scheme"] = UserPreferences.Scheme.LIGHT
+        if preferences is not None:
+            request.session["scheme"] = preferences.scheme
+        else:
+            request.session["scheme"] = UserPreferences.Scheme.LIGHT
         return request.session["scheme"]
 
     def get_context_data(self, **kwargs):
