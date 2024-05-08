@@ -52,7 +52,7 @@ class Audit(models.Model):
 
     congregation = models.ForeignKey(Credential, on_delete=models.CASCADE, related_name="audits")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="audits")
-    message = models.TextField(default="", blank=True)
+    message = models.TextField(db_default="", blank=True)
     send_time = models.DateTimeField(default=timezone.now)
 
     objects = AuditManager()

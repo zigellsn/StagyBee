@@ -57,9 +57,9 @@ class UserPreferences(models.Model):
         primary_key=True,
     )
 
-    scheme = models.IntegerField(choices=Scheme.choices, default=Scheme.LIGHT,
+    scheme = models.IntegerField(choices=Scheme.choices, db_default=Scheme.LIGHT,
                                  verbose_name=_("Erscheinungsbild"))
-    locale = models.CharField(max_length=10, verbose_name=_("Sprache"), default="en")
+    locale = models.CharField(max_length=10, verbose_name=_("Sprache"), db_default="en")
 
     objects = PreferencesManager()
 
@@ -72,7 +72,7 @@ class KnownClientManager(models.Manager):
 
 class KnownClient(models.Model):
     uri = models.URLField(verbose_name=_("Client URL"), unique=True)
-    alias = models.TextField(verbose_name=_("Alias Name"), default="Client")
+    alias = models.TextField(verbose_name=_("Alias Name"), db_default="Client")
     token = models.BinaryField(max_length=64, verbose_name=_("Token"))
     cert_file = models.FileField(upload_to="certs", verbose_name=_("Zertifikatsdatei"))
 

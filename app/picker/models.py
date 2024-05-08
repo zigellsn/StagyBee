@@ -82,17 +82,17 @@ class Credential(models.Model):
         GIVEN_NAME = 1, _("Vorname zuerst")
 
     congregation = models.CharField(max_length=200, primary_key=True, verbose_name=_("Versammlung"))
-    autologin = models.CharField(max_length=128, default="", blank=True, verbose_name=_("Auto-Login ID"))
-    username = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Username"))
-    password = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Passwort"))
-    display_name = models.CharField(max_length=200, default="", blank=True, verbose_name=_("Anzeigename"))
-    extractor_url = DockerURLField(default="https://extractor:8443/", blank=True, verbose_name=_("Extractor URL"))
-    touch = models.BooleanField(default=True, verbose_name=_("Touch erlaubt"))
-    show_only_request_to_speak = models.BooleanField(default=False, verbose_name=_("Zeige nur Meldungen"))
-    send_times_to_stage = models.BooleanField(default=False, verbose_name=_("Sende Zeiten an Bühne"))
-    sort_order = models.PositiveSmallIntegerField(choices=SortOrder.choices, default=NameOrder.FAMILY_NAME,
+    autologin = models.CharField(max_length=128, db_default="", blank=True, verbose_name=_("Auto-Login ID"))
+    username = models.CharField(max_length=200, db_default="", blank=True, verbose_name=_("Username"))
+    password = models.CharField(max_length=200, db_default="", blank=True, verbose_name=_("Passwort"))
+    display_name = models.CharField(max_length=200, db_default="", blank=True, verbose_name=_("Anzeigename"))
+    extractor_url = DockerURLField(db_default="https://extractor:8443/", blank=True, verbose_name=_("Extractor URL"))
+    touch = models.BooleanField(db_default=True, verbose_name=_("Touch erlaubt"))
+    show_only_request_to_speak = models.BooleanField(db_default=False, verbose_name=_("Zeige nur Meldungen"))
+    send_times_to_stage = models.BooleanField(db_default=False, verbose_name=_("Sende Zeiten an Bühne"))
+    sort_order = models.PositiveSmallIntegerField(choices=SortOrder.choices, db_default=NameOrder.FAMILY_NAME,
                                                   verbose_name=_("Namensliste sortieren nach"))
-    name_order = models.PositiveSmallIntegerField(choices=NameOrder.choices, default=NameOrder.FAMILY_NAME,
+    name_order = models.PositiveSmallIntegerField(choices=NameOrder.choices, db_default=NameOrder.FAMILY_NAME,
                                                   verbose_name=_("Namensreihenfolge"))
 
     objects = CredentialManager()

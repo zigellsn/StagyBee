@@ -49,11 +49,11 @@ class Notification(models.Model):
         URGENT = 2, _('Dringend')
         ERROR = 3, _('Warnung')
 
-    subject = models.CharField(default="", max_length=255, verbose_name=_("Betreff"))
-    message = models.TextField(default="", blank=True, verbose_name=_("Nachricht"))
-    locale = models.CharField(default=" ", max_length=10, verbose_name=_("Sprache der Nachricht"))
-    show_in_locale = models.CharField(default=" ", max_length=10, verbose_name=_("Anzeigen für Sprache"))
-    importance = models.IntegerField(choices=Importance.choices, default=Importance.INFORMATION,
+    subject = models.CharField(db_default="", max_length=255, verbose_name=_("Betreff"))
+    message = models.TextField(db_default="", blank=True, verbose_name=_("Nachricht"))
+    locale = models.CharField(db_default=" ", max_length=10, verbose_name=_("Sprache der Nachricht"))
+    show_in_locale = models.CharField(db_default=" ", max_length=10, verbose_name=_("Anzeigen für Sprache"))
+    importance = models.IntegerField(choices=Importance.choices, db_default=Importance.INFORMATION,
                                      verbose_name=_("Wichtigkeit"))
     max_duration = models.DateField(verbose_name=_("Gültig bis"), null=True, blank=True)
     active = models.BooleanField(verbose_name=_("Aktiv"))
