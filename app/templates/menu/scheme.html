@@ -1,41 +1,84 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 <div class="dropdown">
-<button id="scheme" type="button"
-     class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-    <div id="scheme-light" class="dark:hidden">
-        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light"></span>
-        {% include "icons/light.html" %}
-    </div>
-    <div id="scheme-dark" class="hidden dark:inline">
-        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light"></span>
-        {% include "icons/dark.html" %}
-    </div>
-</button>
-        <ul id="dd-menu" class="dropdown-menu">
-            <li _="on click remove .dark from document.documentElement
+    <button type="button"
+            class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+        <div id="scheme-light" class="dark:hidden">
+            {% include "icons/light.html" %}
+        </div>
+        <div id="scheme-dark" class="hidden dark:inline">
+            {% include "icons/dark.html" %}
+        </div>
+    </button>
+    <ul class="dropdown-menu">
+        <li _="on click remove .dark from document.documentElement
                     then set localStorage.theme to 'light'
+                    then remove .bg-blue-800 from #menu-scheme-light
+                    then remove .bg-blue-900 from #menu-scheme-dark
+                    then add .bg-blue-900 to #menu-scheme-light
+                    then add .bg-blue-800 to #menu-scheme-dark
                     {% if user.is_authenticated %}
-                   then fetch /scheme/?actual=light
-                   {% endif %}
-                   "><div class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/light.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Helles Design' %}</span></span></div></li>
-            <li _="on click add .dark to document.documentElement
-                   then set localStorage.theme to 'dark'
-                   {% if user.is_authenticated %}
-                   then fetch /scheme/?actual=dark
-                   {% endif %}
-                   "><div class="dark:hover:bg-gray-700 bg-blue-800 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/dark.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Dunkles Design' %}</span></span></div></li>
-                <li _="on click
-                js return window.matchMedia('(prefers-color-scheme: dark)').matches end then set media to it                
+                    then fetch /scheme/?actual=light
+                    {% endif %}
+                   ">
+            <div id="menu-scheme-light" class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
+                 _="on load if localStorage.theme matches 'light' then remove .bg-blue-800 from me then add .bg-blue-900 to me end">
+                <span class="w-full inline-flex">{% include "icons/light.html" %}<span
+                        class="ltr:ml-2 rtl:mr-2">{% trans 'Helles Design' %}</span></span></div>
+        </li>
+        <li _="on click add .dark to document.documentElement
+                    then set localStorage.theme to 'dark'
+                    then remove .bg-blue-900 from #menu-scheme-light
+                    then remove .bg-blue-800 from #menu-scheme-dark
+                    then add .bg-blue-800 to #menu-scheme-light
+                    then add .bg-blue-900 to #menu-scheme-dark
+                    {% if user.is_authenticated %}
+                    then fetch /scheme/?actual=dark
+                    {% endif %}
+                   ">
+            <div id="menu-scheme-dark" class="dark:hover:bg-gray-700 bg-blue-800 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
+                 _="on load if localStorage.theme matches 'dark' then remove .bg-blue-800 from me then add .bg-blue-900 to me end">
+                <span class="w-full inline-flex">{% include "icons/dark.html" %}<span
+                        class="ltr:ml-2 rtl:mr-2">{% trans 'Dunkles Design' %}</span></span></div>
+        </li>
+        <li _="on click
+                js return window.matchMedia('(prefers-color-scheme: dark)').matches end then set media to it
                 if media then
+                    remove .bg-blue-900 from #menu-scheme-light
+                    then remove .bg-blue-800 from #menu-scheme-dark
+                    then add .bg-blue-800 to #menu-scheme-light
+                    then add .bg-blue-900 to #menu-scheme-dark
                     add .dark to document.documentElement
                 else
                     remove .dark from document.documentElement
+                    then remove .bg-blue-800 from #menu-scheme-light
+                    then remove .bg-blue-900 from #menu-scheme-dark
+                    then add .bg-blue-900 to #menu-scheme-light
+                    then add .bg-blue-800 to #menu-scheme-dark
                 end
                 then set localStorage.theme to 'auto'
                 {% if user.is_authenticated %}
                 fetch /scheme/?actual=follow
                 {% endif %}
-                "><div class="rounded-b bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"><span class="w-full inline-flex">{% include "icons/system.html" %}<span class="ltr:ml-2 rtl:mr-2">{% trans 'Wie Betriebssystem' %}</span></span></div></li>
-        </ul>
+                ">
+            <div class="rounded-b bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
+                 _="on load
+                 if localStorage.theme matches 'auto' then
+                    js return window.matchMedia('(prefers-color-scheme: dark)').matches end then set media to it
+                    if media then
+                        remove .bg-blue-900 from #menu-scheme-light
+                        then remove .bg-blue-800 from #menu-scheme-dark
+                        then add .bg-blue-800 to #menu-scheme-light
+                        then add .bg-blue-900 to #menu-scheme-dark
+                    else
+                        remove .bg-blue-800 from #menu-scheme-light
+                        then remove .bg-blue-900 from #menu-scheme-dark
+                        then add .bg-blue-900 to #menu-scheme-light
+                        then add .bg-blue-800 to #menu-scheme-dark
+                    end
+                end">
+                <span class="w-full inline-flex">{% include "icons/system.html" %}<span
+                        class="ltr:ml-2 rtl:mr-2">{% trans 'Wie Betriebssystem' %}</span></span></div>
+        </li>
+    </ul>
 </div>

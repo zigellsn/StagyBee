@@ -4,10 +4,13 @@
 {% get_language_info_list for LANGUAGES as languages %}
 
 {% if LANGUAGES|length > 1 %}
-    <button type="button" class="dropdown">
-        <div class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-            {% include 'icons/language.html' %}
-        </div>
+    <div class="dropdown">
+        <button type="button"
+            class="p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+            <div>
+                {% include 'icons/language.html' %}
+            </div>
+        </button>
         <ul class="dropdown-menu">
             {% for lang_code, lang_name in LANGUAGES %}
                 <li>
@@ -15,5 +18,5 @@
                        href="{% translate_url lang_code %}">{{ lang_name }}</a></li>
             {% endfor %}
         </ul>
-    </button>
+    </div>    
 {% endif %}
