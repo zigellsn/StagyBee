@@ -24,6 +24,6 @@
     "htmx.org": "^1.9.12",
     "hyperscript.org": "^0.9.12",
     "luxon": "^3.4.4",
-    "sweetalert2": "^11.10.8"
+    "sweetalert2": "^11.11.0"
   }
 }
