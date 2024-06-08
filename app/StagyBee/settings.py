@@ -218,6 +218,8 @@ STATICFILES_DIRS = [("stagybee", str(PROJECT_PACKAGE.joinpath("static")))]
 MEDIA_URL = "/files/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "files/")
 
+TESTING = "test" in sys.argv
+
 if DEBUG:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = env.str("SECRET_KEY", "django-insecure-qhmmb46a$-j_#%yt0@1enx=mxpercrdbu!sc4^x=a1n_+a!^y5")
@@ -227,17 +229,18 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
-    try:
-        import debug_toolbar
-    except ImportError:
-        pass
-    else:
-        INSTALLED_APPS.append("debug_toolbar")
-        INTERNAL_IPS = ["127.0.0.1"]
-        MIDDLEWARE.insert(
-            MIDDLEWARE.index("django.middleware.common.CommonMiddleware") + 1,
-            "debug_toolbar.middleware.DebugToolbarMiddleware"
-        )
+    if not TESTING:
+        try:
+            import debug_toolbar
+        except ImportError:
+            pass
+        else:
+            INSTALLED_APPS.append("debug_toolbar")
+            INTERNAL_IPS = ["127.0.0.1"]
+            MIDDLEWARE.insert(
+                MIDDLEWARE.index("django.middleware.common.CommonMiddleware") + 1,
+                "debug_toolbar.middleware.DebugToolbarMiddleware"
+            )
 else:
     SECRET_KEY = env.str("SECRET_KEY")
 
