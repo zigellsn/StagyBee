@@ -1,4 +1,4 @@
-FROM docker.io/python:3.12.2-slim
+FROM docker.io/python:3.12.5-slim
 
 ENV HOME /home/pyuser 
 RUN useradd --gid users --create-home pyuser
