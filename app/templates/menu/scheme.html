@@ -18,10 +18,11 @@
                     then add .bg-blue-900 to #menu-scheme-light
                     then add .bg-blue-800 to #menu-scheme-dark
                     {% if user.is_authenticated %}
-                    then fetch /scheme/?actual=light
+                    then fetch {% url 'api-1.0.0:scheme' %}{% querystring actual='light' %}
                     {% endif %}
                    ">
-            <div id="menu-scheme-light" class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
+            <div id="menu-scheme-light"
+                 class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
                  _="on load if localStorage.theme matches 'light' then remove .bg-blue-800 from me then add .bg-blue-900 to me end">
                 <span class="w-full inline-flex">{% include "icons/light.html" %}<span
                         class="ltr:ml-2 rtl:mr-2">{% trans 'Helles Design' %}</span></span></div>
@@ -33,10 +34,11 @@
                     then add .bg-blue-800 to #menu-scheme-light
                     then add .bg-blue-900 to #menu-scheme-dark
                     {% if user.is_authenticated %}
-                    then fetch /scheme/?actual=dark
+                    then fetch {% url 'api-1.0.0:scheme' %}{% querystring actual='dark' %}
                     {% endif %}
                    ">
-            <div id="menu-scheme-dark" class="dark:hover:bg-gray-700 bg-blue-800 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
+            <div id="menu-scheme-dark"
+                 class="dark:hover:bg-gray-700 bg-blue-800 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"
                  _="on load if localStorage.theme matches 'dark' then remove .bg-blue-800 from me then add .bg-blue-900 to me end">
                 <span class="w-full inline-flex">{% include "icons/dark.html" %}<span
                         class="ltr:ml-2 rtl:mr-2">{% trans 'Dunkles Design' %}</span></span></div>
@@ -58,7 +60,7 @@
                 end
                 then set localStorage.theme to 'auto'
                 {% if user.is_authenticated %}
-                fetch /scheme/?actual=follow
+                fetch {% url 'api-1.0.0:scheme' %}{% querystring actual='follow' %}
                 {% endif %}
                 ">
             <div class="rounded-b bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 whitespace-no-wrap cursor-pointer"

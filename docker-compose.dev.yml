@@ -1,4 +1,5 @@
-version: '3.9'
+name: stagybee_dev
+
 services:
   web:
     build:

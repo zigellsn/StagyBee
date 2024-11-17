@@ -12,7 +12,7 @@
         {% if credential.autologin %}
             <div id="my_frame">
                 <iframe class="w-full" name="frame" style="height: calc(100vh - 150px);"
-                        src="https://jwconf.org/?key={{ credential.autologin }}"
+                        src="https://jwconf.org/{% querystring key=credential.autologin %}"
                         _="on load remove .container from <main/>"></iframe>
             </div>
         {% else %}

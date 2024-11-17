@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -20,15 +19,13 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path, register_converter
 from django.views.generic import RedirectView, TemplateView
 
+from StagyBee.api import api
 from console import converters
 from console.views import SettingsView, StartupView, WorkbookView
-from .views import SchemeView
 
 register_converter(converters.DateConverter, "date")
 
-urlpatterns = [path("receiver/", include("receiver.urls")),
-               path("scheme/", SchemeView.as_view()),
-               path("<str:language>/console/workbook/help/",
+urlpatterns = [path("<str:language>/console/workbook/help/",
                     TemplateView.as_view(template_name="console/fragments/workbook_help.html"), name="workbook_help"),
                path("<str:language>/console/workbook/today/", WorkbookView.as_view(), name="workbook_today"),
                path("<str:language>/console/workbook/<date:date_from>/", WorkbookView.as_view(), name="workbook"),
@@ -45,6 +42,7 @@ urlpatterns += i18n_patterns(
     path("notification/", include("notification.urls")),
     path("admin/", admin.site.urls),
     path("settings/", SettingsView.as_view(), name="settings"),
+    path("api/", api.urls),
     prefix_default_language=True
 )
 

@@ -208,7 +208,7 @@ class ExtractorConsumer(AsyncWebsocketConsumer):
         if receiver_port == 0:
             receiver_port = self.scope["server"][1]
         receiver_protocol = settings.RECEIVER_PROTOCOL
-        url = f"{receiver_protocol}://{receiver_host}:{receiver_port}/receiver/{congregation}/"
+        url = f"{receiver_protocol}://{receiver_host}:{receiver_port}/api/receiver/{congregation}/"
         if credentials.autologin is not None and credentials.autologin != "":
             payload = {"id": credentials.autologin, "url": url}
         else:

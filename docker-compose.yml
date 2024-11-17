@@ -1,4 +1,5 @@
-version: '3.9'
+name: stagybee
+
 services:
   python-base:
     image: "localhost/stagybee/python-base:slim"

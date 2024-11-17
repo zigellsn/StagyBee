@@ -25,7 +25,7 @@
     {% endif %}
     {% if show_login %}
         <div class="grid place-items-center">
-            <a href="https://jwconf.org/login.php?source=index.php&"
+            <a href="https://jwconf.org/login.php{% querystring source="index.php&" %}"
                class="flex w-64 h-32 bg-red-500 hover:bg-red-400 text-center justify-center items-center rounded-md">
                 <span>{% trans "JWConf Login Seite" %}</span>
             </a>

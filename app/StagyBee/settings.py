@@ -87,7 +87,6 @@ INSTALLED_APPS = [
     "daphne",
     "guardian",
     "stage",
-    "receiver",
     "console.apps.ConsoleConfig",
     "picker.apps.PickerConfig",
     "audit.apps.AuditConfig",

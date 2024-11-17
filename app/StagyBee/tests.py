@@ -12,12 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.urls import path
+from django.test import TestCase
+from django.urls import reverse
 
-from .views import ReceiverView
 
-app_name = 'receiver'
-
-urlpatterns = [
-    path('<str:pk>/', ReceiverView.as_view(), name='receiver'),
-]
+class ReceiverViewTests(TestCase):
+    def test_no_event(self):
+        response = self.client.post(reverse('api-1.0.0:receiver', args=("Test",)))
+        self.assertEqual(response.status_code, 204)

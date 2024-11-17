@@ -15,8 +15,7 @@
 import socket
 
 from django.conf import settings
-from django.http import HttpResponse
-from django.views.generic.base import ContextMixin, View
+from django.views.generic.base import ContextMixin
 
 from console.models import UserPreferences
 
@@ -54,13 +53,6 @@ class SchemeMixin(ContextMixin):
         if "scheme" not in kwargs:
             kwargs["scheme"] = self.get_scheme(self.request)
         return super().get_context_data(**kwargs)
-
-
-class SchemeView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        scheme = SchemeMixin.get_scheme(request)
-        return HttpResponse(scheme, status=200)
 
 
 def set_host(request, context):
