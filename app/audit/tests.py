@@ -25,7 +25,7 @@ from picker.tests import create_credential
 class AuditViewTests(TestCase):
     def setUp(self):
         congregation = create_credential()
-        create_credential(congregation='FE')
+        create_credential(congregation='NO_LE')
         test_user = User.objects.create(username="testuser")
         test_user.set_password("12345")
         permission = Permission.objects.get(codename="view_audit")
@@ -37,17 +37,17 @@ class AuditViewTests(TestCase):
         self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("console:choose_console"))
         self.assertContains(response, "LE")
-        self.assertNotContains(response, "FE")
+        self.assertNotContains(response, "NO_LE")
         self.assertContains(response, "Zum Audit-Log...")
 
     def test_audit(self):
         congregation = Credential.objects.get(congregation="LE")
-        congregation_fe = Credential.objects.get(congregation="FE")
+        congregation_no_le = Credential.objects.get(congregation="NO_LE")
         test_user = User.objects.get(username="testuser")
         Audit.objects.create_audit(congregation=congregation, message="Bla", user=test_user)
         Audit.objects.create_audit(congregation=congregation, message="Blub", user=test_user)
-        Audit.objects.create_audit(congregation=congregation_fe, message="Foo", user=test_user)
-        Audit.objects.create_audit(congregation=congregation_fe, message="Bar", user=test_user)
+        Audit.objects.create_audit(congregation=congregation_no_le, message="Foo", user=test_user)
+        Audit.objects.create_audit(congregation=congregation_no_le, message="Bar", user=test_user)
         self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("console:audit:audit", kwargs={"pk": "LE"}))
         self.assertContains(response, "Bla")
@@ -56,5 +56,5 @@ class AuditViewTests(TestCase):
         self.assertContains(response, "Blub")
 
     def test_not_authorized(self):
-        response = self.client.get(reverse("console:audit:audit", kwargs={"pk": "FE"}))
+        response = self.client.get(reverse("console:audit:audit", kwargs={"pk": "NO_LE"}))
         self.assertEqual(response.status_code, 403)
