@@ -35,6 +35,9 @@ env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 DEBUG = env("DEBUG")
 SHOW_DEBUG_TOOLBAR = DEBUG
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 try:
     with open(os.path.join(PROJECT_PACKAGE, "regex.json"), encoding="utf-8") as json_file:
         WB_LANGUAGE_SWITCHER = json.load(json_file)

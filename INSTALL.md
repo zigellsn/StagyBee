@@ -30,11 +30,11 @@ npm run build
 Copy the generated files to ./StagyBee/static/
 
 ```bash
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements/dev.txt
 python manage.py migrate --run-syncdb
-python manage.py compilemessages --ignore venv
+python manage.py compilemessages --ignore .venv
 python manage.py collectstatic
 python manage.py createsuperuser
 python manage.py runserver

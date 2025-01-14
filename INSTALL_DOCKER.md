@@ -33,7 +33,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec web python manage.py createsuperuser
 ```
 
-Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
+Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created superuser.
 Create the required credential data sets.
 
 To stop everything use
@@ -72,7 +72,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py createsuperuser
 ```
 
-Log on to [http://127.0.0.1/admin/](http://127.0.0.1/admin/) with the created super user.
+Log on to [http://127.0.0.1/admin/](http://127.0.0.1/admin/) with the created superuser.
 Create the required credential data sets.
 
 To stop everything use
