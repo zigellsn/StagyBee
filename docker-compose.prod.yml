@@ -10,6 +10,8 @@ services:
       context: nginx/
       args:
         ENABLED_MODULES: brotli
+        KEY_FILE: ./certs/key.pem
+        CRT_FILE: ./certs/crt.pem
     restart: always
     ports:
       - "443:443"

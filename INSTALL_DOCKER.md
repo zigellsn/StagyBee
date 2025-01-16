@@ -59,12 +59,14 @@ mkdir static
 mkdir files
 ```
 
-Provide key.pem and crt.pem files in ./nginx/certs/
+Provide `key.pem` and `crt.pem` files in `./nginx/certs/`
 
 ---
 - **It is recommended to restrict access to the directory `./files` on file system level!**
 - **It is recommended to restrict access to the directory `./nginx/certs/` on file system level!**
 ---
+
+To serve over port 80, it may be necessary to add the line `net.ipv4.ip_unprivileged_port_start=80` to `/etc/sysctl.conf`
 
 Then run
 ``` bash

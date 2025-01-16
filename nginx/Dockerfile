@@ -62,7 +62,13 @@ RUN set -ex \
 
 FROM docker.io/nginx:mainline-alpine
 
+ARG KEY_FILE
+ARG CRT_FILE
+
 COPY --from=builder /tmp/packages /tmp/packages
+
+COPY . .
+
 RUN set -ex \
     && . /tmp/packages/modules.env \
     && for module in $BUILT_MODULES; do \
@@ -71,8 +77,9 @@ RUN set -ex \
     && rm -rf /tmp/packages \
     && rm /etc/nginx/conf.d/default.conf \
     && sed -i "1 i load_module modules/ngx_http_brotli_static_module.so;load_module modules/ngx_http_brotli_filter_module.so;" /etc/nginx/nginx.conf \
-    && mkdir /etc/nginx/errorPage/ \
-    && mkdir /etc/nginx/certs/
-COPY nginx.conf /etc/nginx/conf.d/
-COPY 502.html 502.css favicon-32x32.ico favicon-96x96.png apple-touch-icon-180x180.png /etc/nginx/errorPage/
-COPY certs/crt.pem certs/key.pem /etc/nginx/certs/
+    && mkdir /etc/nginx/certs/ \
+    && mv nginx.conf /etc/nginx/conf.d/ \
+    && mv ./errorPage/ /etc/nginx/ \
+    && mv $CRT_FILE /etc/nginx/certs/crt.pem \
+    && mv $KEY_FILE /etc/nginx/certs/key.pem \
+    && rm -rf ./certs
