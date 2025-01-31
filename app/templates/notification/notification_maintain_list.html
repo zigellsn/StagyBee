@@ -63,20 +63,20 @@
             </td>
             <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12 text-center">
                 <div><label for="active"></label>
-                    <input class="dark:bg-gray-800 bg-white appearance-none outline-none" id="active" type="checkbox"
+                    <input class="dark:bg-gray-800 bg-white appearance-none outline-hidden" id="active" type="checkbox"
                            readonly disabled {% if notification.active %}checked{% endif %}>
                 </div>
             </td>
             <td class="px-5 {% if forloop.first %}pt-4{% else %}pt-2{% endif %} text-sm w-1/12">
                 <a class="flex w-full cursor-default"
                    href="{% url 'notification:notification_update' notification.id %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                         <span>{% include 'icons/edit.html' %}</span><span
                             class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Bearbeiten" %}</span></div>
                 </a>
                 <a class="flex w-full cursor-default"
                    href="{% url 'notification:notification_delete' notification.id %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                         <span>{% include 'icons/delete.html' %}</span><span
                             class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Löschen" %}</span></div>
                 </a>
@@ -97,7 +97,7 @@
         <td class="px-5 py-5 text-sm w-1/12"></td>
         <td class="px-5 py-5 text-sm w-1/12">
             <a class="flex w-full cursor-default" href="{% url 'notification:notification_create' %}">
-                <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                     <span>{% include 'icons/document_add.html' %}</span><span
                         class="ltr:ml-2 rtl:mr-2 uppercase">{% trans "Neu" %}</span></div>
             </a>

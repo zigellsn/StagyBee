@@ -24,7 +24,7 @@
                             hx-trigger="confirmed"
                             hx-get="{% url 'console:known_client_shutdown' knownclient.id %}"
                             hx-swap="afterend"
-                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2"
+                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2"
                             _="on click call Swal.fire({
                             title: '{% trans "Herunterfahren" %}',
                             text: '{{ knownclient.alias }}',
@@ -43,7 +43,7 @@
                             hx-trigger="confirmed"
                             hx-get="{% url 'console:known_client_reboot' knownclient.id %}"
                             hx-swap="afterend"
-                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2"
+                            class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2"
                             _="on click call Swal.fire({
                             title: '{% trans "Neu starten" %}',
                             text: '{{ knownclient.alias }}',

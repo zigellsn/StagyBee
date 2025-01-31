@@ -3,8 +3,8 @@
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit" id="logout"
-         class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-        <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Abmelden' %}</span>
+         class="has-tooltip p-2 rounded-sm leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+        <span class="tooltip rounded-sm dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Abmelden' %}</span>
         {% include 'icons/logout.html' %}
     </button>
 </form>

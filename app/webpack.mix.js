@@ -18,10 +18,10 @@ let mix = require('laravel-mix');
 
 mix.disableNotifications();
 
-let src = ['./node_modules/luxon/build/global/luxon.min.js',
-    './node_modules/sweetalert2/dist/sweetalert2.min.js',
-    './node_modules/htmx.org/dist/htmx.min.js',
+let src = ['./node_modules/htmx.org/dist/htmx.min.js',
     './node_modules/htmx-ext-ws/ws.js',
+    './node_modules/luxon/build/global/luxon.min.js',
+    './node_modules/sweetalert2/dist/sweetalert2.min.js',
     './node_modules/hyperscript.org/dist/_hyperscript.min.js']
 
 if (process.env.NODE_ENV === 'development')

@@ -30,7 +30,7 @@
             {% if congregation.active == True %}
                 {% if "access_console" in congregation_perms %}
                     <a class="flex w-full cursor-default" href="{% url 'console:console' congregation.congregation %}">
-                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                             <span class="uppercase">{% trans "Zur Console..." %}</span>
                         </div>
                     </a>
@@ -38,7 +38,7 @@
                 {% if "access_stopwatch" in congregation_perms %}
                     <a class="flex w-full cursor-default"
                        href="{% url 'console:stopwatch:timer' congregation.congregation %}">
-                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                        <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                             <span class="uppercase">{% trans "Zur Stoppuhr..." %}</span>
                         </div>
                     </a>
@@ -49,14 +49,14 @@
                 {% now "W" as week %}
                 <a class="flex w-full cursor-default"
                    href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                         <span class="uppercase">{% trans "Zum Archiv..." %}</span>
                     </div>
                 </a>
             {% endif %}
             {% if perms.audit.view_audit and "access_audit_log" in congregation_perms %}
                 <a class="flex w-full cursor-default" href="{% url 'console:audit:audit' congregation.congregation %}">
-                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded mb-2">
+                    <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2">
                         <span class="uppercase">{% trans "Zum Audit-Log..." %}</span>
                     </div>
                 </a>

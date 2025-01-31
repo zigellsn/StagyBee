@@ -5,8 +5,8 @@
     {% now "W" as week %}
     <a href="{% url 'console:stopwatch:archive' pk=congregation.congregation year=year week=week %}">
         <div id="archive"
-             class="has-tooltip p-2 rounded leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
-            <span class="tooltip rounded dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Archiv' %}</span>
+             class="has-tooltip p-2 rounded-sm leading-none dark:bg-black bg-blue-500 hover:bg-blue-800 dark:hover:bg-blue-800">
+            <span class="tooltip rounded-sm dark:shadow-gray-800 shadow-lg p-2 dark:bg-gray-700 bg-gray-100 dark:text-white text-black mt-9 font-light">{% trans 'Archiv' %}</span>
             {% include 'icons/archive.html' %}
         </div>
     </a>
