@@ -8,7 +8,7 @@
     "build": "mix",
     "css": "tailwindcss -i ./style/all_main.css -o ./StagyBee/static/css/bundle.css",
     "css-watch": "tailwindcss -i ./style/main.css -o ./StagyBee/static/css/bundle.css --watch",
-    "css-nginx": "tailwindcss -o ./../nginx/502.css --content ./../nginx/502.html --minify",
+    "css-nginx": "tailwindcss -o ./../nginx/errorPage/502.css --content ./../nginx/errorPage/502.html --minify",
     "postcss": "postcss ./style/all_main.css -o ./StagyBee/static/css/bundle.css"
   },
   "devDependencies": {
