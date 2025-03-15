@@ -2,9 +2,9 @@
 {% for workbook in workbooks %}
 <ul class="workbook" lang="{{ language }}" data-date="{{ workbook.date }}">
     {% for talk in workbook.times %}
-        <li class="line" data-caption="{{ talk.2 }}" data-part="{{ talk.0 }}"
-            {% if talk.1 %}data-content="{{ talk.1 }}"{% endif %}
-            {% if talk.3 %}data-directions="{{ talk.3 }}"{% endif %}>{{ talk.2 }}</li>
+        <li class="line" data-caption="{{ talk.talk }}" data-part="{{ talk.kind }}"
+            {% if talk.time %}data-content="{{ talk.time }}"{% endif %}
+            {% if talk.directions %}data-directions="{{ talk.directions }}"{% endif %}>{{ talk.talk }}</li>
     {% empty %}
         <li>{% trans 'Es konnten keine passenden Programmpunkte im Arbeitsheft gefunden werden.' %}</li>
     {% endfor %}

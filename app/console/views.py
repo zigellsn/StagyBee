@@ -36,7 +36,7 @@ from stage.consumers import generate_channel_group_name
 from stopwatch.forms import StopwatchForm
 from .forms import CongregationForm, LanguageForm
 from .models import UserPreferences, KnownClient
-from .workbook.workbook import WorkbookExtractor
+from .workbook.workbook import WorkbookExtractor, Times
 
 
 class StartupView(LoginRequiredMixin, SchemeMixin, View):
@@ -198,21 +198,21 @@ class WorkbookView(LoginRequiredMixin, View):
             for f in filter_list:
                 match f:
                     case "times":
-                        filters_times = filters_times + (lambda item: item[1] > 0,)
+                        filters_times = filters_times + (lambda item: item.time > 0,)
                     case "no_times":
-                        filters_times = filters_times + (lambda item: item[1] == 0,)
+                        filters_times = filters_times + (lambda item: item.time == 0,)
                     case "directions":
-                        filters_directions = filters_directions + (lambda item: item[3] != "",)
+                        filters_directions = filters_directions + (lambda item: item.directions != "",)
                     case "no_directions":
-                        filters_directions = filters_directions + (lambda item: item[3] == "",)
+                        filters_directions = filters_directions + (lambda item: item.directions == "",)
                     case "0":
-                        filters_part = filters_part + (lambda item: item[0] == 0,)
+                        filters_part = filters_part + (lambda item: item.kind == 0,)
                     case "1":
-                        filters_part = filters_part + (lambda item: item[0] == 1,)
+                        filters_part = filters_part + (lambda item: item.kind == 1,)
                     case "2":
-                        filters_part = filters_part + (lambda item: item[0] == 2,)
+                        filters_part = filters_part + (lambda item: item.kind == 2,)
                     case "3":
-                        filters_part = filters_part + (lambda item: item[0] == 3,)
+                        filters_part = filters_part + (lambda item: item.kind == 3,)
                     case _:
                         return HttpResponse(
                             "Only 'times', 'no_times', 'directions', "
@@ -220,9 +220,9 @@ class WorkbookView(LoginRequiredMixin, View):
                             status=400)
 
             if filters_part == ():
-                filters_part = (lambda item: item[0] == 0 or item[0] == 1 or item[0] == 2 or item[0] == 3,)
+                filters_part = (lambda item: item.kind == 0 or item.kind == 1 or item.kind == 2 or item.kind == 3,)
 
-            def filter_list(item):
+            def filter_list(item: Times):
                 return all((any(fu(item) for fu in filters_part), all(fu(item) for fu in filters_directions),
                             all(fu(item) for fu in filters_times)))
 
