@@ -1,4 +1,4 @@
-FROM docker.io/python:3.12.5-slim
+FROM docker.io/python:3.14.0-slim
 COPY --from=docker.io/astral/uv:latest /uv /uvx /bin/
 
 ENV HOME /home/pyuser 
