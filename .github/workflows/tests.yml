@@ -30,6 +30,8 @@ jobs:
 
       - name: Install the project
         run: uv sync --locked --all-extras --dev
+        env:
+          UV_PROJECT: app/
 
       - name: Run Tests
         run: |
