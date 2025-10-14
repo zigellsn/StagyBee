@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       - name: Build Release Info
         id: build_release_info
         run: |
@@ -23,7 +23,7 @@ jobs:
           cd .. && zip -r StagyBee/dist/StagyBee-${{steps.build_release_info.outputs.version}}.zip StagyBee -x "StagyBee/.git/*" "StagyBee/.github/*" "StagyBee/.idea/*" "StagyBee/.gitignore" "StagyBee/dist/*" && cd StagyBee
           tar --exclude='.git' --exclude='.github' --exclude='.gitignore' --exclude='.idea' --exclude='dist' -cvf dist/StagyBee-${{steps.build_release_info.outputs.version}}.tar ../StagyBee
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: StagyBee-${{steps.build_release_info.outputs.version}}
           path: dist
