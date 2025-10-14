@@ -42,3 +42,4 @@ jobs:
           DJANGO_SETTINGS_MODULE: StagyBee.settings
           PYTHONUNBUFFERED: 1
           UV_PROJECT: app/
+          UV_WORKING_DIRECTORY: app/
