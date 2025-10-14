@@ -1,13 +1,10 @@
 FROM docker.io/node:18-slim AS build
 
-ENV NODE_ENV=development
-
 COPY . .
 
-RUN npm install && \
-    npm run build && \
-    npm run css && \
-    rm -rf node_modules
+RUN npm run install --prefix ./bundle && \
+    npm run build_dev --prefix ./bundle && \
+    rm -rf ./bundle/node_modules
 
 FROM stagybee/python-base:slim
 
@@ -20,11 +17,11 @@ ENV DEPENDENCIES="gcc \
     libpq-dev \
     libc-dev"
 
-COPY requirements/common.txt .
-COPY requirements/dev.txt .
+COPY pyproject.toml .
+COPY uv.lock .
 
 RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES && \
-    pip install --no-cache-dir -r ./dev.txt && \
+    uv sync --locked --only-dev && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/* && \
     rm -f ./common.txt && \

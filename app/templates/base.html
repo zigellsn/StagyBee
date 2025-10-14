@@ -52,7 +52,7 @@
     {% block head_extra %}{% endblock head_extra %}
 </head>
 {% block body %}
-    <body _="on load js luxon.DateTime.now().setZone('system') end repeat forever js return luxon.DateTime.now().toFormat('HH:mm:ss'); end put it into #current-time wait 0.5s end"
+    <body _="on load js StagyBee.DateTime.now().setZone('system') end repeat forever js return StagyBee.DateTime.now().toFormat('HH:mm:ss'); end put it into #current-time wait 0.5s end"
           class="bg-white dark:bg-black text-black dark:text-white flex flex-col min-h-screen">
 {% endblock %}
 {% block header %}{% endblock %}
@@ -80,8 +80,6 @@
 </main>
 {% block footer %}{% endblock %}
 <script src="{% static 'stagybee/js/bundle.js' %}" type="text/javascript"></script>
-<script src="{% static 'stagybee/js/hs_eventsource.js' %}" type="text/javascript"></script>
-<script src="{% static 'stagybee/js/hs_socket.js' %}" type="text/javascript"></script>
 <script>
     document.body.addEventListener('htmx:configRequest', (event) => {
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';

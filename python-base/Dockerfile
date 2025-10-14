@@ -1,13 +1,18 @@
 FROM docker.io/python:3.12.5-slim
+COPY --from=docker.io/astral/uv:latest /uv /uvx /bin/
 
 ENV HOME /home/pyuser 
-RUN useradd --gid users --create-home pyuser
+
+RUN groupadd --system --gid 999 nonroot \ &&  \
+    useradd --system --gid 999 --uid 999 --create-home pyuser
+
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+
 WORKDIR $HOME
 
 ENV TMP /tmp
-ENV VENV=/opt/venv
 
-ONBUILD RUN python3 -m venv $VENV && \
-    python3 -m venv --system-site-packages $VENV
-ENV PATH="$VENV/bin:$PATH"
-ONBUILD RUN pip install --upgrade --no-cache-dir pip
+ENV PATH="$HOME/.venv/bin:$PATH"
+
+RUN uv venv
