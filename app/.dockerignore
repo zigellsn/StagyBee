@@ -1,5 +1,6 @@
 .git/
 .idea/
+.venv/
 .gitignore
 .env.example
 .env.docker.example

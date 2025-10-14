@@ -1,0 +1,27 @@
+{
+  "name": "stagybee",
+  "version": "2.0.0-alpha01",
+  "description": "StagyBee JS Dependencies",
+  "private": true,
+  "author": "Simon Zigelli",
+  "scripts": {
+    "build": "vite build",
+    "build_dev": "vite build --mode development",
+    "css-watch": "tailwindcss -i main.css -o ./../StagyBee/static/css/bundle.css --watch",
+    "css-nginx": "tailwindcss -o ./../../nginx/errorPage/502.css --content ./../../nginx/errorPage/502.html --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "@tailwindcss/vite": "^4.1.14",
+    "@tailwindcss/forms": "^0.5.10",
+    "tailwindcss": "^4.1.14",
+    "vite": "^7.1.9"
+  },
+  "dependencies": {
+    "htmx-ext-ws": "^2.0.3",
+    "htmx.org": "^2.0.7",
+    "hyperscript.org": "^0.9.14",
+    "luxon": "^3.7.2",
+    "sweetalert2": "^11.23.0"
+  }
+}

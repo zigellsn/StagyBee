@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Simon Zigelli
+ * Copyright 2025 Simon Zigelli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-module.exports = {
-    plugins: {
-        '@tailwindcss/postcss': {},
-        ...(process.env.NODE_ENV === 'production' ? {cssnano: {}} : {})
-    }
-}
+import {DateTime} from 'luxon';
+import htmx from 'htmx.org'
+import _hyperscript from 'hyperscript.org'
+import * as ws from 'htmx-ext-ws'
+import sweetalert from 'sweetalert2'
+import * as hs_socket from './node_modules/hyperscript.org/src/socket.js'
+import * as hs_eventsource from './node_modules/hyperscript.org/src/eventsource.js'
+import './main.css'
+import 'sweetalert2/dist/sweetalert2.css';
+
+window.htmx = htmx
+_hyperscript.browserInit();
+
+export {DateTime, sweetalert, htmx, _hyperscript, ws, hs_eventsource, hs_socket}

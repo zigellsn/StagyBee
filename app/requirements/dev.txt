@@ -1,6 +1,0 @@
--r common.txt
-
-pytest-django==4.10.0
-pytest-cov==6.0.0
-pytest-asyncio==0.25.3
-django-debug-toolbar==5.0.1
