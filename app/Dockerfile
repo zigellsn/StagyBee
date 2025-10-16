@@ -1,8 +1,8 @@
-FROM docker.io/node:18-slim AS build
+FROM docker.io/node:24-slim AS build
 
 COPY . .
 
-RUN npm run install --prefix ./bundle && \
+RUN npm install --prefix ./bundle && \
     npm run build_dev --prefix ./bundle && \
     rm -rf ./bundle/node_modules
 
