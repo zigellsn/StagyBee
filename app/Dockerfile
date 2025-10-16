@@ -21,11 +21,9 @@ COPY pyproject.toml .
 COPY uv.lock .
 
 RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES && \
-    uv sync --locked --only-dev && \
+    uv sync --locked --only-dev --extra postgres && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f ./common.txt && \
-    rm -f ./dev.txt
+    rm -rf /var/lib/apt/lists/*
 
 USER pyuser
 

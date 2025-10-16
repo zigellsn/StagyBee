@@ -23,8 +23,8 @@ fi
 
 cp -rf $TMP/StagyBee/static/* $HOME/StagyBee/static/
 
-python manage.py migrate --no-input
-python manage.py compilemessages --ignore venv
-python manage.py collectstatic --no-input --clear -i console/ -i stage/ -i notification/ -i picker/ -i stopwatch/ -i js/*.map
+uv run manage.py migrate --no-input
+uv run manage.py compilemessages --ignore venv
+uv run manage.py collectstatic --no-input --clear -i console/ -i stage/ -i notification/ -i picker/ -i stopwatch/ -i js/*.map
 
 exec "$@"

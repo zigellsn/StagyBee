@@ -25,8 +25,8 @@ cp -rf $TMP/StagyBee/static/* $HOME/StagyBee/static/
 
 DJANGO_SETTINGS_MODULE="StagyBee.settings"
 
-python manage.py flush --no-input
-python manage.py migrate --no-input
-python manage.py compilemessages --ignore venv
+uv run manage.py flush --no-input
+uv run manage.py migrate --no-input
+uv run manage.py compilemessages --ignore venv
 
 exec "$@"

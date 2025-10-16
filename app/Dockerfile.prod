@@ -23,11 +23,9 @@ COPY uv.lock .
 RUN mkdir -p $HOME/static && \
     chown -R pyuser:users $HOME/static && \
     apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES && \
-    uv sync --locked --no-dev && \
+    uv sync --locked --no-dev --extra postgres && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f ./common.txt && \
-    rm -f ./prod.txt
+    rm -rf /var/lib/apt/lists/*
 
 USER pyuser
 
