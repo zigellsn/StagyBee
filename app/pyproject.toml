@@ -4,7 +4,7 @@ version = "2.0.0-alpha01"
 description = "StagyBee Auto login for JWConf Stage User"
 requires-python = ">=3.14"
 dependencies = [
-    "aiohttp==3.13.0",
+    "aiohttp==3.13.1",
     "asgiref==3.10.0",
     "beautifulsoup4==4.14.2",
     "channels-redis[cryptography]==4.3.0",
@@ -12,7 +12,7 @@ dependencies = [
     "django==5.2.7",
     "django-environ==0.12.0",
     "django-guardian==3.2.0",
-    "django-ninja==1.4.3",
+    "django-ninja==1.4.4",
     "django-qr-code==4.2.0",
     "django-widget-tweaks==1.5.0",
     "psycopg>=3.2.10",
@@ -20,6 +20,11 @@ dependencies = [
     "redis==6.4.0",
     "tenacity==9.1.2",
     "wheel==0.45.1",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "psycopg>=3.2.10",
 ]
 
 [dependency-groups]
