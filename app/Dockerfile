@@ -17,15 +17,14 @@ ENV DEPENDENCIES="gcc \
     libpq-dev \
     libc-dev"
 
-COPY pyproject.toml .
-COPY uv.lock .
+RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES
 
-RUN apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES && \
-    uv sync --locked --only-dev --extra postgres && \
-    apt-get autoremove -y --purge $DEPENDENCIES && \
+RUN --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --only-dev --extra postgres
+
+RUN apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/*
-
-USER pyuser
 
 COPY --from=build --chown=pyuser:users /StagyBee/static $TMP/StagyBee/static
 COPY --chown=pyuser:users ./scripts/entrypoint.sh /opt/StagyBee/

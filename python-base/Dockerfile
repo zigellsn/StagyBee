@@ -1,17 +1,12 @@
 FROM docker.io/python:3.14.0-slim
 COPY --from=docker.io/astral/uv:latest /uv /uvx /bin/
 
-ENV HOME /home/pyuser 
+RUN useradd --gid users --create-home pyuser
 
-RUN groupadd --system --gid 999 pyuser && \
-    useradd --system --gid 999 --uid 999 --create-home pyuser
-
+ENV HOME /home/pyuser
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
+ENV TMP /tmp
+ENV PATH="$HOME/.venv/bin:$PATH"
 
 WORKDIR $HOME
-
-ENV TMP /tmp
-
-ENV PATH="$HOME/.venv/bin:$PATH"
-ONBUILD RUN uv venv

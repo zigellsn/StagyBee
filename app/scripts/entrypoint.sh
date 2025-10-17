@@ -27,6 +27,6 @@ DJANGO_SETTINGS_MODULE="StagyBee.settings"
 
 uv run manage.py flush --no-input
 uv run manage.py migrate --no-input
-uv run manage.py compilemessages --ignore venv
+uv run manage.py compilemessages --ignore .venv
 
 exec "$@"

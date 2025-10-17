@@ -29,7 +29,7 @@ services:
       context: app/
       dockerfile: Dockerfile.prod
     image: "localhost/stagybee/frontend:latest"
-    command: bash -c "daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application"
+    command: uv run daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application
     restart: always
     ports:
       - "127.0.0.1:8000:8000"

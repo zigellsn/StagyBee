@@ -1,6 +1,6 @@
 # Installation
 
-Install [Python 3.10](https://www.python.org/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
+Install [uv](https://docs.astral.sh/uv/) and [gettext](https://www.gnu.org/software/gettext/gettext.html) if necessary.
 Install and configure [Redis](https://redis.io/) if necessary.
 Install and configure [Node.js](https://nodejs.org/) if necessary.
 If you don't want to use the standard SQLite database, you will need something like [PostgreSQL](https://www.postgresql.org/).
@@ -24,23 +24,21 @@ This can be changed easily by editing the .env-File.
 Prepare static files:
 ```bash
 npm install
-npm run build
+npm run build_dev
 ```
 
 Copy the generated files to ./StagyBee/static/
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements/dev.txt
-python manage.py migrate --run-syncdb
-python manage.py compilemessages --ignore .venv
-python manage.py collectstatic
-python manage.py createsuperuser
-python manage.py runserver
+uv sync --locked --only-dev # --extra postgres
+uv run manage.py migrate --run-syncdb
+uv run manage.py compilemessages --ignore .venv
+uv run manage.py collectstatic
+uv run manage.py createsuperuser
+uv run manage.py runserver
 ```
 
-Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
+Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created superuser.
 Create the required credential data sets.
 
 ## Running in production
@@ -62,18 +60,16 @@ npm run build
 ```
 Copy the generated files to ./StagyBee/static/
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements/prod.txt
+uv sync --locked --no-dev # --extra postgres
 export DJANGO_SETTINGS_MODULE=StagyBee.settings
-python manage.py migrate --run-syncdb
-python manage.py compilemessages --ignore venv
-python manage.py collectstatic
-python manage.py createsuperuser
-daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application
+uv run manage.py migrate --run-syncdb
+uv run manage.py compilemessages --ignore venv
+uv run manage.py collectstatic
+uv run manage.py createsuperuser
+uv run daphne -b 0.0.0.0 -p 8000 StagyBee.asgi:application
 ```
 
-Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created super user.
+Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created superuser.
 Create the required credential data sets.
 
 For running StagyBee in production additional steps might be necessary, e.g. using and configuring nginx as reverse proxy.

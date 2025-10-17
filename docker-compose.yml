@@ -33,7 +33,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=StagyBee.settings
     image: "localhost/stagybee/frontend:latest"
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uv run manage.py runserver 0.0.0.0:8000
     depends_on:
       - redis
       - db

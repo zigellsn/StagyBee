@@ -6,11 +6,11 @@ services:
       context: app/
       dockerfile: Dockerfile
     image: "localhost/stagybee/frontend:latest"
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uv run manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     volumes:
       - type: bind
         source: ./app
         target: /home/pyuser
-        selinux: z
+        selinux: Z

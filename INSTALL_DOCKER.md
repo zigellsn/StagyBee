@@ -16,7 +16,7 @@ Copy the file .env.docker.example to .env and adjust to your needs.
 cp app/.env.docker.example app/.env
 ```
 
-Create the directories "data" and "static".
+Create the directories "data", "static" and "files".
 ``` bash
 mkdir data
 mkdir static
@@ -52,7 +52,7 @@ cp app/.env.docker.example app/.env
 
 ---
 
-Create the directories "data" and "static".
+Create the directories "data", "static" and "files".
 ``` bash
 mkdir data
 mkdir static
