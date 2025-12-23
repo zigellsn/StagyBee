@@ -1,9 +1,0 @@
-{% load i18n %}
-<form hx-post="{% url 'console:action' credential.congregation %}" hx-swap="none">
-    <div class="flex flex-row">
-        {% include 'console/fragments/scrim_control_button.html' %}
-        <button name="action" value="scrim-refresh"
-                class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded-sm mb-2 cursor-default ltr:ml-2 rtl:mr-2">
-            <span>{% include 'icons/refresh.html' %}</span></button>
-    </div>
-</form>

@@ -66,7 +66,7 @@
             </thead>
             <tbody id="times">
             {% for time_entry in object_list %}
-                {% include 'stopwatch/fragments/timeentry_list_item.html' %}
+                {% include 'stopwatch/timeentry_list_item.html' %}
             {% empty %}
                 <tr id="no_timer_entries">
                     <td class="px-5 py-5 text-sm w-full" colspan="6">

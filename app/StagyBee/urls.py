@@ -26,7 +26,7 @@ from console.views import SettingsView, StartupView, WorkbookView
 register_converter(converters.DateConverter, "date")
 
 urlpatterns = [path("<str:language>/console/workbook/help/",
-                    TemplateView.as_view(template_name="console/fragments/workbook_help.html"), name="workbook_help"),
+                    TemplateView.as_view(template_name="console/workbook_help.html"), name="workbook_help"),
                path("<str:language>/console/workbook/today/", WorkbookView.as_view(), name="workbook_today"),
                path("<str:language>/console/workbook/<date:date_from>/", WorkbookView.as_view(), name="workbook"),
                path("<str:language>/console/workbook/<date:date_from>/<date:date_to>/", WorkbookView.as_view(),

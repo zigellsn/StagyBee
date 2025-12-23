@@ -230,7 +230,7 @@ class WorkbookView(LoginRequiredMixin, View):
                 times_list = [item for item in times[time] if filter_list(item)]
                 workbooks += [{"date": time, "times": times_list}]
 
-        return render(request, "console/fragments/workbook.html",
+        return render(request, "console/partials.html#workbook",
                       {"workbooks": workbooks, "language": request.LANGUAGE_CODE})
 
 

@@ -1,0 +1,59 @@
+{% partialdef elapsed %}
+    <div id="elapsed">
+        <span class="{{ full_class }}">{{ time }}</span>
+    </div>
+{% endpartialdef %}
+
+{% partialdef full-stopwatch %}
+    <tr id="sw"
+        hx-get="{% url 'console:stopwatch:stopwatch' pk=pk %}"
+            {% if running %}
+        hx-trigger="load delay:100ms"
+            {% else %}
+        hx-trigger="none"
+            {% endif %}
+        hx-swap="outerHTML">
+        <td class="px-9">
+            <div style="font-size:32px;font-family: monospace;">
+                <div id="elapsed">
+                    <span class="{{ class_attr }}">{{ stopwatch | default:'00:00:00' }}</span>
+                </div>
+            </div>
+        </td>
+        <td class="px-9">
+            <div style="font-size:32px;font-family: monospace;">
+                <div id="remaining">
+                    <span class="{{ class_attr }}">{{ remaining | default:'00:00:00' }}</span>
+                </div>
+            </div>
+        </td>
+    </tr>
+{% endpartialdef %}
+
+{% partialdef progress-bar %}
+    <div class="ltr:left-progress-bar rtl:right-progress-bar bg-blue-500"
+         style="width:{% if percentage >= 100 %}100%
+             {% else %}{{ percentage|stringformat:".2f" }}{% if percentage is not None and percentage != 0 %}%{% endif %}{% endif %}; background-color: {{ color }};"
+         id="pb">
+        <div id="pb_caption"
+             class="{{ full_class }} w-screen text-black dark:text-white text-xl text-center cursor-default"
+             style="margin-top: -3px;font-family: monospace;">{{ elapsed }}&nbsp;|&nbsp;{{ remaining }}</div>
+    </div>
+{% endpartialdef %}
+
+{% partialdef remaining %}
+    <div id="remaining">
+        <span class="{{ full_class }}">{{ time }}</span>
+    </div>
+{% endpartialdef %}
+
+{% partialdef talk-index %}
+    <input type="hidden" name="talk_index" value="{{ index }}" id="id_talk_index">
+{% endpartialdef %}
+
+{% partialdef talk-name-caption %}
+    {% load i18n %}
+    <div id="talk-name-caption" class="flex justify-center">
+        <span class="italic text-xl">{{ name }}</span>
+    </div>
+{% endpartialdef %}

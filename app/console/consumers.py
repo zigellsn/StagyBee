@@ -92,7 +92,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         timer = GLOBAL_TIMERS.get(congregation)
         if timer is not None:
             context = {"index": timer.get_context()["index"]}
-            event = render_to_string(template_name="stopwatch/fragments/talk_index.html", context=context)
+            event = render_to_string(template_name="stopwatch/partials.html#talk-index", context=context)
             await self.send(text_data=event)
         await self.console_scrim_refresh({})
         if wait_for_ack:
@@ -126,7 +126,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
                 context = {"dark": True}
         else:
             context = {"dark": False}
-        message = render_to_string(template_name="console/fragments/scrim_control_button.html", context=context)
+        message = render_to_string(template_name="console/partials.html#scrim-control-button", context=context)
         await self.send(text_data=message)
 
     async def console_message(self, event):
@@ -169,7 +169,7 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
             class_attr = ""
         await self.build_events(class_attr, elapsed_time, percentage, remaining_time)
         context = {"name": timer.get_timer_name()}
-        event = render_to_string(template_name="stopwatch/fragments/talk_name_caption.html", context=context)
+        event = render_to_string(template_name="stopwatch/partials.html#talk-name-caption", context=context)
         await self.send(text_data=event)
 
     async def timer_stop(self, event):
@@ -193,13 +193,13 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         color = COLOR_GRADIENT["hex"][index]
 
         context = {"time": elapsed_time, "full_class": class_attr}
-        event = render_to_string(template_name="stopwatch/fragments/elapsed.html", context=context)
+        event = render_to_string(template_name="stopwatch/partials.html#elapsed", context=context)
         await self.send(text_data=event)
         context = {"time": remaining_time, "full_class": class_attr}
-        event = render_to_string(template_name="stopwatch/fragments/remaining.html", context=context)
+        event = render_to_string(template_name="stopwatch/partials.html#remaining", context=context)
         await self.send(text_data=event)
         context = {"percentage": percentage, "elapsed": elapsed_time, "remaining": remaining_time, "color": color,
                    "full_class": class_attr}
-        event = render_to_string(template_name="stopwatch/fragments/progress_bar.html", context=context)
+        event = render_to_string(template_name="stopwatch/partials.html#progress-bar", context=context)
         await self.send(text_data=event)
         return event

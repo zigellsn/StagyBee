@@ -131,7 +131,7 @@ class StopwatchControlView(PermissionRequiredMixin, View):
 class NewestArchiveView(PermissionRequiredMixin, SchemeMixin, TemplateView):
     return_403 = True
     permission_required = "access_console"
-    template_name = "stopwatch/fragments/timeentry_list_item.html"
+    template_name = "stopwatch/timeentry_list_item.html"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
