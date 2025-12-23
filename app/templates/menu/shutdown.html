@@ -13,7 +13,7 @@
                hx-get="{% url 'picker:reboot' %}"
                hx-swap="none"
                class="rounded-t bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-               _="on click call Swal.fire({title: '{{ reboot }}', text: '{{ reboot }}', confirmButtonColor: '#3b82f6'})
+               _="on click call StagyBee.sweetalert.fire({title: '{{ reboot }}', text: '{{ reboot }}', confirmButtonColor: '#3b82f6'})
                   if result.isConfirmed
                     trigger confirmed
                   end">{{ reboot }}</a>
@@ -24,7 +24,7 @@
                hx-get="{% url 'picker:shutdown' %}"
                hx-swap="none"
                class="rounded-b bg-blue-800 dark:hover:bg-gray-700 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-               _="on click call Swal.fire({title: '{{ shutdown }}', text: '{{ shutdown }}', confirmButtonColor: '#3b82f6'})
+               _="on click call StagyBee.sweetalert.fire({title: '{{ shutdown }}', text: '{{ shutdown }}', confirmButtonColor: '#3b82f6'})
                   if result.isConfirmed
                     trigger confirmed
                   end">{{ shutdown }}</a>

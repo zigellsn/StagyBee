@@ -1,6 +1,6 @@
-# Installation with Docker
+# Installation with Podman
 
-Install [Docker](https://docs.docker.com/install/) (Version >= 20.10.0) and [Docker Compose](https://docs.docker.com/compose/) if necessary.
+Install [Podman](https://podman.io/docs/installation) and [Podman Compose](https://github.com/containers/podman-compose) if necessary.
 
 Download and extract [this repository](https://github.com/zigellsn/StagyBee/archive/master.zip) or use
 ``` bash
@@ -8,12 +8,12 @@ git clone https://github.com/zigellsn/StagyBee.git
 ```
 Change into the extracted directory.
 
-If running on Raspberry Pi, replace the Dockerfile for "extractor" in docker-compose.yml with 'Dockerfile.rpi'.
+If running on Raspberry Pi, replace the Dockerfile for "extractor" in podman-compose.yml with 'Dockerfile.rpi'.
 
 ## Running in development
-Copy the file .env.docker.example to .env and adjust to your needs.
+Copy the file .env.podman.example to .env and adjust to your needs.
 ``` bash
-cp app/.env.docker.example app/.env
+cp app/.env.podman.example app/.env
 ```
 
 Create the directories "data", "static" and "files".
@@ -29,8 +29,8 @@ mkdir files
 
 Then run
 ``` bash
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec web python manage.py createsuperuser
+podman-compose -f podman-compose.yml -f podman-compose.dev.yml --podman-build-args '--format docker' up -d --build
+podman-compose -f podman-compose.yml -f podman-compose.dev.yml --podman-build-args '--format docker' exec web python manage.py createsuperuser
 ```
 
 Log on to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) with the created superuser.
@@ -38,13 +38,13 @@ Create the required credential data sets.
 
 To stop everything use
 ``` bash
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+podman-compose -f podman-compose.yml -f podman-compose.dev.yml --podman-build-args '--format docker' down -v
 ```
 
 ## Running in production
-Copy the file .env.docker.example to .env and adjust to your needs.
+Copy the file .env.podman.example to .env and adjust to your needs.
 ``` bash
-cp app/.env.docker.example app/.env
+cp app/.env.podman.example app/.env
 ```
 
 ---
@@ -70,8 +70,8 @@ To serve over port 80, it may be necessary to add the line `net.ipv4.ip_unprivil
 
 Then run
 ``` bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec web python manage.py createsuperuser
+podman-compose -f podman-compose.yml -f podman-compose.prod.yml --podman-build-args '--format docker' up -d --build
+podman-compose -f podman-compose.yml -f podman-compose.prod.yml --podman-build-args '--format docker' exec web python manage.py createsuperuser
 ```
 
 Log on to [http://127.0.0.1/admin/](http://127.0.0.1/admin/) with the created superuser.
@@ -79,8 +79,15 @@ Create the required credential data sets.
 
 To stop everything use
 ``` bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+podman-compose -f podman-compose.yml -f podman-compose.prod.yml --podman-build-args '--format docker' down -v
 ```
+
+You may have to use podman unshare to make the shared folders accessible.
+``` bash
+podman unshare chown -R 1000:100 static
+podman unshare chown -R 1000:100 files
+```
+
 ## Usage
 
 Open [http://127.0.0.1/picker/](http://127.0.0.1/picker/) (or [http://127.0.0.1:8000/picker/](http://127.0.0.1:8000/picker/) 

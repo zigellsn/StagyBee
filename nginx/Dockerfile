@@ -1,40 +1,38 @@
-FROM docker.io/nginx:mainline-alpine as builder
+ARG NGINX_FROM_IMAGE=docker.io/nginx:mainline
+FROM ${NGINX_FROM_IMAGE} AS builder
 
 ARG ENABLED_MODULES
 
-RUN set -ex \
-    && if [ "$ENABLED_MODULES" = "" ]; then \
+SHELL ["/bin/bash", "-exo", "pipefail", "-c"]
+
+RUN if [ "$ENABLED_MODULES" = "" ]; then \
         echo "No additional modules enabled, exiting"; \
         exit 1; \
     fi
 
 COPY ./ /modules/
 
-RUN set -ex \
-    && apk update \
-    && apk add --no-cache linux-headers openssl-dev pcre-dev zlib-dev openssl abuild \
-               musl-dev libxslt libxml2-utils make gcc unzip git \
-               xz g++ coreutils \
-    # allow abuild as a root user \
-    && printf "#!/bin/sh\\nSETFATTR=true /usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
-    && chmod +x /usr/local/bin/abuild \
-    && wget https://github.com/nginx/pkg-oss/archive/refs/tags/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-    && tar -xvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-    && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
+RUN apt-get update \
+    && apt-get install -y --no-install-suggests --no-install-recommends \
+                patch make wget git devscripts debhelper dpkg-dev \
+                quilt lsb-release build-essential libxml2-utils xsltproc \
+                equivs git g++ \
+    && git clone -b ${NGINX_VERSION}-${PKG_RELEASE%%~*} https://github.com/nginx/pkg-oss/ \
+    && cd pkg-oss \
     && mkdir /tmp/packages \
     && for module in $ENABLED_MODULES; do \
         echo "Building $module for nginx-$NGINX_VERSION"; \
         if [ -d /modules/$module ]; then \
             echo "Building $module from user-supplied sources"; \
-            # check if module sources file is there and not empty \
+            # check if module sources file is there and not empty
             if [ ! -s /modules/$module/source ]; then \
                 echo "No source file for $module in modules/$module/source, exiting"; \
                 exit 1; \
             fi; \
-            # some modules require build dependencies \
+            # some modules require build dependencies
             if [ -f /modules/$module/build-deps ]; then \
                 echo "Installing $module build dependencies"; \
-                apk update && apk add $(cat /modules/$module/build-deps | xargs); \
+                apt-get update && apt-get install -y --no-install-suggests --no-install-recommends $(cat /modules/$module/build-deps | xargs); \
             fi; \
             # if a module has a build dependency that is not in a distro, provide a \
             # shell script to fetch/build/install those \
@@ -44,15 +42,15 @@ RUN set -ex \
                 echo "Running prebuild script for $module"; \
                 /modules/$module/prebuild; \
             fi; \
-            /pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}/build_module.sh -v $NGINX_VERSION -f -y -o /tmp/packages -n $module $(cat /modules/$module/source); \
+            /pkg-oss/build_module.sh -v $NGINX_VERSION -f -y -o /tmp/packages -n $module $(cat /modules/$module/source); \
             BUILT_MODULES="$BUILT_MODULES $(echo $module | tr '[A-Z]' '[a-z]' | tr -d '[/_\-\.\t ]')"; \
-        elif make -C /pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}/alpine list | grep -E "^$module\s+\d+" > /dev/null; then \
+        elif make -C /pkg-oss/debian list | grep -P "^$module\s+\d" > /dev/null; then \
             echo "Building $module from pkg-oss sources"; \
-            cd /pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}/alpine; \
-            make abuild-module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
-            apk add $(. ./abuild-module-$module/APKBUILD; echo $makedepends;); \
+            cd /pkg-oss/debian; \
+            make rules-module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
+            mk-build-deps --install --tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes" debuild-module-$module/nginx-$NGINX_VERSION/debian/control; \
             make module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
-            find ~/packages -type f -name "*.apk" -exec mv -v {} /tmp/packages/ \;; \
+            find ../../ -maxdepth 1 -mindepth 1 -type f -name "*.deb" -exec mv -v {} /tmp/packages/ \;; \
             BUILT_MODULES="$BUILT_MODULES $module"; \
         else \
             echo "Don't know how to build $module module, exiting"; \
@@ -61,7 +59,7 @@ RUN set -ex \
     done \
     && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
-FROM docker.io/nginx:mainline-alpine
+FROM ${NGINX_FROM_IMAGE}
 
 ARG KEY_FILE
 ARG CRT_FILE
@@ -70,12 +68,13 @@ COPY --from=builder /tmp/packages /tmp/packages
 
 COPY . .
 
-RUN set -ex \
+RUN --mount=type=bind,target=/tmp/packages/,source=/tmp/packages/,from=builder \
+    apt-get update \
     && . /tmp/packages/modules.env \
     && for module in $BUILT_MODULES; do \
-           apk add --no-cache --allow-untrusted /tmp/packages/nginx-module-${module}-${NGINX_VERSION}*.apk; \
+           apt-get install --no-install-suggests --no-install-recommends -y /tmp/packages/nginx-module-${module}_${NGINX_VERSION}*.deb; \
        done \
-    && rm -rf /tmp/packages \
+    && rm -rf /var/lib/apt/lists/ \
     && rm /etc/nginx/conf.d/default.conf \
     && sed -i "1 i load_module modules/ngx_http_brotli_static_module.so;load_module modules/ngx_http_brotli_filter_module.so;" /etc/nginx/nginx.conf \
     && mkdir /etc/nginx/certs/ \

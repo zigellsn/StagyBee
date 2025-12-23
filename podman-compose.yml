@@ -6,17 +6,18 @@ services:
     build:
       context: python-base/
   db:
-    image: "docker.io/postgres:16.2-alpine"
+    image: "docker.io/postgres:18-alpine"
     volumes:
       - type: bind
         source: ./data
-        target: /var/lib/postgresql/data
+        target: /var/lib/postgresql
+        selinux: Z
     ports:
       - "127.0.0.1:5432:5432"
     env_file:
       - app/.env
   redis:
-    image: "docker.io/redis:7-alpine"
+    image: "docker.io/redis:8-alpine"
     ports:
       - "127.0.0.1:6379:6379"
   extractor:

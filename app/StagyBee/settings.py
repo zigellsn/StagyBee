@@ -220,7 +220,7 @@ STATICFILES_DIRS = [("stagybee", str(PROJECT_PACKAGE.joinpath("static")))]
 MEDIA_URL = "/files/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "files/")
 
-TESTING = "test" in sys.argv
+TESTING = "test" in sys.argv or "PYTEST_VERSION" in os.environ
 
 if DEBUG:
     # SECURITY WARNING: keep the secret key used in production secret!
@@ -243,6 +243,7 @@ if DEBUG:
                 MIDDLEWARE.index("django.middleware.common.CommonMiddleware") + 1,
                 "debug_toolbar.middleware.DebugToolbarMiddleware"
             )
+            DEBUG_TOOLBAR_CONFIG = { "ROOT_TAG_EXTRA_ATTRS": "hx-preserve" }
 else:
     SECRET_KEY = env.str("SECRET_KEY")
 

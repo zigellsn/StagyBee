@@ -19,14 +19,12 @@ ENV DEPENDENCIES="gcc \
 
 RUN mkdir -p $HOME/static && \
     chown -R pyuser:users $HOME/static && \
-    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES
-
-RUN --mount=type=cache,target=/root/.cache \
+    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 netcat-openbsd $DEPENDENCIES && \
+    --mount=type=cache,target=/root/.cache \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev --extra postgres
-
-RUN chown -R pyuser:users $HOME/.cache && \
+    uv sync --locked --no-install-project --no-dev --extra postgres && \
+    chown -R pyuser:users $HOME/.cache && \
     chown -R pyuser:users $HOME/.venv && \
     apt-get autoremove -y --purge $DEPENDENCIES && \
     rm -rf /var/lib/apt/lists/*

@@ -25,7 +25,7 @@
                             hx-get="{% url 'console:known_client_shutdown' knownclient.id %}"
                             hx-swap="afterend"
                             class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2"
-                            _="on click call Swal.fire({
+                            _="on click call StagyBee.sweetalert.fire({
                             title: '{% trans "Herunterfahren" %}',
                             text: '{{ knownclient.alias }}',
                             showCancelButton: true,
@@ -44,7 +44,7 @@
                             hx-get="{% url 'console:known_client_reboot' knownclient.id %}"
                             hx-swap="afterend"
                             class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center w-full text-white font-bold py-2 px-4 rounded-sm mb-2"
-                            _="on click call Swal.fire({
+                            _="on click call StagyBee.sweetalert.fire({
                             title: '{% trans "Neu starten" %}',
                             text: '{{ knownclient.alias }}',
                             showCancelButton: true,

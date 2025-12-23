@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-@import 'tailwindcss' source("../templates");
+@import 'tailwindcss' source('../templates');
+
+@import 'sweetalert2/dist/sweetalert2.css';
 
 @plugin '@tailwindcss/forms';
 

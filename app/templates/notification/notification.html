@@ -1,6 +1,6 @@
 {% load i18n %}
 {% if object %}
-    <div class="shadow-lg">
+    <details class="shadow-lg">
         <div role="heading"
              class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t {% if index != 0 %}rounded-b{% endif %}">
             <button id="acc-{{ index }}"
@@ -42,5 +42,5 @@
                     {{ object.message }}</div>
             {% endlanguage %}
         </div>
-    </div>
+    </details>
 {% endif %}

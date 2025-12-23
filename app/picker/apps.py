@@ -48,7 +48,4 @@ class PickerConfig(AppConfig):
     verbose_name = "JWConf Picker"
 
     def ready(self):
-        loop = asyncio.new_event_loop()
-        loop.run_until_complete(initialize_redis())
-        if not loop.is_closed():
-            loop.close()
+        asyncio.run(initialize_redis())

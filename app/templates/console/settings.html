@@ -4,58 +4,32 @@
 {% block content %}
     {% get_available_languages as LANGUAGES %}
     <div class="container mx-auto flex flex-col"
-         _="install Accordion"
          id="settings-main">
         {% if user.is_superuser %}
-            <div class="shadow-lg">
-                <div role="heading" class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t">
-                    <button id="acc-1"
-                            class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
-                            aria-controls="content-1" aria-expanded="true">
-                        <span>{% trans "Benachrichtigungen" %}</span>
-                        {% include 'icons/chevron_down.html' %}
-                    </button>
-                </div>
+            <details class="shadow-lg" name="settings" open>
+                        <summary>{% trans "Benachrichtigungen" %}</summary>
                 <div id="content-1"
-                     class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
-                     role="region" aria-labelledby="acc-1">
+                     class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b">
                     <div class="pb-4">
                         {% notifications_maintain %}
                     </div>
                 </div>
-            </div>
+            </details>
         {% endif %}
     
-        <div class="shadow-lg">
-            <div role="heading"
-                 class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t {% if user.is_superuser %}rounded-b{% endif %}">
-                <button id="acc-2"
-                        class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
-                        aria-controls="content-2"
-                        aria-expanded="{% if not user.is_superuser %}true{% else %}false{% endif %}">
-                    <span>{% trans "Bekannte Clients" %}</span>
-                    {% include 'icons/chevron_down.html' %}
-                </button>
-            </div>
+        <details class="shadow-lg" name="settings">
+                    <summary>{% trans "Bekannte Clients" %}</summary>
             <div id="content-2" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
-                 role="region" aria-labelledby="acc-2" {% if user.is_superuser %}hidden{% endif %}>
+                 {% if user.is_superuser %}hidden{% endif %}>
                 <div class="pb-4">
                     {% known_clients_control %}
                 </div>
             </div>
-        </div>
+        </details>
 
-        <div class="shadow-lg">
-            <div role="heading" class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t rounded-b">
-                <button id="acc-3"
-                        class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
-                        aria-controls="content-3" aria-expanded="false">
-                    <span>{% trans "Passwort" %}</span>
-                    {% include 'icons/chevron_down.html' %}
-                </button>
-            </div>
-            <div id="content-3" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
-                 role="region" aria-labelledby="acc-3" hidden>
+        <details class="shadow-lg" name="settings">
+                    <summary>{% trans "Passwort" %}</summary>
+            <div id="content-3" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b">
                 <div class="pb-4">
                     <a class="flex cursor-default" href="{% url 'password_change' %}">
                         <div class="bg-blue-500 hover:bg-blue-700 inline-flex justify-center items-center text-white font-bold py-2 px-4 rounded-sm mb-2">
@@ -64,19 +38,11 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </details>
 
-        <div class="shadow-lg">
-            <div role="heading" class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t rounded-b">
-                <button id="acc-4"
-                        class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
-                        aria-controls="content-4" aria-expanded="false">
-                    <span>{% trans "Sprache" %}</span>
-                    {% include 'icons/chevron_down.html' %}
-                </button>
-            </div>
-            <div id="content-4" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
-                 role="region" aria-labelledby="acc-4" hidden>
+        <details class="shadow-lg" name="settings">
+                    <summary>{% trans "Sprache" %}</summary>
+            <div id="content-4" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b">
                 <div class="pb-4">
                     <form method="post">
                         {% csrf_token %}
@@ -89,19 +55,11 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </details>
 
-        <div class="shadow-lg">
-            <div role="heading" class="mt-4 dark:bg-gray-800 dark:shadow-gray-800 rounded-t rounded-b">
-                <button id="acc-5"
-                        class="w-full flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
-                        aria-controls="content-5" aria-expanded="false">
-                    <span>{% trans "Hilfe und Rechtliches" %}</span>
-                    {% include 'icons/chevron_down.html' %}
-                </button>
-            </div>
-            <div id="content-5" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b"
-                 role="region" aria-labelledby="acc-5" hidden>
+        <details class="shadow-lg" name="settings">
+                    <summary>{% trans "Hilfe und Rechtliches" %}</summary>
+            <div id="content-5" class="dark:bg-gray-800 dark:shadow-gray-800 px-8 overflow-hidden rounded-b">
                 <div class="pb-4">
                     <ul>
                         <li><a href="https://github.com/zigellsn/StagyBee#readme">{% trans "Readme und Hilfe" %}</a>
@@ -115,10 +73,6 @@
                     <div class="mt-2 text-xs">Copyright 2019-2025 Simon Zigelli</div>
                 </div>
             </div>
-        </div>
+        </details>
     </div>
-{% endblock %}
-
-{% block _hs_extra %}
-    <script type="text/hyperscript" src="{% static 'stagybee/behavior/Accordion._hs' %}"></script>
 {% endblock %}

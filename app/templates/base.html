@@ -1,7 +1,9 @@
 {% load static i18n %}<!DOCTYPE html>
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_current_language as LANGUAGE_CODE %}
-<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}">
+<!doctype html>
+<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE_CODE }}"
+      hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token }}"}'>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -13,6 +15,28 @@
     <meta name="MSSmartTagsPreventParsing" content="true"/>
     <meta name="msapplication-square310x310logo" content="{% static 'stagybee/img/mstile-310x310.png' %}">
     <meta name="msapplication-TileColor" content="#000000">
+    <script type="module">
+        import {StagyBee} from '{% static 'stagybee/js/bundle.js' %}';
+        window.StagyBee = StagyBee;
+        window.htmx = StagyBee.htmx;
+        StagyBee.init();
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+        {% if debug %}
+            htmx.logAll();
+            if (typeof window.htmx !== "undefined") {
+                htmx.on("htmx:afterSettle", function (detail) {
+                    if (
+                        typeof window.djdt !== "undefined"
+                        && detail.target instanceof HTMLBodyElement
+                    ) {
+                        djdt.show_toolbar();
+                    }
+                });
+            }
+        {% endif %}
+    </script>
     <script>
         {% if not user.is_authenticated %}
             try {
@@ -79,15 +103,6 @@
     {% endblock %}
 </main>
 {% block footer %}{% endblock %}
-<script src="{% static 'stagybee/js/bundle.js' %}" type="text/javascript"></script>
-<script>
-    document.body.addEventListener('htmx:configRequest', (event) => {
-        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-    })
-</script>
-{% if debug %}
-    <script>htmx.logAll();</script>
-{% endif %}
 {% block body_extra %}{% endblock body_extra %}
 </body>
 </html>

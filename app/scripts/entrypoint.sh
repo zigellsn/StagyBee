@@ -21,7 +21,7 @@ if [ "${SQL_ENGINE}" = "django.db.backends.postgresql" ]; then
     echo "PostgreSQL started"
 fi
 
-cp -rf $TMP/StagyBee/static/* $HOME/StagyBee/static/
+cp -rf "$TMP"/StagyBee/static/* "$HOME"/StagyBee/static/
 
 DJANGO_SETTINGS_MODULE="StagyBee.settings"
 

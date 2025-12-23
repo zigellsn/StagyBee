@@ -130,6 +130,7 @@ class WorkbookExtractor:
         self.logger = logging.getLogger("WorkbookExtractor")
         self.PREFIX = "https://www.jw.org/en/library/jw-meeting-workbook"
         self.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+        self.SEC_CH_UA = '"Brave";v="141","Not?A_Brand";v="8","Chromium";v="141"'
         self.ACCEPT_LANGUAGE = "en-EN,en"
 
     async def get_workbooks(self, urls: dict[datetime, str], language: str = "en") -> dict[datetime, list[Times]]:
@@ -262,7 +263,8 @@ class WorkbookExtractor:
         self.logger.info(url)
         self.logger.info("Fetching workbook...")
         headers = {"User-Agent": self.USER_AGENT,
-                   "Accept-Language": self.ACCEPT_LANGUAGE}
+                   "Accept-Language": self.ACCEPT_LANGUAGE,
+                   "Sec-CH-UA": self.SEC_CH_UA}
         async with session.get(url, headers=headers) as resp:
             response_code = resp.status
             if response_code == 200:
@@ -270,7 +272,7 @@ class WorkbookExtractor:
                 content = await resp.text()
             else:
                 content = ""
-            await resp.release()
+            resp.release()
             return Response(code=response_code, content=content)
 
     async def __parse__(self, content: str, language: str) -> list[Times]:

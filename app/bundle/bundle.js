@@ -15,16 +15,25 @@
  */
 
 import {DateTime} from 'luxon';
-import htmx from 'htmx.org'
-import _hyperscript from 'hyperscript.org'
-import * as ws from 'htmx-ext-ws'
-import sweetalert from 'sweetalert2'
-import * as hs_socket from './node_modules/hyperscript.org/src/socket.js'
-import * as hs_eventsource from './node_modules/hyperscript.org/src/eventsource.js'
-import './main.css'
-import 'sweetalert2/dist/sweetalert2.css';
+import htmx from 'htmx.org';
+import * as ws from 'htmx-ext-ws';
+import _hyperscript from 'hyperscript.org';
+import * as hdb from 'hyperscript.org/dist/hdb';
+import hs_eventsource from 'hyperscript.org/dist/eventsource';
+import hs_socket from 'hyperscript.org/dist/socket';
+import sweetalert from 'sweetalert2';
+import './dist/bundle.css';
 
-window.htmx = htmx
-_hyperscript.browserInit();
+function init() {
+    _hyperscript.browserInit();
+    _hyperscript.use(hs_eventsource);
+    _hyperscript.use(hs_socket);
+}
 
-export {DateTime, sweetalert, htmx, _hyperscript, ws, hs_eventsource, hs_socket}
+let StagyBee;
+if (process.env.NODE_ENV !== "production") {
+    StagyBee = {init, DateTime, sweetalert, htmx, ws, _hyperscript, hs_eventsource, hs_socket, hdb};
+    console.log('This is a development build. Do not use in production.');
+} else
+    StagyBee = {init, DateTime, sweetalert, htmx, ws, _hyperscript, hs_eventsource, hs_socket, undefined};
+export {StagyBee};

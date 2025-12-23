@@ -15,11 +15,12 @@ from channels.layers import get_channel_layer
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from ninja import NinjaAPI
+from ninja.security import django_auth
 
 from StagyBee.views import SchemeMixin
 from stage.consumers import generate_channel_group_name
 
-api = NinjaAPI(csrf=True)
+api = NinjaAPI(auth=django_auth)
 
 
 @api.post("/receiver/{pk}")
