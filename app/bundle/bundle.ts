@@ -16,17 +16,23 @@
 
 import {DateTime} from 'luxon';
 import htmx from 'htmx.org';
+// @ts-ignore
 import * as ws from 'htmx-ext-ws';
 import _hyperscript from 'hyperscript.org';
+// @ts-ignore
 import * as hdb from 'hyperscript.org/dist/hdb';
+// @ts-ignore
 import hs_eventsource from 'hyperscript.org/dist/eventsource';
+// @ts-ignore
 import hs_socket from 'hyperscript.org/dist/socket';
 import sweetalert from 'sweetalert2';
 import './dist/bundle.css';
 
 function init() {
     _hyperscript.browserInit();
+    // @ts-ignore
     _hyperscript.use(hs_eventsource);
+    // @ts-ignore
     _hyperscript.use(hs_socket);
 }
 
